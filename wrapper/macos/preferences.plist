@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>inputStyle</key>
+	<integer>1</integer>
+	<key>inputChinesePuncts</key>
+	<true/>
+	<key>inputFullSymbols</key>
+	<false/>
+	<key>switchingPolicy</key>
+	<integer>0</integer>
+	<key>usingUSKbLayout</key>
+	<false/>
+	<key>alpha</key>
+	<integer>80</integer>
+	<key>pagingByMinusAndEqual</key>
+	<false/>
+	<key>pagingByBrackets</key>
+	<false/>
+	<key>pagingByCommaAndDot</key>
+	<false/>
+	<key>candiNumbers</key>
+	<integer>9</integer>
+	<key>fontName</key>
+	<string>Hei</string>
+	<key>fontSize</key>
+	<string>16</string>
+	<key>charset</key>
+	<string>GB2312</string>
+	<key>bgColor</key>
+	<data>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZmAYMAAAA/AAGG</data>
+	<key>fgColor</key>
+	<data>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZmAQEBAYY=</data>
+	<key>hlColor</key>
+	<data>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZmAAABAYY=</data>
+</dict>
+</plist>

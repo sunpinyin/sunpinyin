@@ -1,0 +1,44 @@
+=head1 NAME
+
+slminfo - get information of a back-off language model
+
+=head1 SYNOPSIS
+
+B<slminfo> [I<option>]... I<slm_file>
+
+=head1 DESCRIPTION
+
+B<slminfo> tells information of back-off language model 'I<slm_file>'. It can 
+also print the model to ARPA format.
+When no option is given, slminfo will only print number of items in each level 
+of the language model.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-v>,B<--verbose>
+
+Turn on verbose mode, printing arpa format.
+
+
+=item B<-p>,B<--pr>
+
+Prefer normal probability than -log(Pr) which is default. Valid under B<-v> option.
+
+
+=item B<-l>,B<--lexicon> I<dict_file>
+
+Specify the lexicon. Valid under B<-v> option. Substitute the word-id with word-text in the output.
+
+=back
+
+=head1 AUTHOR
+
+Originally written by Phill.Zhang E<lt>phill.zhang@sun.comE<gt>.
+Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+
+=head1 SEE ALSO
+
+B<slmprune>(1).
+

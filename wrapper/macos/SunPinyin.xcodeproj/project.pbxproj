@@ -1,0 +1,534 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A422A7D00DCD694400B41288 /* CandidateWindow.m */; };
+		A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
+		A464E3740F65261800148227 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
+		A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */; };
+		A48D91030DBDD1750013F02D /* SunPinyin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A48D91020DBDD1750013F02D /* SunPinyin.tiff */; };
+		A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */; };
+		A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B8E1B20F645B870094E08B /* Carbon.framework */; };
+		A4DA4E690DBDD9D600472176 /* ic_history.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E4B0DBDD9D600472176 /* ic_history.cpp */; };
+		A4DA4E6A0DBDD9D600472176 /* imi_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E4D0DBDD9D600472176 /* imi_context.cpp */; };
+		A4DA4E6B0DBDD9D600472176 /* imi_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E4F0DBDD9D600472176 /* imi_data.cpp */; };
+		A4DA4E6C0DBDD9D600472176 /* imi_options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E520DBDD9D600472176 /* imi_options.cpp */; };
+		A4DA4E6D0DBDD9D600472176 /* imi_uiobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E540DBDD9D600472176 /* imi_uiobjects.cpp */; };
+		A4DA4E6E0DBDD9D600472176 /* imi_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E560DBDD9D600472176 /* imi_view.cpp */; };
+		A4DA4E6F0DBDD9D600472176 /* imi_view_classic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E580DBDD9D600472176 /* imi_view_classic.cpp */; };
+		A4DA4E700DBDD9D600472176 /* imi_view_modern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E5A0DBDD9D600472176 /* imi_view_modern.cpp */; };
+		A4DA4E710DBDD9D600472176 /* imi_winHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E5C0DBDD9D600472176 /* imi_winHandler.cpp */; };
+		A4DA4E720DBDD9D600472176 /* lattice_states.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E5F0DBDD9D600472176 /* lattice_states.cpp */; };
+		A4DA4E730DBDD9D600472176 /* pytrie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E620DBDD9D600472176 /* pytrie.cpp */; };
+		A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E640DBDD9D600472176 /* portability.cpp */; };
+		A4DA4E750DBDD9D600472176 /* slm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E670DBDD9D600472176 /* slm.cpp */; };
+		A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */; };
+		A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */; };
+		A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4FC48C90F6530EF0069BE81 /* Localizable.strings */; };
+		E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93074B60A5C264700470842 /* InputMethodKit.framework */; };
+		E93074E20A5C2F1200470842 /* SunPinyinInputController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */; };
+		E99A79200BFAA07E00935A00 /* preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = E99A791F0BFAA07E00935A00 /* preferences.plist */; };
+		E9FB8BCB0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9FB8BCA0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A464E3780F65263000148227 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A464E3740F65261800148227 /* Growl.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* SunPinyin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyin_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* SunPinyin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunPinyin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A422A7CF0DCD694400B41288 /* CandidateWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateWindow.h; sourceTree = "<group>"; };
+		A422A7D00DCD694400B41288 /* CandidateWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateWindow.m; sourceTree = "<group>"; };
+		A42E2EB30DD33E1A00165E46 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		A44571AB0DBF42C200F793F9 /* macos_keycode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_keycode.h; sourceTree = "<group>"; };
+		A464E2BD0F65211A00148227 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = SOURCE_ROOT; };
+		A485E5BB0DD28B8D00E472E5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		A48D91020DBDD1750013F02D /* SunPinyin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SunPinyin.tiff; sourceTree = "<group>"; };
+		A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_imkitwin.h; sourceTree = "<group>"; };
+		A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imi_imkitwin.mm; sourceTree = "<group>"; };
+		A4B8E1B20F645B870094E08B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		A4DA4E430DBDD9D600472176 /* beos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = beos.h; sourceTree = "<group>"; };
+		A4DA4E450DBDD9D600472176 /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
+		A4DA4E460DBDD9D600472176 /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
+		A4DA4E470DBDD9D600472176 /* solaris.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = solaris.h; sourceTree = "<group>"; };
+		A4DA4E4A0DBDD9D600472176 /* host_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = host_os.h; sourceTree = "<group>"; };
+		A4DA4E4B0DBDD9D600472176 /* ic_history.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ic_history.cpp; sourceTree = "<group>"; };
+		A4DA4E4C0DBDD9D600472176 /* ic_history.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ic_history.h; sourceTree = "<group>"; };
+		A4DA4E4D0DBDD9D600472176 /* imi_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_context.cpp; sourceTree = "<group>"; };
+		A4DA4E4E0DBDD9D600472176 /* imi_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_context.h; sourceTree = "<group>"; };
+		A4DA4E4F0DBDD9D600472176 /* imi_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_data.cpp; sourceTree = "<group>"; };
+		A4DA4E500DBDD9D600472176 /* imi_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_data.h; sourceTree = "<group>"; };
+		A4DA4E510DBDD9D600472176 /* imi_keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_keys.h; sourceTree = "<group>"; };
+		A4DA4E520DBDD9D600472176 /* imi_options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_options.cpp; sourceTree = "<group>"; };
+		A4DA4E530DBDD9D600472176 /* imi_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_options.h; sourceTree = "<group>"; };
+		A4DA4E540DBDD9D600472176 /* imi_uiobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_uiobjects.cpp; sourceTree = "<group>"; };
+		A4DA4E550DBDD9D600472176 /* imi_uiobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_uiobjects.h; sourceTree = "<group>"; };
+		A4DA4E560DBDD9D600472176 /* imi_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_view.cpp; sourceTree = "<group>"; };
+		A4DA4E570DBDD9D600472176 /* imi_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_view.h; sourceTree = "<group>"; };
+		A4DA4E580DBDD9D600472176 /* imi_view_classic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_view_classic.cpp; sourceTree = "<group>"; };
+		A4DA4E590DBDD9D600472176 /* imi_view_classic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_view_classic.h; sourceTree = "<group>"; };
+		A4DA4E5A0DBDD9D600472176 /* imi_view_modern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_view_modern.cpp; sourceTree = "<group>"; };
+		A4DA4E5B0DBDD9D600472176 /* imi_view_modern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_view_modern.h; sourceTree = "<group>"; };
+		A4DA4E5C0DBDD9D600472176 /* imi_winHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_winHandler.cpp; sourceTree = "<group>"; };
+		A4DA4E5D0DBDD9D600472176 /* imi_winHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_winHandler.h; sourceTree = "<group>"; };
+		A4DA4E5E0DBDD9D600472176 /* lattice_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lattice_builder.h; sourceTree = "<group>"; };
+		A4DA4E5F0DBDD9D600472176 /* lattice_states.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lattice_states.cpp; sourceTree = "<group>"; };
+		A4DA4E600DBDD9D600472176 /* lattice_states.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lattice_states.h; sourceTree = "<group>"; };
+		A4DA4E620DBDD9D600472176 /* pytrie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pytrie.cpp; sourceTree = "<group>"; };
+		A4DA4E630DBDD9D600472176 /* pytrie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pytrie.h; sourceTree = "<group>"; };
+		A4DA4E640DBDD9D600472176 /* portability.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = portability.cpp; sourceTree = "<group>"; };
+		A4DA4E650DBDD9D600472176 /* portability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = portability.h; sourceTree = "<group>"; };
+		A4DA4E670DBDD9D600472176 /* slm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slm.cpp; sourceTree = "<group>"; };
+		A4DA4E680DBDD9D600472176 /* slm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slm.h; sourceTree = "<group>"; };
+		A4DA4E760DBDDA1800472176 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../config.h; sourceTree = "<group>"; };
+		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../data/lm_sc.t3g; sourceTree = "<group>"; };
+		A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict_sc.bin; path = ../../data/pydict_sc.bin; sourceTree = "<group>"; };
+		A4FC48CA0F6530EF0069BE81 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A4FC48CC0F6531110069BE81 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E93074B60A5C264700470842 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = /System/Library/Frameworks/InputMethodKit.framework; sourceTree = "<absolute>"; };
+		E93074E00A5C2F1200470842 /* SunPinyinInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyinInputController.h; sourceTree = "<group>"; };
+		E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SunPinyinInputController.mm; sourceTree = "<group>"; };
+		E99A791F0BFAA07E00935A00 /* preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = preferences.plist; sourceTree = "<group>"; };
+		E9FB8BC90BF0D79B00305C76 /* SunPinyinApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyinApplicationDelegate.h; sourceTree = "<group>"; };
+		E9FB8BCA0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SunPinyinApplicationDelegate.mm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */,
+				A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */,
+				A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A44571AB0DBF42C200F793F9 /* macos_keycode.h */,
+				A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */,
+				A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */,
+				32CA4F630368D1EE00C91783 /* SunPinyin_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				E93074E00A5C2F1200470842 /* SunPinyinInputController.h */,
+				E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */,
+				E9FB8BC90BF0D79B00305C76 /* SunPinyinApplicationDelegate.h */,
+				E9FB8BCA0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm */,
+				A422A7CF0DCD694400B41288 /* CandidateWindow.h */,
+				A422A7D00DCD694400B41288 /* CandidateWindow.m */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A4B8E1B20F645B870094E08B /* Carbon.framework */,
+				E93074B60A5C264700470842 /* InputMethodKit.framework */,
+				A464E2BD0F65211A00148227 /* Growl.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* SunPinyin.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* SunPinyin */ = {
+			isa = PBXGroup;
+			children = (
+				A4DA4E410DBDD9D600472176 /* ime-core */,
+				080E96DDFE201D6D7F000001 /* Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = SunPinyin;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A4FC48C90F6530EF0069BE81 /* Localizable.strings */,
+				A48D91020DBDD1750013F02D /* SunPinyin.tiff */,
+				A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */,
+				A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				E99A791F0BFAA07E00935A00 /* preferences.plist */,
+				A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A4DA4E410DBDD9D600472176 /* ime-core */ = {
+			isa = PBXGroup;
+			children = (
+				A4DA4E760DBDDA1800472176 /* config.h */,
+				A4DA4E420DBDD9D600472176 /* config */,
+				A4DA4E4A0DBDD9D600472176 /* host_os.h */,
+				A4DA4E4B0DBDD9D600472176 /* ic_history.cpp */,
+				A4DA4E4C0DBDD9D600472176 /* ic_history.h */,
+				A4DA4E4D0DBDD9D600472176 /* imi_context.cpp */,
+				A4DA4E4E0DBDD9D600472176 /* imi_context.h */,
+				A4DA4E4F0DBDD9D600472176 /* imi_data.cpp */,
+				A4DA4E500DBDD9D600472176 /* imi_data.h */,
+				A4DA4E510DBDD9D600472176 /* imi_keys.h */,
+				A4DA4E520DBDD9D600472176 /* imi_options.cpp */,
+				A4DA4E530DBDD9D600472176 /* imi_options.h */,
+				A4DA4E540DBDD9D600472176 /* imi_uiobjects.cpp */,
+				A4DA4E550DBDD9D600472176 /* imi_uiobjects.h */,
+				A4DA4E560DBDD9D600472176 /* imi_view.cpp */,
+				A4DA4E570DBDD9D600472176 /* imi_view.h */,
+				A4DA4E580DBDD9D600472176 /* imi_view_classic.cpp */,
+				A4DA4E590DBDD9D600472176 /* imi_view_classic.h */,
+				A4DA4E5A0DBDD9D600472176 /* imi_view_modern.cpp */,
+				A4DA4E5B0DBDD9D600472176 /* imi_view_modern.h */,
+				A4DA4E5C0DBDD9D600472176 /* imi_winHandler.cpp */,
+				A4DA4E5D0DBDD9D600472176 /* imi_winHandler.h */,
+				A4DA4E5E0DBDD9D600472176 /* lattice_builder.h */,
+				A4DA4E5F0DBDD9D600472176 /* lattice_states.cpp */,
+				A4DA4E600DBDD9D600472176 /* lattice_states.h */,
+				A4DA4E610DBDD9D600472176 /* lexicon */,
+				A4DA4E640DBDD9D600472176 /* portability.cpp */,
+				A4DA4E650DBDD9D600472176 /* portability.h */,
+				A4DA4E660DBDD9D600472176 /* slm */,
+			);
+			name = "ime-core";
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		A4DA4E420DBDD9D600472176 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				A4DA4E430DBDD9D600472176 /* beos.h */,
+				A4DA4E450DBDD9D600472176 /* linux.h */,
+				A4DA4E460DBDD9D600472176 /* mac.h */,
+				A4DA4E470DBDD9D600472176 /* solaris.h */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		A4DA4E610DBDD9D600472176 /* lexicon */ = {
+			isa = PBXGroup;
+			children = (
+				A4DA4E620DBDD9D600472176 /* pytrie.cpp */,
+				A4DA4E630DBDD9D600472176 /* pytrie.h */,
+			);
+			path = lexicon;
+			sourceTree = "<group>";
+		};
+		A4DA4E660DBDD9D600472176 /* slm */ = {
+			isa = PBXGroup;
+			children = (
+				A4DA4E670DBDD9D600472176 /* slm.cpp */,
+				A4DA4E680DBDD9D600472176 /* slm.h */,
+			);
+			path = slm;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* SunPinyin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SunPinyin" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				A464E3780F65263000148227 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SunPinyin;
+			productInstallPath = "$(HOME)/Applications";
+			productName = SunPinyin;
+			productReference = 8D1107320486CEB800E47090 /* SunPinyin.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SunPinyin" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				zh_CN,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* SunPinyin */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* SunPinyin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				E99A79200BFAA07E00935A00 /* preferences.plist in Resources */,
+				A48D91030DBDD1750013F02D /* SunPinyin.tiff in Resources */,
+				A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */,
+				A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */,
+				A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */,
+				A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				E93074E20A5C2F1200470842 /* SunPinyinInputController.mm in Sources */,
+				E9FB8BCB0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm in Sources */,
+				A4DA4E690DBDD9D600472176 /* ic_history.cpp in Sources */,
+				A4DA4E6A0DBDD9D600472176 /* imi_context.cpp in Sources */,
+				A4DA4E6B0DBDD9D600472176 /* imi_data.cpp in Sources */,
+				A4DA4E6C0DBDD9D600472176 /* imi_options.cpp in Sources */,
+				A4DA4E6D0DBDD9D600472176 /* imi_uiobjects.cpp in Sources */,
+				A4DA4E6E0DBDD9D600472176 /* imi_view.cpp in Sources */,
+				A4DA4E6F0DBDD9D600472176 /* imi_view_classic.cpp in Sources */,
+				A4DA4E700DBDD9D600472176 /* imi_view_modern.cpp in Sources */,
+				A4DA4E710DBDD9D600472176 /* imi_winHandler.cpp in Sources */,
+				A4DA4E720DBDD9D600472176 /* lattice_states.cpp in Sources */,
+				A4DA4E730DBDD9D600472176 /* pytrie.cpp in Sources */,
+				A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */,
+				A4DA4E750DBDD9D600472176 /* slm.cpp in Sources */,
+				A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */,
+				A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A485E5BB0DD28B8D00E472E5 /* English */,
+				A42E2EB30DD33E1A00165E46 /* zh_CN */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		A4FC48C90F6530EF0069BE81 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4FC48CA0F6530EF0069BE81 /* English */,
+				A4FC48CC0F6531110069BE81 /* zh_CN */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A4D8BB470DDD72680079ECF3 /* Release-ppc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+			};
+			name = "Release-ppc";
+		};
+		A4D8BB480DDD72680079ECF3 /* Release-ppc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DLEOPARD",
+					"-DHAVE_CONFIG_H",
+					"-D_USE_RAW_PROBABILITY",
+				);
+				OTHER_LDFLAGS = "-liconv";
+				PRODUCT_NAME = SunPinyin;
+				WRAPPER_EXTENSION = app;
+			};
+			name = "Release-ppc";
+		};
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "\"$(LOCAL_LIBRARY_DIR)/Input Methods/\"";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DLEOPARD",
+					"-DHAVE_CONFIG_H",
+					"-D_USE_RAW_PROBABILITY",
+				);
+				OTHER_LDFLAGS = "-liconv";
+				PRODUCT_NAME = SunPinyin;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release-i386 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DLEOPARD",
+					"-DHAVE_CONFIG_H",
+					"-D_USE_RAW_PROBABILITY",
+				);
+				OTHER_LDFLAGS = "-liconv";
+				PRODUCT_NAME = SunPinyin;
+				WRAPPER_EXTENSION = app;
+			};
+			name = "Release-i386";
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release-i386 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+			};
+			name = "Release-i386";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SunPinyin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release-i386 */,
+				A4D8BB480DDD72680079ECF3 /* Release-ppc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release-i386";
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SunPinyin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release-i386 */,
+				A4D8BB470DDD72680079ECF3 /* Release-ppc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release-i386";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

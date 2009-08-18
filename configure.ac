@@ -1,0 +1,259 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").  
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at sunpinyin/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at sunpinyin/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# Process this file with autoconf to produce a configure script.
+AC_INIT(sunpinyin, 2.0)
+AC_CANONICAL_SYSTEM()
+AM_INIT_AUTOMAKE
+AC_CONFIG_SRCDIR(src/slm/slm.cpp)
+AM_CONFIG_HEADER(config.h)
+AM_CONDITIONAL(DEBUG, test "$enable-debug" = yes)
+
+dnl AC_C_BIGENDIAN defines WORDS_BIGENDIAN if it is true by default
+AC_C_BIGENDIAN
+AC_C_BIGENDIAN([my_host_endian=be],[my_host_endian=le],[
+AC_MSG_ERROR([Cannot determine endianness])])
+
+case "${host_os}" in
+*linux*)            my_host_os=linux;;
+*solaris*)          my_host_os=solaris;;
+*darwin*)           my_host_os=mac;;
+*beos*|*haiku*)     my_host_os=beos;;
+esac
+
+AC_LINK_FILES(data/lm_sc.t3g.${my_host_endian}, data/lm_sc.t3g)
+AC_LINK_FILES(src/config/${my_host_os}.h, src/host_os.h)
+
+RAW_DATA_DIR="raw"
+AC_SUBST(RAW_DATA_DIR)
+
+SWAP_DATA_DIR="swap"
+AC_SUBST(SWAP_DATA_DIR)
+
+RESULT_DATA_DIR="data"
+AC_SUBST(RESULT_DATA_DIR)
+
+SOURCE_DIR="src"
+AC_SUBST(SOURCE_DIR)
+
+SLM_SRC_DIR="src/slm"
+AC_SUBST(SLM_SRC_DIR)
+
+LEXICON_SRC_DIR="src/lexicon"
+AC_SUBST(LEXICON_SRC_DIR)
+
+PINYIN_SRC_DIR="src/pinyin"
+AC_SUBST(PINYIN_SRC_DIR)
+
+
+dnl-----------------------------------------------------------------------
+dnl    --enable-debug
+dnl-----------------------------------------------------------------------
+AC_ARG_ENABLE([debug],
+    AC_HELP_STRING([--enable-debug], [compile in debug mode (default no) ]),
+    [DEBUGMODE="${enableval}"],
+    [DEBUGMODE="no"])
+
+if test "X$DEBUGMODE" = "Xyes" ; then
+    AC_DEFINE(DEBUG, 1, [Define if you want to make for debugging.])
+fi
+
+AC_ARG_WITH([sunpinyin-datadir],
+    AC_HELP_STRING([--with-sunpinyin-datadir=PATH],
+                   [specify the directory where the lexicon data is installed]),
+    [SUNPINYIN_DATADIR="${withval}"],
+    [SUNPINYIN_DATADIR=""])
+AC_SUBST(SUNPINYIN_DATADIR)
+
+PKG_CHECK_MODULES(sqlite3, [sqlite3 >= 3.0])
+
+AC_ARG_ENABLE([cle],
+    AC_HELP_STRING([--enable-cle], [compile as cle IME (default=auto), multiple wrappers could be compiled together ]),
+    [ENABLE_CLE="${enableval}"],
+    [ENABLE_CLE="auto"])
+if test "X${ENABLE_CLE}" = "Xauto" ; then
+    case "${host_os}" in
+    *beos*|*haiku*)
+        ENABLE_CLE="no"
+        ;;
+    *)
+        ENABLE_CLE="yes"
+        ;;
+    esac
+fi
+AM_CONDITIONAL(WRAPPER_CLE, [test "X${ENABLE_CLE}" = "Xyes"])
+
+AC_ARG_ENABLE([gtkstandalone],
+    AC_HELP_STRING([--enable-gtkstandalone], [compile standalone gtk program for demo/debug(default=no) ]),
+    [ENABLE_GTKSTANDALONE="${enableval}"],
+    [ENABLE_GTKSTANDALONE="no"])
+AM_CONDITIONAL(WRAPPER_GTK_STANDALONE, [test "X${ENABLE_GTKSTANDALONE}" = "Xyes"])
+
+AC_ARG_ENABLE([scim],
+    AC_HELP_STRING([--enable-scim], [compile as scim (default=no) ]),
+    [ENABLE_SCIM="${enableval}"],
+    [ENABLE_SCIM="no"])
+
+if test "X${ENABLE_SCIM}" = "Xyes" ; then
+    # Check SCIM
+    SCIM_VERSION=1.4.0
+    AC_SUBST(SCIM_VERSION)
+    PKG_CHECK_MODULES(SCIM,[scim >= $SCIM_VERSION])
+
+    # Check if we should build setup module
+    PKG_CHECK_MODULES(SCIM_GTKUTILS,[scim-gtkutils >= $SCIM_VERSION],
+                                    [SCIM_HAS_GTKUTILS=yes],
+                                    [SCIM_HAS_GTKUTILS=no])
+    
+    # Set paths
+    SCIM_ICONDIR=`$PKG_CONFIG --variable=icondir scim`
+    SCIM_MODULEDIR=`$PKG_CONFIG --variable=moduledir scim`
+    SCIM_DATADIR=`$PKG_CONFIG --variable=scimdatadir scim`
+    SCIM_SUNPINYIN_DATADIR=$SCIM_DATADIR/sunpinyin
+    AC_SUBST(SCIM_ICONDIR)
+    AC_SUBST(SCIM_MODULEDIR)
+    AC_SUBST(SCIM_DATADIR)
+    AC_SUBST(SCIM_SUNPINYIN_DATADIR)
+fi
+AM_CONDITIONAL(WRAPPER_SCIM, [test "X${ENABLE_SCIM}" = "Xyes"])
+
+AM_CONDITIONAL(SCIM_BUILD_SETUP, [test "X$SCIM_HAS_GTKUTILS" = "Xyes"])
+
+dnl override the default setting of DATADIRs
+if test "x$SUNPINYIN_DATADIR" != "x" ; then
+    SCIM_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
+    CLE_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
+    AC_SUBST(SCIM_SUNPINYIN_DATADIR)
+    AC_SUBST(CLE_SUNPINYIN_DATADIR)
+fi
+
+AM_CONDITIONAL(OVERRIDE_DEFAULT_PINYINDATADIR, [test "x${SUNPINYIN_DATADIR}" != "x"])
+
+AC_ARG_ENABLE([bestandalone],
+    AC_HELP_STRING([--enable-bestandalone], [compile standalone program by BeAPI for demo/debug(default=no) ]),
+    [ENABLE_BE_STANDALONE="${enableval}"],
+    [ENABLE_BE_STANDALONE="no"])
+if test "x${ENABLE_BE_STANDALONE}" = "xyes" ; then
+    if test "$my_host_os" != "beos" ; then
+        AC_CHECK_TOOL(LITE_BEAPI_CONFIG, lite-beapi-config)
+        if test "x$ac_ct_LITE_BEAPI_CONFIG" != "x" ; then
+            LITE_BEAPI_CFLAGS=`$LITE_BEAPI_CONFIG --cflags`
+            LITE_BEAPI_LIBS=`$LITE_BEAPI_CONFIG --libs`
+            AC_SUBST(LITE_BEAPI_CFLAGS)
+            AC_SUBST(LITE_BEAPI_LIBS)
+        else
+            ENABLE_BE_STANDALONE="no"
+        fi
+    fi
+fi
+AM_CONDITIONAL(HAVE_LITE_BEAPI, [test "x$ac_ct_LITE_BEAPI_CONFIG" != "x"])
+AM_CONDITIONAL(WRAPPER_BE_STANDALONE, [test "X${ENABLE_BE_STANDALONE}" = "Xyes"])
+
+AC_ARG_ENABLE([becjk-module],
+    AC_HELP_STRING([--enable-becjk-module], [compile as module for BeCJK (default=auto) ]),
+    [ENABLE_BECJK_MODULE="${enableval}"],
+    [ENABLE_BECJK_MODULE="auto"])
+if test "X${ENABLE_BECJK_MODULE}" = "Xauto" || test "X${ENABLE_BECJK_MODULE}" = "Xyes"; then
+    AC_CHECK_HEADER(becjk/BeCJKInputModule.h)
+    if test "x$ac_cv_header_becjk_BeCJKInputModule_h" != "xyes" ; then
+        if test "x${ENABLE_BECJK_MODULE}" = "xyes" ; then
+            AC_MSG_ERROR([
+    *** You do not have development kit of BeCJK on your computer.
+    *** You can get development kit of BeCJK by downloading following package.
+    ***    http://etkxx.gro.clinux.org/beos/BeCJK-1.0-devel-20080124.zip
+    *** or
+    ***    http://etkxx.gro.clinux.org/beos/BeCJK-1.0-src-20080124.zip])
+        fi
+    else
+        ENABLE_BECJK_MODULE="yes"
+    fi
+fi
+AM_CONDITIONAL(WRAPPER_BECJK_MODULE, [test "X${ENABLE_BECJK_MODULE}" = "Xyes"])
+AM_CONDITIONAL(WRAPPER_BEOS, [test "X${ENABLE_BE_STANDALONE}" = "Xyes" || test "X${ENABLE_BECJK_MODULE}" = "Xyes"])
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_INSTALL
+AC_PROG_LIBTOOL
+
+# Checks for libraries.
+
+# Checks for header files.
+AC_PATH_X
+AC_HEADER_STDC
+AC_CHECK_HEADERS(limit.h assert.h getopt.h fcntl.h locale.h stdlib.h string.h unistd.h wchar.h sys/mman.h)
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+
+# Checks for library functions.
+AC_FUNC_MMAP
+AC_CHECK_FUNCS(getopt_long get_opt munmap memset setlocale strdup strlen strcpy log2 exp2)
+
+have_iconv=no
+AC_MSG_CHECKING(for iconv)
+    for iconv_lib in none iconv ; do
+        save_LIBS="$LIBS"
+        if test "$iconv_lib" != "none" ; then
+            LIBS="$LIBS -l$iconv_lib"
+        fi
+        AC_TRY_LINK(
+            [#include <iconv.h>],
+            [iconv_t ic = iconv_open("UTF-16", "UTF-8")],
+            have_iconv=yes,
+            have_iconv=no)
+        LIBS="$save_LIBS"
+        if test $have_iconv = yes; then
+            AC_DEFINE(HAVE_ICONV_H, 1, [Define if you have the 'iconv.h'.])
+            if test "$iconv_lib" != "none" ; then
+                LIBS="$LIBS -l$iconv_lib"
+            fi
+            break
+        fi
+    done
+AC_MSG_RESULT($have_iconv)
+if test "x$have_iconv" = "xno" ; then
+    AC_MSG_WARN([*** iconv library not found, "pytrie_gen" can't work properly.])
+fi
+
+if test "x$gt_cv_have_gettext" != "xyes" ; then
+    USE_NLS=no
+fi
+AC_SUBST(USE_NLS)
+
+AC_OUTPUT(Makefile
+          build/Makefile
+          doc/Makefile
+          wrapper/Makefile
+          wrapper/cle/Makefile
+          wrapper/cle/iiim/Makefile
+          wrapper/cle/iiim/cle/Makefile
+          wrapper/gtk_standalone/Makefile
+          wrapper/scim/Makefile
+          wrapper/beos/Makefile
+          data/Makefile
+          po/Makefile.in)

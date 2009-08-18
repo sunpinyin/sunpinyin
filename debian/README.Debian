@@ -1,0 +1,169 @@
+sunpinyin for Debian                                -*- outline -*-
+--------------------
+
+SunPinyin is an SLM (Statistical Language Model) based input method
+engine (IME) developed by Sun Asian G11N Center. Currently, it
+supports IIIMF (Internet/Intranet Input Method Framework), SCIM
+(Smart Common Input Method) and BeCJK.
+
+As a feature-rich IM, SunPinyin provides two input style: classic
+input style and instant input style.
+
+Options in scim-sunpinyin
+-------------------------
+
+Scim-sunpinyin can be customized with SCIM Input Method Setup panel.
+Changing the setting of `input style' or `character set' will dismiss
+the un-committed preedit string.
+
+Shortcut keys
+-------------
+
+Besides the keys which are customizable, scim-sunpinyin comes with
+some default shortcut key bindings not changable. They are listed as
+following:
+
+ctrl-backquote  switch between classic/instant style.
+		    only take effects while in Chinese input mode.
+ctrl-k          switch between gbk/gb2312 charset.
+shift		switch between Chinese/English input mode.
+escape		dismiss un-committed preedit string.
+
+data files
+----------
+
+Sunpinyin can hardly work without lexicon and language model data
+files. First, we can not ship the _really_ large dataset for training
+the language model. Second, for the sake of performance, we use our
+binary format for storing the lexicon and language model data. But we
+can not include these binary files in the source package without
+violating DFSG. 
+
+So, to make sunpinyin usable, you may need to download the lexicon and
+language data file from opensolaris website [2]. Two files are
+necessary for sunpinyin to work: 
+ - lm_sc.t3g, pydict_sc.bin
+
+And we prepare two file for each of them: 
+ - slm_sc.t3g.{be,le}, pydict_sc.bin.{be, le}
+
+The `be' and `le' stand for `Big Endian' and `Little Endian'. Download
+the right ones according to your computer's byte order, rename
+them to lm_sc.t3g and pydict_sc.bin respectively, then put them to
+/usr/share/sunpinyin/. 
+
+
+Create your own language model
+------------------------------
+
+The statistical language model is the building block of SunPinyin.
+Users are allowed to train their language models by using the tools
+provided by sunpinyin-slm. (sunpinyin-slm is not packaged in Debian
+yet, but its source code is available at the OpenSolaris input
+method's project web page [1].)
+
+* Terms
+** Language model
+   The language model (LM) is used to describe the characteristic of a
+   given languge. SLM is the attempt to capture the regularities of
+   natural language using statistical approaches.
+
+   The LM shipped with SunPinyin is actually a data file named
+   lm_sc.t3g. It was trained using a raw corpus collected from some
+   Chinese web sites. lm_sc.t3g stands for Language Model Simplified
+   Chinese Threading 3-Gram. The SunPinyin LM is an SLM which supports
+   back-off and trigram.
+
+** corpus
+   To build a LM, we need a good training data set, say, corpus. The
+   raw corpus used by SunPinyin was collected from some web sites in
+   Simpified Chinese. Actually, the corpus is just a large set of
+   sentences or text in a given language.
+
+** lexicon/dictionary
+   To segment the raw corpus into word tokens, we need a Chinese
+   dictionary in which the tuple of the Chinese words and its
+   frequency are stored.
+
+   There are two sets of lexicon used in SunPinyin: dict.utf8 and
+   pydict_sc.bin.
+
+*** dict.utf8
+    The word frequency in dict.utf8 which are used in the first
+    iteration of segmentation of the raw corpus.
+
+*** pydict_sc.bin 
+    This data file is a trie presentation of the syllables and
+    corresponding Chinese words, so that we can lookup the Chinese
+    words with incomplete pinyin-prefix. This lexicon is also sorted
+    by the unigram of previously trained LM.
+
+* How to train your own language model (LM)?
+
+** Prerequisites
+
+*** raw corpus 
+    To train a new LM, a raw corpus should be prepared. There is no
+    particular need for this raw corpus except that it is should be
+    encoded in UTF-8.
+
+*** sunpinyin-slm
+    And a suite of tools provided by sunpinyin-slm is also a
+    necessary.
+
+** Steps
+   To train a decent LM, we need go through two rounds of training
+   process.
+
+   raw corpus ---> segmented corpus ---> n-gram result ---> back-off LM
+              ---> pruned trigram ---> threaded LM 
+              ---> segment again using the result LM ---> ...
+
+*** Segment the raw corpus
+    In this step, all words in raw corpus are indentified and are
+    translated to the corresponding IDs. The ${DICTFILE} is always
+    `dict.utf8'.
+
+**** In the first round
+     Simply segment the raw corpus into words using MMF (Maximum
+     Matching Forwarding segmentation algorithm).
+     
+     ./mmseg -d ${DICTFILE} -f bin -s 10 -a 9 ${CORPUSFILE} >${IDS_FILE}
+    
+**** In the second round
+     With the help of trained LM, we can get a better segmentation by:
+     ./slmseg -d ${DICTFILE} -f bin -s 10 -m ${TSLM_FILE} ${CORPUSFILE} >${IDS_FILE}	
+
+*** Calculate the 3-gram
+    The number of all occurrence of 3-words tuple are calculated and
+    written to file ${IDNGRAM_FILE}, like:
+
+    ./ids2ngram -n 3 -s ${SWAP_FILE} -o ${IDNGRAM_FILE} -p 5000000 ${IDS_FILE}
+
+*** Build a back-off trigram LM
+    To build a trigram LM using back-off smoothing model in
+    ${RAW_LM_FILE} from original 3-gram result, just: 
+
+    ./slmbuild -n 3 -o ${RAW_LM_FILE} -w 120000 -c 0,2,2 -d ABS,0.005 -d ABS -d ABS,0.6 -b 10 -e 9 ${IDNGRAM_FILE}
+
+*** Prune the raw back-off LM using an entropy based approach
+    To remove as many useless probabilities as possible without
+    increasing the relative entropy, we exam the effect of removal of
+    each n-gram to find out the useless ones, like:
+    
+    ./slmprune ${RAW_LM_FILE} ${SLM_FILE} R 100000 1250000 1000000
+
+*** Thread the tree to speed up the looking up
+    To accelerate the speed of looking up, the lookup tree is threaded
+    using:
+
+    ./slmthread ${SLM_FILE} ${TSLM_FILE}
+
+    In this step, the ${TSLM_FILE} is just the language model,
+    i.e. the file `lm_sc.t3g'.
+
+--
+[1] http://www.opensolaris.org/os/project/input-method/files/inputmethod-repo-snapshot.tar.gz
+[2] http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data/
+
+ -- Kov Chai <tchaikov@gmail.com>  Sat, 12 Jul 2008 03:15:47 +0800

@@ -1,0 +1,52 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+#export DH_VERBOSE=1
+
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+
+LDFLAGS += -Wl,--as-needed
+CXXFLAGS = -W -g
+DEB_CONFIGURE_EXTRA_FLAGS := --enable-cle \
+			--enable-scim \
+			--disable-iiimle \
+			--with-sunpinyin-datadir=\$${prefix}/share/sunpinyin
+
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	DEB_CONFIGURE_EXTRA_FLAGS += --enable-debug
+endif
+
+ifneq (,$(findstring $(DEB_HOST_ARCH),alpha amd64 arm hurd-i386 i386 ia64 mipsel sh3 sh4))
+	ENDIANNESS := le
+endif
+
+ifneq (,$(findstring $(DEB_HOST_ARCH),hppa m68k mips powerpc ppc64 sparc s390))
+	ENDIANNESS := ge
+endif
+
+ifneq (,$ENDIANNESS)
+	SUNPINYIN_DATA_DEPENDS := sunpinyin-data-$(ENDIANNESS)
+else
+	$(error endianness of $(DEB_HOST_ARCH) architecture is unknown\; cannot continue)
+endif
+
+DEB_DH_MAKESHLIBS_ARGS_scim-sunpinyin := -n
+DEB_DH_GENCONTROL_ARGS_scim-sunpinyin := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
+DEB_DH_GENCONTROL_ARGS_iiimf-le-sunpinyin-chinese := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
+
+common-install-impl::
+	find debian/tmp/usr/lib -name '*.la' -print0 | xargs -0 rm
+	rm debian/tmp/usr/share/sunpinyin/*
+
+binary-fixup/sunpinyin-data-le::
+	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
+	    mv $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/$$f.le \
+	       $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/$$f;   \
+	done
+
+binary-fixup/sunpinyin-data-ge::
+	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
+	    mv $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/$$f.be \
+	       $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/$$f;   \
+	done

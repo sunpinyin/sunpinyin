@@ -1,0 +1,136 @@
+<pkmkdoc spec="1.12"><properties><title>SunPinyin for MacOS X</title><build>/Users/yongsun/Desktop/sunpinyin-mac-leopard.pkg</build><organization>www.opensolaris.org</organization><userSees ui="easy"/><min-target os="3"/><domain system="true"/></properties><distribution><versions min-spec="1.000000"/><scripts></scripts></distribution><contents><choice title="SunPinyin" id="choice1" starts_selected="true" starts_enabled="true" starts_hidden="false"><pkgref id="www.opensolaris.org.sunpinyin.pkg"/></choice></contents><resources bg-scale="none" bg-align="topleft"><locale lang="zh-Hans"><resource mime-type="text/rtf" kind="embedded" type="license"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs28 \cf0 Dual-License of CDDL and LGPLv2.1\
+
+\fs24 \
+The contents of this file are subject to the terms of either the GNU Lesser General Public License Version 2.1 only ("LGPL") or the Common Development and Distribution License ("CDDL")(collectively, the "License"). You may not use this file except in compliance with the License. You can obtain a copy of the CDDL at http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at http://www.opensource.org/licenses/lgpl-license.php. See the License for the specific language governing permissions and limitations under the License. When distributing the software, include this License Header Notice in each file and include the full text of the License in the License file as well as the following notice:\
+\
+NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)\
+\
+For Covered Software in this distribution, this License shall be governed by the laws of the State of California (excluding conflict-of-law provisions).  Any litigation relating to this License shall be subject to the jurisdiction of the Federal Courts of the Northern District of California and the state courts of the State of California, with venue lying in Santa Clara County, California.  \
+\
+Contributor(s):\
+\
+If you wish your version of this file to be governed by only the CDDL or only the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to include this software in this distribution under the [CDDL or LGPL Version 2.1] license." If you don't indicate a single choice of license, a recipient has the option to distribute your version of this file under either the CDDL or the LGPL Version 2.1, or to extend the choice of license to its licensees as provided above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL Version 2 license, then the option applies only if the new code is made subject to such option by the copyright holder.  }]]></resource><resource mime-type="text/rtf" kind="embedded" type="readme"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset134 STXihei;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red255\green0\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs28 \cf2 \'d7\'a2\'d2\'e2\'a3\'ba\cf0 \
+
+\fs24 \
+\'d4\'da\'b0\'b2\'d7\'b0\'cd\'ea\'b3\'c9\'d6\'ae\'ba\'f3\'a3\'ac\'c7\'eb\'b5\'bd{\field{\*\fldinst{HYPERLINK "http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data"}}{\fldrslt 
+\f1 http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data}}\uc0\u19979 \u36733 
+\f1 lm_sc.t3g.le
+\f0 \'d2\'d4\'bc\'b0
+\f1 pydict_sc.bin.le
+\f0 \'a3\'a8\'c8\'e7\'b9\'fb\'ca\'c7
+\f1 PowerPC
+\f0 \'c6\'bd\'cc\'a8\'c7\'eb\'cf\'c2\'d4\'d8\'ba\'f3\'d7\'ba\'ce\'aa
+\f1 '.be'
+\f0 \'b5\'c4\'b6\'d4\'d3\'a6\'ce\'c4\'bc\'fe\'a3\'a9\'a3\'ac\'bd\'ab
+\f1 le
+\f0 /
+\f1 be
+\f0 \'ba\'f3\'d7\'ba\'c8\'a5\'b5\'f4\'a3\'ac\'b2\'a2\'bf\'bd\'b1\'b4\'b5\'bd
+\f1 /Library/Input Methods/SunPinyin.app/Contents/Resources
+\f0 \'c4\'bf\'c2\'bc\'cf\'c2\'a1\'a3}]]></resource><resource mime-type="text/rtf" kind="embedded" type="welcome"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fnil\fcharset134 STXihei;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 SunPinyin
+\f1 \'ca\'c7\'d2\'bb\'b8\'f6\'bf\'aa\'d4\'b4\'b5\'c4\'a3\'a8\'d2\'d4
+\f0 CDDL
+\f1 \'ba\'cd
+\f0 LGPLv2.1
+\f1 \'cb\'ab\'d0\'ad\'d2\'e9\'a3\'a9\'bb\'f9\'d3\'da\'cd\'b3\'bc\'c6\'d3\'ef\'d1\'d4\'c4\'a3\'d0\'cd\'b5\'c4\'ca\'e4\'c8\'eb\'d2\'fd\'c7\'e6\'a1\'a3\'cb\'fc\'ca\'b9\'d3\'c3\'c1\'cb\'d2\'bb\'b8\'f6\'c8\'fd\'d4\'aa\'bb\'d8\'cd\'cb\'ca\'bd\'b5\'c4\'d3\'ef\'d1\'d4\'c4\'a3\'d0\'cd\'a3\'ac\'d3\'c3\'d2\'d4\'d6\'a7\'b3\'d6\'d5\'fb\'be\'e4\'ca\'e4\'c8\'eb\'a1\'a3
+\f0 \
+\
+
+\f1 \'c4\'bf\'c7\'b0\'a3\'ac\'bf\'c9\'d2\'d4\'d4\'da
+\f0 IIIMF
+\f1 \'a1\'a2
+\f0 SCIM
+\f1 \'d2\'d4\'bc\'b0
+\f0 BeCJK
+\f1 \'c6\'bd\'cc\'a8\'c9\'cf\'ca\'b9\'d3\'c3
+\f0 SunPinyin
+\f1 \'a3\'ac\'cf\'d6\'d4\'da\'a3\'ac\'cb\'fc\'d2\'b2\'bf\'c9\'d2\'d4\'d4\'da
+\f0 Mac OS X
+\f1 \'a3\'a8\'c4\'bf\'c7\'b0\'bd\'f6\'d6\'a7\'b3\'d6
+\f0 Leopard
+\f1 \'a3\'a9\'a1\'a3
+\f0 \
+\
+
+\f1 \'ce\'d2\'c3\'c7\'c6\'da\'c5\'ce\'d3\'d0\'b8\'fc\'b6\'e0\'b5\'c4\'b0\'ae\'ba\'c3\'d5\'df\'bc\'d3\'c8\'eb\'a3\'ac\'c0\'b4\'b8\'c4\'bd\'f8
+\f0 SunPinyin
+\f1 \'ca\'e4\'c8\'eb\'d2\'fd\'c7\'e6\'b1\'be\'c9\'ed\'a3\'ac\'d2\'d4\'bc\'b0\'d4\'da
+\f0 Mac
+\f1 \'c9\'cf\'b5\'c4\'d2\'c6\'d6\'b2\'a1\'a3\'c4\'fa\'bf\'c9\'d2\'d4\'b2\'ce\'bf\'bc\'ce\'d2\'b5\'c4{\field{\*\fldinst{HYPERLINK "http://blogs.sun.com/yongsun/tags/sunpinyin"}}{\fldrslt 
+\f0 sunpinyin}}\uc0\u31995 \u21015 
+\f0 blog
+\f1 \'c0\'b4\'c1\'cb\'bd\'e2\'b8\'fc\'b6\'e0\'b5\'c4\'bc\'bc\'ca\'f5\'cf\'b8\'bd\'da\'a1\'a3}]]></resource><resource mime-type="text/rtf" kind="embedded" type="conclusion"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset134 STXihei;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green28\blue239;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 \'bb\'b6\'d3\'ad\'b7\'c3\'ce\'ca
+\f1 SunPinyin
+\f0 \'b5\'c4\'cf\'ee\'c4\'bf\'cd\'f8\'d5\'be\'a3\'ac{\field{\*\fldinst{HYPERLINK "http://www.opensolaris.org/os/project/input-method"}}{\fldrslt 
+\f1 http://www.opensolaris.org/os/project/input-method}}\uc0\u65292 \u22914 \u26524 \u24744 \u26377 \u20219 \u20309 \u38382 \u39064 \u65292 \u35831 \u21457 \u36865 \u37038 \u20214 \u33267 {\field{\*\fldinst{HYPERLINK "mailto:i18n%20dash%20discuss%20at%20opensolaris%20dot%20org"}}{\fldrslt 
+\f1 \cf2 \ul \ulc2 i18n-discuss@opensolaris.org}}\uc0\u12290 \u27492 \u22806 \u65292 \u24744 \u20063 \u21487 \u20197 \u21152 \u20837 \u21040 
+\f1 irc.freenode.net
+\f0 \'c9\'cf\'b5\'c4
+\f1 #opensolaris-i18n
+\f0 \'c1\'c4\'cc\'ec\'ca\'d2\'a1\'a3\'c8\'e7\'b9\'fb\'c4\'fa\'cf\'a3\'cd\'fb\'cc\'e1\'bd\'bb
+\f1 bug, 
+\f0 \'c7\'eb\'d2\'c6\'b2\'bd\'d6\'c1{\field{\*\fldinst{HYPERLINK "http://bugs.opensolaris.org/"}}{\fldrslt 
+\f1 \cf2 \ul \ulc2 http://bugs.opensolaris.org}}\uc0\u26469 \u25552 \u20132 \u24744 \u36935 \u21040 \u30340 \u38382 \u39064 
+\f1 , 
+\f0 \'c0\'e0\'b1\'f0\'ce\'aa
+\f1 openi18n-im
+\f0 \'a1\'a3}]]></resource></locale><locale lang="en"><resource mime-type="text/rtf" kind="embedded" type="license"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs28 \cf0 Dual-License of CDDL and LGPLv2.1\
+
+\fs24 \
+The contents of this file are subject to the terms of either the GNU Lesser General Public License Version 2.1 only ("LGPL") or the Common Development and Distribution License ("CDDL")(collectively, the "License"). You may not use this file except in compliance with the License. You can obtain a copy of the CDDL at http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at http://www.opensource.org/licenses/lgpl-license.php. See the License for the specific language governing permissions and limitations under the License. When distributing the software, include this License Header Notice in each file and include the full text of the License in the License file as well as the following notice:\
+\
+NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)\
+\
+For Covered Software in this distribution, this License shall be governed by the laws of the State of California (excluding conflict-of-law provisions).  Any litigation relating to this License shall be subject to the jurisdiction of the Federal Courts of the Northern District of California and the state courts of the State of California, with venue lying in Santa Clara County, California.  \
+\
+Contributor(s):\
+\
+If you wish your version of this file to be governed by only the CDDL or only the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to include this software in this distribution under the [CDDL or LGPL Version 2.1] license." If you don't indicate a single choice of license, a recipient has the option to distribute your version of this file under either the CDDL or the LGPL Version 2.1, or to extend the choice of license to its licensees as provided above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL Version 2 license, then the option applies only if the new code is made subject to such option by the copyright holder.  }]]></resource><resource mime-type="text/rtf" kind="embedded" type="readme"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red255\green0\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs28 \cf2 Note:\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\fs24 \cf0 \
+After the installation, please visit {\field{\*\fldinst{HYPERLINK "http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data"}}{\fldrslt http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data}} to download lm_sc.t3g.le and pydict_sc.bin.le data files (for PowerPC platform, please download the '.be' versions), rename them by eliminating the le/be postfix, then copy them to /Library/Input Methods/SunPinyin.app/Contents/Resources.}]]></resource><resource mime-type="text/rtf" kind="embedded" type="welcome"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 SunPinyin is an opensource'd (in CDDL/LGPLv2.1) and SLM (Statistical Language Model) based input method engine. It uses a trigram back-off language model, to support sentence input.\
+\
+Currently, it's available on IIIMF, SCIM, BeCJK, and now on Mac OS X (Leopard only).\
+\
+We are looking for contributors for the input engine itself, and the Mac porting. And you may refer to my {\field{\*\fldinst{HYPERLINK "http://blogs.sun.com/yongsun/tags/sunpinyin"}}{\fldrslt sunpinyin}} blog entries for more technical details.}]]></resource><resource mime-type="text/rtf" kind="embedded" type="conclusion"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green28\blue239;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Welcome to {\field{\*\fldinst{HYPERLINK "http://www.opensolaris.org/os/project/input-method"}}{\fldrslt http://www.opensolaris.org/os/project/input-method}}, and if you have any question, please send feedback to {\field{\*\fldinst{HYPERLINK "mailto:i18n%20dash%20discuss%20at%20opensolaris%20dot%20org"}}{\fldrslt \cf2 \ul \ulc2 i18n-discuss@opensolaris.org}}. Alternatively, you could join us in #opensolaris-i18n on irc.freenode.net. If you would like to file a bug, go to {\field{\*\fldinst{HYPERLINK "http://bugs.opensolaris.org/"}}{\fldrslt \cf2 \ul \ulc2 http://bugs.opensolaris.org}}, and provide details of the problems you are experiencing, the category is openi18n-im.}]]></resource></locale></resources><flags/><postinstall><action id="com.apple.packagemaker.actions.openurl"><value>http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data/</value></action></postinstall><item type="file">01sunpinyin.xml</item><mod>properties.anywhereDomain</mod><mod>properties.title</mod><mod>properties.systemDomain</mod><mod>postinstallActions.actions</mod></pkmkdoc>

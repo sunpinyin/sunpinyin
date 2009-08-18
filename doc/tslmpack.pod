@@ -1,0 +1,31 @@
+=head1 NAME
+
+tslmpack - convert the ARPA format of SunPinyin back-off language model to its binary representation
+
+=head1 SYNOPSIS
+
+B<tslmpack> I<arpa_file> I<dict_file> I<binary_slm_file>
+
+=head1 DESCRIPTION
+
+B<tslmpack> converts the ARPA format of a threaded SunPinyin back-off
+language model to its binary representation.
+
+=head1 NOTE
+
+If you convert a language model to ARPA format using B<tslminfo>, and
+then convert it back using B<tslmpack>, the check-sum of generated
+binary file may be different from that of the original one. The reason
+is the padding bits in the n-gram instances are not initialized before 
+writing the data out.
+
+
+=head1 AUTHOR
+
+Originally written by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+
+=head1 SEE ALSO
+
+B<tslminfo>(1).
+

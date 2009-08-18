@@ -1,0 +1,21 @@
+Todo:
+
+    * make slm and sunpinyin-ime-core available as shared libraries
+    * add API and UI for user-defined words
+    * support Traditional Chinese, dict and corpus
+    * support fuzzy Pinyin and more Pinyin schemes, such as double-pinyin
+    * more configuration options, such as keybindings, number of candidates per page etc.
+    * improve the candidate selecting for user selections
+    * new language bindings for slm, such as Java, and Ruby
+    * leverage Sogou's dict and corpus
+
+In process:
+
+    * Python binding for SunPinyin's SLM [80%]
+    * porting to Mac OS X [30%]
+
+Done:
+
+    * fix the multi-phonetic bug in pytrie
+    * porting to SCIM platform
+

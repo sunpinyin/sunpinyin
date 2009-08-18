@@ -1,0 +1,27 @@
+=head1 NAME
+
+slmthread - threads the language model
+
+=head1 SYNOPSIS
+
+B<slmthread> I<primitive_slm> I<threaded_slm>
+
+=head1 DESCRIPTION
+
+B<slmthread> add back-off-state for each slm node in the I<primitive_slm>. 
+Also it compresses 32-bit float into 16 bit representation. These processing 
+speeds up the looking up.
+
+The I<primitive_slm> is always genreated by B<slmprune>. And 
+the I<threaded_slm> can be used to feed B<slmseg> as a reference to segment 
+Chinese text.
+
+=head1 AUTHOR
+
+Originally written by Phill.Zhang E<lt>phill.zhang@sun.comE<gt>.
+Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+
+=head1 SEE ALSO
+
+B<slmprune>(1), B<slmseg>(1).
+

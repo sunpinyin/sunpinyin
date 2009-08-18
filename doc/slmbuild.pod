@@ -1,0 +1,108 @@
+=head1 NAME
+
+slmbuild - generate language model from idngram file
+
+=head1 SYNOPSIS
+
+slmbuild [I<option>]... I<idngram_file>...
+
+=head1 DESCRIPTION
+
+B<slmbuild> generates a back-off smoothing language model from a given idngram file. Generally, the I<idngram_file> is created by B<ids2ngram>.
+
+
+=head1 OPTIONS
+All the following options are mandatory.
+
+=over 4
+
+=item B<-n>,B<--NMax> I<N>
+
+1 for unigram, 2 for bigram, 3 for trigram. Any number not in the range of 1..3 is not valid.
+
+
+=item B<-o>, B<--out> I<output-file>
+
+Specify the output xfilei name.
+
+
+=item B<-l>, B<--log>
+
+using I<-log(pr)>, use I<pr> directly by default.
+
+
+=item B<-w>, B<--wordcount> I<N>
+
+Lexican size, number of different words.
+
+
+=item B<-b>, B<--brk> I<id>...
+
+Set the ids which should be treated as breaker.
+
+
+=item B<-e>, B<--e> I<id>...
+
+Set the ids which should not be put into LM.
+
+
+=item B<-c>, B<--cut> I<c>...
+
+k-grams whose freq <= c[k] are dropped.
+
+
+=item B<-d>, B<--discount> I<method>, I<param>...
+
+The k-th B<-d> parm specifies the discount method
+
+For k-gram, possibble values for method/param are:
+
+      B<GT>,I<R>,I<dis>  : B<GT> discount for r E<lt>= I<R>, r is the freq of a ngram.
+                  Linear discount for those r E<gt> I<R>, i.e. r'=r*dis
+                  0 E<lt>E<lt> dis E<lt> 1.0, for example 0.999 
+      B<ABS>,[I<dis>] : Absolute discount r'=r-I<dis>. And I<dis> is optional
+                  0 E<lt>E<lt> I<dis> E<lt> cut[k]+1.0, normally I<dis> E<lt> 1.0.
+      LIN,[I<dis>] : Linear discount r'=r*dis. And dis is optional
+                  0 E<lt> dis E<lt> 1.0
+
+=back
+
+
+=head1 NOTE
+
+B<-n> must be given before B<-c> B<-b>. And B<-c> must give right number of cut-off,
+also B<-d>s must appear exactly N times specifying the discounts for 1-gram, 2-gram..., 
+respectively.
+
+BREAKER-IDs could be SentenceTokens or ParagraphTokens. Conceptually,
+these ids have no meaning when they appeared in the middle of n-gram.
+
+EXCLUDE-IDs could be ambiguious-ids. Conceptually, n-grams which
+contain those ids are meaningless.
+
+We can not erase ngrams according to BREAKER-IDS and EXCLUDE-IDs directly
+from IDNGRAM file, because some low-level information is still useful in it.
+
+
+=head1 EXAMPLE
+
+Following example read 'all.id3gram' and write trigram model 'all.slm'.
+
+At 1-gram level, use Good-Turing discount with cut-off 0, i<R>=8, I<dis>=0.9995. At
+2-gram level, use Absolute discount with cut-off 3, dis auto-calc. At 3-gram
+level, use Absolute discount with cut-off 2, dis auto-calc. Word id 10,11,12
+are breakers (sentence/para/paper breaker, etc). Exclude-ID is 9. Lexicon 
+contains 200000 words. The result languagme model uses -log(pr).
+
+B<slmbuild -l -n 3 -o all.slm -w 200000 -c 0,3,2 -d GT,8,0.9995 -d ABS -d ABS -b 10,11,12 -e 9 all.id3gram>
+
+
+=head1 AUTHOR
+
+Originally written by Phill.Zhang E<lt>phill.zhang@sun.comE<gt>.
+Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+
+=head1 SEE ALSO
+
+B<ids2ngram>(1), B<slmprune>(1).
+

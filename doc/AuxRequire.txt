@@ -1,0 +1,53 @@
+1. Status Bar Aux Window
+  1.1 Easy setting up buttons:
+      a) Buttons and their images, orders.
+      b) Buttons and their status
+      c) Buttons and their Events or Actions
+
+  1.2 Menus
+      a) easy to define menu - submenu
+      b) menu item and their items
+
+  1.3 Style: user define or predefined good look and feel.
+
+2. Preedit Area 
+  2.1 Following the cursor position of (im client).
+  2.2 Preedit Area Data transfer:
+	1. nChar
+        2. Cursor Char Index. [0-nChar]
+        3. char* to UTF-8 char buf. (nChar, zero terminated)
+        4. void* to decoration[nChar+1]
+  2.3 Preedit Area window could stick with Status window.
+        +---------------------+--------------+
+        |  Preedit            |  Status      |
+        +---------------------+--------------+
+  2.4 Preedit Window style:
+        1. font, color, background image, etc.
+
+3. Candidate Area
+   3.1 Could following the cursor position of the preedit area or sticky with the Preedit Area:
+        following cursor:    +-----------------------------------+
+                             |        !                          |
+                             +-----------------------------------+
+                                      +-------------------------------------+
+                                      |   Candidates                        | (Candidates area could be vertical)
+                                      +-------------------------------------+
+        sticky               +-----------------------+---------+
+                             | Preedit               | Status  |  (Status area is optional)
+                             +-----------------------+---------+
+                             | Candidates                      |
+                             +---------------------------------+
+   3.2 Candidate data API.
+        1. nCandidate
+        2. pointer to nCandidate of :
+              a). nChar
+              b). char * to UTF8 string
+              c). void * to decoration array.
+
+   3.3 Candidate window style
+        font, color, background image, etc.
+
+4. CLE option for IME to tell it using new Aux windows
+        How could it works ?  Need Ervin to design it out.
+
+

@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-19 20:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:190
+msgid "The status of the current input method. Click to change it."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:194
+msgid "The input mode of the letters. Click to toggle between half and full."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:195
+msgid "Full/Half Letter"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:198
+msgid ""
+"The input mode of the puncutations. Click to toggle between half and full."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:199
+msgid "Full/Half Punct"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:361
+msgid "Lei Zhang, <Phill.Zhang@sun.com>; Shuguagn Yan, <Ervin.Yan@sun.com>"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:368
+msgid "Ported by Kov Chai, <tchaikov@gmail.com>"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine.cpp:375
+msgid ""
+"Hot Keys:\n"
+"\n"
+"  Shift+Alt:\n"
+"    Switch between English/Chinese mode.\n"
+"\n"
+"  Control+period:\n"
+"    Switch between full/half width punctuation mode.\n"
+"\n"
+"  Shift+space:\n"
+"    Switch between full/half width letter mode.\n"
+"\n"
+"  PageUp:\n"
+"    Page up in lookup table.\n"
+"\n"
+"  PageDown:\n"
+"    Page down in lookup table.\n"
+"\n"
+"  Esc:\n"
+"    Cancel current syllable.\n"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:99
+msgid "SunPinyin"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:104
+msgid ""
+"A Statistical Language Model Based Intelligent IMEngine Module for "
+"Simplified Chinese."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:145
+msgid "Input Style:"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:156
+msgid "Classic Style"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:157
+msgid "Instant Style"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:158
+msgid ""
+"You may feel more comfortable in classic style, if you are used to input "
+"methods like scim-pinyin. In instant style, the most possible candidate word "
+"will show up in the preedit area right after its pinyin is input."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:167
+msgid "Character Set:"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:177
+msgid "GB2312"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:178
+msgid "GBK"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:179
+msgid ""
+"Choosing GBK over GB2312 will trade some speed with a larger charset in "
+"which I search candidate words/characters for you."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:186
+msgid "Use -/= for paging down/up"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:192
+msgid "Use [/] for paging down/up"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:198
+msgid "Use ,/. for paging down/up"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:211
+msgid "M_emory power:"
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:218
+msgid "The larger this number is, the faster I memorize/forget new words."
+msgstr ""
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:248
+msgid "Options"
+msgstr ""

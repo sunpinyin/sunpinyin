@@ -1,0 +1,40 @@
+=head1 NAME
+
+slmprune - prune the back-off language model to a reasonable size
+
+=head1 SYNOPSIS
+
+B<slmprune> I<input_slm> I<result_slm> I<cut_option> I<num>...
+
+=head1 DESCRIPTION
+
+This program uses entropy-based method to prune the size of back-off 
+language model 'I<input_slm>' to a specific size and write to 'I<result_slm>'. 
+
+the third parameter I<cut_option> can be [B<R>|B<C>]. It means the following numbers is the number for
+(B<R>)eserve or (B<C>)ut. If (B<C>)ut, the num[k] means how many items in level K
+would be cut. If (B<R>)eserve, num[k] means how many item would be reserved
+in level k. 
+
+Note that we do not ensure that during pruning process,  exactly the
+the given number of items are cut or reserved, because some items may 
+contains high level children, so could not be cut. 
+
+Also it's your responsiblity to give right number of arguments based
+on 'input_slm'.
+
+
+=head1 NOTE
+
+To get information of the back-off language model, try 'B<slminfo>'.
+
+
+=head1 AUTHOR
+
+Originally written by Phill.Zhang E<lt>phill.zhang@sun.comE<gt>.
+Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+
+=head1 SEE ALSO
+
+B<slminfo>(1), B<slmthread>(1).
+

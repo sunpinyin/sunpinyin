@@ -1,0 +1,574 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * 
+ * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
+ * 
+ * The contents of this file are subject to the terms of either the GNU Lesser
+ * General Public License Version 2.1 only ("LGPL") or the Common Development and
+ * Distribution License ("CDDL")(collectively, the "License"). You may not use this
+ * file except in compliance with the License. You can obtain a copy of the CDDL at
+ * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * specific language governing permissions and limitations under the License. When
+ * distributing the software, include this License Header Notice in each file and
+ * include the full text of the License in the License file as well as the
+ * following notice:
+ * 
+ * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
+ * (CDDL)
+ * For Covered Software in this distribution, this License shall be governed by the
+ * laws of the State of California (excluding conflict-of-law provisions).
+ * Any litigation relating to this License shall be subject to the jurisdiction of
+ * the Federal Courts of the Northern District of California and the state courts
+ * of the State of California, with venue lying in Santa Clara County, California.
+ * 
+ * Contributor(s):
+ * 
+ * If you wish your version of this file to be governed by only the CDDL or only
+ * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
+ * include this software in this distribution under the [CDDL or LGPL Version 2.1]
+ * license." If you don't indicate a single choice of license, a recipient has the
+ * option to distribute your version of this file under either the CDDL or the LGPL
+ * Version 2.1, or to extend the choice of license to its licensees as provided
+ * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
+ * Version 2 license, then the option applies only if the new code is made subject
+ * to such option by the copyright holder. 
+ */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include "imi_view_classic.h"
+#include "imi_uiobjects.h"
+
+#include "imi_keys.h"
+
+CIMIClassicView::CIMIClassicView()
+    :CIMIView(), m_cursorFrIdx(0), m_candiFrIdx(0),
+     m_candiPageFirst(0)
+    { }
+
+CIMIClassicView::~CIMIClassicView()
+    { }
+
+void
+CIMIClassicView::attachIC(CIMIContext* pIC)
+{
+    CIMIView::attachIC(pIC);
+    clearIC ();
+}
+
+unsigned
+CIMIClassicView::clearIC(void)
+{
+    if (!m_pIC->isEmpty()) {
+        m_cursorFrIdx = m_candiFrIdx = m_candiPageFirst = 0;
+        m_pIC->clear ();
+        m_pPySegmentor->clear ();
+        m_candiList.clear ();
+        m_tailSentence.clear ();
+        return PREEDIT_MASK | CANDIDATE_MASK;
+    }
+    return 0;
+}
+
+void
+CIMIClassicView::updateWindows(unsigned mask)
+{
+    if (!m_pWinHandler)
+        return;
+
+    if (mask & PREEDIT_MASK) {
+        CPreEditString ps;
+        getPreeditString (ps);
+        m_pWinHandler->updatePreedit (&ps);
+    }
+
+    if ((mask & PREEDIT_MASK) || (mask & CANDIDATE_MASK)) {
+        unsigned word_num = m_pIC->getBestSentence (m_tailSentence, m_candiFrIdx);
+        if (word_num <= 1 || (!m_candiList.empty() && m_tailSentence == m_candiList[0].m_cwstr))
+            m_tailSentence.clear ();          
+    }
+
+    if (mask & CANDIDATE_MASK) {
+        CCandidateList cl;
+        getCandidateList (cl, m_candiPageFirst, m_candiWindowSize);
+        m_pWinHandler->updateCandidates (&cl);
+    }
+}
+
+bool
+CIMIClassicView::onKeyEvent(unsigned keycode, unsigned keyvalue, unsigned modifiers)
+{
+    unsigned changeMasks = 0;
+    // clear other mask bit we do not care
+    modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK);
+    
+#ifdef DEBUG
+    printf("Classic View got a key (0x%x-0x%x-0x%x)...", keycode, keyvalue, modifiers);
+    if (((modifiers & IM_CTRL_MASK) != 0) && (keyvalue == 'P' || keyvalue=='p'))
+        m_pIC->printLattice();
+#endif
+
+    if (keycode == IM_VK_SHIFT && modifiers == IM_ALT_MASK) {
+        setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, (!m_bCN)?1:0);
+        return 0;
+
+    } else if (keyvalue == IM_VK_PERIOD && modifiers == IM_CTRL_MASK) {
+        // On CTRL+. switch Full/Half punc
+        changeMasks |= KEYEVENT_USED;
+        setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, (!m_bFullPunct)?1:0);
+
+    } else if (keyvalue == IM_VK_SPACE && modifiers == IM_SHIFT_MASK) {
+        // On SHIFT+SPACE switch Full/Half simbol
+        changeMasks |= KEYEVENT_USED;
+        setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, (!m_bFullSymbol)?1:0);
+
+    } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_LEFT)  { // move left
+        if (!m_pIC->isEmpty ()) {
+            changeMasks |= KEYEVENT_USED;
+            _moveLeft (changeMasks);
+        }
+
+    } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_RIGHT) { // move right
+        if (!m_pIC->isEmpty ()) {
+            changeMasks |= KEYEVENT_USED;
+            _moveRight (changeMasks);
+        }
+
+    } else if ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
+        (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (keycode, keyvalue, modifiers))) {
+        if (!m_pIC->isEmpty ()) {
+            changeMasks |= KEYEVENT_USED;
+            int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+            if (sz > 0 && m_candiPageFirst > 0) {
+                m_candiPageFirst -= m_candiWindowSize;
+                if (m_candiPageFirst < 0) m_candiPageFirst = 0;
+                changeMasks |= CANDIDATE_MASK;
+            }
+        }
+
+    } else if ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
+               (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (keycode, keyvalue, modifiers))) {
+        if (!m_pIC->isEmpty ()) {
+            changeMasks |= KEYEVENT_USED;
+            int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+            if (sz > 0 && m_candiPageFirst + m_candiWindowSize < sz) {
+                m_candiPageFirst += m_candiWindowSize;
+                changeMasks |= CANDIDATE_MASK;
+            }
+        }
+
+    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK)) == 0) {
+        if ((keyvalue > 0x20 && keyvalue < '0') || (keyvalue > '9' && keyvalue < 0x7f)) {
+            changeMasks |= KEYEVENT_USED;
+            _insert (keyvalue, changeMasks);
+
+        } else if (keycode == IM_VK_BACK_SPACE || keycode == IM_VK_DELETE) {
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _erase (keycode == IM_VK_BACK_SPACE, changeMasks);
+            }
+
+        } else if ((keyvalue >= '0' && keyvalue <= '9') &&
+                   (m_candiWindowSize >= 10 || keyvalue < ('1' + m_candiWindowSize))) { // try to make selection
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');
+                _makeSelection (sel, changeMasks);
+            }
+
+        } else if (keycode == IM_VK_SPACE) {
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _makeSelection (0, changeMasks);
+            }
+
+        } else if (keycode == IM_VK_ENTER) {
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED | CANDIDATE_MASK | PREEDIT_MASK;
+                _doCommit (false);
+                clearIC ();
+            }
+
+        } else if (keycode == IM_VK_ESCAPE) {
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED | CANDIDATE_MASK | PREEDIT_MASK;
+                clearIC ();
+            }
+
+        } else if (keycode == IM_VK_LEFT) { // move left syllable
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _moveLeftSyllable (changeMasks);
+            }
+
+        } else if (keycode == IM_VK_RIGHT) { // move right syllable
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _moveRightSyllable (changeMasks);
+            }
+
+        } else if (keycode == IM_VK_HOME) { // move home
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _moveHome (changeMasks);
+            }
+
+        } else if (keycode == IM_VK_END) { // move end
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _moveEnd (changeMasks);
+            }
+        }
+    } 
+
+#ifdef DEBUG
+    printf("   |-->(Mask=0x%x)\n", changeMasks);
+#endif
+
+    updateWindows (changeMasks);
+    return changeMasks & KEYEVENT_USED;
+}
+
+int
+CIMIClassicView::onCandidatePageRequest(int pgno, bool relative)
+{
+    unsigned changeMasks = 0;
+    int      ncandi, lastpgidx;
+
+    if (!m_pIC->isEmpty()) {
+        changeMasks |= KEYEVENT_USED;
+        int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+        if (sz > 0) {
+           lastpgidx = (sz-1)/m_candiWindowSize * m_candiWindowSize;
+           if (relative == true) {
+                ncandi = m_candiPageFirst + pgno*m_candiWindowSize;
+                if (ncandi >= sz)
+                   ncandi = lastpgidx;
+                if (ncandi < 0)
+                    ncandi =0;
+                if (ncandi != m_candiPageFirst) {
+                    m_candiPageFirst = ncandi;
+                    changeMasks |= CANDIDATE_MASK;
+                }
+            } else {
+                if (pgno == -1) { //last page
+                    ncandi = lastpgidx;
+                } else {
+                    ncandi = pgno * m_candiWindowSize;
+                    if (ncandi > lastpgidx)
+                        ncandi = lastpgidx;
+                }
+                if (ncandi != m_candiPageFirst) {
+                    m_candiPageFirst = ncandi;
+                    changeMasks |= CANDIDATE_MASK;
+                }
+            }
+        }
+    }
+
+    updateWindows(changeMasks);
+    return 0;
+}
+
+int
+CIMIClassicView::onCandidateSelectRequest(int index)
+{
+    unsigned changeMasks = 0;
+
+    if (!m_pIC->isEmpty())
+        _makeSelection(index, changeMasks);
+
+    updateWindows(changeMasks);
+    return 0;
+}
+
+void
+CIMIClassicView::getPreeditString(IPreeditString& ps)
+{
+    ps.clear();
+
+    wstring &wstr = ps.getString ();
+    IPreeditString::CCharTypeVec& charTypes = ps.getCharTypeVec ();
+
+    m_pIC->getBestSentence (wstr, 0, m_candiFrIdx);
+
+    int caret = wstr.size ();
+    charTypes.reserve (caret);
+    for (int i = 0; i < caret; ++i)
+        charTypes.push_back (IPreeditString::HANZI_CHAR | IPreeditString::USER_CHOICE);
+
+    wstring& pystr = m_pPySegmentor->getInputBuffer ();
+    IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
+    IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
+    IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();
+    
+    CLattice& lattice = m_pIC->getLattice ();
+    unsigned i = 0, l = 0;
+    for (; it != ite; ++it, i+=l) {
+        l = it->m_len;
+
+        if (i+l <= m_candiFrIdx)
+            continue;
+
+        if (i < m_cursorFrIdx && m_cursorFrIdx <= i+l)
+            caret = wstr.size() +  (m_cursorFrIdx-i);
+
+        CLatticeFrame &fr = lattice [i+l];
+        int ct = IPreeditString::PINYIN_CHAR;
+        if (fr.isSyllableSepFrame()) {
+            ct = IPreeditString::BOUNDARY | IPreeditString::USER_CHOICE;
+        } else if (fr.m_type == CLatticeFrame::ASCII) {
+            ct = IPreeditString::ASCII_CHAR;
+        } else if (fr.m_type == CLatticeFrame::SYMBOL) {
+            ct = IPreeditString::SYMBOL_CHAR;
+        }
+
+        wstr.insert (wstr.end(), pystr.begin()+i, pystr.begin()+i+l);
+        for (int c=0; c<l; ++c)
+            charTypes.push_back (ct);
+
+        if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
+            if ( it != ite -1 && !lattice[i+l+1].isSyllableSepFrame ()) { 
+                wstr.push_back (' ');
+                charTypes.push_back (IPreeditString::BOUNDARY);
+            }
+        }
+    }
+    
+    ps.setCaret (caret);
+}
+
+void
+CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
+{
+    cl.clear();
+    cl.reserve(size);
+
+    int tscount = (m_tailSentence.size() > 0)? 1: 0;
+    cl.setFirst (start);
+    cl.setTotal (tscount + m_candiList.size());
+
+    ICandidateList::CCandiStrings& css = cl.getCandiStrings ();
+    ICandidateList::CCandiTypeVec& cts = cl.getCandiTypeVec ();
+
+    //Loop used for future n-best sentence candidates usage
+    for (; start < tscount && size > 0; ++start, --size) {
+        css.push_back (m_tailSentence);
+        cts.push_back (ICandidateList::BEST_TAIL);
+    }
+
+    start -= tscount;
+    for (int sz=m_candiList.size(); start < sz && size > 0; ++start, --size) {
+        css.push_back (m_candiList[start].m_cwstr);
+        cts.push_back ((start == 0)?(ICandidateList::BEST_WORD):(ICandidateList::NORMAL_WORD));
+    }
+}
+
+void
+CIMIClassicView::_insert (unsigned keyvalue, unsigned &changeMasks)
+{
+    changeMasks |= KEYEVENT_USED;
+
+    if (m_pPySegmentor->getInputBuffer().size() >= MAX_LATTICE_LENGTH-1)
+        return;
+
+    if (m_cursorFrIdx == m_pIC->getLastFrIdx ())
+        m_pPySegmentor->push (keyvalue);
+    else
+        m_pPySegmentor->insertAt (m_cursorFrIdx, keyvalue);
+
+    m_cursorFrIdx ++;
+    IPySegmentor::TSegmentVec &segs = m_pPySegmentor->getSegments ();
+
+    if (m_pIC->buildLattice (segs, m_pPySegmentor->updatedFrom()+1))
+        _getCandidates ();
+
+    changeMasks |= PREEDIT_MASK | CANDIDATE_MASK;
+}
+
+void
+CIMIClassicView::_erase (bool backward, unsigned &changeMasks)
+{
+    if (m_cursorFrIdx == m_pIC->getLastFrIdx ())
+        m_pPySegmentor->pop ();
+    else if (m_cursorFrIdx != 0 || !backward)
+        m_pPySegmentor->deleteAt (m_cursorFrIdx-1, backward);
+    else
+        return;
+
+    if (backward) 
+        m_cursorFrIdx --;
+
+    IPySegmentor::TSegmentVec &segs = m_pPySegmentor->getSegments ();
+
+    if (m_pIC->buildLattice (segs, m_pPySegmentor->updatedFrom()+1))
+        _getCandidates ();
+
+    changeMasks |= PREEDIT_MASK | CANDIDATE_MASK | KEYEVENT_USED;
+}
+
+void
+CIMIClassicView::_getCandidates ()
+{
+    m_candiPageFirst = 0;
+    m_pIC->getCandidates (m_candiFrIdx, m_candiList);
+}
+
+void
+CIMIClassicView::_commitChar (TWCHAR ch)
+{
+    TWCHAR wa[2] = {ch, 0};
+    m_pWinHandler->commit(wa);
+}
+
+void
+CIMIClassicView::_doCommit (bool bConvert)
+{
+    wstring bs;
+
+    if (bConvert) {
+        m_pIC->memorize ();
+        m_pIC->getBestSentence (bs);
+        m_pWinHandler->commit (bs.c_str());
+    } else {
+        bs += m_pPySegmentor->getInputBuffer ();
+        m_pWinHandler->commit (bs.c_str());
+    }
+}
+
+unsigned
+CIMIClassicView::_moveLeft (unsigned& mask, bool searchAgain)
+{
+    if (m_cursorFrIdx == 0)
+        return 0;
+
+    mask |= PREEDIT_MASK;
+    if (m_cursorFrIdx == m_candiFrIdx) {
+        mask |= CANDIDATE_MASK;
+        m_candiFrIdx = m_pIC->cancelSelection (m_candiFrIdx, searchAgain);
+        _getCandidates ();
+    }
+
+    return --m_cursorFrIdx;
+}
+
+unsigned
+CIMIClassicView::_moveLeftSyllable (unsigned& mask, bool searchAgain)
+{
+    if (m_cursorFrIdx == 0)
+        return 0;
+
+    unsigned i, j;
+    mask |= PREEDIT_MASK;
+
+    if (m_cursorFrIdx == m_candiFrIdx) {
+        mask |= CANDIDATE_MASK;
+        m_candiFrIdx = m_pIC->cancelSelection (m_candiFrIdx, searchAgain);
+        _getCandidates ();
+    }
+
+    m_pPySegmentor->locateSegment (m_cursorFrIdx-1, i, j);
+    return m_cursorFrIdx = i;
+}
+
+unsigned
+CIMIClassicView::_moveHome (unsigned& mask, bool searchAgain)
+{
+    if (m_cursorFrIdx == 0)
+        return 0;
+
+    mask |= PREEDIT_MASK;
+
+    if (m_candiFrIdx != 0) {
+        std::vector<unsigned>& best_path    = m_pIC->getBestPath();
+        std::vector<unsigned>::iterator it  = best_path.begin();
+        std::vector<unsigned>::iterator ite = best_path.end();
+        CLattice& lattice = m_pIC->getLattice ();
+
+        for (; it != ite; ++it) {
+            if (lattice[*it].m_bwType & CLatticeFrame::USER_SELECTED)
+                m_pIC->cancelSelection (*it, false);
+        }
+
+        mask |= CANDIDATE_MASK;
+        m_candiFrIdx = 0;
+        _getCandidates ();
+
+        if (searchAgain) m_pIC->searchFrom ();
+    }
+
+    m_cursorFrIdx = 0;
+    return 0;
+}
+
+unsigned
+CIMIClassicView::_moveRight (unsigned& mask)
+{
+    if (m_cursorFrIdx < m_pIC->getLastFrIdx ()) {
+        mask |= PREEDIT_MASK;
+        ++ m_cursorFrIdx;
+    }
+
+    return m_cursorFrIdx;
+}
+
+unsigned
+CIMIClassicView::_moveRightSyllable (unsigned& mask)
+{
+    if (m_cursorFrIdx < m_pIC->getLastFrIdx ()) {
+        unsigned i=0, j=0;
+        mask |= PREEDIT_MASK;
+
+        m_pPySegmentor->locateSegment (m_cursorFrIdx, i, j);
+        m_cursorFrIdx = i + m_pPySegmentor->getSegments()[j].m_len;
+    }
+
+    return m_cursorFrIdx;
+}
+
+unsigned
+CIMIClassicView::_moveEnd (unsigned& mask)
+{
+    if (m_cursorFrIdx < m_pIC->getLastFrIdx ()) {
+        mask |= PREEDIT_MASK;
+        m_cursorFrIdx = m_pIC->getLastFrIdx ();
+    }
+
+    return m_cursorFrIdx;
+}
+
+void
+CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
+{
+    candiIdx += m_candiPageFirst;
+    if (!m_tailSentence.empty ()) --candiIdx;
+
+    if (candiIdx < 0) {
+        mask |= PREEDIT_MASK | CANDIDATE_MASK;
+        _doCommit ();
+        clearIC ();
+    } else if (candiIdx < m_candiList.size ()) {
+        mask |= PREEDIT_MASK | CANDIDATE_MASK;
+        CCandidate& candi = m_candiList [candiIdx];
+        m_pIC->makeSelection (candi);
+        m_candiFrIdx = candi.m_end;
+        if (m_cursorFrIdx < m_candiFrIdx) m_cursorFrIdx = m_candiFrIdx;
+
+        CLattice& lattice = m_pIC->getLattice ();
+        while (m_candiFrIdx < m_pIC->getLastFrIdx () && 
+               !lattice[m_candiFrIdx+1].isUnusedFrame () &&
+               !lattice[m_candiFrIdx+1].isSyllableFrame ())
+            ++ m_candiFrIdx;
+
+        if (m_candiFrIdx == m_pIC->getLastFrIdx ()) {
+            _doCommit ();
+            clearIC ();
+        } else {
+            m_candiPageFirst = 0;
+            _getCandidates ();
+        }
+    }
+}

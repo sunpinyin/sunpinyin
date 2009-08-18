@@ -1,0 +1,4 @@
+debian/tmp/usr/lib/scim-1.0/*/IMEngine/sunpinyin.so
+debian/tmp/usr/lib/scim-1.0/*/SetupUI/sunpinyin-imengine-setup.so
+debian/tmp/usr/share/locale/*/LC_MESSAGES/sunpinyin.mo
+debian/tmp/usr/share/scim/icons/sunpinyin_logo.xpm

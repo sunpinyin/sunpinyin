@@ -1,0 +1,64 @@
+=head1 NAME
+
+mmseg - maximum matching segment Chinese text.
+
+=head1 SYNOPSIS
+
+B<mmseg> -d I<dict_file> [I<option>]... [I<corpus_file>]...
+
+=head1 DESCRIPTION
+
+B<mmseg> is a tool for segmenting Chinese text into words using maximum matching algorithm. B<mmseg> segments I<corpus_file>, or standard input if no filename is specified, and write the segmented result to standard output.
+
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-d> I<dict_file>
+
+Use I<dict_file> as lexicon. A default lexicon can be found at F</usr/share/sunpinyin-slm/dict.utf8>.
+
+
+=item B<-f>,B<--format> (B<text>|B<bin>)
+
+Output Format, can be 'text' or 'bin'. default 'bin'.
+Normally, in text mode, word text are output, while in binary mode,
+binary short integer of the word-ids are written to stdout.
+
+
+=item B<-s>, B<--stok> I<STOK_ID>
+
+Sentence token id. Default 10.
+It will be written to output in binary mode after every sentence.
+
+
+=item B<-i>, B<--show-id>
+
+Show Id info. Under text output format mode, attach id after known words. 
+If under binary mode, print id(s) in text.
+
+
+=item B<-a>, B<--ambiguious-id> I<AMBI-ID>
+
+Ambiguious means I<ABC> => I<A> I<BC> or I<AB> I<C>. If specified (I<AMBI-ID> != 0), 
+The sequence I<ABC> will not be segmented, in binary mode, the I<AMBI-ID> is written out; in text mode, C<E<lt>ambiE<gt>ABCE<lt>/ambiE<gt>> will be output. Default is 0.
+
+
+=back
+
+
+=head1 NOTES
+
+Under B<binary> mode, consecutive id of 0 are merged into one 0.
+Under B<text> mode, no space are inserted between unknown-words. 
+
+=head1 AUTHOR
+
+Originally written by Phill.Zhang E<lt>phill.zhang@sun.comE<gt>.
+Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
+
+=head1 SEE ALSO
+
+B<slmseg>(1), B<ids2ngram> (1).
+

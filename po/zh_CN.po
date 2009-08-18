@@ -1,0 +1,163 @@
+# Copyright (C) 2007 Kov Chai <tchaikov@gmail.com>
+# This file is distributed under the same license as the sunpinyin package.
+# Kov Chai <tchaikov@gmail.com>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sunpinyin 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-19 20:01+0800\n"
+"PO-Revision-Date: 2008-11-16 15:52+0800\n"
+"Last-Translator: Kov Chai <tchaikov@gmail.com>\n"
+"Language-Team: Kov Chai <tchaikov@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:190
+msgid "The status of the current input method. Click to change it."
+msgstr "当前输入法的状态，点击可改变它。"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:194
+msgid "The input mode of the letters. Click to toggle between half and full."
+msgstr "字母输入模式，点击可在 全角 和 半角 之间切换。"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:195
+msgid "Full/Half Letter"
+msgstr "全/半角字母"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:198
+msgid ""
+"The input mode of the puncutations. Click to toggle between half and full."
+msgstr "标点的输入模式，点击可改变它。"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:199
+msgid "Full/Half Punct"
+msgstr "全/半角标点"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:361
+msgid "Lei Zhang, <Phill.Zhang@sun.com>; Shuguagn Yan, <Ervin.Yan@sun.com>"
+msgstr "张磊 <phill.zhang@sun.com>，颜曙光 <Ervin.Yan@sun.com>"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:368
+msgid "Ported by Kov Chai, <tchaikov@gmail.com>"
+msgstr "由 柴可夫 移植，<tchaikov@gmail.com>"
+
+#: wrapper/scim/sunpinyin_imengine.cpp:375
+msgid ""
+"Hot Keys:\n"
+"\n"
+"  Shift+Alt:\n"
+"    Switch between English/Chinese mode.\n"
+"\n"
+"  Control+period:\n"
+"    Switch between full/half width punctuation mode.\n"
+"\n"
+"  Shift+space:\n"
+"    Switch between full/half width letter mode.\n"
+"\n"
+"  PageUp:\n"
+"    Page up in lookup table.\n"
+"\n"
+"  PageDown:\n"
+"    Page down in lookup table.\n"
+"\n"
+"  Esc:\n"
+"    Cancel current syllable.\n"
+msgstr ""
+"快捷键:\n"
+"\n"
+"  Shift+Alt:\n"
+"    切换 英文/中文 模式。\n"
+"\n"
+"  Control+period:\n"
+"    切换 全角/半角 标点模式。\n"
+"\n"
+"  Shift+space:\n"
+"    切换 全角/半角 字母模式。\n"
+"\n"
+"  PageUp:\n"
+"    在候选项中向前翻页。\n"
+"\n"
+"  PageDown:\n"
+"    在候选项中向后翻页。\n"
+"\n"
+"  Esc:\n"
+"    取消当前的输入。\n"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:99
+msgid "SunPinyin"
+msgstr "SunPinyin"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:104
+msgid ""
+"A Statistical Language Model Based Intelligent IMEngine Module for "
+"Simplified Chinese."
+msgstr "基于统计语言模型的智能简体中文输入法"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:145
+msgid "Input Style:"
+msgstr "输入风格:"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:156
+msgid "Classic Style"
+msgstr "经典风格"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:157
+msgid "Instant Style"
+msgstr "即时转换风格"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:158
+msgid ""
+"You may feel more comfortable in classic style, if you are used to input "
+"methods like scim-pinyin. In instant style, the most possible candidate word "
+"will show up in the preedit area right after its pinyin is input."
+msgstr ""
+"如果你习惯用 scim-pinyin 的话，可能“经典风格”更适合你。在用“即时转换风格”的时"
+"候，最佳的候选词会在输入拼音之后立即出现在预编辑区域。"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:167
+msgid "Character Set:"
+msgstr "字符集:"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:177
+msgid "GB2312"
+msgstr "GB2312"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:178
+msgid "GBK"
+msgstr "GBK"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:179
+msgid ""
+"Choosing GBK over GB2312 will trade some speed with a larger charset in "
+"which I search candidate words/characters for you."
+msgstr ""
+"若选择 GBK 而非 GB2312，性能会稍有下降，但是候选字对应的字符集会更大些。"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:186
+msgid "Use -/= for paging down/up"
+msgstr "使用 \"-\" 和 \"=\" 翻页"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:192
+msgid "Use [/] for paging down/up"
+msgstr "使用 \"[\" 和 \"]\" 翻页"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:198
+msgid "Use ,/. for paging down/up"
+msgstr "使用 \",\" 和 \".\" 翻页"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:211
+msgid "M_emory power:"
+msgstr "记忆强度"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:218
+msgid "The larger this number is, the faster I memorize/forget new words."
+msgstr "这个数字越大，我的记得越快，不过忘得也更快。"
+
+#: wrapper/scim/sunpinyin_imengine_setup.cpp:248
+msgid "Options"
+msgstr "设置选项"
+
+#~ msgid "Changing this will dismiss the un-committed preedit strings"
+#~ msgstr "修改此项会使未输入的字串作废"

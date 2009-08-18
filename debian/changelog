@@ -1,0 +1,13 @@
+sunpinyin (1.0~hg20081104-1) unstable; urgency=low
+
+  * Initial release (Closes: 478811)
+
+ -- Kov Chai <tchaikov@gmail.com>  Tue, 04 Nov 2008 22:46:55 +0800
+
+sunpinyin (1.0~hg20080607-2) unstable; urgency=low
+
+  * Update README.Debian with notes on language model training
+  * Add explanation about data files shipped with sunpinyin
+
+ -- Kov Chai <tchaikov@gmail.com>  Sat, 12 Jul 2008 20:21:06 +0800
+

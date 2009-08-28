@@ -166,13 +166,13 @@ protected:
     insertTransfer(TNode* pnode, unsigned s);
 
     TNode*
-    addCombainedTransfers (TNode *pnode, unsigned s, const CNodeSet& nodes);
+    addCombinedTransfers (TNode *pnode, unsigned s, const CNodeSet& nodes);
 
     void 
-    combainInitialTrans(TNode *pnode);
+    combineInitialTrans(TNode *pnode);
 
     void
-    expandCombainedNode(TNode *pnode);
+    expandCombinedNode(TNode *pnode);
 };
 
 #endif

@@ -336,7 +336,7 @@ CPinyinTrieMaker::insertFullPinyinPair(const char* pinyin, TWordId wid)
 }
 
 CPinyinTrieMaker::TNode*
-CPinyinTrieMaker::addCombainedTransfers (TNode *pnode, unsigned s, const CNodeSet& nodes)
+CPinyinTrieMaker::addCombinedTransfers (TNode *pnode, unsigned s, const CNodeSet& nodes)
 {
     assert (!nodes.empty());
 
@@ -359,7 +359,7 @@ CPinyinTrieMaker::addCombainedTransfers (TNode *pnode, unsigned s, const CNodeSe
 }
 
 void
-CPinyinTrieMaker::combainInitialTrans (TNode *pnode)
+CPinyinTrieMaker::combineInitialTrans (TNode *pnode)
 {
     std::map<unsigned, CNodeSet> combTrans;
 
@@ -375,11 +375,11 @@ CPinyinTrieMaker::combainInitialTrans (TNode *pnode)
 
     std::map<unsigned, CNodeSet>::const_iterator itCombTrans = combTrans.begin();
     for (; itCombTrans != combTrans.end(); ++itCombTrans)
-        addCombainedTransfers (pnode, itCombTrans->first, itCombTrans->second);
+        addCombinedTransfers (pnode, itCombTrans->first, itCombTrans->second);
 }
 
 void
-CPinyinTrieMaker::expandCombainedNode (TNode *pnode)
+CPinyinTrieMaker::expandCombinedNode (TNode *pnode)
 {
     assert (pnode->m_cmbNodes.size() >= 1);
 
@@ -403,7 +403,7 @@ CPinyinTrieMaker::expandCombainedNode (TNode *pnode)
         if (itStateMap != m_StateMap.end())
             p = itStateMap->second;
         else
-            p = addCombainedTransfers (pnode, s, nodes);
+            p = addCombinedTransfers (pnode, s, nodes);
 
         pnode->m_Trans[s] = p;
     }
@@ -418,9 +418,9 @@ CPinyinTrieMaker::threadNonCompletePinyin(void)
     for (; itNode != TNode::m_AllNodes.end(); ++itNode) {
         TNode* pnode = *itNode;
         if (pnode->m_bExpanded)
-            combainInitialTrans (pnode);
+            combineInitialTrans (pnode);
         else
-            expandCombainedNode (pnode);
+            expandCombinedNode (pnode);
     }
     return true;
 }

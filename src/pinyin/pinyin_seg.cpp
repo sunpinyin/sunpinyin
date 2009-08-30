@@ -35,6 +35,7 @@
  * to such option by the copyright holder. 
  */
 
+#include <climits>
 #include "pinyin_seg.h"
 
 void CGetFuzzySyllablesOp::initFuzzyMap (const char **fuzzyPairs, unsigned num)

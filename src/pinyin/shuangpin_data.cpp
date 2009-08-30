@@ -118,12 +118,12 @@ static TZeroInitial ziranma_zeroinitials[] = {
 };
 
 
-typedef struct _PyTabEntry {
+struct PyTabEntry {
     const char *pystr;
-    TSyllable   id;
-}PyTabEntry;
+    uint32_t   id;              // should be larger than sizeof(TSyllable)
+};
 
-static PyTabEntry 
+static const PyTabEntry 
 pinyin_table[] = {
     {"",    0x00000},
     {"a",	0x00010},

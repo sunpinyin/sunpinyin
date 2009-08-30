@@ -48,6 +48,7 @@
 #include <assert.h>
 #endif
 
+#include <climits>
 #include <map>
 #include <vector>
 

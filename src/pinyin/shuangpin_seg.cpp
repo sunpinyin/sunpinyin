@@ -35,6 +35,7 @@
  * to such option by the copyright holder. 
  */
 
+#include <climits>
 #include "shuangpin_seg.h"
 
 CShuangpinData CShuangpinSegmentor::s_shpData;

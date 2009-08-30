@@ -232,6 +232,8 @@ public:
         std::map <unsigned, ISunpinyinProfile*>::iterator it = m_profiles.find (key);
         if (it != m_profiles.end()) {
             CIMIView *pview = it->second->createProfile ();
+            if (!pview)
+                return NULL;
             pview->setHotkeyProfile (&m_hotkeyProfile);
             pview->setCandiWindowSize (m_candiWindowSize);
             return pview;

@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

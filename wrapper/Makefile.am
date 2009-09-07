@@ -37,7 +37,7 @@
  
 SUBDIRS =
 
-# below can make distclean more cleaning.
+# below can make distclean more clean.
 
 if WRAPPER_CLE
 SUBDIRS += cle
@@ -49,6 +49,10 @@ endif
 
 if WRAPPER_SCIM
 SUBDIRS += scim
+endif
+
+if WRAPPER_IBUS
+SUBDIRS += ibus
 endif
 
 if WRAPPER_BEOS

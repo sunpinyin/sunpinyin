@@ -109,6 +109,9 @@ AC_ARG_ENABLE([gtkstandalone],
     [ENABLE_GTKSTANDALONE="no"])
 AM_CONDITIONAL(WRAPPER_GTK_STANDALONE, [test "X${ENABLE_GTKSTANDALONE}" = "Xyes"])
 
+dnl 
+dnl for scim wrapper
+dnl 
 AC_ARG_ENABLE([scim],
     AC_HELP_STRING([--enable-scim], [compile as scim (default=no) ]),
     [ENABLE_SCIM="${enableval}"],
@@ -139,12 +142,33 @@ AM_CONDITIONAL(WRAPPER_SCIM, [test "X${ENABLE_SCIM}" = "Xyes"])
 
 AM_CONDITIONAL(SCIM_BUILD_SETUP, [test "X$SCIM_HAS_GTKUTILS" = "Xyes"])
 
+dnl 
+dnl for ibus wrapper
+dnl 
+AC_ARG_ENABLE([ibus],
+    AC_HELP_STRING([--enable-ibus], [compile as ibus (default=no) ]),
+    [ENABLE_IBUS="${enableval}"],
+    [ENABLE_IBUS="no"])
+
+if test "X${ENABLE_IBUS}" = "Xyes" ; then
+    # Check SCIM
+    IBUS_VERSION=1.2.0
+    AC_SUBST(IBUS_VERSION)
+    export PKG_CONFIG_PATH="/opt/opt/lib/pkgconfig:${PKG_CONFIG_PATH}"
+    PKG_CHECK_MODULES(IBUS,[ibus-1.0 >= $IBUS_VERSION])
+    AM_PATH_PYTHON([2.5])
+fi
+AM_CONDITIONAL(WRAPPER_IBUS, [test "X${ENABLE_IBUS}" = "Xyes"])
+
+
 dnl override the default setting of DATADIRs
 if test "x$SUNPINYIN_DATADIR" != "x" ; then
     SCIM_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
     CLE_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
+    IBUS_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
     AC_SUBST(SCIM_SUNPINYIN_DATADIR)
     AC_SUBST(CLE_SUNPINYIN_DATADIR)
+    AC_SUBST(IBUS_SUNPINYIN_DATADIR)
 fi
 
 AM_CONDITIONAL(OVERRIDE_DEFAULT_PINYINDATADIR, [test "x${SUNPINYIN_DATADIR}" != "x"])
@@ -254,6 +278,12 @@ AC_OUTPUT(Makefile
           wrapper/cle/iiim/cle/Makefile
           wrapper/gtk_standalone/Makefile
           wrapper/scim/Makefile
+	  wrapper/ibus/Makefile
+	  wrapper/ibus/src/Makefile
+	  wrapper/ibus/src/sunpinyin.xml.in
+	  wrapper/ibus/setup/Makefile
+	  wrapper/ibus/setup/ibus-setup-sunpinyin
+	  wrapper/ibus/setup/config.py
           wrapper/beos/Makefile
           data/Makefile
           po/Makefile.in)

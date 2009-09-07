@@ -36,6 +36,7 @@
  */
 
 #include <locale.h>
+#include <stdlib.h>
 
 #include "pytrie.h"
 #include "pytrie_gen.h"

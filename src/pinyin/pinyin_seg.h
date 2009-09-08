@@ -133,7 +133,7 @@ private:
 class CQuanpinSegmentor : public IPySegmentor
 {
 public:
-    CQuanpinSegmentor (const char *pyTrieFileName);
+    CQuanpinSegmentor ();
 
     virtual TSegmentVec& getSegments () {return m_segs;}
     virtual wstring& getInputBuffer () {return m_inputBuf;}
@@ -148,6 +148,8 @@ public:
     virtual unsigned updatedFrom () {return m_updatedFrom;}
     virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
 
+    bool load(const char * pyTrieFileName);
+    
     void setGetFuzzySyllablesOp (CGetFuzzySyllablesOp *op) {m_pGetFuzzySyllablesOp = op;}
     void setGetCorrectionPairOp (CGetCorrectionPairOp *op) {m_pGetCorrectionPairOp = op;}
 

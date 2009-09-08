@@ -84,7 +84,7 @@ ibus_engine_sunpinyin_CXXFLAGS = \
 	-I$(PINYIN_SRC_DIR) \
 	-I$(LEXICON_SRC_DIR) \
 	-I$(SLM_SRC_DIR) \
-	 -DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
+	-DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
 	$(NULL)
 
 ibus_engine_sunpinyin_CFLAGS = \
@@ -126,7 +126,8 @@ sunpinyin.xml: sunpinyin.xml.in
 # 
 scim_sunpinyin_datadir   = $(IBUS_SUNPINYIN_DATADIR)
 scim_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
-                           $(top_builddir)/data/pydict_sc.bin
+                           $(top_builddir)/data/pydict_sc.bin \
+                           $(top_builddir)/data/quanpin.dat 
 
 icondir                  = $(pkgdatadir)/icons
 icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm

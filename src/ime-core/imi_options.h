@@ -115,9 +115,14 @@ struct CQuanpinSchemePolicy
 public:
     static IPySegmentor* createPySegmentor () 
     {
-        CQuanpinSegmentor *pseg = new CQuanpinSegmentor (SUNPINYIN_DATA_DIR"/quanpin.dat");
-        pseg->setGetFuzzySyllablesOp (&s_getFuzzySyllablesOp);
-        pseg->setGetCorrectionPairOp (&s_getCorrectionPairOp);
+        CQuanpinSegmentor *pseg = new CQuanpinSegmentor ();
+        if (pseg->load(SUNPINYIN_DATA_DIR"/quanpin.dat")) {
+            pseg->setGetFuzzySyllablesOp (&s_getFuzzySyllablesOp);
+            pseg->setGetCorrectionPairOp (&s_getCorrectionPairOp);
+        } else {
+            delete pseg;
+            pseg = NULL;
+        }
         return pseg;
     }
 
@@ -180,13 +185,14 @@ public:
     CIMIView* createProfile ()
     {
         if (LanguagePolicy::loadResources ()) {
+            IPySegmentor* pseg = PinyinSchemePolicy::createPySegmentor ();
+            if (pseg == NULL)
+                return NULL;
+
             CIMIContext *pic = LanguagePolicy::createContext ();
             CIMIView* pview = InputStylePolicy::createView ();
             pview->attachIC (pic);
-
-            IPySegmentor* pseg = PinyinSchemePolicy::createPySegmentor ();
             pview->setPySegmentor (pseg);
-
             return pview;
         }
 
@@ -251,8 +257,8 @@ public:
         }
     }
 
-    void updateToken () {m_tokenNum ++;}
-    unsigned getToken () {return m_tokenNum;}
+    void updateToken () {++m_tokenNum;}
+    unsigned getToken () const {return m_tokenNum;}
 
 private:
     CSunpinyinSessionFactory ()

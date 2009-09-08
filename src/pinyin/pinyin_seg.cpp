@@ -111,11 +111,16 @@ const char * CGetCorrectionPairOp::operator () (std::string& pystr, unsigned& ma
     return NULL;
 }
 
-CQuanpinSegmentor::CQuanpinSegmentor (const char * pyTrieFileName) 
+CQuanpinSegmentor::CQuanpinSegmentor () 
     : m_updatedFrom(0), m_pGetFuzzySyllablesOp(NULL), m_pGetCorrectionPairOp(NULL)
 {
-    m_pytrie.load (pyTrieFileName);
     m_segs.reserve (32);
+}
+
+bool
+CQuanpinSegmentor::load(const char * pyTrieFileName)
+{
+    return m_pytrie.load (pyTrieFileName);
 }
 
 unsigned CQuanpinSegmentor::push (unsigned ch)

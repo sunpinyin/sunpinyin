@@ -15,6 +15,15 @@ extern "C"
         thiz->destroy();
     }
     
+#if defined(WITH_IBUS_1_1_0)
+    gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
+                                                     guint keyval)
+    {
+        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
+        // XXX: use the mapped keyval as its keycode
+        return thiz->process_key_event(keyval, keyval, modifiers) ? TRUE : FALSE;
+    }
+#elif defined(WITH_IBUS_1_2_0)
     gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
                                                      guint keyval,
                                                      guint keycode,
@@ -23,6 +32,9 @@ extern "C"
         SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
         return thiz->process_key_event(keyval, keycode, modifiers) ? TRUE : FALSE;
     }
+#else
+    #error "Unsuppported IBus version."
+#endif
     
     void ibus_sunpinyin_engine_focus_in(IBusEngine *engine)
     {

@@ -46,8 +46,8 @@ SunPinyinEngine::init ()
 
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     m_pv = factory.createSession();
+    // XXX: m_pv can be NULL
     m_wh = new CIBusWinHandler(this);
-    
 }
 
 void

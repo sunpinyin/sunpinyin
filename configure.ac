@@ -152,10 +152,13 @@ AC_ARG_ENABLE([ibus],
 
 if test "X${ENABLE_IBUS}" = "Xyes" ; then
     # Check SCIM
-    IBUS_VERSION=1.2.0
     AC_SUBST(IBUS_VERSION)
-    export PKG_CONFIG_PATH="/opt/opt/lib/pkgconfig:${PKG_CONFIG_PATH}"
-    PKG_CHECK_MODULES(IBUS,[ibus-1.0 >= $IBUS_VERSION])
+    PKG_CHECK_MODULES(IBUS,
+                      [ibus-1.0 >= 1.2.0],
+                      [AC_DEFINE(WITH_IBUS_1_2_0, 1, ["With keycode"])],
+                      [PKG_CHECK_MODULES(IBUS, 
+                                        [ibus >= 1.1.0],
+                                        [AC_DEFINE(WITH_IBUS_1_1_0, 1, ["Without keycode"])])])
     AM_PATH_PYTHON([2.5])
 fi
 AM_CONDITIONAL(WRAPPER_IBUS, [test "X${ENABLE_IBUS}" = "Xyes"])

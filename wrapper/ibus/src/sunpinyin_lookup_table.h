@@ -16,8 +16,9 @@ public:
     /**
      * update lookup table with given candidate list
      * @param cl candidate list
+     * @return the number of candidates updated
      */
-    void update_candidates(const ICandidateList& cl);
+    int update_candidates(const ICandidateList& cl);
     bool cursor_up();
     bool cursor_down();
     size_t get_cursor_pos() const;

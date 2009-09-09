@@ -85,6 +85,7 @@ ibus_engine_sunpinyin_CXXFLAGS = \
 	-I$(LEXICON_SRC_DIR) \
 	-I$(SLM_SRC_DIR) \
 	-DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
+	-Wall \
 	$(NULL)
 
 ibus_engine_sunpinyin_CFLAGS = \

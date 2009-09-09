@@ -14,12 +14,14 @@ SunPinyinLookupTable::~SunPinyinLookupTable()
     }
 }
 
-void
+int
 SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
 {
     const int size = cl.size();
-    const int total = cl.total();
-
+    if (size <= 0)
+        return size;
+    
+    const int total = cl.total();    
     // expand the array in lookup_table
     // we will fill the missing items in when we have them
     ibus_lookup_table_set_page_size(m_lookup_table, size);
@@ -33,6 +35,7 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
         else
             break;
     }
+    return size;
     //ibus_lookup_table_set_cursor_pos (m_lookup_table, index);
 }
 
@@ -40,12 +43,14 @@ bool
 SunPinyinLookupTable::cursor_up()
 {
     ibus_lookup_table_cursor_down(m_lookup_table);
+    return true;
 }
 
 bool
 SunPinyinLookupTable::cursor_down()
 {
     ibus_lookup_table_cursor_down(m_lookup_table);
+    return true;
 }
 
 size_t
@@ -93,6 +98,7 @@ SunPinyinLookupTable::append_candidate(const ICandidateList& cl,
     int index = get_current_page_start() + item;
     ibus_lookup_table_set_candidate(m_lookup_table, index, text);
     g_object_unref(text);       // XXX: shall we unref it?
+    return len;
 }
 
 void

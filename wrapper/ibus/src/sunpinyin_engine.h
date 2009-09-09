@@ -50,6 +50,7 @@ private:
     gboolean try_switch_cn (guint key_val, guint key_code, guint modifiers);
     gboolean try_process_key (guint key_val, guint key_code, guint modifiers);
     void update_lookup_table();
+    bool is_valid() const;
     
 private:
     SunPinyinProperty *m_status_prop;

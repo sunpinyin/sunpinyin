@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <imi_view.h>
 #include <imi_options.h>
+#include <imi_keys.h>
 
 #include "sunpinyin_property.h"
 #include "sunpinyin_lookup_table.h"
@@ -47,7 +49,10 @@ SunPinyinEngine::init ()
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     m_pv = factory.createSession();
     // XXX: m_pv can be NULL
+    if (!m_pv)
+        return;
     m_wh = new CIBusWinHandler(this);
+    m_pv->attachWinHandler(m_wh);
 }
 
 void
@@ -72,9 +77,11 @@ SunPinyinEngine::destroy ()
     delete m_shuangpin_prop;
     m_shuangpin_prop = NULL;
 
-    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-    factory.destroySession(m_pv);
-    m_pv = NULL;
+    if (m_pv) {
+        CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+        factory.destroySession(m_pv);
+        m_pv = NULL;
+    }
     
     delete m_wh;
     m_wh = NULL;
@@ -93,6 +100,8 @@ SunPinyinEngine::process_key_event (guint key_val,
                                     guint key_code,
                                     guint modifiers)
 {
+    if (!is_valid()) return FALSE;
+    
     if (modifiers & IBUS_RELEASE_MASK)
         return FALSE;
     return (try_switch_cn(key_val, key_code, modifiers) ||
@@ -105,9 +114,9 @@ SunPinyinEngine::try_switch_cn (guint key_val,
                                 guint modifiers)
 {
     if ((key_code == IBUS_Shift_L &&
-         modifiers == IBUS_SHIFT_MASK|IBUS_RELEASE_MASK) ||
+         modifiers == (IBUS_SHIFT_MASK|IBUS_RELEASE_MASK)) ||
         (key_code == IBUS_Shift_R &&
-         modifiers == IBUS_SHIFT_MASK|IBUS_RELEASE_MASK)) {
+         modifiers == (IBUS_SHIFT_MASK|IBUS_RELEASE_MASK))) {
         property_activate(PROP_STATUS);
         reset();
         return TRUE;
@@ -115,18 +124,37 @@ SunPinyinEngine::try_switch_cn (guint key_val,
     return FALSE;
 }
 
+static void
+translate_key(guint& key_val, guint& key_code, guint& modifiers)
+{
+    if (key_val == IM_VK_HOME ||
+        key_val == IM_VK_LEFT ||
+        key_val == IM_VK_UP ||
+        key_val == IM_VK_RIGHT ||
+        key_val == IM_VK_DOWN ||
+        key_val == IM_VK_PAGE_UP ||
+        key_val == IM_VK_PAGE_DOWN ||
+        key_val == IM_VK_END) {
+        std::swap(key_val, key_code);
+    }
+}
+
+
 gboolean
 SunPinyinEngine::try_process_key (guint key_val,
                                   guint key_code,
                                   guint modifiers)
 {
     // XXX: may need translate IBUS key code to SunPinyin's counterpart
+    translate_key(key_val, key_code, modifiers);
     return m_pv->onKeyEvent(key_code, key_val, modifiers) ? TRUE : FALSE;
 }
 
 void
 SunPinyinEngine::focus_in ()
 {
+    if (!is_valid()) return;
+    
     ibus_engine_register_properties(this, m_prop_list);
     m_pv->updateWindows(CIMIView::PREEDIT_MASK | CIMIView::CANDIDATE_MASK);
     m_parent->focus_in(this);
@@ -135,6 +163,8 @@ SunPinyinEngine::focus_in ()
 void
 SunPinyinEngine::focus_out ()
 {
+    if (!is_valid()) return;
+    
     reset();
     m_parent->focus_out(this);
 }
@@ -142,6 +172,8 @@ SunPinyinEngine::focus_out ()
 void
 SunPinyinEngine::reset ()
 {
+    if (!is_valid()) return;
+    
     m_pv->updateWindows(m_pv->clearIC());
     m_parent->reset(this);
 }
@@ -149,6 +181,8 @@ SunPinyinEngine::reset ()
 void
 SunPinyinEngine::enable ()
 {
+    if (!is_valid()) return;
+    
     focus_in();
     m_parent->enable(this);
 }
@@ -156,12 +190,16 @@ SunPinyinEngine::enable ()
 void
 SunPinyinEngine::disable ()
 {
+    if (!is_valid()) return;
+    
     m_parent->disable(this);
 }
 
 void
 SunPinyinEngine::page_up ()
 {
+    if (!is_valid()) return;
+    
     m_pv->onCandidatePageRequest(-1, true /* relative */);
     m_parent->page_up(this);
 }
@@ -169,13 +207,33 @@ SunPinyinEngine::page_up ()
 void
 SunPinyinEngine::page_down ()
 {
+    if (!is_valid()) return;
+    
     m_pv->onCandidatePageRequest(1, true /* relative */);
     m_parent->page_down(this);
 }
 
 void
+SunPinyinEngine::property_activate (const std::string& property, unsigned state)
+{
+    if (!is_valid()) return;
+    
+    if (m_status_prop->update(property, state)) {
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, state);
+    } else if (m_letter_prop->update(property, state)) {
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, state);
+    } else if (m_punct_prop->update(property, state)) {
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, state);
+    }
+    // TODO: shuangpin
+    m_parent->property_activate(this, property.c_str(), state);
+}
+
+void
 SunPinyinEngine::cursor_up ()
 {
+    if (!is_valid()) return;
+    
     if (m_lookup_table->cursor_up()) {
         update_lookup_table();
         m_parent->cursor_up(this);
@@ -185,6 +243,8 @@ SunPinyinEngine::cursor_up ()
 void
 SunPinyinEngine::cursor_down ()
 {
+    if (!is_valid()) return;
+    
     if (m_lookup_table->cursor_down()) {
         update_lookup_table();
         m_parent->cursor_down(this);
@@ -201,30 +261,22 @@ SunPinyinEngine::commit_string (const std::wstring& str)
 }
 
 void
-SunPinyinEngine::property_activate (const std::string& property, unsigned state)
-{
-    if (m_status_prop->update(property, state)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, state);
-    } else if (m_letter_prop->update(property, state)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, state);
-    } else if (m_punct_prop->update(property, state)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, state);
-    }
-    // TODO: shuangpin
-    m_parent->property_activate(this, property.c_str(), state);
-}
-
-void
 SunPinyinEngine::update_candidates(const ICandidateList& cl)
 {
-    m_lookup_table->update_candidates(cl);
-    update_lookup_table();
+    if (m_lookup_table->update_candidates(cl) > 0)
+        update_lookup_table();
 }
 
 void
 SunPinyinEngine::update_lookup_table()
 {
     ibus_engine_update_lookup_table(this, m_lookup_table->get(), TRUE);
+}
+
+bool
+SunPinyinEngine::is_valid() const
+{
+    return m_pv != NULL;
 }
 
 void
@@ -235,10 +287,11 @@ SunPinyinEngine::update_preedit_string(const IPreeditString& preedit)
         IBusText *text = ibus_text_new_from_ucs4((const gunichar*) preedit.string());
         const int caret = preedit.caret();
         if (caret > 0 && caret <= len) {
+            // decorate preedit string by charTypeAt(idx)
             int candi_end = preedit.candi_start()+preedit.charTypeSize();
             ibus_text_append_attribute (text,
                                         IBUS_ATTR_TYPE_FOREGROUND,
-                                        0x00ffffff,
+                                        0x00000000,
                                         preedit.candi_start(),
                                         candi_end);
         }

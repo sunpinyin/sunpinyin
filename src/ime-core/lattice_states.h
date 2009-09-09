@@ -80,10 +80,10 @@ struct TLexiconState {
     bool                        m_bFuzzy;
 
     TLexiconState (unsigned start, const CPinyinTrie::TNode *pnode, CSyllables& syl, bool isFuzzy=false):
-        m_start(start), m_pPYNode(pnode), m_bPinyin(true), m_syls(syl), m_bFuzzy(isFuzzy) {}
+        m_start(start), m_pPYNode(pnode), m_syls(syl), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
 
     TLexiconState (unsigned start, CSyllables &syl, TWordIdInfoVec &words, bool isFuzzy=false):
-        m_start(start), m_pPYNode(NULL), m_bPinyin(true), m_syls(syl), m_words(words),m_bFuzzy(isFuzzy) {}
+        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syl), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
 
     TLexiconState (unsigned start, unsigned wid):
         m_start(start), m_pPYNode(NULL), m_bPinyin(false) {m_words.push_back(wid);}
@@ -105,18 +105,18 @@ typedef std::vector<TLexiconState>    CLexiconStates;
  */
 struct TLatticeState {
     TSentenceScore      m_score;
-    CSlmState           m_slmState;
-    TLatticeState      *m_pBackTraceNode;
-    CWordId             m_backTraceWordId;
     unsigned            m_frIdx;
-
+    TLatticeState      *m_pBackTraceNode;
+    CSlmState           m_slmState;
+    CWordId             m_backTraceWordId;
+    
     TLatticeState(double score = -1.0,
                   unsigned frIdx=0,
                   TLatticeState* btNodePtr = NULL,
                   CSlmState sk= CSlmState(),
                   CWordId wk = CWordId())
-        : m_score(score), m_frIdx(frIdx), m_slmState(sk),
-          m_pBackTraceNode(btNodePtr), m_backTraceWordId(wk) {}
+        : m_score(score), m_frIdx(frIdx), m_pBackTraceNode(btNodePtr),
+          m_slmState(sk), m_backTraceWordId(wk) {}
 
     /** for debug printing... */
     void

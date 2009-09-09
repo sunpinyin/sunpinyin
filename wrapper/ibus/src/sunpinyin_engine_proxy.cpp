@@ -17,11 +17,12 @@ extern "C"
     
 #if defined(WITH_IBUS_1_1_0)
     gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
-                                                     guint keyval)
+                                                     guint keyval,
+                                                     guint state)
     {
         SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
         // XXX: use the mapped keyval as its keycode
-        return thiz->process_key_event(keyval, keyval, modifiers) ? TRUE : FALSE;
+        return thiz->process_key_event(keyval, keyval, state) ? TRUE : FALSE;
     }
 #elif defined(WITH_IBUS_1_2_0)
     gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,

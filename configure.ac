@@ -157,7 +157,7 @@ if test "X${ENABLE_IBUS}" = "Xyes" ; then
                       [ibus-1.0 >= 1.2.0],
                       [AC_DEFINE(WITH_IBUS_1_2_0, 1, ["With keycode"])],
                       [PKG_CHECK_MODULES(IBUS, 
-                                        [ibus >= 1.1.0],
+                                        [ibus-1.0 >= 1.1.0],
                                         [AC_DEFINE(WITH_IBUS_1_1_0, 1, ["Without keycode"])])])
     AM_PATH_PYTHON([2.5])
 fi
@@ -281,12 +281,12 @@ AC_OUTPUT(Makefile
           wrapper/cle/iiim/cle/Makefile
           wrapper/gtk_standalone/Makefile
           wrapper/scim/Makefile
-	  wrapper/ibus/Makefile
-	  wrapper/ibus/src/Makefile
-	  wrapper/ibus/src/sunpinyin.xml.in
-	  wrapper/ibus/setup/Makefile
-	  wrapper/ibus/setup/ibus-setup-sunpinyin
-	  wrapper/ibus/setup/config.py
+          wrapper/ibus/Makefile
+          wrapper/ibus/src/Makefile
+          wrapper/ibus/src/sunpinyin.xml.in
+          wrapper/ibus/setup/Makefile
+          wrapper/ibus/setup/ibus-setup-sunpinyin
+          wrapper/ibus/setup/config.py
           wrapper/beos/Makefile
           data/Makefile
           po/Makefile.in)

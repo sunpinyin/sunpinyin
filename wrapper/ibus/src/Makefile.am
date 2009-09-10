@@ -10,7 +10,8 @@ SUNPINYIN_SRC_DIR = $(top_srcdir)/src/ime-core
 SLM_SRC_DIR = $(top_srcdir)/src/slm
 LEXICON_SRC_DIR = $(top_srcdir)/src/lexicon
 PINYIN_SRC_DIR = $(top_srcdir)/src/pinyin
-IBUS_SUNPINYIN_DATADIR=$(pkgdatadir)/ibus-sunpinyin
+IBUS_SUNPINYIN_DATADIR=$(pkgdatadir)/data
+IBUS_SUNPINYIN_ICONDIR=$(pkgdatadir)/icons
 
 noinst_LTLIBRARIES = libsunpinyin.la
 
@@ -85,6 +86,7 @@ ibus_engine_sunpinyin_CXXFLAGS = \
 	-I$(LEXICON_SRC_DIR) \
 	-I$(SLM_SRC_DIR) \
 	-DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
+	-DSUNPINYIN_ICON_DIR=\"$(IBUS_SUNPINYIN_ICONDIR)\" \
 	-Wall \
 	$(NULL)
 
@@ -130,8 +132,13 @@ scim_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
                            $(top_builddir)/data/pydict_sc.bin \
                            $(top_builddir)/data/quanpin.dat 
 
-icondir                  = $(pkgdatadir)/icons
-icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm
-
+icondir                  = $(IBUS_SUNPINYIN_ICONDIR)
+icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \
+                           $(top_builddir)/data/eng.png            \
+                           $(top_builddir)/data/han.png            \
+                           $(top_builddir)/data/cnpunc.png         \
+                           $(top_builddir)/data/enpunc.png         \
+                           $(top_builddir)/data/fullwidth.png      \
+                           $(top_builddir)/data/halfwidth.png
 test: ibus-engine-sunpinyin
 	$(builddir)/ibus-engine-sunpinyin

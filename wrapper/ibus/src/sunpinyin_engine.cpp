@@ -265,6 +265,8 @@ SunPinyinEngine::update_candidates(const ICandidateList& cl)
 {
     if (m_lookup_table->update_candidates(cl) > 0)
         update_lookup_table();
+    else
+        ibus_engine_hide_lookup_table(this);
 }
 
 void

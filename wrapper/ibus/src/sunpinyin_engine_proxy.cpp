@@ -86,5 +86,14 @@ extern "C"
         SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
         thiz->property_activate(prop_name, prop_state);
     }
+
+    void ibus_sunpinyin_engine_candidate_clicked (IBusEngine *engine,
+                                                  guint index,
+                                                  guint button,
+                                                  guint state)
+    {
+        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
+        thiz->candidate_clicked(index);
+    }
 } // extern "C"
 

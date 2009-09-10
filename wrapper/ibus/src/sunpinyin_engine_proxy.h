@@ -32,6 +32,10 @@ extern "C"
     void ibus_sunpinyin_engine_property_activate (IBusEngine *engine,
                                                   const gchar *prop_name,
                                                   guint prop_state);
+    void ibus_sunpinyin_engine_candidate_clicked(IBusEngine *engine,
+                                                 guint index,
+                                                 guint button,
+                                                 guint state);
 }
 
 #endif // SUNPINYIN_ENGINE_PROXY_H

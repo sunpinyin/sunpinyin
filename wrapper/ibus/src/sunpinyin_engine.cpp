@@ -9,10 +9,6 @@
 
 #include "sunpinyin_engine.h"
 
-static const char *PROP_STATUS = "status";
-static const char *PROP_LETTER = "full_letter";
-static const char *PROP_PUNCT = "full_punct";
-static const char *PROP_SHUANGPIN = "shuangpin";
 
 SunPinyinEngine::SunPinyinEngine()
     : m_status_prop(NULL),
@@ -32,23 +28,22 @@ SunPinyinEngine::init ()
 {
     m_prop_list = ibus_prop_list_new();
     
-    m_status_prop = new SunPinyinProperty(this, PROP_STATUS, L"CN", L"EN");
+    m_status_prop = SunPinyinProperty::create_status_prop(this);
     ibus_prop_list_append(m_prop_list, m_status_prop->get());
     
-    m_letter_prop = new SunPinyinProperty(this, PROP_LETTER, L"f", L"h");
+    m_letter_prop = SunPinyinProperty::create_letter_prop(this);
     ibus_prop_list_append(m_prop_list, m_letter_prop->get());
     
-    m_punct_prop = new SunPinyinProperty(this, PROP_PUNCT, L"f", L"h");
+    m_punct_prop = SunPinyinProperty::create_punct_prop(this);
     ibus_prop_list_append(m_prop_list, m_punct_prop->get());
     
-    m_shuangpin_prop = new SunPinyinProperty(this, PROP_SHUANGPIN, L"shuang", L"quan");
+    m_shuangpin_prop = SunPinyinProperty::create_shuangpin_prop(this);
     ibus_prop_list_append(m_prop_list, m_shuangpin_prop->get());
     
     m_lookup_table = new SunPinyinLookupTable();
 
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     m_pv = factory.createSession();
-    // XXX: m_pv can be NULL
     if (!m_pv)
         return;
     m_wh = new CIBusWinHandler(this);
@@ -117,7 +112,7 @@ SunPinyinEngine::try_switch_cn (guint key_val,
          modifiers == (IBUS_SHIFT_MASK|IBUS_RELEASE_MASK)) ||
         (key_code == IBUS_Shift_R &&
          modifiers == (IBUS_SHIFT_MASK|IBUS_RELEASE_MASK))) {
-        property_activate(PROP_STATUS);
+        property_activate(m_status_prop->name(), !m_status_prop->state());
         reset();
         return TRUE;
     }
@@ -134,7 +129,11 @@ translate_key(guint& key_val, guint& key_code, guint& modifiers)
         key_val == IM_VK_DOWN ||
         key_val == IM_VK_PAGE_UP ||
         key_val == IM_VK_PAGE_DOWN ||
-        key_val == IM_VK_END) {
+        key_val == IM_VK_END ||
+        key_val == IM_VK_DELETE ||
+        key_val == IM_VK_BACK_SPACE ||
+        key_val == IM_VK_ENTER || 
+        key_val == IM_VK_ESCAPE) {
         std::swap(key_val, key_code);
     }
 }
@@ -230,6 +229,12 @@ SunPinyinEngine::property_activate (const std::string& property, unsigned state)
 }
 
 void
+SunPinyinEngine::candidate_clicked (guint index)
+{
+    m_pv->onCandidateSelectRequest(index);
+}
+
+void
 SunPinyinEngine::cursor_up ()
 {
     if (!is_valid()) return;
@@ -266,7 +271,7 @@ SunPinyinEngine::update_candidates(const ICandidateList& cl)
     if (m_lookup_table->update_candidates(cl) > 0)
         update_lookup_table();
     else
-        ibus_engine_hide_lookup_table(this);
+        ibus_engine_hide_lookup_table (this);
 }
 
 void

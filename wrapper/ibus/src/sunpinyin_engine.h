@@ -32,6 +32,7 @@ public:
     void cursor_down ();
     void commit_string (const std::wstring&);
     void property_activate (const std::string& name, unsigned state = PROP_STATE_UNCHECKED);
+    void candidate_clicked (guint index);
     /* @} */
 
 public:

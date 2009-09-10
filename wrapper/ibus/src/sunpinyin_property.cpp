@@ -2,31 +2,88 @@
 
 #include "sunpinyin_property.h"
 
-SunPinyinProperty::SunPinyinProperty(IBusEngine *engine,
-                                     const std::string& name,
-                                     const std::wstring& label_0,
-                                     const std::wstring& label_1,
-                                     IBusPropState state)
-    : m_engine(engine),
-      m_name(name)
+static const char *PROP_STATUS = "status";
+static const char *PROP_LETTER = "full_letter";
+static const char *PROP_PUNCT = "full_punct";
+static const char *PROP_SHUANGPIN = "shuangpin";
+
+SunPinyinProperty *
+SunPinyinProperty::create_status_prop(IBusEngine *engine, bool state)
 {
-    m_labels[0] = ibus_text_new_from_ucs4((const gunichar*) label_0.c_str());
-    m_labels[1] = ibus_text_new_from_ucs4((const gunichar*)label_1.c_str());
+    SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_STATUS);
+    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"EN");
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/eng.png";
+    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"CN");
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/han.png";
+    prop->init(state);
+
+    return prop;
+}
+
+SunPinyinProperty *
+SunPinyinProperty::create_letter_prop(IBusEngine *engine, bool state)
+{
+    SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_LETTER);
+    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"f");
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/halfwidth.png";
+    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"F");
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/fullwidth.png";
+    prop->init(state);
+    return prop;
+}
+
+SunPinyinProperty *
+SunPinyinProperty::create_punct_prop(IBusEngine *engine, bool state)
+{
+    SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_PUNCT);
+    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"p");
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/enpunc.png";
+    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"P");
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/cnpunc.png";
+
+    prop->init(state);
+    return prop;
+
+}
+
+SunPinyinProperty *
+SunPinyinProperty::create_shuangpin_prop(IBusEngine *engine, bool state)
+{
+    SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_SHUANGPIN);
+    // TODO: have a icon for quanpin and shuangpin
+    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"Quanpin");
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/eng.png";
+    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"Shuangpin");
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/han.png";
+
+    prop->init(state);
+    return prop;
+}
+
+SunPinyinProperty::SunPinyinProperty(IBusEngine *engine, const std::string& name)
+    : m_engine(engine),
+      m_name(name),
+      m_state(false)
+{
     m_prop = ibus_property_new(name.c_str(),
                                PROP_TYPE_NORMAL,
                                NULL, /* label */ NULL, /* icon */
                                NULL, /* tooltip */ TRUE, /* sensitive */
-                               FALSE, /* visible */ state, /* state */
+                               TRUE, /* visible */ PROP_STATE_UNCHECKED, /* state */
                                NULL);
-    ibus_property_set_label(m_prop, m_labels[0]);
 }
 
 SunPinyinProperty::~SunPinyinProperty()
 {
     for (int i = 0; i < 2; ++i) {
-        if (m_labels[i]) {
-            g_object_unref(m_labels[i]);
-            m_labels[i] = NULL;
+        PropertyInfo& info = m_info[i];
+        if (info.label) {
+            g_object_unref(info.label);
+            info.label = NULL;
+        }
+        if (info.tooltip) {
+            g_object_unref(info.tooltip);
+            info.tooltip = NULL;
         }
     }
     if (m_prop) {
@@ -36,10 +93,11 @@ SunPinyinProperty::~SunPinyinProperty()
 }
 
 bool
-SunPinyinProperty::update(const std::string& name, bool state)
+SunPinyinProperty::update(const std::string& name, bool)
 {
     if (name == m_name) {
-        update(state);
+        // called by ibus, simple toggle current state
+        update(!m_state);
         return true;
     }
     return false;
@@ -48,9 +106,34 @@ SunPinyinProperty::update(const std::string& name, bool state)
 void
 SunPinyinProperty::update(bool state)
 {
-    IBusText *label = m_labels[state?1:0];
-    ibus_property_set_label(m_prop, label);
+    if (state == m_state)
+        return;
+    init(state);
     ibus_engine_update_property(m_engine, m_prop);
+}
+
+void
+SunPinyinProperty::init(bool state)
+{
+    m_state = state;
+    int which = m_state ? 1 : 0;
+    PropertyInfo& info = m_info[which];
+    ibus_property_set_label(m_prop, info.label);
+    ibus_property_set_icon (m_prop, info.icon.c_str());
+    ibus_property_set_visible (m_prop, TRUE);
+    ibus_property_set_state(m_prop, state ? PROP_STATE_CHECKED : PROP_STATE_UNCHECKED);
+}
+
+const std::string&
+SunPinyinProperty::name() const
+{
+    return m_name;
+}
+
+bool
+SunPinyinProperty::state() const
+{
+    return m_state;
 }
 
 IBusProperty *

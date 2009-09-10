@@ -67,6 +67,7 @@ ibus_sunpinyin_engine_class_init (IBusSunPinyinEngineClass *klass)
     engine_class->page_up           = ibus_sunpinyin_engine_page_up;
     engine_class->page_down         = ibus_sunpinyin_engine_page_down;
     engine_class->property_activate = ibus_sunpinyin_engine_property_activate;
+    engine_class->candidate_clicked = ibus_sunpinyin_engine_candidate_clicked;
 }
 
 // allocate a new ibus engine

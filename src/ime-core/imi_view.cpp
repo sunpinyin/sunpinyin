@@ -44,6 +44,13 @@
 
 #pragma setlocale("zh_CN.UTF-8")
 
+CHotkeyProfile::CHotkeyProfile()
+    : m_modeSwitchKey(IM_VK_SHIFT, 0, IM_ALT_MASK),
+      m_punctSwitchKey(IM_VK_PERIOD, 0, IM_CTRL_MASK),
+      m_symbolSwitchKey(IM_VK_SPACE, 0, IM_SHIFT_MASK)
+{}
+
+
 CIMIView::CIMIView()
     : m_pIC(NULL), m_pWinHandler(NULL), m_pPySegmentor(NULL), m_pHotkeyProfile(NULL),
       m_candiWindowSize(10), m_bCN(true), m_bFullPunct(true), m_bFullSymbol(false)

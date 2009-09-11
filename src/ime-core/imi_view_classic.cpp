@@ -99,29 +99,32 @@ CIMIClassicView::updateWindows(unsigned mask)
 }
 
 bool
-CIMIClassicView::onKeyEvent(unsigned keycode, unsigned keyvalue, unsigned modifiers)
+CIMIClassicView::onKeyEvent(const CKeyEvent& key)
 {
     unsigned changeMasks = 0;
-    // clear other mask bit we do not care
-    modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK);
+
+    unsigned keycode = key.code;
+    unsigned keyvalue = key.value;
+    unsigned modifiers = key.modifiers;
     
 #ifdef DEBUG
-    printf("Classic View got a key (0x%x-0x%x-0x%x)...", keycode, keyvalue, modifiers);
+    printf("Classic View got a key (0x%x-0x%x-0x%x)...", 
+           keycode, keychar, modifiers);
     if (((modifiers & IM_CTRL_MASK) != 0) && (keyvalue == 'P' || keyvalue=='p'))
         m_pIC->printLattice();
 #endif
 
-    if (keycode == IM_VK_SHIFT && modifiers == IM_ALT_MASK) {
+    if (m_pHotkeyProfile && m_pHotkeyProfile->isModeSwitchKey(key)) {
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, (!m_bCN)?1:0);
         return 0;
 
-    } else if (keyvalue == IM_VK_PERIOD && modifiers == IM_CTRL_MASK) {
+    } else if (m_pHotkeyProfile && m_pHotkeyProfile->isPunctSwitchKey(key)) {
         // On CTRL+. switch Full/Half punc
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, (!m_bFullPunct)?1:0);
 
-    } else if (keyvalue == IM_VK_SPACE && modifiers == IM_SHIFT_MASK) {
-        // On SHIFT+SPACE switch Full/Half simbol
+    } else if (m_pHotkeyProfile && m_pHotkeyProfile->isSymbolSwitchKey(key)) {
+        // On SHIFT+SPACE switch Full/Half symbol
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, (!m_bFullSymbol)?1:0);
 
@@ -138,7 +141,7 @@ CIMIClassicView::onKeyEvent(unsigned keycode, unsigned keyvalue, unsigned modifi
         }
 
     } else if ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
-        (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (keycode, keyvalue, modifiers))) {
+               (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) {
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
@@ -150,7 +153,7 @@ CIMIClassicView::onKeyEvent(unsigned keycode, unsigned keyvalue, unsigned modifi
         }
 
     } else if ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
-               (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (keycode, keyvalue, modifiers))) {
+               (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) {
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);

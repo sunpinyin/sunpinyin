@@ -43,70 +43,121 @@
 #include "imi_context.h"
 #include "imi_winHandler.h"
 #include "imi_uiobjects.h"
+#include "imi_keys.h"
 #include "utils.h"
 #include <set>
 
+struct CKeyEvent
+{
+    unsigned code;
+    unsigned value; 
+    unsigned modifiers;
+    
+    CKeyEvent (unsigned kc, unsigned kv, unsigned m = 0)
+        : code(kc), value(kv), modifiers(m)
+    {
+        // clear other mask bit we do not care
+        modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK);
+    }
+    
+    bool operator < (const CKeyEvent& b) const
+    {
+        return ((code < b.code) ||
+                ((code == b.code) &&
+                 ((value < b.value) ||
+                  ((value == b.value) &&
+                   (modifiers < b.modifiers)))));
+    }
+    
+    bool operator == (const CKeyEvent& rhs) const
+    {
+        return (code == rhs.code &&
+                value == rhs.value &&
+                modifiers == rhs.modifiers);
+    }
+    
+    void reset()
+    {
+        code = (unsigned)~0;
+        value = (unsigned)~0;
+        modifiers = 0;
+    }
+};
+
 class CHotkeyProfile : private CNonCopyable
 {
-    struct TKeyRec {
-        unsigned keycode;
-        unsigned keychar; 
-        unsigned modifiers;
-
-        TKeyRec (unsigned kc, unsigned kv, unsigned m)
-            : keycode(kc), keychar(kv), modifiers(m) {}
-
-        bool operator < (const TKeyRec& b) const
-        {
-            return (keycode < b.keycode) ||
-                   ((keycode == b.keycode) &&
-                       ((keychar < b.keychar) ||
-                       ((keychar == b.keychar) &&
-                          (modifiers < b.modifiers))));
-        }
-    };
-
 public:
+    CHotkeyProfile();
+    
     void clear () 
     {
         m_pageUpKeys.clear();
         m_pageDownKeys.clear();
     }
 
-    void addPageUpKey (unsigned keycode, unsigned keychar, unsigned modifiers)
+    void addPageUpKey (const CKeyEvent& key)
     {
-        TKeyRec rec (keycode, keychar, modifiers);
-        m_pageUpKeys.insert (rec);
+        m_pageUpKeys.insert (key);
     }
 
-    bool isPageUpKey  (unsigned keycode, unsigned keychar, unsigned modifiers)
+    bool isPageUpKey  (const CKeyEvent& key) const
     {
-        TKeyRec rec (keycode, keychar, modifiers);
-        return (m_pageUpKeys.find (rec) != m_pageUpKeys.end());
+        return (m_pageUpKeys.find (key) != m_pageUpKeys.end());
     }
 
-    void addPageDownKey (unsigned keycode, unsigned keychar, unsigned modifiers)
+    void addPageDownKey (const CKeyEvent& key)
     {
-        TKeyRec rec (keycode, keychar, modifiers);
-        m_pageDownKeys.insert (rec);
+        m_pageDownKeys.insert (key);
     }
 
-    bool isPageDownKey  (unsigned keycode, unsigned keychar, unsigned modifiers)
+    bool isPageDownKey  (const CKeyEvent& key) const
     {
-        TKeyRec rec (keycode, keychar, modifiers);
-        return (m_pageDownKeys.find (rec) != m_pageDownKeys.end());
+        return (m_pageDownKeys.find (key) != m_pageDownKeys.end());
     }
 
+    void setModeSwitchKey (const CKeyEvent& key)
+    {
+        m_modeSwitchKey = key;
+    }
+    
+    bool isModeSwitchKey (const CKeyEvent& key) const
+    {
+        return m_modeSwitchKey == key;
+    }
+    
+    void setPunctSwitchKey (const CKeyEvent& key)
+    {
+        m_punctSwitchKey = key;
+    }
+    
+    bool isPunctSwitchKey (const CKeyEvent& key) const
+    {
+        return m_punctSwitchKey == key;
+    }
+    
+    void setSymbolSwitchKey (const CKeyEvent& key)
+    {
+        m_symbolSwitchKey = key;
+    }
+    
+    bool isSymbolSwitchKey (const CKeyEvent& key) const
+    {
+        return m_symbolSwitchKey == key;
+    }
+    
 protected:
-    std::set<TKeyRec> m_pageUpKeys;
-    std::set<TKeyRec> m_pageDownKeys;
+    std::set<CKeyEvent> m_pageUpKeys;
+    std::set<CKeyEvent> m_pageDownKeys;
+    CKeyEvent           m_modeSwitchKey;
+    CKeyEvent           m_punctSwitchKey;
+    CKeyEvent           m_symbolSwitchKey;
 };
 
 class CIMIView {
 public:
     enum {
-        KEYEVENT_USED  =  (1),
-        PREEDIT_MASK   =   (1<<2),
+        KEYEVENT_USED  = (1),
+        PREEDIT_MASK   = (1<<2),
         CANDIDATE_MASK = (1<<3)
     };
 
@@ -127,7 +178,7 @@ public:
     void setCandiWindowSize (unsigned size) {m_candiWindowSize = size<10? size: 10;}
 
     virtual unsigned clearIC(void) {m_pIC->clear(); return 0;}
-    virtual bool onKeyEvent(unsigned keycode, unsigned keyvalue, unsigned modifiers) {return false;}
+    virtual bool onKeyEvent(const CKeyEvent& key) {return false;}
 
     virtual void setStatusAttrValue(int key, int value);
     virtual int  getStatusAttrValue(int key);

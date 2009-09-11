@@ -9,6 +9,7 @@
 
 #include "sunpinyin_engine.h"
 
+using namespace std;
 
 SunPinyinEngine::SunPinyinEngine()
     : m_status_prop(NULL),
@@ -119,23 +120,28 @@ SunPinyinEngine::try_switch_cn (guint key_val,
     return FALSE;
 }
 
-static void
-translate_key(guint& key_val, guint& key_code, guint& modifiers)
+static CKeyEvent
+translate_key(const CKeyEvent& k)
 {
-    if (key_val == IM_VK_HOME ||
-        key_val == IM_VK_LEFT ||
-        key_val == IM_VK_UP ||
-        key_val == IM_VK_RIGHT ||
-        key_val == IM_VK_DOWN ||
-        key_val == IM_VK_PAGE_UP ||
-        key_val == IM_VK_PAGE_DOWN ||
-        key_val == IM_VK_END ||
-        key_val == IM_VK_DELETE ||
-        key_val == IM_VK_BACK_SPACE ||
-        key_val == IM_VK_ENTER || 
-        key_val == IM_VK_ESCAPE) {
-        std::swap(key_val, key_code);
+    if (k.value == IM_VK_SPACE && k.code == 0x39) {
+        return CKeyEvent(IM_VK_SPACE, IM_VK_SPACE);
     }
+    if (k.value == IM_VK_HOME && k.code == 0x66) {
+        return CKeyEvent(IM_VK_HOME, IM_VK_HOME);
+    }
+    if (k.value == IM_VK_END && k.code == 0x66) {
+        return CKeyEvent(IM_VK_END, IM_VK_END);
+    }
+    if (k.value == IM_VK_PAGE_UP ||
+        k.value == IM_VK_PAGE_DOWN ||
+        k.value == IM_VK_DELETE ||
+        k.value == IM_VK_BACK_SPACE ||
+        k.value == IM_VK_ENTER || 
+        k.value == IM_VK_ESCAPE) {
+        // swap the keyval and keycode
+        return CKeyEvent(k.value, k.code, k.modifiers);
+    }
+    return k;
 }
 
 
@@ -144,9 +150,9 @@ SunPinyinEngine::try_process_key (guint key_val,
                                   guint key_code,
                                   guint modifiers)
 {
-    // XXX: may need translate IBUS key code to SunPinyin's counterpart
-    translate_key(key_val, key_code, modifiers);
-    return m_pv->onKeyEvent(key_code, key_val, modifiers) ? TRUE : FALSE;
+    CKeyEvent key(key_code, key_val, modifiers);
+    key = translate_key(key);
+    return m_pv->onKeyEvent(key) ? TRUE : FALSE;
 }
 
 void

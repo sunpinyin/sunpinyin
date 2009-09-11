@@ -51,7 +51,7 @@ public:
     virtual void attachIC(CIMIContext* pIC);
     virtual unsigned clearIC(void);
 
-    virtual bool onKeyEvent(unsigned keycode, unsigned keyvalue, unsigned modifiers);
+    virtual bool onKeyEvent(const CKeyEvent&);
 
     virtual void updateWindows(unsigned mask);
 

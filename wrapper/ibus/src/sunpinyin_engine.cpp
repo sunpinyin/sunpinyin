@@ -16,6 +16,8 @@
 #include "sunpinyin_engine.h"
 
 using namespace std;
+namespace config = SunPinyinConfig;
+
 namespace ibus
 {
     fstream log("/tmp/ibus.log", fstream::app|fstream::out);
@@ -28,7 +30,10 @@ SunPinyinEngine::SunPinyinEngine()
       m_shuangpin_prop(NULL),
       m_prop_list(NULL),
       m_lookup_table(NULL),
-      m_parent(NULL)
+      m_parent(NULL),
+      m_wh(NULL),
+      m_pv(NULL),
+      m_hotkey_profile(NULL)
 {}
 
 SunPinyinEngine::~SunPinyinEngine()
@@ -37,7 +42,6 @@ SunPinyinEngine::~SunPinyinEngine()
 void
 SunPinyinEngine::init ()
 {
-    ibus::log << __func__ << "()" << endl;
     m_prop_list = ibus_prop_list_new();
     
     m_status_prop = SunPinyinProperty::create_status_prop(this);
@@ -51,11 +55,9 @@ SunPinyinEngine::init ()
     
     m_lookup_table = new SunPinyinLookupTable();
     
-    m_config = new SunPinyinConfig();
-    
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-    factory.setPinyinScheme(m_config->get_pinyin_scheme());
-    factory.setCandiWindowSize(m_config->get_candidate_window_size());
+    factory.setPinyinScheme(config::PinyinScheme::get());
+    factory.setCandiWindowSize(config::CandidateWindowSize::get());
     
     m_pv = factory.createSession();
     if (!m_pv)
@@ -63,24 +65,59 @@ SunPinyinEngine::init ()
     
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
-    ic->setHistoryPower(m_config->get_history_power());
+    ic->setHistoryPower(config::HistoryPower::get());
     
-    // TODO: load customized hotkey profile
-    //   m_pv->setHotkeyProfile(m_hotkey_profile);
+    m_hotkey_profile = new CHotkeyProfile();
+    init_hotkey_profile();
+    m_pv->setHotkeyProfile(m_hotkey_profile);
+    
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
 }
 
 void
+SunPinyinEngine::init_hotkey_profile()
+{
+    m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_PAGE_UP));
+    m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PAGE_DOWN));
+
+    if (config::PageKeys::use_minus()) {
+        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_MINUS));
+        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
+    }
+    if (config::PageKeys::use_comma()) {
+        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_COMMA));
+        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PERIOD));
+    }
+    if (config::ModeKeys::use_shift()) {
+        m_hotkey_profile->setModeSwitchKey(
+            CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
+    }
+    if (config::ModeKeys::use_shift_control()) {
+        m_hotkey_profile->setModeSwitchKey(
+            CKeyEvent(IM_VK_SHIFT, 0, IM_ALT_MASK|IM_RELEASE_MASK));
+    }
+}
+
+
+void
 SunPinyinEngine::destroy ()
 {
-    ibus::log << __func__ << "()" << endl;
+    if (m_pv) {
+        CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+        factory.destroySession(m_pv);
+        m_pv = NULL;
+    }
+    
+    delete m_wh;
+    m_wh = NULL;
+    
+    delete m_hotkey_profile;
+    m_hotkey_profile = NULL;
+    
     delete m_lookup_table;
     m_lookup_table = NULL;
-    
-    delete m_config;
-    m_config = NULL;
-    
+
     if (m_prop_list) {
         g_object_unref (m_prop_list);
         m_prop_list = NULL;
@@ -97,23 +134,46 @@ SunPinyinEngine::destroy ()
     delete m_shuangpin_prop;
     m_shuangpin_prop = NULL;
     
-    if (m_pv) {
-        CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-        factory.destroySession(m_pv);
-        m_pv = NULL;
-    }
-    
-    delete m_wh;
-    m_wh = NULL;
-    
     IBUS_OBJECT_CLASS (m_parent)->destroy ((IBusObject *)this);
 }
 
 void
 SunPinyinEngine::set_parent_class(IBusEngineClass *klass)
 {
-    ibus::log << __func__ << "()" << endl;
     m_parent = klass;
+}
+
+static CKeyEvent
+translate_key(guint key_val, guint key_code, guint modifiers)
+{
+    if (key_val == IM_VK_SPACE && key_code == 0x39) {
+        return CKeyEvent(IM_VK_SPACE, IM_VK_SPACE, modifiers);
+    }
+    if (key_val == IM_VK_HOME && key_code == 0x66) {
+        return CKeyEvent(IM_VK_HOME, IM_VK_HOME, modifiers);
+    }
+    if (key_val == IM_VK_END && key_code == 0x6B) {
+        return CKeyEvent(IM_VK_END, IM_VK_END, modifiers);
+    }
+    if (key_val == IM_VK_SHIFT) {
+        return CKeyEvent(IM_VK_SHIFT, IM_VK_SHIFT, modifiers);
+    }
+    if (key_val == IM_VK_DELETE) {
+        return CKeyEvent(IM_VK_DELETE, IM_VK_DELETE, modifiers);
+    }   
+
+    if (key_val == IM_VK_PAGE_UP ||
+        key_val == IM_VK_PAGE_DOWN ||
+        key_val == IM_VK_BACK_SPACE ||
+        key_val == IM_VK_ENTER || 
+        key_val == IM_VK_ESCAPE ||
+        key_val == IM_VK_SHIFT ||
+        key_val == IM_VK_CONTROL ||
+        key_val == IM_VK_ALT  ) {
+        // swap the keyval and keycode
+        return CKeyEvent(key_val, key_code, modifiers);
+    }
+    return CKeyEvent(key_code, key_val, modifiers);
 }
 
 gboolean
@@ -123,61 +183,19 @@ SunPinyinEngine::process_key_event (guint key_val,
 {
     if (!is_valid()) return FALSE;
     
-    if (modifiers & IBUS_RELEASE_MASK)
-        return FALSE;
-    return (try_switch_cn(key_val, key_code, modifiers) ||
-            try_process_key(key_val, key_code, modifiers));
-}
+    ibus::log << __func__ << "(): " 
+              << "key_val = " << hex << key_val << ", "
+              << "key_code = " << hex << key_code << ", "
+              << "modifiers = " << hex << modifiers << endl;
 
-gboolean
-SunPinyinEngine::try_switch_cn (guint key_val,
-                                guint key_code,
-                                guint modifiers)
-{
-    if ((key_code == IBUS_Shift_L &&
-         modifiers == (IBUS_SHIFT_MASK|IBUS_RELEASE_MASK)) ||
-        (key_code == IBUS_Shift_R &&
-         modifiers == (IBUS_SHIFT_MASK|IBUS_RELEASE_MASK))) {
-        property_activate(m_status_prop->name(), !m_status_prop->state());
-        reset();
-        return TRUE;
+    CKeyEvent key = translate_key(key_val, key_code, modifiers);
+    
+    if ( !m_pv->getStatusAttrValue(CIBusWinHandler::STATUS_ID_CN) ) {
+        // we are in English input mode
+        if ( !m_hotkey_profile->isModeSwitchKey(key) )
+            return FALSE;
     }
-    return FALSE;
-}
-
-static CKeyEvent
-translate_key(const CKeyEvent& k)
-{
-    if (k.value == IM_VK_SPACE && k.code == 0x39) {
-        return CKeyEvent(IM_VK_SPACE, IM_VK_SPACE);
-    }
-    if (k.value == IM_VK_HOME && k.code == 0x66) {
-        return CKeyEvent(IM_VK_HOME, IM_VK_HOME);
-    }
-    if (k.value == IM_VK_END && k.code == 0x66) {
-        return CKeyEvent(IM_VK_END, IM_VK_END);
-    }
-    if (k.value == IM_VK_PAGE_UP ||
-        k.value == IM_VK_PAGE_DOWN ||
-        k.value == IM_VK_DELETE ||
-        k.value == IM_VK_BACK_SPACE ||
-        k.value == IM_VK_ENTER || 
-        k.value == IM_VK_ESCAPE) {
-        // swap the keyval and keycode
-        return CKeyEvent(k.value, k.code, k.modifiers);
-    }
-    return k;
-}
-
-
-gboolean
-SunPinyinEngine::try_process_key (guint key_val,
-                                  guint key_code,
-                                  guint modifiers)
-{
-    CKeyEvent key(key_code, key_val, modifiers);
-    key = translate_key(key);
-    return m_pv->onKeyEvent(key) ? TRUE : FALSE;
+    return m_pv->onKeyEvent(key);
 }
 
 void
@@ -248,12 +266,15 @@ SunPinyinEngine::property_activate (const std::string& property, unsigned state)
 {
     if (!is_valid()) return;
     
-    if (m_status_prop->update(property, state)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, state);
-    } else if (m_letter_prop->update(property, state)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, state);
-    } else if (m_punct_prop->update(property, state)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, state);
+    if (m_status_prop->toggle(property)) {
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, 
+                                 m_status_prop->state());
+    } else if (m_letter_prop->toggle(property)) {
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
+                                 m_letter_prop->state());
+    } else if (m_punct_prop->toggle(property)) {
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
+                                 m_punct_prop->state());
     }
     // TODO: shuangpin
     m_parent->property_activate(this, property.c_str(), state);

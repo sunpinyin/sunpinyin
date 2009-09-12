@@ -26,9 +26,8 @@ public:
     static SunPinyinProperty *create_punct_prop(IBusEngine * engine,
                                                 bool state = false);
     ~SunPinyinProperty();
-    bool update(const std::string& name, bool state);
+    bool toggle(const std::string& name);
     void update(bool state);
-    const std::string& name() const;
     bool state() const;
     IBusProperty *get();
 

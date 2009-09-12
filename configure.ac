@@ -224,6 +224,13 @@ AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
+ 
+AC_CHECK_DECL([__SUNPRO_C], [SUNCC="yes"], [SUNCC="no"])
+if test "$SUNCC" = "yes"
+then
+    CFLAGS="-features=extensions $CFLAGS"
+    CXXFLAGS="-features=extensions $CXXFLAGS"
+fi  
 
 # Checks for libraries.
 

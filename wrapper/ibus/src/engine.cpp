@@ -16,7 +16,6 @@ static GObject* ibus_sunpinyin_engine_constructor (GType type,
                                                    GObjectConstructParam *construct_params);
 
 static IBusEngineClass *parent_class = NULL;
-static IBusConfig *config = NULL;
 
 GType
 ibus_sunpinyin_engine_get_type (void)
@@ -50,7 +49,7 @@ void
 ibus_sunpinyin_init(IBusBus *bus)
 {
     IBusConfig *config = ibus_bus_get_config(bus);
-    ibus_sunpinyin_set_config(config);
+    SunPinyinConfig::set_config(config);
 }
 
 void

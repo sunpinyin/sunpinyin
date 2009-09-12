@@ -53,11 +53,11 @@ struct CKeyEvent
     unsigned value; 
     unsigned modifiers;
     
-    CKeyEvent (unsigned kc, unsigned kv, unsigned m = 0)
+    CKeyEvent (unsigned kc, unsigned kv = 0, unsigned m = 0)
         : code(kc), value(kv), modifiers(m)
     {
         // clear other mask bit we do not care
-        modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK);
+        modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK);
     }
     
     bool operator < (const CKeyEvent& b) const
@@ -72,8 +72,13 @@ struct CKeyEvent
     bool operator == (const CKeyEvent& rhs) const
     {
         return (code == rhs.code &&
-                value == rhs.value &&
                 modifiers == rhs.modifiers);
+    }
+    
+    bool operator != (const CKeyEvent& rhs) const
+    {
+        return (code != rhs.code ||
+                modifiers != rhs.modifiers);
     }
     
     void reset()

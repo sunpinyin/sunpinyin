@@ -4,13 +4,13 @@
 #include <string>
 #include <ibus.h>
 
-class ICandidateList;
-class IPreeditString;
 class SunPinyinLookupTable;
 class SunPinyinProperty;
-class SunPinyinConfig;
+class ICandidateList;
+class IPreeditString;
 class CIBusWinHandler;
 class CIMIView;
+class CHotkeyProfile;
 
 class SunPinyinEngine : public IBusEngine
 {
@@ -49,24 +49,23 @@ public:
     void update_letter_property(bool);
 
 private:
-    gboolean try_switch_cn (guint key_val, guint key_code, guint modifiers);
-    gboolean try_process_key (guint key_val, guint key_code, guint modifiers);
     void update_lookup_table();
     bool is_valid() const;
+    void init_hotkey_profile();
     
 private:
     SunPinyinProperty *m_status_prop;
     SunPinyinProperty *m_letter_prop;
     SunPinyinProperty *m_punct_prop;
     SunPinyinProperty *m_shuangpin_prop;
-    SunPinyinConfig   *m_config;
     
-    IBusPropList *m_prop_list;
+    IBusPropList         *m_prop_list;
     SunPinyinLookupTable *m_lookup_table;
-    IBusEngineClass *m_parent; // the meta class if its base class
+    IBusEngineClass      *m_parent; // the meta class if its base class
 
     CIBusWinHandler *m_wh;
-    CIMIView *m_pv;
+    CIMIView        *m_pv;
+    CHotkeyProfile  *m_hotkey_profile;
 };
 
 #endif // SUNPINYIN_ENGINE_H

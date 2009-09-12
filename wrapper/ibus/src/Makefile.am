@@ -77,6 +77,8 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_config.h \
 	imi_ibus_win.cpp \
 	imi_ibus_win.h \
+	ibus_compability.cpp \
+	ibus_compability.h \
 	$(NULL)
 
 ibus_engine_sunpinyin_CXXFLAGS = \
@@ -145,5 +147,6 @@ icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \
                            $(top_builddir)/data/enpunc.png         \
                            $(top_builddir)/data/fullwidth.png      \
                            $(top_builddir)/data/halfwidth.png
+
 test: ibus-engine-sunpinyin
 	$(builddir)/ibus-engine-sunpinyin

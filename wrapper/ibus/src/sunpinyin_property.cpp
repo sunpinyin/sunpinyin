@@ -1,10 +1,10 @@
 #include <ibus.h>
-
+#include "ibus_compability.h"
 #include "sunpinyin_property.h"
 
 static const char *PROP_STATUS = "status";
 static const char *PROP_LETTER = "full_letter";
-static const char *PROP_PUNCT = "full_punct";
+static const char *PROP_PUNCT  = "full_punct";
 
 SunPinyinProperty *
 SunPinyinProperty::create_status_prop(IBusEngine *engine, bool state)
@@ -78,7 +78,7 @@ SunPinyinProperty::~SunPinyinProperty()
 }
 
 bool
-SunPinyinProperty::update(const std::string& name, bool)
+SunPinyinProperty::toggle(const std::string& name)
 {
     if (name == m_name) {
         // called by ibus, simple toggle current state
@@ -107,12 +107,6 @@ SunPinyinProperty::init(bool state)
     ibus_property_set_icon (m_prop, info.icon.c_str());
     ibus_property_set_visible (m_prop, TRUE);
     ibus_property_set_state(m_prop, state ? PROP_STATE_CHECKED : PROP_STATE_UNCHECKED);
-}
-
-const std::string&
-SunPinyinProperty::name() const
-{
-    return m_name;
 }
 
 bool

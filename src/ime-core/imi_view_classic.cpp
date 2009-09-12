@@ -163,7 +163,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             }
         }
 
-    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK)) == 0) {
+    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {
         if ((keyvalue > 0x20 && keyvalue < '0') || (keyvalue > '9' && keyvalue < 0x7f)) {
             changeMasks |= KEYEVENT_USED;
             _insert (keyvalue, changeMasks);

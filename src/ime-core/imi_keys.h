@@ -40,9 +40,10 @@
 
 #include "portability.h"
 
-#define IM_SHIFT_MASK        1 << 0
-#define IM_CTRL_MASK         1 << 2
-#define IM_ALT_MASK          1 << 3
+#define IM_SHIFT_MASK        (1 << 0)
+#define IM_CTRL_MASK         (1 << 2)
+#define IM_ALT_MASK          (1 << 3)
+#define IM_RELEASE_MASK      (1 << 30)
 
 #define IM_VK_SPACE          ' '
 #define IM_VK_MINUS          '-'

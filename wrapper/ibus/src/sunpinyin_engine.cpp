@@ -146,34 +146,7 @@ SunPinyinEngine::set_parent_class(IBusEngineClass *klass)
 static CKeyEvent
 translate_key(guint key_val, guint key_code, guint modifiers)
 {
-    if (key_val == IM_VK_SPACE && key_code == 0x39) {
-        return CKeyEvent(IM_VK_SPACE, IM_VK_SPACE, modifiers);
-    }
-    if (key_val == IM_VK_HOME && key_code == 0x66) {
-        return CKeyEvent(IM_VK_HOME, IM_VK_HOME, modifiers);
-    }
-    if (key_val == IM_VK_END && key_code == 0x6B) {
-        return CKeyEvent(IM_VK_END, IM_VK_END, modifiers);
-    }
-    if (key_val == IM_VK_SHIFT) {
-        return CKeyEvent(IM_VK_SHIFT, IM_VK_SHIFT, modifiers);
-    }
-    if (key_val == IM_VK_DELETE) {
-        return CKeyEvent(IM_VK_DELETE, IM_VK_DELETE, modifiers);
-    }   
-
-    if (key_val == IM_VK_PAGE_UP ||
-        key_val == IM_VK_PAGE_DOWN ||
-        key_val == IM_VK_BACK_SPACE ||
-        key_val == IM_VK_ENTER || 
-        key_val == IM_VK_ESCAPE ||
-        key_val == IM_VK_SHIFT ||
-        key_val == IM_VK_CONTROL ||
-        key_val == IM_VK_ALT  ) {
-        // swap the keyval and keycode
-        return CKeyEvent(key_val, key_code, modifiers);
-    }
-    return CKeyEvent(key_code, key_val, modifiers);
+    return CKeyEvent(key_val, key_val, modifiers);
 }
 
 gboolean

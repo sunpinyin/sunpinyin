@@ -25,8 +25,6 @@ public:
                                                  bool state = false);
     static SunPinyinProperty *create_punct_prop(IBusEngine * engine,
                                                 bool state = false);
-    static SunPinyinProperty *create_shuangpin_prop(IBusEngine * engine,
-                                                    bool state = false);
     ~SunPinyinProperty();
     bool update(const std::string& name, bool state);
     void update(bool state);

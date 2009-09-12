@@ -12,7 +12,7 @@ ibus_disconnected_cb (IBusBus  *bus,
 }
 
 static void
-init (void)
+init ()
 {
     IBusComponent *component;
 
@@ -21,10 +21,12 @@ init (void)
     bus = ibus_bus_new ();
     g_signal_connect (bus, "disconnected", G_CALLBACK (ibus_disconnected_cb), NULL);
 	
+    ibus_sunpinyin_init (bus);
+    
     factory = ibus_factory_new (ibus_bus_get_connection (bus));
     ibus_factory_add_engine (factory, "sunpinyin", IBUS_TYPE_SUNPINYIN_ENGINE);
 
-    ibus_bus_request_name (bus, "org.freedesktop.IBus.SunPinyin2", 0);
+    ibus_bus_request_name (bus, "org.freedesktop.IBus.SunPinyin", 0);
 
     component = ibus_component_new ("org.freedesktop.IBus.SunPinyin",
                                     "SunPinyin2",
@@ -41,7 +43,7 @@ init (void)
                                                      "zh_CN",
                                                      "LGPL/CDDL",
                                                      "Kov Chai <tchaikov@gmail.com>",
-                                                     PKGDATADIR"/icon/sunpinyini_logo.xpm",
+                                                     SUNPINYIN_ICON_DIR"/sunpinyin_logo.xpm",
                                                      "en"));
     ibus_bus_register_component (bus, component);
     g_object_unref (component);
@@ -51,4 +53,5 @@ int main()
 {
     init ();
     ibus_main ();
+    ibus_sunpinyin_exit ();
 }

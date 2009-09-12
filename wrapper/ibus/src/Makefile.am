@@ -73,6 +73,8 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_lookup_table.h \
 	sunpinyin_property.cpp \
 	sunpinyin_property.h \
+	sunpinyin_config.cpp \
+	sunpinyin_config.h \
 	imi_ibus_win.cpp \
 	imi_ibus_win.h \
 	$(NULL)
@@ -131,6 +133,9 @@ scim_sunpinyin_datadir   = $(IBUS_SUNPINYIN_DATADIR)
 scim_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
                            $(top_builddir)/data/pydict_sc.bin \
                            $(top_builddir)/data/quanpin.dat 
+
+$(top_builddir)/data/quanpin.dat:
+	$(python) $(top_builddir)/python/pinyin_data.py
 
 icondir                  = $(IBUS_SUNPINYIN_ICONDIR)
 icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \

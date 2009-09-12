@@ -1,5 +1,6 @@
 #include "sunpinyin_engine_proxy.h"
 #include "sunpinyin_engine.h"
+#include "sunpinyin_config.h"
 #include "engine.h"
 
 struct IBusSunPinyinEngineClass {
@@ -15,6 +16,7 @@ static GObject* ibus_sunpinyin_engine_constructor (GType type,
                                                    GObjectConstructParam *construct_params);
 
 static IBusEngineClass *parent_class = NULL;
+static IBusConfig *config = NULL;
 
 GType
 ibus_sunpinyin_engine_get_type (void)
@@ -42,6 +44,18 @@ ibus_sunpinyin_engine_get_type (void)
 
     return type;
 }
+
+// load sunpinyin configuration
+void
+ibus_sunpinyin_init(IBusBus *bus)
+{
+    IBusConfig *config = ibus_bus_get_config(bus);
+    ibus_sunpinyin_set_config(config);
+}
+
+void
+ibus_sunpinyin_exit()
+{}
 
 // initialize the meta class object
 void
@@ -82,6 +96,7 @@ ibus_sunpinyin_engine_constructor (GType type,
                                                     n_construct_params,
                                                     construct_params);
     engine->set_parent_class(parent_class);
+    
     const gchar *engine_name = ibus_engine_get_name ((IBusEngine *) engine);
     g_assert (engine_name);
     // 

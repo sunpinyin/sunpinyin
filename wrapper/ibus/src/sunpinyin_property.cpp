@@ -5,7 +5,6 @@
 static const char *PROP_STATUS = "status";
 static const char *PROP_LETTER = "full_letter";
 static const char *PROP_PUNCT = "full_punct";
-static const char *PROP_SHUANGPIN = "shuangpin";
 
 SunPinyinProperty *
 SunPinyinProperty::create_status_prop(IBusEngine *engine, bool state)
@@ -44,20 +43,6 @@ SunPinyinProperty::create_punct_prop(IBusEngine *engine, bool state)
     prop->init(state);
     return prop;
 
-}
-
-SunPinyinProperty *
-SunPinyinProperty::create_shuangpin_prop(IBusEngine *engine, bool state)
-{
-    SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_SHUANGPIN);
-    // TODO: have a icon for quanpin and shuangpin
-    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"Quanpin");
-    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/eng.png";
-    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"Shuangpin");
-    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/han.png";
-
-    prop->init(state);
-    return prop;
 }
 
 SunPinyinProperty::SunPinyinProperty(IBusEngine *engine, const std::string& name)

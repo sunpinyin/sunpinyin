@@ -8,6 +8,7 @@ class ICandidateList;
 class IPreeditString;
 class SunPinyinLookupTable;
 class SunPinyinProperty;
+class SunPinyinConfig;
 class CIBusWinHandler;
 class CIMIView;
 
@@ -58,6 +59,8 @@ private:
     SunPinyinProperty *m_letter_prop;
     SunPinyinProperty *m_punct_prop;
     SunPinyinProperty *m_shuangpin_prop;
+    SunPinyinConfig   *m_config;
+    
     IBusPropList *m_prop_list;
     SunPinyinLookupTable *m_lookup_table;
     IBusEngineClass *m_parent; // the meta class if its base class

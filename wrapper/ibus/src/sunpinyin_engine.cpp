@@ -1,3 +1,8 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+
+#include <cassert>
 #include <algorithm>
 #include <imi_view.h>
 #include <imi_options.h>
@@ -5,11 +10,16 @@
 
 #include "sunpinyin_property.h"
 #include "sunpinyin_lookup_table.h"
+#include "sunpinyin_config.h"
 #include "imi_ibus_win.h"
 
 #include "sunpinyin_engine.h"
 
 using namespace std;
+namespace ibus
+{
+    fstream log("/tmp/ibus.log", fstream::app|fstream::out);
+}
 
 SunPinyinEngine::SunPinyinEngine()
     : m_status_prop(NULL),
@@ -27,6 +37,7 @@ SunPinyinEngine::~SunPinyinEngine()
 void
 SunPinyinEngine::init ()
 {
+    ibus::log << __func__ << "()" << endl;
     m_prop_list = ibus_prop_list_new();
     
     m_status_prop = SunPinyinProperty::create_status_prop(this);
@@ -38,15 +49,24 @@ SunPinyinEngine::init ()
     m_punct_prop = SunPinyinProperty::create_punct_prop(this);
     ibus_prop_list_append(m_prop_list, m_punct_prop->get());
     
-    m_shuangpin_prop = SunPinyinProperty::create_shuangpin_prop(this);
-    ibus_prop_list_append(m_prop_list, m_shuangpin_prop->get());
-    
     m_lookup_table = new SunPinyinLookupTable();
-
+    
+    m_config = new SunPinyinConfig();
+    
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+    factory.setPinyinScheme(m_config->get_pinyin_scheme());
+    factory.setCandiWindowSize(m_config->get_candidate_window_size());
+    
     m_pv = factory.createSession();
     if (!m_pv)
         return;
+    
+    CIMIContext* ic = m_pv->getIC();
+    assert(ic);
+    ic->setHistoryPower(m_config->get_history_power());
+    
+    // TODO: load customized hotkey profile
+    //   m_pv->setHotkeyProfile(m_hotkey_profile);
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
 }
@@ -54,8 +74,12 @@ SunPinyinEngine::init ()
 void
 SunPinyinEngine::destroy ()
 {
+    ibus::log << __func__ << "()" << endl;
     delete m_lookup_table;
     m_lookup_table = NULL;
+    
+    delete m_config;
+    m_config = NULL;
     
     if (m_prop_list) {
         g_object_unref (m_prop_list);
@@ -72,7 +96,7 @@ SunPinyinEngine::destroy ()
 
     delete m_shuangpin_prop;
     m_shuangpin_prop = NULL;
-
+    
     if (m_pv) {
         CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
         factory.destroySession(m_pv);
@@ -88,6 +112,7 @@ SunPinyinEngine::destroy ()
 void
 SunPinyinEngine::set_parent_class(IBusEngineClass *klass)
 {
+    ibus::log << __func__ << "()" << endl;
     m_parent = klass;
 }
 

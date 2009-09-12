@@ -248,11 +248,16 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         return ret;
     }
 
-    bool  bCompleted = !((len - m_nAlpha)%2) && 
-                 ( islower(m_pystr[m_pystr.length()-1])) ;
-
     IPySegmentor::ESegmentType seg_type;
-    if (!islower (ch)) {
+    EShuangpinType    shpType = s_shpData.getShuangpinType();
+    bool       bInputCh = false;
+    if ((shpType == MS2003 || shpType ==ZIGUANG) && ch==';') {
+        bInputCh = true;
+    }
+    bool  bCompleted = !((len - m_nAlpha)%2) && 
+                 ( islower(m_pystr[m_pystr.length()-1]) || bInputCh ) ;
+
+    if (!islower(ch) && !bInputCh) { 
         ret = m_pystr.size() - 1;
         (ch == '\'') ? seg_type = IPySegmentor::SYLLABLE_SEP: seg_type = IPySegmentor::STRING;
         m_segs.push_back (TSegment (ch, ret, 1, seg_type));

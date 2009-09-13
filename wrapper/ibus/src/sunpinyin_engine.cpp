@@ -56,20 +56,22 @@ SunPinyinEngine::init ()
     m_lookup_table = new SunPinyinLookupTable();
     
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-    factory.setPinyinScheme(config::PinyinScheme::get());
-    factory.setCandiWindowSize(config::CandidateWindowSize::get());
+    
+    m_options = new SunPinyinConfig::Options();
+    m_options->listen_on_changed(this);
+    
+    factory.setPinyinScheme(m_options->pinyin_scheme.get());
+    factory.setCandiWindowSize(m_options->candidate_window_size.get());
     
     m_pv = factory.createSession();
     if (!m_pv)
         return;
-    
-    CIMIContext* ic = m_pv->getIC();
-    assert(ic);
-    ic->setHistoryPower(config::HistoryPower::get());
+    update_history_power(m_options->history_power.get());
     
     m_hotkey_profile = new CHotkeyProfile();
     init_hotkey_profile();
     m_pv->setHotkeyProfile(m_hotkey_profile);
+    
     
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
@@ -78,22 +80,10 @@ SunPinyinEngine::init ()
 void
 SunPinyinEngine::init_hotkey_profile()
 {
-    if (config::PageKeys::use_minus()) {
-        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_MINUS));
-        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
-    }
-    if (config::PageKeys::use_comma()) {
-        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_COMMA));
-        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PERIOD));
-    }
-    if (config::ModeKeys::use_shift()) {
-        m_hotkey_profile->setModeSwitchKey(
-            CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
-    }
-    if (config::ModeKeys::use_shift_control()) {
-        m_hotkey_profile->setModeSwitchKey(
-            CKeyEvent(IM_VK_SHIFT, 0, IM_ALT_MASK|IM_RELEASE_MASK));
-    }
+    update_page_key_minus(m_options->page_use_minus.get());
+    update_page_key_comma(m_options->page_use_comma.get());
+    update_mode_key_shift(m_options->mode_use_shift.get());
+    update_mode_key_shift_control(m_options->mode_use_shift_control.get());
 }
 
 
@@ -115,6 +105,9 @@ SunPinyinEngine::destroy ()
     delete m_lookup_table;
     m_lookup_table = NULL;
 
+    delete m_options;
+    m_options = NULL;
+    
     if (m_prop_list) {
         g_object_unref (m_prop_list);
         m_prop_list = NULL;
@@ -388,3 +381,60 @@ SunPinyinEngine::update_letter_property(bool full)
 {
     m_letter_prop->update(full);
 }
+
+void
+SunPinyinEngine::update_pinyin_scheme(int scheme)
+{
+    // TODO
+}
+
+void
+SunPinyinEngine::update_history_power(unsigned power)
+{
+    CIMIContext* ic = m_pv->getIC();
+    assert(ic);
+    ic->setHistoryPower(power);
+}
+
+void
+SunPinyinEngine::update_candidate_window_size(unsigned size)
+{
+    // TODO
+}
+
+void
+SunPinyinEngine::update_mode_key_shift(bool enabled)
+{
+    if (enabled) {
+        m_hotkey_profile->setModeSwitchKey(
+            CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
+    }
+}
+
+void
+SunPinyinEngine::update_mode_key_shift_control(bool enabled)
+{
+    if (enabled) {
+        m_hotkey_profile->setModeSwitchKey(
+            CKeyEvent(IM_VK_SHIFT, 0, IM_ALT_MASK|IM_RELEASE_MASK));
+    }
+}
+
+void
+SunPinyinEngine::update_page_key_minus(bool enabled)
+{
+    if (enabled) {
+        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_MINUS));
+        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
+    }
+}
+
+void
+SunPinyinEngine::update_page_key_comma(bool enabled)
+{
+    if (enabled) {
+        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_COMMA));
+        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PERIOD));
+    }
+}
+

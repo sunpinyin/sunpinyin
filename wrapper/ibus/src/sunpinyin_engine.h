@@ -11,6 +11,10 @@ class IPreeditString;
 class CIBusWinHandler;
 class CIMIView;
 class CHotkeyProfile;
+namespace SunPinyinConfig
+{
+    class Options;
+}
 
 class SunPinyinEngine : public IBusEngine
 {
@@ -48,6 +52,15 @@ public:
     void update_punct_property(bool);
     void update_letter_property(bool);
 
+public:
+    void update_pinyin_scheme(int);
+    void update_history_power(unsigned);
+    void update_candidate_window_size(unsigned);
+    void update_mode_key_shift(bool);
+    void update_mode_key_shift_control(bool);
+    void update_page_key_minus(bool);
+    void update_page_key_comma(bool);
+    
 private:
     void update_lookup_table();
     bool is_valid() const;
@@ -66,6 +79,8 @@ private:
     CIBusWinHandler *m_wh;
     CIMIView        *m_pv;
     CHotkeyProfile  *m_hotkey_profile;
+    
+    SunPinyinConfig::Options* m_options;
 };
 
 #endif // SUNPINYIN_ENGINE_H

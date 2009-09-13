@@ -1,5 +1,5 @@
 #include <ibus.h>
-#include "ibus_compability.h"
+#include "ibus_portable.h"
 #include "sunpinyin_property.h"
 
 static const char *PROP_STATUS = "status";

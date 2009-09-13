@@ -77,8 +77,8 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_config.h \
 	imi_ibus_win.cpp \
 	imi_ibus_win.h \
-	ibus_compability.cpp \
-	ibus_compability.h \
+	ibus_portable.cpp \
+	ibus_portable.h \
 	$(NULL)
 
 ibus_engine_sunpinyin_CXXFLAGS = \

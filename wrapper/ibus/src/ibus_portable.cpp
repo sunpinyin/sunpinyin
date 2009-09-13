@@ -1,4 +1,4 @@
-#include "ibus_compability.h"
+#include "ibus_portable.h"
 
 #if defined(WITH_IBUS_1_1_0)
 

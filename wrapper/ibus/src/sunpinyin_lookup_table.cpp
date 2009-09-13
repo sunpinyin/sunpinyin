@@ -107,9 +107,9 @@ SunPinyinLookupTable::decorate_candidate(IBusText *text, int type)
     switch (type) {
     case ICandidateList::BEST_WORD:
         ibus_text_append_attribute (text, IBUS_ATTR_TYPE_FOREGROUND,
-                                    0x00ffffff, 0, -1);
-        ibus_text_append_attribute (text, IBUS_ATTR_TYPE_BACKGROUND,
-                                    0x00000000, 0, -1);
+                                    0x003E6B8A, 0, -1);
+        ibus_text_append_attribute (text, IBUS_ATTR_TYPE_UNDERLINE,
+                                    IBUS_ATTR_UNDERLINE_SINGLE, 0, -1);
         break;
     case ICandidateList::USER_SELECTED_WORD:
         break;

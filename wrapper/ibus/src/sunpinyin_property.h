@@ -4,14 +4,18 @@
 #include <string>
 #include <ibus.h>
 
+struct PropertyInfo
+{
+    PropertyInfo();
+    ~PropertyInfo();
+    
+    std::string icon;
+    IBusText   *label;
+    IBusText   *tooltip;
+};
+
 class SunPinyinProperty
 {
-    struct PropertyInfo
-    {
-        std::string icon;
-        IBusText   *label;
-        IBusText   *tooltip;
-    };
     IBusEngine       *m_engine;
     const std::string m_name;
     PropertyInfo      m_info[2];
@@ -35,5 +39,18 @@ private:
     void init(bool state);
     SunPinyinProperty(IBusEngine *engine, const std::string& name);
 };
+
+class SetupLauncher
+{
+    const std::string m_name;
+    PropertyInfo      m_info;
+    IBusProperty     *m_prop;
+public:
+    SetupLauncher();
+    void launch(const std::string& name);
+    IBusProperty *get();
+    void init();
+};
+
 
 #endif // SUNPINYIN_PROPERTY_H

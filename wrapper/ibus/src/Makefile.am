@@ -91,6 +91,7 @@ ibus_engine_sunpinyin_CXXFLAGS = \
 	-I$(SLM_SRC_DIR) \
 	-DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
 	-DSUNPINYIN_ICON_DIR=\"$(IBUS_SUNPINYIN_ICONDIR)\" \
+	-DLIBEXECDIR=\"$(libexecdir)\" \
 	-Wall \
 	$(NULL)
 
@@ -147,6 +148,5 @@ icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \
                            $(top_builddir)/data/enpunc.png         \
                            $(top_builddir)/data/fullwidth.png      \
                            $(top_builddir)/data/halfwidth.png
-
 test: ibus-engine-sunpinyin
 	$(builddir)/ibus-engine-sunpinyin

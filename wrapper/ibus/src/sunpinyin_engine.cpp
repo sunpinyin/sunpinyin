@@ -27,7 +27,6 @@ SunPinyinEngine::SunPinyinEngine()
     : m_status_prop(NULL),
       m_letter_prop(NULL),
       m_punct_prop(NULL),
-      m_shuangpin_prop(NULL),
       m_prop_list(NULL),
       m_lookup_table(NULL),
       m_parent(NULL),
@@ -52,6 +51,9 @@ SunPinyinEngine::init ()
     
     m_punct_prop = SunPinyinProperty::create_punct_prop(this);
     ibus_prop_list_append(m_prop_list, m_punct_prop->get());
+
+    m_setup_prop = new SetupLauncher();
+    ibus_prop_list_append(m_prop_list, m_setup_prop->get());
     
     m_lookup_table = new SunPinyinLookupTable();
     
@@ -120,9 +122,9 @@ SunPinyinEngine::destroy ()
 
     delete m_punct_prop;
     m_punct_prop = NULL;
-
-    delete m_shuangpin_prop;
-    m_shuangpin_prop = NULL;
+    
+    delete m_setup_prop;
+    m_setup_prop = NULL;
     
     IBUS_OBJECT_CLASS (m_parent)->destroy ((IBusObject *)this);
 }
@@ -245,6 +247,9 @@ SunPinyinEngine::property_activate (const std::string& property, unsigned state)
     } else if (m_punct_prop->toggle(property)) {
         m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
                                  m_punct_prop->state());
+    } else {
+        // try to launch setup UI
+        m_setup_prop->launch(property);
     }
     // TODO: shuangpin
     m_parent->property_activate(this, property.c_str(), state);

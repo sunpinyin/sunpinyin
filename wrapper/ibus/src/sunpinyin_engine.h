@@ -6,6 +6,7 @@
 
 class SunPinyinLookupTable;
 class SunPinyinProperty;
+class SetupLauncher;
 class ICandidateList;
 class IPreeditString;
 class CIBusWinHandler;
@@ -70,7 +71,7 @@ private:
     SunPinyinProperty *m_status_prop;
     SunPinyinProperty *m_letter_prop;
     SunPinyinProperty *m_punct_prop;
-    SunPinyinProperty *m_shuangpin_prop;
+    SetupLauncher     *m_setup_prop;
     
     IBusPropList         *m_prop_list;
     SunPinyinLookupTable *m_lookup_table;

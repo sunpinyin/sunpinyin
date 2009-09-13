@@ -6,6 +6,20 @@ static const char *PROP_STATUS = "status";
 static const char *PROP_LETTER = "full_letter";
 static const char *PROP_PUNCT  = "full_punct";
 
+PropertyInfo::PropertyInfo()
+    : label(NULL), tooltip(NULL)
+{}
+
+PropertyInfo::~PropertyInfo()
+{
+    if (label) {
+        g_object_unref(label);
+    }
+    if (tooltip) {
+        g_object_unref(tooltip);
+    }
+}
+
 SunPinyinProperty *
 SunPinyinProperty::create_status_prop(IBusEngine *engine, bool state)
 {
@@ -60,17 +74,6 @@ SunPinyinProperty::SunPinyinProperty(IBusEngine *engine, const std::string& name
 
 SunPinyinProperty::~SunPinyinProperty()
 {
-    for (int i = 0; i < 2; ++i) {
-        PropertyInfo& info = m_info[i];
-        if (info.label) {
-            g_object_unref(info.label);
-            info.label = NULL;
-        }
-        if (info.tooltip) {
-            g_object_unref(info.tooltip);
-            info.tooltip = NULL;
-        }
-    }
     if (m_prop) {
         g_object_unref(m_prop);
         m_prop = NULL;
@@ -119,4 +122,61 @@ IBusProperty *
 SunPinyinProperty::get()
 {
     return m_prop;
+}
+
+
+SetupLauncher::SetupLauncher()
+    : m_name("setup")
+{
+    
+    m_prop = ibus_property_new(m_name.c_str(),
+                               PROP_TYPE_NORMAL,
+                               NULL, /* label */ NULL, /* icon */
+                               NULL, /* tooltip */ TRUE, /* sensitive */
+                               TRUE, /* visible */ PROP_STATE_UNCHECKED, /* state */
+                               NULL);
+    m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"setup");
+    m_info.tooltip = ibus_text_new_from_ucs4((const gunichar*) L"Configure SunPinyin");
+    m_info.icon    = SUNPINYIN_ICON_DIR"/setup.svg";
+}
+
+void
+SetupLauncher::launch(const std::string& name)
+{
+    if (m_name != name) return;
+    
+    GError *error = NULL;
+    gchar *argv[2] = { NULL, };
+	gchar *path;
+	const char* libexecdir;
+    
+	libexecdir = g_getenv("LIBEXECDIR");
+	if (libexecdir == NULL)
+	    libexecdir = LIBEXECDIR;
+    
+	path = g_build_filename(libexecdir, "ibus-setup-sunpinyin", NULL);
+	argv[0] = path;
+	argv[1] = NULL;
+    gboolean success;
+    success = g_spawn_async (NULL, argv, NULL,
+                             G_SPAWN_SEARCH_PATH,
+                             NULL, NULL, NULL, &error);
+    if (!success) {
+        g_message("Unabled to launch \"%s\"", path);
+    }
+    g_free(path);
+}
+
+IBusProperty *
+SetupLauncher::get()
+{
+    return m_prop;
+}
+
+void
+SetupLauncher::init()
+{
+    ibus_property_set_label(m_prop, m_info.label);
+    ibus_property_set_icon (m_prop, m_info.icon.c_str());
+    ibus_property_set_visible (m_prop, TRUE);
 }

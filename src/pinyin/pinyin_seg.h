@@ -49,7 +49,7 @@
 struct IPySegmentor
 {
     enum ESegmentType 
-        {SYLLABLE, SYLLABLE_SEP, INVALID, STRING,};
+        {SYLLABLE, SYLLABLE_SEP, INVALID, STRING};
 
     struct TSegment {
         TSegment (ESegmentType type=SYLLABLE) : m_type(type) {}

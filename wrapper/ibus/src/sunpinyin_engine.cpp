@@ -11,12 +11,12 @@
 #include "sunpinyin_property.h"
 #include "sunpinyin_lookup_table.h"
 #include "sunpinyin_config.h"
+#include "sunpinyin_config_keys.h"
 #include "imi_ibus_win.h"
 
 #include "sunpinyin_engine.h"
 
 using namespace std;
-namespace config = SunPinyinConfig;
 
 namespace ibus
 {
@@ -59,33 +59,32 @@ SunPinyinEngine::init ()
     
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     
-    m_options = new SunPinyinConfig::Options();
-    m_options->listen_on_changed(this);
+    m_config = new SunPinyinConfig();
+    m_config->listen_on_changed(this);
     
-    factory.setPinyinScheme(m_options->pinyin_scheme.get());
-    factory.setCandiWindowSize(m_options->candidate_window_size.get());
+    factory.setPinyinScheme(m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN));
+    factory.setCandiWindowSize(m_config->get(CONFIG_VIEW_CANDIDATE_WIN_SIZE, 10U));
     
     m_pv = factory.createSession();
     if (!m_pv)
         return;
-    update_history_power(m_options->history_power.get());
+    update_history_power();
     
     m_hotkey_profile = new CHotkeyProfile();
-    init_hotkey_profile();
+    update_hotkey_profile();
     m_pv->setHotkeyProfile(m_hotkey_profile);
-    
     
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
 }
 
 void
-SunPinyinEngine::init_hotkey_profile()
+SunPinyinEngine::update_hotkey_profile()
 {
-    update_page_key_minus(m_options->page_use_minus.get());
-    update_page_key_comma(m_options->page_use_comma.get());
-    update_mode_key_shift(m_options->mode_use_shift.get());
-    update_mode_key_shift_control(m_options->mode_use_shift_control.get());
+    update_page_key_minus();
+    update_page_key_comma();
+    update_mode_key_shift();
+    update_mode_key_control();
 }
 
 
@@ -106,9 +105,6 @@ SunPinyinEngine::destroy ()
     
     delete m_lookup_table;
     m_lookup_table = NULL;
-
-    delete m_options;
-    m_options = NULL;
     
     if (m_prop_list) {
         g_object_unref (m_prop_list);
@@ -248,7 +244,7 @@ SunPinyinEngine::property_activate (const std::string& property, unsigned state)
         m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
                                  m_punct_prop->state());
     } else {
-        // try to launch setup UI
+        // try to launch the setup UI
         m_setup_prop->launch(property);
     }
     // TODO: shuangpin
@@ -356,12 +352,8 @@ SunPinyinEngine::update_preedit_string(const IPreeditString& preedit)
         
         const int caret = preedit.caret();
         if (caret > 0 && caret <= len) {
-            // 
+            // TODO: fake a caret?
         }
-        ibus::log << __func__ << "(): " 
-                  << "caret = " << caret << ", "
-                  << "len = " << len
-                  << endl;
         ibus_engine_update_preedit_text(this, text, caret, TRUE);
         g_object_unref(text);
     } else {
@@ -387,38 +379,67 @@ SunPinyinEngine::update_letter_property(bool full)
     m_letter_prop->update(full);
 }
 
+
 void
-SunPinyinEngine::update_pinyin_scheme(int scheme)
+SunPinyinEngine::update_config()
 {
+    update_history_power();
+    update_pinyin_scheme();
+    update_candidate_window_size();
+    update_hotkey_profile();
+}
+        
+void
+SunPinyinEngine::update_pinyin_scheme()
+{
+    CSunpinyinSessionFactory::EPyScheme scheme =
+        m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN);
+    if (scheme == CSunpinyinSessionFactory::SHUANGPIN) {
+        update_shuangpin_type();
+    }
     // TODO
 }
 
 void
-SunPinyinEngine::update_history_power(unsigned power)
+SunPinyinEngine::update_shuangpin_type()
 {
+    EShuangpinType type =
+        m_config->get_shuangpin_type(MS2003);
+    // TODO
+}
+
+void
+SunPinyinEngine::update_history_power()
+{
+    unsigned power = m_config->get(CONFIG_PINYIN_MEMORY_POWER, 3U);
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
     ic->setHistoryPower(power);
 }
 
 void
-SunPinyinEngine::update_candidate_window_size(unsigned size)
+SunPinyinEngine::update_candidate_window_size()
 {
+    unsigned size = m_config->get(CONFIG_VIEW_CANDIDATE_WIN_SIZE, 10U);
     // TODO
 }
 
 void
-SunPinyinEngine::update_mode_key_shift(bool enabled)
+SunPinyinEngine::update_mode_key_shift()
 {
+    bool enabled = m_config->get(CONFIG_KEYBOARD_MODE_SWITCH_SHIFT, true);
     if (enabled) {
         m_hotkey_profile->setModeSwitchKey(
             CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
     }
+    // TODO: remove the key binding
 }
 
 void
-SunPinyinEngine::update_mode_key_shift_control(bool enabled)
+SunPinyinEngine::update_mode_key_control()
 {
+    bool enabled = m_config->get(CONFIG_KEYBOARD_MODE_SWITCH_CONTROL, false);
+    
     if (enabled) {
         m_hotkey_profile->setModeSwitchKey(
             CKeyEvent(IM_VK_SHIFT, 0, IM_ALT_MASK|IM_RELEASE_MASK));
@@ -426,8 +447,10 @@ SunPinyinEngine::update_mode_key_shift_control(bool enabled)
 }
 
 void
-SunPinyinEngine::update_page_key_minus(bool enabled)
+SunPinyinEngine::update_page_key_minus()
 {
+    bool enabled = m_config->get(CONFIG_KEYBOARD_PAGE_MINUS, false);
+
     if (enabled) {
         m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_MINUS));
         m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
@@ -435,8 +458,10 @@ SunPinyinEngine::update_page_key_minus(bool enabled)
 }
 
 void
-SunPinyinEngine::update_page_key_comma(bool enabled)
+SunPinyinEngine::update_page_key_comma()
 {
+    bool enabled = m_config->get(CONFIG_KEYBOARD_PAGE_COMMA, false);
+
     if (enabled) {
         m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_COMMA));
         m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PERIOD));

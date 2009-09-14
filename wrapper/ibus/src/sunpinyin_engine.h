@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ibus.h>
+#include "sunpinyin_config.h"
 
 class SunPinyinLookupTable;
 class SunPinyinProperty;
@@ -12,10 +13,6 @@ class IPreeditString;
 class CIBusWinHandler;
 class CIMIView;
 class CHotkeyProfile;
-namespace SunPinyinConfig
-{
-    class Options;
-}
 
 class SunPinyinEngine : public IBusEngine
 {
@@ -54,18 +51,22 @@ public:
     void update_letter_property(bool);
 
 public:
-    void update_pinyin_scheme(int);
-    void update_history_power(unsigned);
-    void update_candidate_window_size(unsigned);
-    void update_mode_key_shift(bool);
-    void update_mode_key_shift_control(bool);
-    void update_page_key_minus(bool);
-    void update_page_key_comma(bool);
+    /* helper for @ref SunPinyinConfig */
+    void update_config();
     
 private:
     void update_lookup_table();
     bool is_valid() const;
-    void init_hotkey_profile();
+
+    void update_pinyin_scheme();
+    void update_shuangpin_type();
+    void update_history_power();
+    void update_candidate_window_size();
+    void update_mode_key_shift();
+    void update_mode_key_control();
+    void update_page_key_minus();
+    void update_page_key_comma();
+    void update_hotkey_profile();
     
 private:
     SunPinyinProperty *m_status_prop;
@@ -81,7 +82,7 @@ private:
     CIMIView        *m_pv;
     CHotkeyProfile  *m_hotkey_profile;
     
-    SunPinyinConfig::Options* m_options;
+    SunPinyinConfig *m_config;
 };
 
 #endif // SUNPINYIN_ENGINE_H

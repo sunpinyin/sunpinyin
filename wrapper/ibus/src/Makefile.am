@@ -75,6 +75,7 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_property.h \
 	sunpinyin_config.cpp \
 	sunpinyin_config.h \
+	sunpinyin_config_keys.h \
 	imi_ibus_win.cpp \
 	imi_ibus_win.h \
 	ibus_portable.cpp \

@@ -85,7 +85,7 @@ public:
     
     bool isModeSwitchKey (const CKeyEvent& key) const
     {
-        return m_modeSwitchKey == key;
+        return matches(m_modeSwitchKey, key);
     }
     
     void setPunctSwitchKey (const CKeyEvent& key)
@@ -95,7 +95,7 @@ public:
     
     bool isPunctSwitchKey (const CKeyEvent& key) const
     {
-        return m_punctSwitchKey == key;
+        return matches(m_punctSwitchKey, key);
     }
     
     void setSymbolSwitchKey (const CKeyEvent& key)
@@ -105,7 +105,21 @@ public:
     
     bool isSymbolSwitchKey (const CKeyEvent& key) const
     {
-        return m_symbolSwitchKey == key;
+        return matches(m_symbolSwitchKey, key);
+    }
+
+    void rememberLastKey(const CKeyEvent& key)
+    {
+        m_prevKey = key;
+    }
+    
+private:
+    bool matches(const CKeyEvent& lhs, const CKeyEvent& rhs) const
+    {
+        if (lhs == rhs)
+            return ( (!lhs.modifiers & IM_RELEASE_MASK) ||
+                     m_prevKey.code == rhs.code );
+        return false;
     }
     
 protected:
@@ -114,6 +128,7 @@ protected:
     CKeyEvent           m_modeSwitchKey;
     CKeyEvent           m_punctSwitchKey;
     CKeyEvent           m_symbolSwitchKey;
+    CKeyEvent           m_prevKey;
 };
 
 class CIMIView {

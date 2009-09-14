@@ -1,165 +1,63 @@
 #ifndef SUNPINYIN_CONFIG_H
 #define SUNPINYIN_CONFIG_H
 
-#include <vector>
+#include <map>
 #include <string>
-#include <cassert>
 #include <ibus.h>
 #include <imi_options.h>
 
 class SunPinyinEngine;
 
-namespace SunPinyinConfig
+class SunPinyinConfig
 {
-    struct ConfigInfo;
-    
-    // TODO: ELanguage, EInputStyle
-    //       these features are not implemented yet.
-    struct Configurable
-    {
-        virtual bool on_changed(const gchar *section,
-                                const gchar *name,
-                                GValue *value) = 0;
-    };
-        
-    template <typename ItemType>
-    class ConfigItem : public Configurable
-    {
-    public:
-        ConfigItem(const ConfigInfo&);
-        ItemType get();
-        void set(ItemType);
-        bool on_changed(const gchar *section,
-                        const gchar *name,
-                        GValue *value);
-            protected:
-        virtual void do_change(bool) {}
-        virtual void do_change(unsigned) {}
-        virtual void do_change(const std::string&) {}
-    protected:
-        const ConfigInfo &m_info;
-    };
-        
-    template<typename ItemType> 
-    ItemType ConfigItem<ItemType>::get()
-    {
-        class IncompleteType;
-        return IncompleteType();
-    }
-    template<typename ItemType> 
-    void ConfigItem<ItemType>::set(ItemType)
-    {
-        assert(false && "not supported type");
-    }
-    template<> bool ConfigItem<bool>::get();
-    template<> std::string ConfigItem<std::string>::get();
-    template<> unsigned ConfigItem<unsigned>::get();    
-    template<> void ConfigItem<bool>::set(bool value);
-    template<> void ConfigItem<std::string>::set(std::string value);
-    template<> void ConfigItem<unsigned>::set(unsigned value);
+    typedef std::map<std::string,
+        CSunpinyinSessionFactory::EPyScheme> SchemeNames;
+    typedef std::map<std::string,
+        EShuangpinType> TypeNames;
 
-    
-    class PinyinScheme : public ConfigItem<std::string>
-    {
-        typedef std::map<std::string,
-                         CSunpinyinSessionFactory::EPyScheme> SchemeNames;
-        
-        SchemeNames m_scheme_names;
-        const std::string get_name(CSunpinyinSessionFactory::EPyScheme);
-        CSunpinyinSessionFactory::EPyScheme get_scheme(const std::string&);
-    public:
-        PinyinScheme();
-        CSunpinyinSessionFactory::EPyScheme get();
-        void set(CSunpinyinSessionFactory::EPyScheme);
-        virtual void do_change(const std::string&);
-    };
-    
+    SchemeNames        m_scheme_names;
+    TypeNames          m_type_names;
+    SunPinyinEngine   *m_engine;
 
-    class CandidateWindowSize : public ConfigItem<unsigned>
-    {
-    public:
-        CandidateWindowSize();
-        virtual void do_change(unsigned);
-    };
-
-    class HistoryPower : public ConfigItem<unsigned>
-    {
-    public:
-        HistoryPower();
-        virtual void do_change(unsigned);
-    };
+    static IBusConfig *m_config;
     
-    namespace ModeKeys
-    {
-        class Shift : public ConfigItem<bool>
-        {
-        public:
-            Shift();
-            virtual void do_change(bool);
-        };
-        
-        class ShiftControl : public ConfigItem<bool>
-        {
-        public:
-            ShiftControl();
-            virtual void do_change(bool);
-        };
-    }
+public:
+    SunPinyinConfig();
     
-    namespace PageKeys
-    {
-        class MinusEquals : public ConfigItem<bool>
-        {
-        public:
-            MinusEquals();
-            virtual void do_change(bool);
-        };
-        class CommaPeriod : public ConfigItem<bool>
-        {
-        public:
-            CommaPeriod();
-            virtual void do_change(bool);
-        };
-    }
+    bool get(const char* key, bool val);
+    void set(const char* key, bool val);
+    
+    unsigned get(const char* key, unsigned val);
+    void set(const char* key, unsigned val);
+    
+    std::string get(const char *key, const std::string& default_val);
+    void set(const char* key, const std::string& val);
 
-    // TODO: switch full/half symbol
-    //       switch full/half punct
+    CSunpinyinSessionFactory::EPyScheme get_py_scheme(CSunpinyinSessionFactory::EPyScheme);
+    void set_py_scheme(CSunpinyinSessionFactory::EPyScheme);
+
+    EShuangpinType get_shuangpin_type(EShuangpinType);
+    void set_shuangpin_type(EShuangpinType);
+    
     /**
      * gets called in ibus_sunpinyin_init() so that SunPinyinEngine can read 
      * configuration when it starts up
      */
-    void set_config(IBusConfig *);
+    static void set_config(IBusConfig *);
 
-    class Options
-    {
-    public:
-        CandidateWindowSize    candidate_window_size;
-        PinyinScheme           pinyin_scheme;
-        HistoryPower           history_power;
-        ModeKeys::Shift        mode_use_shift;
-        ModeKeys::ShiftControl mode_use_shift_control;
-        PageKeys::MinusEquals  page_use_minus;
-        PageKeys::CommaPeriod  page_use_comma;
-        
-    public:
-        Options();
-        /**
-         * call engine's callback funcs when the config changes
-         */
-        void listen_on_changed(SunPinyinEngine *engine);
-        
-    private:   
-        static void on_config_value_changed(IBusConfig *config,
-                                            const gchar *section,
-                                            const gchar *name,
-                                            GValue *value,
-                                            gpointer user_data);
-        
-    private:
-        typedef std::vector<Configurable*> ConfigItems;
-        ConfigItems m_configs;
-    };
-}
+    void listen_on_changed(SunPinyinEngine *engine);
+    
+    static void on_config_value_changed(IBusConfig *config,
+                                        const gchar *section,
+                                        const gchar *name,
+                                        GValue *value,
+                                        gpointer user_data);
 
+private:
+    std::string get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme);
+    CSunpinyinSessionFactory::EPyScheme get_scheme(const std::string& name);
+    std::string get_type_name(EShuangpinType);
+    EShuangpinType get_type(const std::string& name);
+};
 
 #endif // SUNPINYIN_CONFIG_H

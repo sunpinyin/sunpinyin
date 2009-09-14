@@ -116,30 +116,34 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
 
     if (m_pHotkeyProfile && m_pHotkeyProfile->isModeSwitchKey(key)) {
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, (!m_bCN)?1:0);
+        m_pHotkeyProfile->rememberLastKey(key);
         return 0;
-
+        
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isPunctSwitchKey(key)) {
         // On CTRL+. switch Full/Half punc
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, (!m_bFullPunct)?1:0);
-
+        m_pHotkeyProfile->rememberLastKey(key);
+        
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isSymbolSwitchKey(key)) {
         // On SHIFT+SPACE switch Full/Half symbol
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, (!m_bFullSymbol)?1:0);
-
+        m_pHotkeyProfile->rememberLastKey(key);
+        
     } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_LEFT)  { // move left
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             _moveLeft (changeMasks);
         }
-
+        m_pHotkeyProfile->rememberLastKey(key);
+        
     } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_RIGHT) { // move right
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             _moveRight (changeMasks);
         }
-
+        m_pHotkeyProfile->rememberLastKey(key);
     } else if ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
                (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) {
         if (!m_pIC->isEmpty ()) {
@@ -151,7 +155,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 changeMasks |= CANDIDATE_MASK;
             }
         }
-
+        m_pHotkeyProfile->rememberLastKey(key);
     } else if ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
                (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) {
         if (!m_pIC->isEmpty ()) {
@@ -162,7 +166,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 changeMasks |= CANDIDATE_MASK;
             }
         }
-
+        m_pHotkeyProfile->rememberLastKey(key);
     } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {
         if ((keyvalue > 0x20 && keyvalue < '0') || (keyvalue > '9' && keyvalue < 0x7f)) {
             changeMasks |= KEYEVENT_USED;
@@ -225,6 +229,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 _moveEnd (changeMasks);
             }
         }
+        m_pHotkeyProfile->rememberLastKey(key);
     } 
 
 #ifdef DEBUG

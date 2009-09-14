@@ -87,6 +87,27 @@ AC_SUBST(SUNPINYIN_DATADIR)
 
 PKG_CHECK_MODULES(sqlite3, [sqlite3 >= 3.0])
 
+dnl-----------------------------------------------------------------------
+dnl    --enable-documents
+dnl-----------------------------------------------------------------------
+AC_ARG_ENABLE(documents,
+    [AS_HELP_STRING([--enable-documents], [build documents])], , 
+    enable_documents=yes)
+if test "$enable_documents" = "yes"; then
+  IBUS_ENGINE_SUNPINYIN_BUILD_DOCUMENTS=1
+else
+  IBUS_ENGINE_SUNPINYIN_BUILD_DOCUMENTS=0
+  enable_documents=no
+fi
+AM_CONDITIONAL(SCIM_BRIDGE_BUILD_DOCUMENTS,
+        [test "$enable_documents" = "yes"])
+if test "$enable_documents" = "yes"; then
+  BUILD_DIR_DOCUMENTS=doc
+  AC_SUBST(BUILD_DIR_DOCUMENTS)
+  AC_CONFIG_FILES([doc/Makefile])
+fi
+
+
 AC_ARG_ENABLE([cle],
     AC_HELP_STRING([--enable-cle], [compile as cle IME (default=auto), multiple wrappers could be compiled together ]),
     [ENABLE_CLE="${enableval}"],
@@ -281,7 +302,6 @@ AC_SUBST(USE_NLS)
 
 AC_OUTPUT(Makefile
           build/Makefile
-          doc/Makefile
           wrapper/Makefile
           wrapper/cle/Makefile
           wrapper/cle/iiim/Makefile

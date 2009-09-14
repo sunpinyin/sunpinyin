@@ -61,7 +61,7 @@ namespace SunPinyinConfig
     
     class PinyinScheme : public ConfigItem<std::string>
     {
-        typedef std::map<const std::string,
+        typedef std::map<std::string,
                          CSunpinyinSessionFactory::EPyScheme> SchemeNames;
         
         SchemeNames m_scheme_names;

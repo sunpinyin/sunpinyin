@@ -56,6 +56,5 @@ mv -f ./po/Makefile.in.in.new ./po/Makefile.in.in
 autoconf
 
 if test "x$1" != "x--do-not-run-configure" ; then
-    #./configure $@
-    ./configure --disable-cle --enable-ibus
+    ./configure $@
 fi

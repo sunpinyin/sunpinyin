@@ -94,12 +94,12 @@ AC_ARG_ENABLE(documents,
     [AS_HELP_STRING([--enable-documents], [build documents])], , 
     enable_documents=yes)
 if test "$enable_documents" = "yes"; then
-  IBUS_ENGINE_SUNPINYIN_BUILD_DOCUMENTS=1
+  SUNPINYIN_SLM_UTILITY_DOCUMENTS=1
 else
-  IBUS_ENGINE_SUNPINYIN_BUILD_DOCUMENTS=0
+  SUNPINYIN_SLM_UTILITY_DOCUMENTS=0
   enable_documents=no
 fi
-AM_CONDITIONAL(SCIM_BRIDGE_BUILD_DOCUMENTS,
+AM_CONDITIONAL(SUNPINYIN_SLM_UTILITY_DOCUMENTS,
         [test "$enable_documents" = "yes"])
 if test "$enable_documents" = "yes"; then
   BUILD_DIR_DOCUMENTS=doc

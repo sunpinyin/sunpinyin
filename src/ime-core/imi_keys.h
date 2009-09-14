@@ -73,4 +73,46 @@
 #define IM_VK_CONTROL        0xffe3
 #define IM_VK_ALT            0xffe9
 
+struct CKeyEvent
+{
+    unsigned code;
+    unsigned value; 
+    unsigned modifiers;
+    
+    CKeyEvent (unsigned kc, unsigned kv = 0, unsigned m = 0)
+        : code(kc), value(kv), modifiers(m)
+    {
+        // clear other mask bit we do not care
+        modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK);
+    }
+    
+    bool operator < (const CKeyEvent& b) const
+    {
+        return ((code < b.code) ||
+                ((code == b.code) &&
+                 ((value < b.value) ||
+                  ((value == b.value) &&
+                   (modifiers < b.modifiers)))));
+    }
+    
+    bool operator == (const CKeyEvent& rhs) const
+    {
+        return (code == rhs.code &&
+                modifiers == rhs.modifiers);
+    }
+    
+    bool operator != (const CKeyEvent& rhs) const
+    {
+        return (code != rhs.code ||
+                modifiers != rhs.modifiers);
+    }
+    
+    void reset()
+    {
+        code = (unsigned)~0;
+        value = (unsigned)~0;
+        modifiers = 0;
+    }
+};
+
 #endif

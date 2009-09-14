@@ -13,7 +13,7 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>«PROJECTNAME»</string>
+    <string>${PRODUCT_NAME}</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>
@@ -29,6 +29,8 @@
     <!--                                                -->
     <!-- Input Methods are background only applications -->
     <key>LSBackgroundOnly</key>
+    <string>0</string>
+    <key>LSUIElement</key>
     <string>1</string>
     <!--                                                -->
     <!-- An InputMethodConnectionName must be specified -->
@@ -51,7 +53,7 @@
     <!-- Specify an icon file.  This is used to display your input method in the International Preference Input Menu panel. -->
     <!--                                                -->
     <key>tsInputMethodIconFileKey</key>
-    <string>SunPinyin.tiff</string>
+    <string>SunPinyin.icns</string>
     <!--                                                -->
     <!-- The next required entry in the Info.plist XML file is your input method's character repertoire.  -->
     <!-- This is an array of ISO language codes         -->
@@ -60,5 +62,11 @@
     <array>
         <string>Hans</string>
     </array>
+    <key>SUFeedURL</key>
+    <string>http://opensolaris.org/os/project/input-method/files/sunpinyin_appcast.xml</string>
+    <key>SUPublicDSAKeyFile</key>
+    <string>dsa_pub.pem</string>
+    <key>SUScheduledCheckInterval</key>
+    <integer>86400</integer>
 </dict>
 </plist>

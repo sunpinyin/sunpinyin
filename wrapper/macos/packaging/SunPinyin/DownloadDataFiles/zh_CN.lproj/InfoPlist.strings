@@ -1,0 +1,5 @@
+﻿/* Localized versions of Info.plist keys */
+
+
+NSHumanReadableCopyright = "© SunPinyin, 2009";
+InstallerSectionTitle = "下载数据文件";

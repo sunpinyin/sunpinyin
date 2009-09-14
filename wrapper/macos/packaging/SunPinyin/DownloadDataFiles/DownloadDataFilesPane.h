@@ -1,3 +1,9 @@
+//
+//  DownloadDataFilesPane.h
+//  DownloadDataFiles
+//
+//  Created by Jjgod Jiang on 4/21/09.
+
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  * 
@@ -36,28 +42,25 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <InputMethodKit/InputMethodKit.h>
+#import <InstallerPlugins/InstallerPlugins.h>
 
-#import "imi_view.h"
+@interface DownloadDataFilesPane : InstallerPane {
+    NSMutableArray *filesToDownload;
+    NSMutableArray *filesDownloaded;
+    NSUInteger totalBytesToDownload;
+    
+    IBOutlet NSTextField *mainTextField;
+    IBOutlet NSTextField *auxTextField;
 
-@interface SunPinyinController : IMKInputController {
-    int                 _currentCharset;        // charset for candidates
-    int                 _currentStyle;          // the current input style
-    int                 _factoryToken;          // the token gotten from sunpinyin session factory
-    id                  _currentClient;         // the current active client
-    NSString            *_preeditString;        // the cached preedit string
-    CIMIView            *_pv;
-    int                 _caret;
-    int                 _candiStart;
-    bool                _englishMode;
-    NSUInteger          _lastModifiers[2];
-    NSEventType         _lastEventTypes[2];
+    IBOutlet NSButton *getButton;
+    IBOutlet NSProgressIndicator *progress;
+    
+    BOOL isDownloading;
+    NSURLDownload *currentDownload;
+    NSMutableData *receivedData;
 }
 
--(void)commitString:(NSString*)string;
--(void)showPreeditString:(NSString*)string;
--(void)setCaret:(int)caret andCandiStart:(int)start;
--(void)showCandidates:(NSArray*)candidates;
--(void)updateStatus:(int)key withValue:(int)value;
+- (id) objectForKeyInBundle: (NSString *) key;
+- (IBAction) startDownload: (id) sender;
 
 @end

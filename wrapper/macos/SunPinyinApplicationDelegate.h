@@ -63,18 +63,17 @@ typedef enum {
     bool                        _usingUSKbLayout;
     CIMIData*                   _data;
     CBigramHistory*             _history;
-    CSunpinyinOptions*          _pref;
 }
 
 -(NSMenu*)menu;
 -(CIMIData*)sysData;
 -(CBigramHistory*)history;
 -(void)saveHistory;
--(CSunpinyinOptions*)preferences;
 -(CandidateWindow*)candiWin;
 
 -(IBAction)showPrefPanel:(id)sender;
 -(IBAction)showFontPanel:(id)sender;
+-(IBAction)checkForUpdate:(id)sender;
 
 -(IBAction)toggleChinesePuncts:(id)sender;
 -(bool)inputChinesePuncts;

@@ -37,7 +37,9 @@
 
 #import "SunPinyinInputController.h"
 #import "SunPinyinApplicationDelegate.h"
+#import "macos_keycode.h"
 #import "imi_imkitwin.h"
+#import "imi_options.h"
 
 // forward declaration of 'Private' category
 @interface SunPinyinController(Private) 
@@ -112,10 +114,8 @@ Here are the three approaches:
 
             if (_englishMode) {
                 // We need two spaces to commit in modern style
-                if (_currentStyle == CIMIViewFactory::SVT_MODERN)
-                    [self commitComposition:nil];
-                else
-                    _pv->onKeyEvent (' ', ' ', 0);
+                CKeyEvent key_event (' ', ' ', 0);
+                _pv->onKeyEvent (key_event);
             }
             break;
         case NSKeyDown:
@@ -136,7 +136,10 @@ Here are the three approaches:
             }
  
             [self tryToSwitchStyle];
-            handled = _pv->onKeyEvent (keyCode, keyChar, modifiers);
+            
+            // translate osx keyevents to ime keyevents
+            CKeyEvent key_event = osx_keyevent_to_ime_keyevent (keyCode, keyChar, modifiers);
+            handled = _pv->onKeyEvent (key_event);
             break;
         defaults:
             break;
@@ -156,10 +159,16 @@ Here are the three approaches:
 
 -(void)activateServer:(id)sender
 {
-    _englishMode = NO;
-    if (!_pv) [self createSession];
     if ([[NSApp delegate] usingUSKbLayout])
         [sender overrideKeyboardWithKeyboardNamed:@"com.apple.keylayout.US"];
+}
+
+-(id)initWithServer:(IMKServer*)server delegate:(id)delegate client:(id)inputClient
+{
+    if (self = [super initWithServer:server delegate:delegate client:inputClient])
+        [self createSession];
+
+    return self;
 }
 
 -(void)deactivateServer:(id)sender
@@ -180,9 +189,9 @@ Here are the three approaches:
 
 -(void)commitComposition:(id)sender 
 {
-    NSString *string = _currentStyle == CIMIViewFactory::SVT_MODERN?
-                       _preeditString: [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [self commitString:string];
+    NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (string && [string length])
+        [self commitString:string];
     if (_pv) _pv->clearIC();
 }
 
@@ -199,15 +208,15 @@ Here are the three approaches:
 -(void)toggleChinesePuncts:(id)sender
 {
     [[NSApp delegate] toggleChinesePuncts:sender];
-    _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
-                            [[NSApp delegate] inputChinesePuncts]);
+    if (_pv) _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
+                                     [[NSApp delegate] inputChinesePuncts]);
 }
 
 -(void)toggleFullSymbols:(id)sender
 {
     [[NSApp delegate] toggleFullSymbols:sender];
-    _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSIMBOL, 
-                            [[NSApp delegate] inputFullSymbols]);
+    if (_pv) _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
+                                     [[NSApp delegate] inputFullSymbols]);
 }
 
 -(void)dealloc 
@@ -218,9 +227,10 @@ Here are the three approaches:
 
 -(void)commitString:(NSString*)string
 {
-    if (![string length])
-        return;
-        
+    // fixed that IME does not work with M$ powerpoint 2008
+    _caret = [string length];
+    [self showPreeditString:[string retain]];
+
     [_currentClient insertText:string 
                     replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
 
@@ -260,8 +270,7 @@ Here are the three approaches:
 -(void)showCandidates:(NSArray*)candidates
 {
     NSRect cursorRect;
-    int curIdx = _currentStyle == CIMIViewFactory::SVT_MODERN?
-                 _caret:_candiStart;
+    int curIdx = _candiStart;
     [_currentClient attributesForCharacterIndex:curIdx lineHeightRectangle:&cursorRect];
     [[[NSApp delegate] candiWin] showCandidates:candidates around:cursorRect];
 }
@@ -273,7 +282,7 @@ Here are the three approaches:
         if (value != [[NSApp delegate] inputChinesePuncts])
             [self toggleChinesePuncts:nil];
         break;
-    case CIMIWinHandler::STATUS_ID_FULLSIMBOL:
+    case CIMIWinHandler::STATUS_ID_FULLSYMBOL:
         if (value != [[NSApp delegate] inputFullSymbols])
             [self toggleFullSymbols:nil];
         break;
@@ -290,19 +299,8 @@ Here are the three approaches:
 
 -(void)tryToSwitchStyle
 {
-    CSunpinyinOptions *opts = [[NSApp delegate] preferences];
-
-    if (*opts == _pv->getPreference())
-        return;
-
-    if (_currentStyle == opts->m_ViewType &&
-        _currentCharset == opts->m_GBK) {
-        _pv->s_CandiWindowSize = opts->m_CandiWindowSize;
-        _pv->setPreference(opts);
-        return;
-    }
-
     /* input style changed, have to recreate session */
+    return;
     [self destroySession];
     [self createSession];
 }
@@ -312,26 +310,14 @@ Here are the three approaches:
     if (![[NSApp delegate] sysData])
         return;
 
-    CSunpinyinOptions *opts = [[NSApp delegate] preferences];
-    _currentStyle = opts->m_ViewType;
-    _currentCharset = opts->m_GBK;
-
-    // create view and set its properties and preferences
-    _pv = CIMIViewFactory::createView(_currentStyle);
+    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+    
+    _factoryToken = factory.getToken();
+    _pv = factory.createSession ();
     _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
                             [[NSApp delegate] inputChinesePuncts]);
-    _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSIMBOL, 
+    _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
                             [[NSApp delegate] inputFullSymbols]);
-    _pv->s_CandiWindowSize = opts->m_CandiWindowSize;
-    _pv->setPreference(opts);
-    
-    // create ic and attach to the view
-    CIMIContext *pic = new CIMIContext();
-    pic->setNonCompleteSyllable(true);
-    pic->setCoreData ([[NSApp delegate] sysData]);
-    pic->setHistoryMemory([[NSApp delegate] history]);
-    pic->clear();
-    _pv->attachIC(pic);
 
     // create callback handler and attach to the view
     CIMKitWindowHandler* pwh = new CIMKitWindowHandler(self);
@@ -343,9 +329,9 @@ Here are the three approaches:
     if (!_pv) return;
 
     [[NSApp delegate] saveHistory];
-    delete _pv->getIC();
-    delete _pv->getWinHandler();
-    delete _pv;
+    
+    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+    factory.destroySession(_pv);
     _pv = nil;
 }
 

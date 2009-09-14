@@ -38,11 +38,12 @@
 #include <sys/stat.h>
 #import "imi_view.h"
 #import "SunPinyinApplicationDelegate.h"
+#import <Sparkle/Sparkle.h>
 
 static NSString* get_history_path ();
 static bool save_history (CICHistory*);
 static bool load_history (CICHistory*);
-static bool load_preferences (CSunpinyinOptions*);
+static bool load_preferences ();
 
 @implementation SunPinyinApplicationDelegate
 
@@ -90,21 +91,9 @@ static bool load_preferences (CSunpinyinOptions*);
     save_history(_history);
 }
 
--(CSunpinyinOptions*)preferences
-{    
-    if (_pref == nil) {
-        _pref = new CSunpinyinOptions();
-        load_preferences (_pref);
-    }
-
-    return _pref;
-}
 
 -(void)preferencesChanged:(NSNotification *)notification
 {
-    if (_pref)
-        load_preferences (_pref);
-
     NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
     
     //setting full/half puncts and symbols
@@ -174,6 +163,13 @@ static bool load_preferences (CSunpinyinOptions*);
     [ftDlg makeKeyAndOrderFront:sender];
 }
 
+-(IBAction)checkForUpdate:(id)sender
+{
+    SUUpdater *updater = [SUUpdater sharedUpdater];
+    
+    [updater checkForUpdates: sender];
+}
+
 -(void) changeFont:(id)sender
 {
     NSFont *oldFont =[_candiWin font];
@@ -240,7 +236,6 @@ static bool load_preferences (CSunpinyinOptions*);
 {
     delete _data;
     delete _history;
-    delete _pref;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
@@ -323,9 +318,10 @@ static bool load_history (CICHistory* history)
     return suc;
 }
 
-static bool load_preferences (CSunpinyinOptions* opts)
+static bool load_preferences ()
 {
     NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
+#if 0
     opts->m_ViewType = [pref integerForKey: @"inputStyle"]?
                        CIMIViewFactory::SVT_CLASSIC:
                        CIMIViewFactory::SVT_MODERN;
@@ -334,7 +330,7 @@ static bool load_preferences (CSunpinyinOptions* opts)
     opts->m_CommaAsPageUp = [pref boolForKey:@"pagingByCommaAndDot"];
     opts->m_CandiWindowSize = [pref integerForKey:@"candiNumbers"];
     opts->m_GBK = [[pref stringForKey:@"charset"] isEqualToString:@"GBK"];
-
+#endif
     return YES;
 }
 

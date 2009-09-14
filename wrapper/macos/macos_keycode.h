@@ -38,36 +38,40 @@
 #ifndef _MACOS_KEYCODE_H_
 #define _MACOS_KEYCODE_H_
 
+#import "imi_keys.h"
+
 /* get the definitions from <AppKit/NSEvent.h> and <Carbon/Events.h> */
 
-#define IM_SHIFT_MASK        1 << 17
-#define IM_CTRL_MASK         1 << 18
-#define IM_ALT_MASK          1 << 19
+#define OSX_SHIFT_MASK        1 << 17
+#define OSX_CTRL_MASK         1 << 18
+#define OSX_ALT_MASK          1 << 19
 
-#define IM_VK_SPACE          ' '
-#define IM_VK_MINUS          '-'
-#define IM_VK_EQUALS         '='
-#define IM_VK_COMMA          ','
-#define IM_VK_PERIOD         '.'
-#define IM_VK_OPEN_BRACKET   '['
-#define IM_VK_CLOSE_BRACKET  ']'
-#define IM_VK_BACK_QUOTE     '`'
+#define OSX_VK_SPACE          ' '
+#define OSX_VK_MINUS          '-'
+#define OSX_VK_EQUALS         '='
+#define OSX_VK_COMMA          ','
+#define OSX_VK_PERIOD         '.'
+#define OSX_VK_OPEN_BRACKET   '['
+#define OSX_VK_CLOSE_BRACKET  ']'
+#define OSX_VK_BACK_QUOTE     '`'
 
-#define IM_VK_ENTER          0x24
-#define IM_VK_BACK_SPACE     0x33
-#define IM_VK_ESCAPE         0x35
-#define IM_VK_PAGE_UP        0x74
-#define IM_VK_PAGE_DOWN      0x79
-#define IM_VK_END            0x77
-#define IM_VK_HOME           0x73
-#define IM_VK_LEFT           0x7B
-#define IM_VK_UP             0x7E
-#define IM_VK_RIGHT          0x7C
-#define IM_VK_DOWN           0x7D
-#define IM_VK_DELETE         0x75
+#define OSX_VK_ENTER          0x24
+#define OSX_VK_BACK_SPACE     0x33
+#define OSX_VK_ESCAPE         0x35
+#define OSX_VK_PAGE_UP        0x74
+#define OSX_VK_PAGE_DOWN      0x79
+#define OSX_VK_END            0x77
+#define OSX_VK_HOME           0x73
+#define OSX_VK_LEFT           0x7B
+#define OSX_VK_UP             0x7E
+#define OSX_VK_RIGHT          0x7C
+#define OSX_VK_DOWN           0x7D
+#define OSX_VK_DELETE         0x75
 
-#define IM_VK_CONTROL        0x3B
-#define IM_VK_SHIFT          0x38
-#define IM_VK_ALT            0x3A
+#define OSX_VK_CONTROL        0x3B
+#define OSX_VK_SHIFT          0x38
+#define OSX_VK_ALT            0x3A
+
+extern CKeyEvent osx_keyevent_to_ime_keyevent (unsigned, unsigned, unsigned);
 
 #endif /* _MACOS_KEYCODE_H_ */

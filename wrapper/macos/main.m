@@ -37,6 +37,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <InputMethodKit/InputMethodKit.h>
+#import <Sparkle/Sparkle.h>
 
 //Each input method needs a unique connection name. 
 //Note that periods and spaces are not allowed in the connection name.
@@ -54,6 +55,9 @@ int main(int argc, char *argv[])
     //find the bundle identifier and then initialize the input method server
     identifier = [[NSBundle mainBundle] bundleIdentifier];
     server = [[IMKServer alloc] initWithName:(NSString*)kConnectionName bundleIdentifier:identifier];
+    
+    SUUpdater *updater = [SUUpdater sharedUpdater];
+    [updater checkForUpdatesInBackground];
     
     //load the bundle explicitly because in this case the input method is a background only application 
     [NSBundle loadNibNamed:@"MainMenu" owner:[NSApplication sharedApplication]];

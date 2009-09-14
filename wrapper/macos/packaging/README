@@ -1,0 +1,15 @@
+Package SunPinyin for Mac OS X release
+======================================
+
+SunPinyin for Mac OS X has been updated to support automatic
+self-update and automatic data files (lm_sg.t3g, pydict_sc.bin)
+fetching.
+
+1. After you update data files (../../../data/*.t3g.{be,le},
+*.bin.{be.le}), run genplist.py to generate a plist for these,
+then upload the output to somewhere we can access publicly.
+
+2. After SunPinyin is updated, run package.py to generate the
+installer package, create zip archive, Sparkle appcast. Then
+upload them according to the output of package.py.
+

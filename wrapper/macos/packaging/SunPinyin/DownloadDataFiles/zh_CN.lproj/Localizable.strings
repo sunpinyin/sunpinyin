@@ -1,0 +1,42 @@
+﻿/* Localized versions of Info.plist keys */
+
+"PaneTitle" = "下载或更新所需的数据文件";
+
+/* No comment provided by engineer. */
+"%@ of %@" = "完成 %1$@, 共 %2$@";
+
+/* All files downloaded. */
+"All files are successfully downloaded." = "所有的文件都成功下载了。";
+
+/* the unit for bytes */
+"B" = "B";
+
+/* Click Download Button */
+"Click the Start button to download them automatically." = "点击“开始”按钮开始自动下载。";
+
+/* Download stopped */
+"Download stopped." = "下载已停止。";
+
+/* the unit for gigabytes */
+"GB" = "GB";
+
+/* the unit for kilobytes */
+"KB" = "KB";
+
+/* the unit for megabytes */
+"MB" = "MB";
+
+/* Start downloading */
+"Start..." = "开始...";
+
+/* Stop */
+"Cancel" = "取消";
+
+/* Need To Download */
+"The following files need to be downloaded and save to\n%@:" = "下面的文件需要下载并保存到:\n%@:";
+
+/* Bypass */
+"You already have the latest data files, just Continue." = "你已经有最新的数据文件了，请点击继续。";
+
+/* Checking property list on network */
+"Checking updates for data files..." = "正在检查数据文件的更新...";

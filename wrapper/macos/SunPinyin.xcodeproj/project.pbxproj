@@ -7,26 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0752CBF10F9C723600C7096E /* dsa_pub.pem */; };
+		0752CBF40F9C745200C7096E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
+		0752CC1A0F9C77EB00C7096E /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */ = {isa = PBXBuildFile; fileRef = A412C8570F7942DB006B10AD /* SunPinyin.icns */; };
 		A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A422A7D00DCD694400B41288 /* CandidateWindow.m */; };
 		A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
 		A464E3740F65261800148227 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
+		A47C487E105E86B5006D528B /* ic_history.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4865105E86B5006D528B /* ic_history.cpp */; };
+		A47C487F105E86B5006D528B /* imi_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4867105E86B5006D528B /* imi_context.cpp */; };
+		A47C4880105E86B5006D528B /* imi_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4869105E86B5006D528B /* imi_data.cpp */; };
+		A47C4881105E86B5006D528B /* imi_funcobjs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C486C105E86B5006D528B /* imi_funcobjs.cpp */; };
+		A47C4882105E86B5006D528B /* imi_options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C486F105E86B5006D528B /* imi_options.cpp */; };
+		A47C4883105E86B5006D528B /* imi_uiobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4871105E86B5006D528B /* imi_uiobjects.cpp */; };
+		A47C4884105E86B5006D528B /* imi_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4873105E86B5006D528B /* imi_view.cpp */; };
+		A47C4885105E86B5006D528B /* imi_view_classic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4875105E86B5006D528B /* imi_view_classic.cpp */; };
+		A47C4886105E86B5006D528B /* imi_winHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4877105E86B5006D528B /* imi_winHandler.cpp */; };
+		A47C4887105E86B5006D528B /* lattice_states.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4879105E86B5006D528B /* lattice_states.cpp */; };
+		A47C4888105E86B5006D528B /* userdict.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C487B105E86B5006D528B /* userdict.cpp */; };
+		A47C4895105E86DB006D528B /* pinyin_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C488C105E86DB006D528B /* pinyin_data.cpp */; };
+		A47C4896105E86DB006D528B /* pinyin_seg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C488E105E86DB006D528B /* pinyin_seg.cpp */; };
+		A47C4897105E86DB006D528B /* shuangpin_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4890105E86DB006D528B /* shuangpin_data.cpp */; };
+		A47C4898105E86DB006D528B /* shuangpin_seg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4892105E86DB006D528B /* shuangpin_seg.cpp */; };
+		A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */ = {isa = PBXBuildFile; fileRef = A47C48DE105E8CE8006D528B /* macos_keycode.mm */; };
 		A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */; };
-		A48D91030DBDD1750013F02D /* SunPinyin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A48D91020DBDD1750013F02D /* SunPinyin.tiff */; };
 		A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */; };
 		A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B8E1B20F645B870094E08B /* Carbon.framework */; };
-		A4DA4E690DBDD9D600472176 /* ic_history.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E4B0DBDD9D600472176 /* ic_history.cpp */; };
-		A4DA4E6A0DBDD9D600472176 /* imi_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E4D0DBDD9D600472176 /* imi_context.cpp */; };
-		A4DA4E6B0DBDD9D600472176 /* imi_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E4F0DBDD9D600472176 /* imi_data.cpp */; };
-		A4DA4E6C0DBDD9D600472176 /* imi_options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E520DBDD9D600472176 /* imi_options.cpp */; };
-		A4DA4E6D0DBDD9D600472176 /* imi_uiobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E540DBDD9D600472176 /* imi_uiobjects.cpp */; };
-		A4DA4E6E0DBDD9D600472176 /* imi_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E560DBDD9D600472176 /* imi_view.cpp */; };
-		A4DA4E6F0DBDD9D600472176 /* imi_view_classic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E580DBDD9D600472176 /* imi_view_classic.cpp */; };
-		A4DA4E700DBDD9D600472176 /* imi_view_modern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E5A0DBDD9D600472176 /* imi_view_modern.cpp */; };
-		A4DA4E710DBDD9D600472176 /* imi_winHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E5C0DBDD9D600472176 /* imi_winHandler.cpp */; };
-		A4DA4E720DBDD9D600472176 /* lattice_states.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E5F0DBDD9D600472176 /* lattice_states.cpp */; };
 		A4DA4E730DBDD9D600472176 /* pytrie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E620DBDD9D600472176 /* pytrie.cpp */; };
 		A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E640DBDD9D600472176 /* portability.cpp */; };
 		A4DA4E750DBDD9D600472176 /* slm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E670DBDD9D600472176 /* slm.cpp */; };
@@ -46,6 +55,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0752CC1A0F9C77EB00C7096E /* Sparkle.framework in CopyFiles */,
 				A464E3740F65261800148227 /* Growl.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,6 +63,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0752CBF10F9C723600C7096E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = packaging/dsa_pub.pem; sourceTree = "<group>"; };
+		0752CBF30F9C745200C7096E /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -61,13 +73,50 @@
 		32CA4F630368D1EE00C91783 /* SunPinyin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyin_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SunPinyin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunPinyin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A412C8570F7942DB006B10AD /* SunPinyin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SunPinyin.icns; sourceTree = "<group>"; };
 		A422A7CF0DCD694400B41288 /* CandidateWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateWindow.h; sourceTree = "<group>"; };
 		A422A7D00DCD694400B41288 /* CandidateWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateWindow.m; sourceTree = "<group>"; };
 		A42E2EB30DD33E1A00165E46 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A44571AB0DBF42C200F793F9 /* macos_keycode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_keycode.h; sourceTree = "<group>"; };
 		A464E2BD0F65211A00148227 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = SOURCE_ROOT; };
+		A47C4865105E86B5006D528B /* ic_history.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ic_history.cpp; path = "../../src/ime-core/ic_history.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4866105E86B5006D528B /* ic_history.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ic_history.h; path = "../../src/ime-core/ic_history.h"; sourceTree = SOURCE_ROOT; };
+		A47C4867105E86B5006D528B /* imi_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_context.cpp; path = "../../src/ime-core/imi_context.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4868105E86B5006D528B /* imi_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_context.h; path = "../../src/ime-core/imi_context.h"; sourceTree = SOURCE_ROOT; };
+		A47C4869105E86B5006D528B /* imi_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_data.cpp; path = "../../src/ime-core/imi_data.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C486A105E86B5006D528B /* imi_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_data.h; path = "../../src/ime-core/imi_data.h"; sourceTree = SOURCE_ROOT; };
+		A47C486B105E86B5006D528B /* imi_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_defines.h; path = "../../src/ime-core/imi_defines.h"; sourceTree = SOURCE_ROOT; };
+		A47C486C105E86B5006D528B /* imi_funcobjs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_funcobjs.cpp; path = "../../src/ime-core/imi_funcobjs.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C486D105E86B5006D528B /* imi_funcobjs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_funcobjs.h; path = "../../src/ime-core/imi_funcobjs.h"; sourceTree = SOURCE_ROOT; };
+		A47C486E105E86B5006D528B /* imi_keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_keys.h; path = "../../src/ime-core/imi_keys.h"; sourceTree = SOURCE_ROOT; };
+		A47C486F105E86B5006D528B /* imi_options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_options.cpp; path = "../../src/ime-core/imi_options.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4870105E86B5006D528B /* imi_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_options.h; path = "../../src/ime-core/imi_options.h"; sourceTree = SOURCE_ROOT; };
+		A47C4871105E86B5006D528B /* imi_uiobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_uiobjects.cpp; path = "../../src/ime-core/imi_uiobjects.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4872105E86B5006D528B /* imi_uiobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_uiobjects.h; path = "../../src/ime-core/imi_uiobjects.h"; sourceTree = SOURCE_ROOT; };
+		A47C4873105E86B5006D528B /* imi_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_view.cpp; path = "../../src/ime-core/imi_view.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4874105E86B5006D528B /* imi_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_view.h; path = "../../src/ime-core/imi_view.h"; sourceTree = SOURCE_ROOT; };
+		A47C4875105E86B5006D528B /* imi_view_classic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_view_classic.cpp; path = "../../src/ime-core/imi_view_classic.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4876105E86B5006D528B /* imi_view_classic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_view_classic.h; path = "../../src/ime-core/imi_view_classic.h"; sourceTree = SOURCE_ROOT; };
+		A47C4877105E86B5006D528B /* imi_winHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_winHandler.cpp; path = "../../src/ime-core/imi_winHandler.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C4878105E86B5006D528B /* imi_winHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_winHandler.h; path = "../../src/ime-core/imi_winHandler.h"; sourceTree = SOURCE_ROOT; };
+		A47C4879105E86B5006D528B /* lattice_states.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lattice_states.cpp; path = "../../src/ime-core/lattice_states.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C487A105E86B5006D528B /* lattice_states.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lattice_states.h; path = "../../src/ime-core/lattice_states.h"; sourceTree = SOURCE_ROOT; };
+		A47C487B105E86B5006D528B /* userdict.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = userdict.cpp; path = "../../src/ime-core/userdict.cpp"; sourceTree = SOURCE_ROOT; };
+		A47C487C105E86B5006D528B /* userdict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = userdict.h; path = "../../src/ime-core/userdict.h"; sourceTree = SOURCE_ROOT; };
+		A47C487D105E86B5006D528B /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = "../../src/ime-core/utils.h"; sourceTree = SOURCE_ROOT; };
+		A47C488A105E86DB006D528B /* datrie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = datrie.h; path = ../../src/pinyin/datrie.h; sourceTree = SOURCE_ROOT; };
+		A47C488B105E86DB006D528B /* datrie_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = datrie_impl.h; path = ../../src/pinyin/datrie_impl.h; sourceTree = SOURCE_ROOT; };
+		A47C488C105E86DB006D528B /* pinyin_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pinyin_data.cpp; path = ../../src/pinyin/pinyin_data.cpp; sourceTree = SOURCE_ROOT; };
+		A47C488D105E86DB006D528B /* pinyin_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pinyin_data.h; path = ../../src/pinyin/pinyin_data.h; sourceTree = SOURCE_ROOT; };
+		A47C488E105E86DB006D528B /* pinyin_seg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pinyin_seg.cpp; path = ../../src/pinyin/pinyin_seg.cpp; sourceTree = SOURCE_ROOT; };
+		A47C488F105E86DB006D528B /* pinyin_seg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pinyin_seg.h; path = ../../src/pinyin/pinyin_seg.h; sourceTree = SOURCE_ROOT; };
+		A47C4890105E86DB006D528B /* shuangpin_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shuangpin_data.cpp; path = ../../src/pinyin/shuangpin_data.cpp; sourceTree = SOURCE_ROOT; };
+		A47C4891105E86DB006D528B /* shuangpin_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shuangpin_data.h; path = ../../src/pinyin/shuangpin_data.h; sourceTree = SOURCE_ROOT; };
+		A47C4892105E86DB006D528B /* shuangpin_seg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shuangpin_seg.cpp; path = ../../src/pinyin/shuangpin_seg.cpp; sourceTree = SOURCE_ROOT; };
+		A47C4893105E86DB006D528B /* shuangpin_seg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shuangpin_seg.h; path = ../../src/pinyin/shuangpin_seg.h; sourceTree = SOURCE_ROOT; };
+		A47C4894105E86DB006D528B /* syllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = syllable.h; path = ../../src/pinyin/syllable.h; sourceTree = SOURCE_ROOT; };
+		A47C48DE105E8CE8006D528B /* macos_keycode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = macos_keycode.mm; sourceTree = SOURCE_ROOT; };
 		A485E5BB0DD28B8D00E472E5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		A48D91020DBDD1750013F02D /* SunPinyin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SunPinyin.tiff; sourceTree = "<group>"; };
 		A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_imkitwin.h; sourceTree = "<group>"; };
 		A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imi_imkitwin.mm; sourceTree = "<group>"; };
 		A4B8E1B20F645B870094E08B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -76,28 +125,6 @@
 		A4DA4E460DBDD9D600472176 /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
 		A4DA4E470DBDD9D600472176 /* solaris.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = solaris.h; sourceTree = "<group>"; };
 		A4DA4E4A0DBDD9D600472176 /* host_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = host_os.h; sourceTree = "<group>"; };
-		A4DA4E4B0DBDD9D600472176 /* ic_history.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ic_history.cpp; sourceTree = "<group>"; };
-		A4DA4E4C0DBDD9D600472176 /* ic_history.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ic_history.h; sourceTree = "<group>"; };
-		A4DA4E4D0DBDD9D600472176 /* imi_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_context.cpp; sourceTree = "<group>"; };
-		A4DA4E4E0DBDD9D600472176 /* imi_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_context.h; sourceTree = "<group>"; };
-		A4DA4E4F0DBDD9D600472176 /* imi_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_data.cpp; sourceTree = "<group>"; };
-		A4DA4E500DBDD9D600472176 /* imi_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_data.h; sourceTree = "<group>"; };
-		A4DA4E510DBDD9D600472176 /* imi_keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_keys.h; sourceTree = "<group>"; };
-		A4DA4E520DBDD9D600472176 /* imi_options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_options.cpp; sourceTree = "<group>"; };
-		A4DA4E530DBDD9D600472176 /* imi_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_options.h; sourceTree = "<group>"; };
-		A4DA4E540DBDD9D600472176 /* imi_uiobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_uiobjects.cpp; sourceTree = "<group>"; };
-		A4DA4E550DBDD9D600472176 /* imi_uiobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_uiobjects.h; sourceTree = "<group>"; };
-		A4DA4E560DBDD9D600472176 /* imi_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_view.cpp; sourceTree = "<group>"; };
-		A4DA4E570DBDD9D600472176 /* imi_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_view.h; sourceTree = "<group>"; };
-		A4DA4E580DBDD9D600472176 /* imi_view_classic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_view_classic.cpp; sourceTree = "<group>"; };
-		A4DA4E590DBDD9D600472176 /* imi_view_classic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_view_classic.h; sourceTree = "<group>"; };
-		A4DA4E5A0DBDD9D600472176 /* imi_view_modern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_view_modern.cpp; sourceTree = "<group>"; };
-		A4DA4E5B0DBDD9D600472176 /* imi_view_modern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_view_modern.h; sourceTree = "<group>"; };
-		A4DA4E5C0DBDD9D600472176 /* imi_winHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imi_winHandler.cpp; sourceTree = "<group>"; };
-		A4DA4E5D0DBDD9D600472176 /* imi_winHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_winHandler.h; sourceTree = "<group>"; };
-		A4DA4E5E0DBDD9D600472176 /* lattice_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lattice_builder.h; sourceTree = "<group>"; };
-		A4DA4E5F0DBDD9D600472176 /* lattice_states.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lattice_states.cpp; sourceTree = "<group>"; };
-		A4DA4E600DBDD9D600472176 /* lattice_states.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lattice_states.h; sourceTree = "<group>"; };
 		A4DA4E620DBDD9D600472176 /* pytrie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pytrie.cpp; sourceTree = "<group>"; };
 		A4DA4E630DBDD9D600472176 /* pytrie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pytrie.h; sourceTree = "<group>"; };
 		A4DA4E640DBDD9D600472176 /* portability.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = portability.cpp; sourceTree = "<group>"; };
@@ -126,6 +153,7 @@
 				E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */,
 				A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */,
 				A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */,
+				0752CBF40F9C745200C7096E /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +163,7 @@
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A47C48DE105E8CE8006D528B /* macos_keycode.mm */,
 				A44571AB0DBF42C200F793F9 /* macos_keycode.h */,
 				A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */,
 				A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */,
@@ -153,6 +182,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0752CBF30F9C745200C7096E /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -181,7 +211,7 @@
 		29B97314FDCFA39411CA2CEA /* SunPinyin */ = {
 			isa = PBXGroup;
 			children = (
-				A4DA4E410DBDD9D600472176 /* ime-core */,
+				A4DA4E410DBDD9D600472176 /* sunpinyin-2.0 */,
 				080E96DDFE201D6D7F000001 /* Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -193,8 +223,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0752CBF10F9C723600C7096E /* dsa_pub.pem */,
+				A412C8570F7942DB006B10AD /* SunPinyin.icns */,
 				A4FC48C90F6530EF0069BE81 /* Localizable.strings */,
-				A48D91020DBDD1750013F02D /* SunPinyin.tiff */,
 				A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */,
 				A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -214,40 +245,70 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A4DA4E410DBDD9D600472176 /* ime-core */ = {
+		A47C4864105E86A2006D528B /* ime-core */ = {
+			isa = PBXGroup;
+			children = (
+				A47C4865105E86B5006D528B /* ic_history.cpp */,
+				A47C4866105E86B5006D528B /* ic_history.h */,
+				A47C4867105E86B5006D528B /* imi_context.cpp */,
+				A47C4868105E86B5006D528B /* imi_context.h */,
+				A47C4869105E86B5006D528B /* imi_data.cpp */,
+				A47C486A105E86B5006D528B /* imi_data.h */,
+				A47C486B105E86B5006D528B /* imi_defines.h */,
+				A47C486C105E86B5006D528B /* imi_funcobjs.cpp */,
+				A47C486D105E86B5006D528B /* imi_funcobjs.h */,
+				A47C486E105E86B5006D528B /* imi_keys.h */,
+				A47C486F105E86B5006D528B /* imi_options.cpp */,
+				A47C4870105E86B5006D528B /* imi_options.h */,
+				A47C4871105E86B5006D528B /* imi_uiobjects.cpp */,
+				A47C4872105E86B5006D528B /* imi_uiobjects.h */,
+				A47C4873105E86B5006D528B /* imi_view.cpp */,
+				A47C4874105E86B5006D528B /* imi_view.h */,
+				A47C4875105E86B5006D528B /* imi_view_classic.cpp */,
+				A47C4876105E86B5006D528B /* imi_view_classic.h */,
+				A47C4877105E86B5006D528B /* imi_winHandler.cpp */,
+				A47C4878105E86B5006D528B /* imi_winHandler.h */,
+				A47C4879105E86B5006D528B /* lattice_states.cpp */,
+				A47C487A105E86B5006D528B /* lattice_states.h */,
+				A47C487B105E86B5006D528B /* userdict.cpp */,
+				A47C487C105E86B5006D528B /* userdict.h */,
+				A47C487D105E86B5006D528B /* utils.h */,
+			);
+			name = "ime-core";
+			sourceTree = "<group>";
+		};
+		A47C4889105E86C5006D528B /* pinyin */ = {
+			isa = PBXGroup;
+			children = (
+				A47C488A105E86DB006D528B /* datrie.h */,
+				A47C488B105E86DB006D528B /* datrie_impl.h */,
+				A47C488C105E86DB006D528B /* pinyin_data.cpp */,
+				A47C488D105E86DB006D528B /* pinyin_data.h */,
+				A47C488E105E86DB006D528B /* pinyin_seg.cpp */,
+				A47C488F105E86DB006D528B /* pinyin_seg.h */,
+				A47C4890105E86DB006D528B /* shuangpin_data.cpp */,
+				A47C4891105E86DB006D528B /* shuangpin_data.h */,
+				A47C4892105E86DB006D528B /* shuangpin_seg.cpp */,
+				A47C4893105E86DB006D528B /* shuangpin_seg.h */,
+				A47C4894105E86DB006D528B /* syllable.h */,
+			);
+			name = pinyin;
+			sourceTree = "<group>";
+		};
+		A4DA4E410DBDD9D600472176 /* sunpinyin-2.0 */ = {
 			isa = PBXGroup;
 			children = (
 				A4DA4E760DBDDA1800472176 /* config.h */,
-				A4DA4E420DBDD9D600472176 /* config */,
 				A4DA4E4A0DBDD9D600472176 /* host_os.h */,
-				A4DA4E4B0DBDD9D600472176 /* ic_history.cpp */,
-				A4DA4E4C0DBDD9D600472176 /* ic_history.h */,
-				A4DA4E4D0DBDD9D600472176 /* imi_context.cpp */,
-				A4DA4E4E0DBDD9D600472176 /* imi_context.h */,
-				A4DA4E4F0DBDD9D600472176 /* imi_data.cpp */,
-				A4DA4E500DBDD9D600472176 /* imi_data.h */,
-				A4DA4E510DBDD9D600472176 /* imi_keys.h */,
-				A4DA4E520DBDD9D600472176 /* imi_options.cpp */,
-				A4DA4E530DBDD9D600472176 /* imi_options.h */,
-				A4DA4E540DBDD9D600472176 /* imi_uiobjects.cpp */,
-				A4DA4E550DBDD9D600472176 /* imi_uiobjects.h */,
-				A4DA4E560DBDD9D600472176 /* imi_view.cpp */,
-				A4DA4E570DBDD9D600472176 /* imi_view.h */,
-				A4DA4E580DBDD9D600472176 /* imi_view_classic.cpp */,
-				A4DA4E590DBDD9D600472176 /* imi_view_classic.h */,
-				A4DA4E5A0DBDD9D600472176 /* imi_view_modern.cpp */,
-				A4DA4E5B0DBDD9D600472176 /* imi_view_modern.h */,
-				A4DA4E5C0DBDD9D600472176 /* imi_winHandler.cpp */,
-				A4DA4E5D0DBDD9D600472176 /* imi_winHandler.h */,
-				A4DA4E5E0DBDD9D600472176 /* lattice_builder.h */,
-				A4DA4E5F0DBDD9D600472176 /* lattice_states.cpp */,
-				A4DA4E600DBDD9D600472176 /* lattice_states.h */,
-				A4DA4E610DBDD9D600472176 /* lexicon */,
 				A4DA4E640DBDD9D600472176 /* portability.cpp */,
 				A4DA4E650DBDD9D600472176 /* portability.h */,
+				A4DA4E420DBDD9D600472176 /* config */,
+				A47C4864105E86A2006D528B /* ime-core */,
+				A47C4889105E86C5006D528B /* pinyin */,
+				A4DA4E610DBDD9D600472176 /* lexicon */,
 				A4DA4E660DBDD9D600472176 /* slm */,
 			);
-			name = "ime-core";
+			name = "sunpinyin-2.0";
 			path = ../../src;
 			sourceTree = "<group>";
 		};
@@ -333,11 +394,12 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				E99A79200BFAA07E00935A00 /* preferences.plist in Resources */,
-				A48D91030DBDD1750013F02D /* SunPinyin.tiff in Resources */,
 				A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */,
 				A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */,
 				A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */,
 				A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */,
+				A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */,
+				0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,21 +413,27 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				E93074E20A5C2F1200470842 /* SunPinyinInputController.mm in Sources */,
 				E9FB8BCB0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm in Sources */,
-				A4DA4E690DBDD9D600472176 /* ic_history.cpp in Sources */,
-				A4DA4E6A0DBDD9D600472176 /* imi_context.cpp in Sources */,
-				A4DA4E6B0DBDD9D600472176 /* imi_data.cpp in Sources */,
-				A4DA4E6C0DBDD9D600472176 /* imi_options.cpp in Sources */,
-				A4DA4E6D0DBDD9D600472176 /* imi_uiobjects.cpp in Sources */,
-				A4DA4E6E0DBDD9D600472176 /* imi_view.cpp in Sources */,
-				A4DA4E6F0DBDD9D600472176 /* imi_view_classic.cpp in Sources */,
-				A4DA4E700DBDD9D600472176 /* imi_view_modern.cpp in Sources */,
-				A4DA4E710DBDD9D600472176 /* imi_winHandler.cpp in Sources */,
-				A4DA4E720DBDD9D600472176 /* lattice_states.cpp in Sources */,
 				A4DA4E730DBDD9D600472176 /* pytrie.cpp in Sources */,
 				A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */,
 				A4DA4E750DBDD9D600472176 /* slm.cpp in Sources */,
 				A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */,
 				A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */,
+				A47C487E105E86B5006D528B /* ic_history.cpp in Sources */,
+				A47C487F105E86B5006D528B /* imi_context.cpp in Sources */,
+				A47C4880105E86B5006D528B /* imi_data.cpp in Sources */,
+				A47C4881105E86B5006D528B /* imi_funcobjs.cpp in Sources */,
+				A47C4882105E86B5006D528B /* imi_options.cpp in Sources */,
+				A47C4883105E86B5006D528B /* imi_uiobjects.cpp in Sources */,
+				A47C4884105E86B5006D528B /* imi_view.cpp in Sources */,
+				A47C4885105E86B5006D528B /* imi_view_classic.cpp in Sources */,
+				A47C4886105E86B5006D528B /* imi_winHandler.cpp in Sources */,
+				A47C4887105E86B5006D528B /* lattice_states.cpp in Sources */,
+				A47C4888105E86B5006D528B /* userdict.cpp in Sources */,
+				A47C4895105E86DB006D528B /* pinyin_data.cpp in Sources */,
+				A47C4896105E86DB006D528B /* pinyin_seg.cpp in Sources */,
+				A47C4897105E86DB006D528B /* shuangpin_data.cpp in Sources */,
+				A47C4898105E86DB006D528B /* shuangpin_seg.cpp in Sources */,
+				A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,8 +486,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
@@ -427,9 +497,13 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DLEOPARD",
 					"-DHAVE_CONFIG_H",
-					"-D_USE_RAW_PROBABILITY",
+					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
 				);
-				OTHER_LDFLAGS = "-liconv";
+				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
+				OTHER_LDFLAGS = (
+					"-lsqlite3",
+					"-liconv",
+				);
 				PRODUCT_NAME = SunPinyin;
 				WRAPPER_EXTENSION = app;
 			};
@@ -442,8 +516,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -453,9 +529,13 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DLEOPARD",
 					"-DHAVE_CONFIG_H",
-					"-D_USE_RAW_PROBABILITY",
+					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
 				);
-				OTHER_LDFLAGS = "-liconv";
+				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
+				OTHER_LDFLAGS = (
+					"-lsqlite3",
+					"-liconv",
+				);
 				PRODUCT_NAME = SunPinyin;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -469,8 +549,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
@@ -478,9 +560,13 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DLEOPARD",
 					"-DHAVE_CONFIG_H",
-					"-D_USE_RAW_PROBABILITY",
+					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
 				);
-				OTHER_LDFLAGS = "-liconv";
+				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
+				OTHER_LDFLAGS = (
+					"-lsqlite3",
+					"-liconv",
+				);
 				PRODUCT_NAME = SunPinyin;
 				WRAPPER_EXTENSION = app;
 			};

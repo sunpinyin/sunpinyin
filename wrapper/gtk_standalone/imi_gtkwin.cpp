@@ -69,7 +69,8 @@ key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data)
             keyvalue = 0;
 
         CIMIView* pview = (CIMIView*)(data);
-        pview->onKeyEvent(keycode, keyvalue, event->state);
+        CKeyEvent key_event (keycode, keyvalue, event->state);
+        pview->onKeyEvent(key_event);
     }
     return 1;
 }

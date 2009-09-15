@@ -40,6 +40,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
 #include <sys/stat.h>
 #include <algorithm>
 #include "ic_history.h"

@@ -35,6 +35,7 @@
  * to such option by the copyright holder. 
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <algorithm>

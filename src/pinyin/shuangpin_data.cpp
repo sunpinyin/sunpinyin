@@ -35,6 +35,8 @@
  * to such option by the copyright holder. 
  */
 
+#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <algorithm>
@@ -599,14 +601,13 @@ CShuangpinData::getMapString(char *shpstr, CMappedYin &syls)
     assert(shpstr!=NULL);
 
     char    *ch = shpstr;
-    char    buf[32] = "\0";
-    int     i, j;
     int     len = strlen(shpstr);
-
+    char    buf[32] = "\0";
+    
     syls.clear();
     switch (len) {
     case 1:
-        for (i=0; i<INITIAL_NUM; i++) {
+        for (int i=0; i<INITIAL_NUM; i++) {
             if (*ch == m_shuangpinPlan->mapinitials[i]) {
                 syls.push_back(std::string(initials[i]));
                 return 1;
@@ -615,16 +616,17 @@ CShuangpinData::getMapString(char *shpstr, CMappedYin &syls)
         break;
     case 2:
         if (m_shuangpinPlan->zeroinitals != NULL) {
-            for (i=0; i<ZEROINITIAL_NUM; i++) {
+            for (int i=0; i<ZEROINITIAL_NUM; i++) {
                 if ( !strcmp(shpstr, m_shuangpinPlan->zeroinitals[i].mapshp) ) {
                     syls.push_back(std::string(m_shuangpinPlan->zeroinitals[i].syl));
                     return 1;
                 }
             }
         }
-        for (i=0; i<INITIAL_NUM; i++) {
+        
+        for (int i=0; i<INITIAL_NUM; i++) {
             if (*ch == m_shuangpinPlan->mapinitials[i]) {
-                for (j=0; j<FINAL_NUM; j++) {
+                for (int j=0; j<FINAL_NUM; j++) {
                     if (*(ch+1) == m_shuangpinPlan->mapfinals[j]) {
                         sprintf(buf, "%s%s", initials[i], finals[j]);
                         std::map<std::string, TSyllable>::iterator iter; 
@@ -649,10 +651,9 @@ CShuangpinData::getMapString(char *shpstr, CMappedYin &syls)
 void 
 CShuangpinData::_genCodingMap()
 {
-    int  i = 0;
     int  len = sizeof(pinyin_table)/sizeof(PyTabEntry);
 
-    for (i=0; i<len; i++) {
+    for (int i=0; i<len; ++i) {
         m_codingmap.insert (
             std::pair<const std::string, TSyllable>
                 (pinyin_table[i].pystr, pinyin_table[i].id));
@@ -662,8 +663,6 @@ CShuangpinData::_genCodingMap()
 void 
 CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
 {
-    int  i = 0;
-
     if (m_shuangpinPlan==NULL) {
         m_shuangpinPlan = new TShuangpinPlan;
         memset(m_shuangpinPlan, 0, sizeof(TShuangpinPlan));

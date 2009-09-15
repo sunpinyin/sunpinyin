@@ -40,6 +40,7 @@
 
 #include "host_os.h"
 
+#include <stdio.h>
 #include <math.h>
 #include <string>
 #include <cstring>

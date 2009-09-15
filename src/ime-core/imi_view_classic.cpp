@@ -168,15 +168,9 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
         }
         m_pHotkeyProfile->rememberLastKey(key);
     } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {
-        if ((keyvalue > 0x20 && keyvalue < '0') || (keyvalue > '9' && keyvalue < 0x7f)) {
+        if (islower(keyvalue)) {
             changeMasks |= KEYEVENT_USED;
             _insert (keyvalue, changeMasks);
-
-        } else if (keycode == IM_VK_BACK_SPACE || keycode == IM_VK_DELETE) {
-            if (!m_pIC->isEmpty ()) {
-                changeMasks |= KEYEVENT_USED;
-                _erase (keycode == IM_VK_BACK_SPACE, changeMasks);
-            }
 
         } else if ((keyvalue >= '0' && keyvalue <= '9') &&
                    (m_candiWindowSize >= 10 || keyvalue < ('1' + m_candiWindowSize))) { // try to make selection
@@ -184,6 +178,22 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 changeMasks |= KEYEVENT_USED;
                 unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');
                 _makeSelection (sel, changeMasks);
+            }
+
+        } else if (keyvalue > 0x20 && keyvalue < 0x7f) {
+            changeMasks |= KEYEVENT_USED;
+            if (m_pIC->isEmpty ()) {
+                _insert (keyvalue, changeMasks);
+                _doCommit ();
+                clearIC ();
+            } else {
+                _insert (keyvalue, changeMasks);
+            }
+            
+        } else if (keycode == IM_VK_BACK_SPACE || keycode == IM_VK_DELETE) {
+            if (!m_pIC->isEmpty ()) {
+                changeMasks |= KEYEVENT_USED;
+                _erase (keycode == IM_VK_BACK_SPACE, changeMasks);
             }
 
         } else if (keycode == IM_VK_SPACE) {

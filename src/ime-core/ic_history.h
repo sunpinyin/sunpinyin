@@ -133,6 +133,9 @@ public:
     bool
     loadFromFile (const char *fname);
 
+    bool
+    saveToFile (const char *fname);
+
 protected:
     typedef unsigned                              TWordId;
     typedef std::pair<TWordId, TWordId>           TBigram;

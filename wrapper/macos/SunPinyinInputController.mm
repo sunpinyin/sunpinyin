@@ -314,6 +314,10 @@ Here are the three approaches:
     
     _factoryToken = factory.getToken();
     _pv = factory.createSession ();
+
+    if (!_pv)
+        return;
+    
     _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
                             [[NSApp delegate] inputChinesePuncts]);
     _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 

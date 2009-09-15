@@ -88,7 +88,8 @@ static bool load_preferences ();
 
 -(void)saveHistory
 {
-    save_history(_history);
+    if (_history)
+        save_history(_history);
 }
 
 

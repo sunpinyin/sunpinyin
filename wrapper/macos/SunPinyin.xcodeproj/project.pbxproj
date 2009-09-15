@@ -42,6 +42,7 @@
 		A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */; };
 		A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */; };
 		A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4FC48C90F6530EF0069BE81 /* Localizable.strings */; };
+		A4FCA116105FD076006DD064 /* quanpin.dat in Resources */ = {isa = PBXBuildFile; fileRef = A4FCA115105FD076006DD064 /* quanpin.dat */; };
 		E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93074B60A5C264700470842 /* InputMethodKit.framework */; };
 		E93074E20A5C2F1200470842 /* SunPinyinInputController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */; };
 		E99A79200BFAA07E00935A00 /* preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = E99A791F0BFAA07E00935A00 /* preferences.plist */; };
@@ -132,10 +133,11 @@
 		A4DA4E670DBDD9D600472176 /* slm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slm.cpp; sourceTree = "<group>"; };
 		A4DA4E680DBDD9D600472176 /* slm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slm.h; sourceTree = "<group>"; };
 		A4DA4E760DBDDA1800472176 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../config.h; sourceTree = "<group>"; };
-		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../data/lm_sc.t3g; sourceTree = "<group>"; };
+		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../../sunpinyin/ime/data/lm_sc.t3g; sourceTree = SOURCE_ROOT; };
 		A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict_sc.bin; path = ../../data/pydict_sc.bin; sourceTree = "<group>"; };
 		A4FC48CA0F6530EF0069BE81 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A4FC48CC0F6531110069BE81 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A4FCA115105FD076006DD064 /* quanpin.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = quanpin.dat; path = ../../data/quanpin.dat; sourceTree = SOURCE_ROOT; };
 		E93074B60A5C264700470842 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = /System/Library/Frameworks/InputMethodKit.framework; sourceTree = "<absolute>"; };
 		E93074E00A5C2F1200470842 /* SunPinyinInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyinInputController.h; sourceTree = "<group>"; };
 		E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SunPinyinInputController.mm; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A4FCA115105FD076006DD064 /* quanpin.dat */,
 				0752CBF10F9C723600C7096E /* dsa_pub.pem */,
 				A412C8570F7942DB006B10AD /* SunPinyin.icns */,
 				A4FC48C90F6530EF0069BE81 /* Localizable.strings */,
@@ -400,6 +403,7 @@
 				A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */,
 				A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */,
 				0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */,
+				A4FCA116105FD076006DD064 /* quanpin.dat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,8 +502,10 @@
 					"-DLEOPARD",
 					"-DHAVE_CONFIG_H",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
+					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
 				);
 				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
+				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2 = "-DSUNPINYIN_USERDATA_DIR_PREFIX=\\\"Library/SunPinyin\\\"";
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",
@@ -530,8 +536,10 @@
 					"-DLEOPARD",
 					"-DHAVE_CONFIG_H",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
+					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
 				);
 				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
+				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2 = "-DSUNPINYIN_USERDATA_DIR_PREFIX=\\\"Library/SunPinyin\\\"";
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",
@@ -561,8 +569,10 @@
 					"-DLEOPARD",
 					"-DHAVE_CONFIG_H",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
+					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
 				);
 				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
+				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2 = "-DSUNPINYIN_USERDATA_DIR_PREFIX=\\\"Library/SunPinyin\\\"";
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",

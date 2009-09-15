@@ -53,7 +53,6 @@ bool                 CSimplifiedChinesePolicy::s_bEnableFullSymbol = false;
 CGetFullSymbolOp     CSimplifiedChinesePolicy::s_getFullSymbolOp;
 bool                 CSimplifiedChinesePolicy::s_bEnableFullPunct = true;
 CGetFullPunctOp      CSimplifiedChinesePolicy::s_getFullPunctOp;
-const char *         CSimplifiedChinesePolicy::s_userDataDirPrefix = ".sunpinyin";
 
 CGetFuzzySyllablesOp CQuanpinSchemePolicy::s_getFuzzySyllablesOp;
 CGetCorrectionPairOp CQuanpinSchemePolicy::s_getCorrectionPairOp;

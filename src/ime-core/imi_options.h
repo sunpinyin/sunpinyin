@@ -48,6 +48,10 @@
 #include "ic_history.h"
 #include "shuangpin_seg.h"
 
+#ifndef SUNPINYIN_USERDATA_DIR_PREFIX
+#define SUNPINYIN_USERDATA_DIR_PREFIX ".sunpinyin"
+#endif
+
 struct CSimplifiedChinesePolicy
 {
     static bool loadResources ()
@@ -62,10 +66,10 @@ struct CSimplifiedChinesePolicy
         const char *home = getenv ("HOME");
 
         CBigramHistory::initClass();
-        snprintf (path, sizeof(path), "%s/%s/history", home, s_userDataDirPrefix);
+        snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
         suc &= s_historyCache.loadFromFile (path);
 
-        snprintf (path, sizeof(path), "%s/%s/userdict", home, s_userDataDirPrefix);
+        snprintf (path, sizeof(path), "%s/%s/userdict", home, SUNPINYIN_USERDATA_DIR_PREFIX);
         suc &= s_userDict.load (path);
 
         s_bTried = true;
@@ -90,7 +94,6 @@ struct CSimplifiedChinesePolicy
     static void setPunctMapping (const char **map)
         {s_getFullPunctOp.initPunctMap (map);}
 
-    static void setUserDataPrefix (const char *prefix) {s_userDataDirPrefix = prefix;}
     static void enableFullSymbol (bool v=true) {s_bEnableFullSymbol = v;}
     static void enableFullPunct (bool v=true) {s_bEnableFullPunct = v;}
 

@@ -46,14 +46,14 @@
 #define OSX_CTRL_MASK         1 << 18
 #define OSX_ALT_MASK          1 << 19
 
-#define OSX_VK_SPACE          ' '
-#define OSX_VK_MINUS          '-'
-#define OSX_VK_EQUALS         '='
-#define OSX_VK_COMMA          ','
-#define OSX_VK_PERIOD         '.'
-#define OSX_VK_OPEN_BRACKET   '['
-#define OSX_VK_CLOSE_BRACKET  ']'
-#define OSX_VK_BACK_QUOTE     '`'
+#define OSX_VK_SPACE          0x31
+#define OSX_VK_MINUS          0x1B
+#define OSX_VK_EQUALS         0x18
+#define OSX_VK_COMMA          0x2B
+#define OSX_VK_PERIOD         0x2F
+#define OSX_VK_OPEN_BRACKET   0x21
+#define OSX_VK_CLOSE_BRACKET  0x1E
+#define OSX_VK_BACK_QUOTE     0x32
 
 #define OSX_VK_ENTER          0x24
 #define OSX_VK_BACK_SPACE     0x33

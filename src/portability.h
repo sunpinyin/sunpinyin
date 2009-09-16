@@ -45,6 +45,15 @@
 #include <string>
 #include <cstring>
 
+#if defined(sun)
+#include <unistd.h>
+#ifdef __cplusplus
+#include <algorithm>
+#else
+#include <sys/ddi.h>
+#endif //__cpluscplus
+#endif //defined(sun)
+
 #define  SIM_ID_NOT_CHAR  (0xFFFF)
 
 #ifndef HOST_OS_GNUC_2
@@ -389,4 +398,16 @@ inline long distance (Iterator pos1, Iterator pos2)
 }                                                                                        
 #endif
 
+#if defined(sun)
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+char *strndup( const char *s, size_t n );
+
+#ifdef __cplusplus
+}
+#endif
+#endif //if defined(sun)
+ 
 #endif

@@ -45,6 +45,7 @@
 
 #include "portability.h"
 
+
 TLongExpFloat::TLongExpFloat(double d)
 {
     if (d != 0.0 && d != -0.0) {
@@ -252,3 +253,32 @@ size_t WCSLEN(const TWCHAR* pwcs)
     }
     return sz;
 }
+
+#if defined(sun)
+#ifdef  __cplusplus
+extern "C" {
+#endif
+char *strndup( const char *s, size_t n )
+{
+    size_t nMost;
+    char *p = NULL;                                                                          
+                                                                  
+    if ( !s )
+        return NULL;
+  
+#ifdef __cplusplus                                                                                                                                       
+    nMost = std::min( strlen(s) + 1, n + 1 );
+#else
+    nMost = min( strlen(s) + 1, n + 1 );
+#endif
+    p     = (char*)malloc( nMost );
+    memcpy( p, s, nMost );
+    p[nMost - 1] = '\0';
+                                                                                                                                                
+    return p;
+}
+#ifdef __cplusplus
+}
+#endif
+#endif //defined(sun)
+

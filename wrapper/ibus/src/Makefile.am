@@ -10,8 +10,9 @@ SUNPINYIN_SRC_DIR = $(top_srcdir)/src/ime-core
 SLM_SRC_DIR = $(top_srcdir)/src/slm
 LEXICON_SRC_DIR = $(top_srcdir)/src/lexicon
 PINYIN_SRC_DIR = $(top_srcdir)/src/pinyin
-IBUS_SUNPINYIN_DATADIR=$(pkgdatadir)/data
-IBUS_SUNPINYIN_ICONDIR=$(pkgdatadir)/icons
+IBUS_SUNPINYIN_DATADIR = $(pkgdatadir)/data
+IBUS_SUNPINYIN_ICONDIR = $(pkgdatadir)/icons
+SUNPINYIN_USERDATA_DIR_PREFIX = .ibus/sunpinyin
 
 noinst_LTLIBRARIES = libsunpinyin.la
 
@@ -39,6 +40,7 @@ libsunpinyin_la_SOURCES = \
 libsunpinyin_la_CXXFLAGS = \
 	-D_USE_RAW_PROBABILITY \
 	-DSUNPINYIN_DATA_DIR=\"../../data\"\
+	-DSUNPINYIN_USERDATA_DIR_PREFIX=\"$(SUNPINYIN_USERDATA_DIR_PREFIX)\" \
 	-I$(top_srcdir) \
 	-I$(SUNPINYIN_SRC_DIR) \
 	-I$(LEXICON_SRC_DIR) \
@@ -90,6 +92,7 @@ ibus_engine_sunpinyin_CXXFLAGS = \
 	-I$(PINYIN_SRC_DIR) \
 	-I$(LEXICON_SRC_DIR) \
 	-I$(SLM_SRC_DIR) \
+	-DSUNPINYIN_USERDATA_DIR_PREFIX=\"$(SUNPINYIN_USERDATA_DIR_PREFIX)\" \
 	-DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
 	-DSUNPINYIN_ICON_DIR=\"$(IBUS_SUNPINYIN_ICONDIR)\" \
 	-DLIBEXECDIR=\"$(libexecdir)\" \

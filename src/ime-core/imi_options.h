@@ -64,7 +64,10 @@ struct CSimplifiedChinesePolicy
 
         char path[256];
         const char *home = getenv ("HOME");
-
+        
+        snprintf (path, sizeof(path), "%s/%s", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+        suc &= createDirectory(path);
+        
         CBigramHistory::initClass();
         snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
         suc &= s_historyCache.loadFromFile (path);
@@ -91,6 +94,14 @@ struct CSimplifiedChinesePolicy
         return pic;
     }
 
+    static void destroyContext (CIMIContext *context)
+    {
+        char path[256];
+        const char *home = getenv ("HOME");
+        snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+        s_historyCache.saveToFile(path);
+    }
+    
     static void setPunctMapping (const char **map)
         {s_getFullPunctOp.initPunctMap (map);}
 
@@ -100,6 +111,8 @@ struct CSimplifiedChinesePolicy
 protected:
     ~CSimplifiedChinesePolicy () {}
 
+    static bool createDirectory(const char *path);
+    
     static CIMIData             s_coreData;
     static CBigramHistory       s_historyCache;
     static CUserDict            s_userDict;

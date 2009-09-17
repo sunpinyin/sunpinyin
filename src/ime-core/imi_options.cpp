@@ -58,3 +58,20 @@ CGetFuzzySyllablesOp CQuanpinSchemePolicy::s_getFuzzySyllablesOp;
 CGetCorrectionPairOp CQuanpinSchemePolicy::s_getCorrectionPairOp;
 
 EShuangpinType       CShuangpinSchemePolicy::s_shuangpinType = MS2003;
+
+
+bool
+CSimplifiedChinesePolicy::createDirectory(const char *path) {
+    struct stat stat_buf;
+    
+    if (stat (path, &stat_buf)) {
+        if (mkdir (path, S_IRUSR | S_IWUSR | S_IXUSR)) {
+            perror("unabled to mkdir() for user history.\n");
+            return false;
+        }
+    } else if (!S_ISDIR(stat_buf.st_mode)) {
+        fprintf(stderr, "%s is not a directory.\n", path);
+        return false;
+    }
+    return true;
+}

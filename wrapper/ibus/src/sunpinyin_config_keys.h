@@ -4,6 +4,7 @@
 #define CONFIG_VIEW_CANDIDATE_WIN_SIZE      "engine/SunPinyin/View/CandidateWindowSize"
 #define CONFIG_PINYIN_MEMORY_POWER          "engine/SunPinyin/Pinyin/MemoryPower"
 
+#define CONFIG_PINYIN_PUNCT_MAPPING         "engine/SunPinyin/Pinyin/PunctMapping"
 #define CONFIG_PINYIN_SCHEME                "engine/SunPinyin/Pinyin/Scheme"
 #define CONFIG_PINYIN_SHUANGPIN_TYPE        "engine/SunPinyin/Pinyin/ShuangPinType"
 #define CONFIG_PINYIN_AMBIGUITY_ANY         "engine/SunPinyin/Pinyin/Ambiguity/Any"

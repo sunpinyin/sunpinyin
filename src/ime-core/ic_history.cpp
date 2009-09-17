@@ -250,27 +250,8 @@ bool CBigramHistory::loadFromFile (const char *fname) {
      return suc;
 }
 
-bool create_directory_if_necessary(const char *path) {
-    if (access (path, R_OK | W_OK)) {
-        if (mkdir (path, S_IRUSR | S_IWUSR | S_IXUSR)) {
-            perror("unabled to mkdir() for user history.\n");
-            return false;
-        }
-    }
-    return true;
-}
-
 bool CBigramHistory::saveToFile(const char *fname) {
     bool suc = false;
-    
-    char *dir_path = strndup(fname, FILENAME_MAX);
-    const char *p = dirname(dir_path);
-    assert(p != NULL);
-    suc = create_directory_if_necessary(dir_path);
-    free(dir_path);
-    
-    if (!suc) return suc;
-    
     size_t sz = 0;
     void* buf = NULL;
     if (bufferize(&buf, &sz) && buf) {

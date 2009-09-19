@@ -254,11 +254,8 @@ size_t WCSLEN(const TWCHAR* pwcs)
     return sz;
 }
 
-#if defined(sun)
-#ifdef  __cplusplus
-extern "C" {
-#endif
-char *strndup( const char *s, size_t n )
+#if !defined (HAVE_STRNDUP)
+extern "C" char *strndup( const char *s, size_t n )
 {
     size_t nMost;
     char *p = NULL;                                                                          
@@ -277,8 +274,5 @@ char *strndup( const char *s, size_t n )
                                                                                                                                                 
     return p;
 }
-#ifdef __cplusplus
-}
-#endif
-#endif //defined(sun)
+#endif //HAVE_STRNDUP
 

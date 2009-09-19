@@ -398,7 +398,7 @@ inline long distance (Iterator pos1, Iterator pos2)
 }                                                                                        
 #endif
 
-#if defined(sun)
+#if !defined (HAVE_STRNDUP)
 #ifdef  __cplusplus
 extern "C" {
 #endif

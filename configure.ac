@@ -267,7 +267,7 @@ AC_TYPE_SIZE_T
 
 # Checks for library functions.
 AC_FUNC_MMAP
-AC_CHECK_FUNCS(getopt_long get_opt munmap memset setlocale strdup strlen strcpy log2 exp2)
+AC_CHECK_FUNCS(getopt_long get_opt munmap memset setlocale strdup strndup strlen strcpy log2 exp2)
 
 have_iconv=no
 AC_MSG_CHECKING(for iconv)

@@ -41,7 +41,6 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <libgen.h>
 #include <cassert>
 #include <sys/stat.h>
 #include <algorithm>

@@ -39,10 +39,9 @@
 #include <config.h>
 #endif
 
-#ifdef sun
 #include <sys/types.h>
 #include <sys/stat.h>
-#endif
+#include <unistd.h>
 
 #include "imi_keys.h"
 #include "imi_options.h"

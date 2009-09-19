@@ -109,7 +109,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
     
 #ifdef DEBUG
     printf("Classic View got a key (0x%x-0x%x-0x%x)...", 
-           keycode, keychar, modifiers);
+           keycode, keyvalue, modifiers);
     if (((modifiers & IM_CTRL_MASK) != 0) && (keyvalue == 'P' || keyvalue=='p'))
         m_pIC->printLattice();
 #endif

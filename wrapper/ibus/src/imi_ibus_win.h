@@ -38,12 +38,12 @@
 
 #include <imi_winHandler.h>
 
-class SunPinyinEngine;
+class EngineImpl;
 
 class CIBusWinHandler : public CIMIWinHandler
 {
 public:
-    CIBusWinHandler(SunPinyinEngine *);
+    CIBusWinHandler(EngineImpl *);
 
     /* inherited methods implementation */
     /*@{*/
@@ -67,7 +67,7 @@ public:
     /*@}*/
 
 private:
-    SunPinyinEngine *m_engine;
+    EngineImpl *m_engine;
 };
 
 #endif // IMI_IBUS_WIN_H

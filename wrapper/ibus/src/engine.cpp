@@ -120,6 +120,8 @@ extern "C"
         engine_class->focus_out         = ibus_sunpinyin_engine_focus_out;
         engine_class->page_up           = ibus_sunpinyin_engine_page_up;
         engine_class->page_down         = ibus_sunpinyin_engine_page_down;
+        engine_class->cursor_up         = ibus_sunpinyin_engine_cursor_up;
+        engine_class->cursor_down       = ibus_sunpinyin_engine_cursor_down;
         engine_class->property_activate = ibus_sunpinyin_engine_property_activate;
         engine_class->candidate_clicked = ibus_sunpinyin_engine_candidate_clicked;
     }
@@ -130,7 +132,6 @@ extern "C"
                                        guint n_construct_params,
                                        GObjectConstructParam  *construct_params)
     {
-        
         IBusSunPinyinEngine *engine = (IBusSunPinyinEngine *)
             G_OBJECT_CLASS (parent_class)->constructor (type,
                                                         n_construct_params,

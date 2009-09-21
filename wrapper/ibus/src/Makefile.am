@@ -66,11 +66,12 @@ libsunpinyin_la_SOURCES = \
 	$(SUNPINYIN_SRC_DIR)/ic_history.cpp $(SUNPINYIN_SRC_DIR)/ic_history.h \
 	$(SUNPINYIN_SRC_DIR)/imi_funcobjs.cpp $(SUNPINYIN_SRC_DIR)/imi_funcobjs.h \
 	$(SUNPINYIN_SRC_DIR)/imi_options.cpp $(SUNPINYIN_SRC_DIR)/imi_options.h \
+	$(SUNPINYIN_SRC_DIR)/imi_option_event.cpp $(SUNPINYIN_SRC_DIR)/imi_option_event.h \
 	$(SUNPINYIN_SRC_DIR)/userdict.cpp $(SUNPINYIN_SRC_DIR)/userdict.h
 
 libsunpinyin_la_CXXFLAGS = \
 	-D_USE_RAW_PROBABILITY \
-	-DSUNPINYIN_DATA_DIR=\"../../data\"\
+	-DSUNPINYIN_DATA_DIR=\"$(IBUS_SUNPINYIN_DATADIR)\" \
 	-DSUNPINYIN_USERDATA_DIR_PREFIX=\"$(SUNPINYIN_USERDATA_DIR_PREFIX)\" \
 	-I$(top_srcdir) \
 	-I$(SUNPINYIN_SRC_DIR) \
@@ -102,6 +103,8 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_engine.h \
 	sunpinyin_engine_proxy.cpp \
 	sunpinyin_engine_proxy.h \
+	engine_impl.cpp \
+	engine_impl.h \
 	sunpinyin_lookup_table.cpp \
 	sunpinyin_lookup_table.h \
 	sunpinyin_property.cpp \
@@ -113,6 +116,8 @@ ibus_engine_sunpinyin_SOURCES = \
 	imi_ibus_win.h \
 	ibus_portable.cpp \
 	ibus_portable.h \
+	debug.cpp \
+	debug.h \
 	$(NULL)
 
 ibus_engine_sunpinyin_CXXFLAGS = \

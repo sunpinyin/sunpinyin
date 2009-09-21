@@ -44,6 +44,7 @@
 #include "imi_view_classic.h"
 #include "imi_funcobjs.h"
 #include "imi_data.h"
+#include "imi_option_event.h"
 #include "userdict.h"
 #include "ic_history.h"
 #include "shuangpin_seg.h"
@@ -52,89 +53,53 @@
 #define SUNPINYIN_USERDATA_DIR_PREFIX ".sunpinyin"
 #endif
 
-struct CSimplifiedChinesePolicy
+struct CSimplifiedChinesePolicy : public IConfigurable
 {
-    static bool loadResources ()
-    {
-        if (s_bLoaded || s_bTried)
-            return s_bLoaded;
-
-        bool suc = true;
-        suc &= s_coreData.loadResource (SUNPINYIN_DATA_DIR"/lm_sc.t3g", SUNPINYIN_DATA_DIR"/pydict_sc.bin");
-
-        char path[256];
-        const char *home = getenv ("HOME");
-        
-        snprintf (path, sizeof(path), "%s/%s", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-        suc &= createDirectory(path);
-        
-        CBigramHistory::initClass();
-        snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-        suc &= s_historyCache.loadFromFile (path);
-
-        snprintf (path, sizeof(path), "%s/%s/userdict", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-        suc &= s_userDict.load (path);
-
-        s_bTried = true;
-        return s_bLoaded = suc;
-    }
-
-    static CIMIContext* createContext () 
-    {
-        CIMIContext* pic = new CIMIContext ();
-        pic->setCoreData (&s_coreData);
-        pic->setHistoryMemory (&s_historyCache);
-        pic->setUserDict (&s_userDict);
-
-        pic->setFullSymbolForwarding (s_bEnableFullSymbol);
-        pic->setGetFullSymbolOp (&s_getFullSymbolOp);
-
-        pic->setFullPunctForwarding (s_bEnableFullPunct);
-        pic->setGetFullPunctOp (&s_getFullPunctOp);
-        return pic;
-    }
-
-    static void destroyContext (CIMIContext *context)
-    {
-        char path[256];
-        const char *home = getenv ("HOME");
-        snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-        s_historyCache.saveToFile(path);
-    }
+    CSimplifiedChinesePolicy ();
     
-    static void setPunctMapping (const char **map)
-        {s_getFullPunctOp.initPunctMap (map);}
+    bool loadResources ();
 
-    static void enableFullSymbol (bool v=true) {s_bEnableFullSymbol = v;}
-    static void enableFullPunct (bool v=true) {s_bEnableFullPunct = v;}
+    CIMIContext* createContext ();
+    void destroyContext (CIMIContext *context);
+    
+    void setPunctMapping (const char **map)
+        {m_getFullPunctOp.initPunctMap (map);}
 
+    void enableFullSymbol (bool v=true) {m_bEnableFullSymbol = v;}
+    void enableFullPunct (bool v=true) {m_bEnableFullPunct = v;}
+
+    template<class> friend class SingletonHolder;
+    
 protected:
     ~CSimplifiedChinesePolicy () {}
 
-    static bool createDirectory(const char *path);
+    bool createDirectory(const char *path);
     
-    static CIMIData             s_coreData;
-    static CBigramHistory       s_historyCache;
-    static CUserDict            s_userDict;
-    static bool                 s_bLoaded;
-    static bool                 s_bTried;
-    static unsigned             s_csLevel;
-    static bool                 s_bEnableFullSymbol;
-    static CGetFullSymbolOp     s_getFullSymbolOp;
-    static bool                 s_bEnableFullPunct;
-    static CGetFullPunctOp      s_getFullPunctOp;
-    static const char          *s_userDataDirPrefix;
+    CIMIData             m_coreData;
+    CBigramHistory       m_historyCache;
+    CUserDict            m_userDict;
+    bool                 m_bLoaded;
+    bool                 m_bTried;
+    unsigned             m_csLevel;
+    bool                 m_bEnableFullSymbol;
+    CGetFullSymbolOp     m_getFullSymbolOp;
+    bool                 m_bEnableFullPunct;
+    CGetFullPunctOp      m_getFullPunctOp;
+    const char          *m_userDataDirPrefix;
 };
 
-struct CQuanpinSchemePolicy
+typedef SingletonHolder<CSimplifiedChinesePolicy> ASimplifiedChinesePolicy;
+
+struct CQuanpinSchemePolicy : IConfigurable
 {
 public:
-    static IPySegmentor* createPySegmentor () 
+    
+    IPySegmentor* createPySegmentor () 
     {
         CQuanpinSegmentor *pseg = new CQuanpinSegmentor ();
         if (pseg->load(SUNPINYIN_DATA_DIR"/quanpin.dat")) {
-            pseg->setGetFuzzySyllablesOp (&s_getFuzzySyllablesOp);
-            pseg->setGetCorrectionPairOp (&s_getCorrectionPairOp);
+            pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
+            pseg->setGetCorrectionPairOp (&m_getCorrectionPairOp);
         } else {
             delete pseg;
             pseg = NULL;
@@ -142,77 +107,123 @@ public:
         return pseg;
     }
 
-    static void setFuzzyForwarding (bool v=true)
-        {s_getFuzzySyllablesOp.setEnable (v);}
+    void setFuzzyForwarding (bool v=true)
+        {m_getFuzzySyllablesOp.setEnable (v);}
 
-    static void setFuzzyPinyinPairs (const char **pairs, unsigned num)
-        {s_getFuzzySyllablesOp.initFuzzyMap (pairs, num);}
+    enum {
+        MAX_FUZZY_PINYINS = 32,
+        MAX_AUTOCORRECTION_PINYINS = 32
+    };
 
-    static void setAutoCorrecting (bool v=true)
-        {s_getCorrectionPairOp.setEnable (v);}
+    void setFuzzyPinyinPairs (const char **pairs, unsigned num)
+        {m_getFuzzySyllablesOp.initFuzzyMap (pairs, num);}
 
-    static void setAutoCorrectionPairs (const char **pairs, unsigned num) 
-        {s_getCorrectionPairOp.setCorrectionPairs (pairs, num);}
+    void setAutoCorrecting (bool v=true)
+        {m_getCorrectionPairOp.setEnable (v);}
 
+    void setAutoCorrectionPairs (const char **pairs, unsigned num) 
+        {m_getCorrectionPairOp.setCorrectionPairs (pairs, num);}
+
+    virtual bool onConfigChanged(const COptionEvent& event);
+    
+    template<class> friend class SingletonHolder;
+    
 protected:
     ~CQuanpinSchemePolicy () {}
 
-    static CGetFuzzySyllablesOp s_getFuzzySyllablesOp;
-    static CGetCorrectionPairOp s_getCorrectionPairOp;
+    CGetFuzzySyllablesOp m_getFuzzySyllablesOp;
+    CGetCorrectionPairOp m_getCorrectionPairOp;
 };
 
-struct CShuangpinSchemePolicy
+typedef SingletonHolder<CQuanpinSchemePolicy> AQuanpinSchemePolicy;
+
+struct CShuangpinSchemePolicy : public IConfigurable
 {
 public:
-    static IPySegmentor* createPySegmentor () 
+    CShuangpinSchemePolicy();
+    
+    IPySegmentor* createPySegmentor () 
     {
-        CShuangpinSegmentor *pseg = new CShuangpinSegmentor (s_shuangpinType);
+        CShuangpinSegmentor *pseg = new CShuangpinSegmentor (m_shuangpinType);
         return pseg;
     }
 
-    static void setShuangpinType (EShuangpinType t) {s_shuangpinType = t;}
-
+    void setShuangpinType (EShuangpinType t) {m_shuangpinType = t;}
+    virtual bool onConfigChanged(const COptionEvent& event);
+    
+    template<class> friend class SingletonHolder;
 protected:
     ~CShuangpinSchemePolicy () {}
-    static EShuangpinType s_shuangpinType;
+    EShuangpinType m_shuangpinType;
 };
 
+typedef SingletonHolder<CShuangpinSchemePolicy> AShuangpinSchemePolicy;
 
-struct CClassicStylePolicy
+struct CClassicStylePolicy : public IConfigurable
 {
-    static CIMIView* createView () {return new CIMIClassicView ();}
+    CIMIView* createView () {return new CIMIClassicView ();}
 
+    template<class> friend class SingletonHolder;
 protected:
     ~CClassicStylePolicy () {}
 };
 
+typedef SingletonHolder<CClassicStylePolicy> AClassicStylePolicy;
+
 struct ISunpinyinProfile
 {
     virtual CIMIView* createProfile () = 0;
+    virtual void destroyProfile (CIMIView *) = 0;
     virtual ~ISunpinyinProfile () {};
 };
 
 template <class LanguagePolicy, class PinyinSchemePolicy, class InputStylePolicy>
-class CSunpinyinProfile : public ISunpinyinProfile, LanguagePolicy, PinyinSchemePolicy, InputStylePolicy
+class CSunpinyinProfile : public ISunpinyinProfile
 {
 public:
     CSunpinyinProfile () {};
 
-    CIMIView* createProfile ()
+    /* profile by itself is a profile, so we are creating a session here? */
+    virtual CIMIView* createProfile ()
     {
-        if (LanguagePolicy::loadResources ()) {
-            IPySegmentor* pseg = PinyinSchemePolicy::createPySegmentor ();
-            if (pseg == NULL)
-                return NULL;
+        typename LanguagePolicy::Type& langPolicy =
+            LanguagePolicy::instance();
+        typename PinyinSchemePolicy::Type& pySchemePolicy =
+            PinyinSchemePolicy::instance();
+        typename InputStylePolicy::Type& inputStylePolicy =
+            InputStylePolicy::instance();
+        
+        
+        if (!langPolicy.loadResources ())
+            return NULL;
 
-            CIMIContext *pic = LanguagePolicy::createContext ();
-            CIMIView* pview = InputStylePolicy::createView ();
-            pview->attachIC (pic);
-            pview->setPySegmentor (pseg);
-            return pview;
+        IPySegmentor* pseg = pySchemePolicy.createPySegmentor ();
+        if (pseg == NULL)
+            return NULL;
+        
+        CIMIContext *pic = langPolicy.createContext ();
+        CIMIView* pview = inputStylePolicy.createView ();
+        pview->attachIC (pic);
+        pview->setPySegmentor (pseg);
+        
+        langPolicy.addRef();
+        pySchemePolicy.addRef();
+        inputStylePolicy.addRef();
+        
+        return pview;
+    }
+
+    virtual void destroyProfile(CIMIView* pview)
+    {
+        LanguagePolicy::instance().release();
+        PinyinSchemePolicy::instance().release();
+        InputStylePolicy::instance().release();
+        if (pview) {
+            LanguagePolicy::instance().destroyContext(pview->getIC());
+            delete pview->getIC();
+            delete pview->getPySegmentor();
+            delete pview;
         }
-
-        return NULL;
     }
 };
 
@@ -251,26 +262,26 @@ public:
     CIMIView* createSession ()
     {
         unsigned key = _policiesToKey (m_lang, m_pyScheme, m_inputStyle);
-        std::map <unsigned, ISunpinyinProfile*>::iterator it = m_profiles.find (key);
-        if (it != m_profiles.end()) {
-            CIMIView *pview = it->second->createProfile ();
-            if (!pview)
-                return NULL;
-            pview->setHotkeyProfile (&m_hotkeyProfile);
-            pview->setCandiWindowSize (m_candiWindowSize);
-            return pview;
-        }
-
-        return NULL;
+        ISunpinyinProfile *profile = _getProfile(key);
+        if (!profile)
+            return NULL;
+        
+        CIMIView *pview = profile->createProfile ();
+        if (!pview)
+            return NULL;
+        
+        pview->setHotkeyProfile (&m_hotkeyProfile);
+        pview->setCandiWindowSize (m_candiWindowSize);
+        return pview;
     }
 
-    void destroySession (CIMIView *pview)
+    void destroySession (CIMIView* pview)
     {
-        if (pview) {
-            delete pview->getIC();
-            delete pview->getPySegmentor();
-            delete pview;
-        }
+        unsigned key = _policiesToKey (m_lang, m_pyScheme, m_inputStyle);
+        ISunpinyinProfile *profile = _getProfile(key);
+        if (!profile)
+            return;
+        profile->destroyProfile(pview);
     }
 
     void updateToken () {++m_tokenNum;}
@@ -282,10 +293,10 @@ private:
           m_candiWindowSize(10), m_tokenNum(0) 
     {
         m_profiles [_policiesToKey (SIMPLIFIED_CHINESE, QUANPIN, CLASSIC_STYLE)] = 
-                new CSunpinyinProfile <CSimplifiedChinesePolicy, CQuanpinSchemePolicy, CClassicStylePolicy> ();
+                new CSunpinyinProfile <ASimplifiedChinesePolicy, AQuanpinSchemePolicy, AClassicStylePolicy> ();
 
         m_profiles [_policiesToKey (SIMPLIFIED_CHINESE, SHUANGPIN, CLASSIC_STYLE)] = 
-                new CSunpinyinProfile <CSimplifiedChinesePolicy, CShuangpinSchemePolicy, CClassicStylePolicy> ();
+                new CSunpinyinProfile <ASimplifiedChinesePolicy, AShuangpinSchemePolicy, AClassicStylePolicy> ();
     }
 
     ~CSunpinyinSessionFactory ()
@@ -297,9 +308,19 @@ private:
             delete it->second;
     }
 
+    ISunpinyinProfile* _getProfile(unsigned key)
+    {
+        std::map <unsigned, ISunpinyinProfile*>::iterator it = m_profiles.find (key);
+        if (it != m_profiles.end()) {
+            return it->second;
+        } else {
+            return NULL;
+        }
+    }
+
     unsigned _policiesToKey (ELanguage lang, EPyScheme pyScheme, EInputStyle inputStyle)
         {return (lang<<16) + (pyScheme<<8) + inputStyle;}
-
+    
     std::map <unsigned, ISunpinyinProfile*> m_profiles;
 
     EPyScheme           m_pyScheme;

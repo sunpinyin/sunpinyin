@@ -39,30 +39,74 @@
 #include <config.h>
 #endif
 
+#include <algorithm>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "imi_option_keys.h"
 #include "imi_keys.h"
 #include "imi_options.h"
 #include "imi_view_classic.h"
 
-CIMIData             CSimplifiedChinesePolicy::s_coreData;
-CBigramHistory       CSimplifiedChinesePolicy::s_historyCache;
-CUserDict            CSimplifiedChinesePolicy::s_userDict;
-bool                 CSimplifiedChinesePolicy::s_bLoaded = false;
-bool                 CSimplifiedChinesePolicy::s_bTried = false;
-unsigned             CSimplifiedChinesePolicy::s_csLevel = 3;
-bool                 CSimplifiedChinesePolicy::s_bEnableFullSymbol = false;
-CGetFullSymbolOp     CSimplifiedChinesePolicy::s_getFullSymbolOp;
-bool                 CSimplifiedChinesePolicy::s_bEnableFullPunct = true;
-CGetFullPunctOp      CSimplifiedChinesePolicy::s_getFullPunctOp;
+CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
+    : m_bLoaded(false), m_bTried(false), m_csLevel(3),
+      m_bEnableFullSymbol(false), m_bEnableFullPunct(true)
+{}
 
-CGetFuzzySyllablesOp CQuanpinSchemePolicy::s_getFuzzySyllablesOp;
-CGetCorrectionPairOp CQuanpinSchemePolicy::s_getCorrectionPairOp;
+bool
+CSimplifiedChinesePolicy::loadResources()
+{
+    if (m_bLoaded || m_bTried)
+        return m_bLoaded;
 
-EShuangpinType       CShuangpinSchemePolicy::s_shuangpinType = MS2003;
+    bool suc = true;
+    suc &= m_coreData.loadResource (SUNPINYIN_DATA_DIR"/lm_sc.t3g", SUNPINYIN_DATA_DIR"/pydict_sc.bin");
 
+    char path[256];
+    const char *home = getenv ("HOME");
+    snprintf (path, sizeof(path), "%s/%s", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+    suc &= createDirectory(path);
+    
+    CBigramHistory::initClass();
+    snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+    suc &= m_historyCache.loadFromFile (path);
+    
+    snprintf (path, sizeof(path), "%s/%s/userdict", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+    suc &= m_userDict.load (path);
+    
+    m_bTried = true;
+    return m_bLoaded = suc;
+}
+
+CIMIContext *
+CSimplifiedChinesePolicy::createContext()
+{
+    CIMIContext* pic = new CIMIContext ();
+    pic->setCoreData (&m_coreData);
+    pic->setHistoryMemory (&m_historyCache);
+    pic->setUserDict (&m_userDict);
+
+    pic->setFullSymbolForwarding (m_bEnableFullSymbol);
+    pic->setGetFullSymbolOp (&m_getFullSymbolOp);
+
+    pic->setFullPunctForwarding (m_bEnableFullPunct);
+    pic->setGetFullPunctOp (&m_getFullPunctOp);
+    return pic;
+}
+
+void
+CSimplifiedChinesePolicy::destroyContext (CIMIContext *context)
+{
+    char path[256];
+    const char *home = getenv ("HOME");
+    snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+    m_historyCache.saveToFile(path);
+}
+    
+CShuangpinSchemePolicy::CShuangpinSchemePolicy()
+    : m_shuangpinType(MS2003)
+{}
 
 bool
 CSimplifiedChinesePolicy::createDirectory(const char *path) {
@@ -78,4 +122,46 @@ CSimplifiedChinesePolicy::createDirectory(const char *path) {
         return false;
     }
     return true;
+}
+
+size_t init_pinyin_pairs(const char** pinyins, size_t len, const COptionEvent& event)
+{
+    std::vector<std::string> pairs = event.get_string_list();
+    size_t num = std::min(len, pairs.size()) / 2;
+    for (int i = 0; i  < num*2; ++i) {
+        pinyins[i] = pairs[i].c_str();
+    }
+    return num;
+}
+
+bool
+CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
+{
+    if (event.name == QUANPIN_FUZZY_ENABLED) {
+        setFuzzyForwarding(event.get_bool());
+    } else if (event.name == QUANPIN_FUZZY_PINYINS) {
+        const char* pinyins[MAX_FUZZY_PINYINS];
+        size_t num = init_pinyin_pairs(pinyins, MAX_FUZZY_PINYINS, event);
+        setFuzzyPinyinPairs(pinyins, num);
+    } else if (event.name == QUANPIN_AUTOCORRECTING_ENABLED) {
+        setAutoCorrecting(event.get_bool());
+    } else if (event.name == QUANPIN_AUTOCORRECTING_PINYINS) {
+        const char* pinyins[MAX_AUTOCORRECTION_PINYINS];
+        size_t num = init_pinyin_pairs(pinyins, MAX_AUTOCORRECTION_PINYINS,
+                                       event);
+        setAutoCorrectionPairs(pinyins, num);
+    } else {
+        return false;
+    }
+    return true;
+}
+
+bool
+CShuangpinSchemePolicy::onConfigChanged(const COptionEvent& event)
+{
+    if (event.name == SHUANGPIN_TYPE) {
+        setShuangpinType( (EShuangpinType) event.get_unsigned());
+        return true;
+    }
+    return false;
 }

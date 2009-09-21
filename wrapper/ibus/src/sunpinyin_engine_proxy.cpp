@@ -35,11 +35,13 @@
 
 #include "sunpinyin_engine_proxy.h"
 #include "sunpinyin_engine.h"
+#include "debug.h"
 
 extern "C" 
 {
     void ibus_sunpinyin_engine_init(IBusEngine *engine)
     {
+        ibus::log << __func__ << endl;
         SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
         thiz->init();
     }
@@ -112,6 +114,18 @@ extern "C"
     {
         SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
         thiz->page_down();
+    }
+
+    void ibus_sunpinyin_engine_cursor_up(IBusEngine *engine)
+    {
+        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
+        thiz->cursor_up();
+    }
+    
+    void ibus_sunpinyin_engine_cursor_down(IBusEngine *engine)
+    {
+        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
+        thiz->cursor_down();
     }
     
     void ibus_sunpinyin_engine_property_activate (IBusEngine *engine,

@@ -34,7 +34,7 @@
  */
 
 #include <cassert>
-#include "sunpinyin_engine.h"
+#include "engine_impl.h"
 #include "sunpinyin_config_keys.h"
 #include "sunpinyin_config.h"
 
@@ -62,6 +62,9 @@ SunPinyinConfig::SunPinyinConfig()
     m_type_names["ZIGUANG"]      = ZIGUANG;
     m_type_names["USERDEFINE"]   = USERDEFINE;
 }
+
+SunPinyinConfig::~SunPinyinConfig()
+{}
 
 IBusConfig *
 SunPinyinConfig::m_config = NULL;
@@ -190,12 +193,41 @@ SunPinyinConfig::set_config(IBusConfig *config)
 }
 
 void
-SunPinyinConfig::listen_on_changed(SunPinyinEngine *engine)
+SunPinyinConfig::listen_on_changed()
 {
     assert(m_config != NULL);
     g_signal_connect(m_config, "value-changed",
-                     G_CALLBACK(this->on_config_value_changed), this);
-    m_engine = engine;
+                     G_CALLBACK(this->on_config_value_changed), NULL);
+}
+
+static unsigned
+get_event_type_by_name(const std::string& name)
+{
+    // pick out those options involves switching policies
+    if (name == CONFIG_PINYIN_SCHEME)
+        return COptionEvent::TYPE_GLOBAL;
+    else
+        return COptionEvent::TYPE_SHARED|COptionEvent::TYPE_GLOBAL;
+}
+
+static COptionEvent
+g_value_to_event(const gchar *section, const gchar *name, GValue *value)
+{
+    std::string event_name = std::string(section) + "\\" + std::string(name);
+    unsigned type = get_event_type_by_name(event_name);
+    
+    switch (G_VALUE_TYPE(value)) {
+    case G_TYPE_UINT:
+        return COptionEvent(event_name, g_value_get_uint(value), type);
+    case G_TYPE_STRING:
+        return COptionEvent(event_name, g_value_get_string(value), type);
+    case G_TYPE_BOOLEAN:
+        return COptionEvent(event_name,
+                            g_value_get_boolean(value)?true:false, type);
+    default:
+        assert(false && "unknown gvalue");
+        return COptionEvent(event_name, 0U);
+    }   
 }
 
 void
@@ -205,8 +237,8 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          GValue *value,
                                          gpointer user_data)
 {
-    SunPinyinConfig *thiz = reinterpret_cast<SunPinyinConfig*>(user_data);
-    thiz->m_engine->update_config();
+    COptionEvent event = g_value_to_event(section, name, value);
+    AOptionEventBus::instance().publishEvent(event);
 }
 
 std::string

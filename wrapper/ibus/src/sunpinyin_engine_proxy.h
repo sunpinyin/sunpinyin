@@ -64,6 +64,8 @@ extern "C"
     void ibus_sunpinyin_engine_focus_out(IBusEngine *engine);
     void ibus_sunpinyin_engine_page_up(IBusEngine *engine);
     void ibus_sunpinyin_engine_page_down(IBusEngine *engine);
+    void ibus_sunpinyin_engine_cursor_up(IBusEngine *engine);
+    void ibus_sunpinyin_engine_cursor_down(IBusEngine *engine);
     void ibus_sunpinyin_engine_property_activate (IBusEngine *engine,
                                                   const gchar *prop_name,
                                                   guint prop_state);

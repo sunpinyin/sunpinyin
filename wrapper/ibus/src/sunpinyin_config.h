@@ -40,8 +40,9 @@
 #include <string>
 #include <ibus.h>
 #include <imi_options.h>
+#include <imi_option_event.h>
 
-class SunPinyinEngine;
+class EngineImpl;
 
 class SunPinyinConfig
 {
@@ -52,12 +53,12 @@ class SunPinyinConfig
 
     SchemeNames        m_scheme_names;
     TypeNames          m_type_names;
-    SunPinyinEngine   *m_engine;
 
     static IBusConfig *m_config;
     
 public:
     SunPinyinConfig();
+    ~SunPinyinConfig();
     
     bool get(const char* key, bool val);
     void set(const char* key, bool val);
@@ -80,8 +81,15 @@ public:
      */
     static void set_config(IBusConfig *);
 
-    void listen_on_changed(SunPinyinEngine *engine);
-    
+    /**
+     * register on_config_value_changed() as the signal handler of value-changed,
+     */
+    void listen_on_changed();
+
+private:    
+    /**
+     * called by ibus when a value changed in config
+     */
     static void on_config_value_changed(IBusConfig *config,
                                         const gchar *section,
                                         const gchar *name,

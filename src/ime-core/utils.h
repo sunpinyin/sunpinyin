@@ -117,4 +117,16 @@ private:
     }
 };
 
+template <class T>
+class SingletonHolder
+{
+public:
+    typedef T Type;
+    static T& instance()
+    {
+        static T instance_;
+        return instance_;
+    }
+};
+
 #endif /* SUNPY_UTILS_H */

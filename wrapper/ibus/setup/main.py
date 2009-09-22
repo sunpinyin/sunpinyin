@@ -41,7 +41,7 @@ class Setup ():
 
     def __write(self, name, v):
         section, key = self.__get_config_name(name)
-        return self.__config.set_value(section, key, name, v)
+        return self.__config.set_value(section, key, v)
 
     def __get_config_name(self, item_name):
         SEPARATOR = "/"

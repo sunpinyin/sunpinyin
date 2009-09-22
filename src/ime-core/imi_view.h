@@ -63,6 +63,11 @@ public:
         m_pageUpKeys.insert (key);
     }
 
+    void removePageUpKey (const CKeyEvent& key)
+    {
+        m_pageUpKeys.erase (key);
+    }
+    
     bool isPageUpKey  (const CKeyEvent& key) const
     {
         return (m_pageUpKeys.find (key) != m_pageUpKeys.end());
@@ -73,6 +78,11 @@ public:
         m_pageDownKeys.insert (key);
     }
 
+    void removePageDownKey (const CKeyEvent& key)
+    {
+        m_pageDownKeys.erase (key);
+    }
+    
     bool isPageDownKey  (const CKeyEvent& key) const
     {
         return (m_pageDownKeys.find (key) != m_pageDownKeys.end());

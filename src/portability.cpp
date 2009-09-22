@@ -45,6 +45,7 @@
 
 #include "portability.h"
 
+#include <stdlib.h>
 
 TLongExpFloat::TLongExpFloat(double d)
 {

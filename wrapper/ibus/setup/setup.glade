@@ -80,7 +80,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="activate" handler="on_button_apply_clicked"/>
+                <signal name="clicked" handler="on_button_apply_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>

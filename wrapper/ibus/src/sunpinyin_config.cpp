@@ -37,6 +37,7 @@
 #include "engine_impl.h"
 #include "sunpinyin_config_keys.h"
 #include "sunpinyin_config.h"
+#include "debug.h"
 
 struct ConfigItem
 {
@@ -213,7 +214,14 @@ get_event_type_by_name(const std::string& name)
 static COptionEvent
 g_value_to_event(const gchar *section, const gchar *name, GValue *value)
 {
-    std::string event_name = std::string(section) + "\\" + std::string(name);
+    std::string event_name;
+    
+    if (strlen(section) == 0) {
+        event_name = name;
+    } else {
+        event_name = std::string(section) + "\\" + std::string(name);
+    }
+    
     unsigned type = get_event_type_by_name(event_name);
     
     switch (G_VALUE_TYPE(value)) {
@@ -237,7 +245,13 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          GValue *value,
                                          gpointer user_data)
 {
-    COptionEvent event = g_value_to_event(section, name, value);
+    ibus::log << __func__ << ": " << section << "/" << name << endl;
+    
+    static const char* prefix = "engine/SunPinyin/";
+    if (!strstr(section, prefix))
+        return;
+    const char *sub_section = section + strlen(prefix);
+    COptionEvent event = g_value_to_event(sub_section, name, value);
     AOptionEventBus::instance().publishEvent(event);
 }
 

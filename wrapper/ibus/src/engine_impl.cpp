@@ -3,6 +3,7 @@
 #include <imi_view.h>
 #include <imi_options.h>
 #include <imi_keys.h>
+#include <imi_option_keys.h>
 
 #include "debug.h"
 #include "sunpinyin_property.h"
@@ -205,7 +206,20 @@ EngineImpl::cursor_down ()
 bool
 EngineImpl::onConfigChanged(const COptionEvent& event)
 {
-    update_config();
+    ibus::log << __func__ << ": " << event.name << endl;
+    if (event.name == CONFIG_PINYIN_MEMORY_POWER) {
+        update_history_power();
+    } else if (event.name == CONFIG_VIEW_CANDIDATE_WIN_SIZE) {
+        update_cand_window_size();
+    } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_SHIFT) {
+        update_mode_key_shift();
+    } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_CONTROL) {
+        update_mode_key_control();
+    } else if (event.name == CONFIG_KEYBOARD_PAGE_COMMA) {
+        update_page_key_comma();
+    } else if (event.name == CONFIG_KEYBOARD_PAGE_MINUS) {
+        update_page_key_minus();
+    }
     return false;
 }
 
@@ -309,23 +323,6 @@ EngineImpl::update_letter_property(bool full)
     m_letter_prop->update(full);
 }
 
-
-void
-EngineImpl::update_config()
-{
-    update_history_power();
-    update_pinyin_scheme();
-    update_candidate_window_size();
-    update_hotkey_profile();
-}
-        
-void
-EngineImpl::update_pinyin_scheme()
-{
-    CSunpinyinSessionFactory::EPyScheme scheme =
-        m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN);
-}
-
 void
 EngineImpl::update_history_power()
 {
@@ -336,9 +333,10 @@ EngineImpl::update_history_power()
 }
 
 void
-EngineImpl::update_candidate_window_size()
+EngineImpl::update_cand_window_size()
 {
     unsigned size = m_config->get(CONFIG_VIEW_CANDIDATE_WIN_SIZE, 10U);
+    size == size;
     // TODO
 }
 
@@ -350,7 +348,6 @@ EngineImpl::update_mode_key_shift()
         m_hotkey_profile->setModeSwitchKey(
             CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
     }
-    // TODO: remove the key binding
 }
 
 void
@@ -372,6 +369,9 @@ EngineImpl::update_page_key_minus()
     if (enabled) {
         m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_MINUS));
         m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
+    } else {
+        m_hotkey_profile->removePageUpKey(CKeyEvent(IM_VK_MINUS));
+        m_hotkey_profile->removePageDownKey(CKeyEvent(IM_VK_EQUALS));
     }
 }
 
@@ -383,6 +383,9 @@ EngineImpl::update_page_key_comma()
     if (enabled) {
         m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_COMMA));
         m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PERIOD));
+    } else {
+        m_hotkey_profile->removePageUpKey(CKeyEvent(IM_VK_COMMA));
+        m_hotkey_profile->removePageDownKey(CKeyEvent(IM_VK_PERIOD));
     }
 }
 

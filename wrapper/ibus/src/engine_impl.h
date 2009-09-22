@@ -50,18 +50,15 @@ public:
     virtual bool onConfigChanged(const COptionEvent& event);
     
 private:
-    void update_lookup_table();
-    void update_pinyin_scheme();
-    void update_shuangpin_type();
     void update_history_power();
-    void update_candidate_window_size();
+    void update_cand_window_size();
+    void update_hotkey_profile();
     void update_mode_key_shift();
     void update_mode_key_control();
     void update_page_key_minus();
     void update_page_key_comma();
-    void update_hotkey_profile();
-    void update_config();
-    
+    void update_lookup_table();
+
 private:
     SunPinyinProperty *m_status_prop;
     SunPinyinProperty *m_letter_prop;

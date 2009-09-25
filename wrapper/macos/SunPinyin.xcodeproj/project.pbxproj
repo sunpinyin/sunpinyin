@@ -35,6 +35,7 @@
 		A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */ = {isa = PBXBuildFile; fileRef = A47C48DE105E8CE8006D528B /* macos_keycode.mm */; };
 		A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */; };
 		A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */; };
+		A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4B664FE106D051D009BA1DB /* imi_option_event.cpp */; };
 		A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B8E1B20F645B870094E08B /* Carbon.framework */; };
 		A4DA4E730DBDD9D600472176 /* pytrie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E620DBDD9D600472176 /* pytrie.cpp */; };
 		A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E640DBDD9D600472176 /* portability.cpp */; };
@@ -120,6 +121,9 @@
 		A485E5BB0DD28B8D00E472E5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_imkitwin.h; sourceTree = "<group>"; };
 		A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imi_imkitwin.mm; sourceTree = "<group>"; };
+		A4B664FE106D051D009BA1DB /* imi_option_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_option_event.cpp; path = "../../src/ime-core/imi_option_event.cpp"; sourceTree = SOURCE_ROOT; };
+		A4B664FF106D051D009BA1DB /* imi_option_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_option_event.h; path = "../../src/ime-core/imi_option_event.h"; sourceTree = SOURCE_ROOT; };
+		A4B66500106D051D009BA1DB /* imi_option_keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_option_keys.h; path = "../../src/ime-core/imi_option_keys.h"; sourceTree = SOURCE_ROOT; };
 		A4B8E1B20F645B870094E08B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		A4DA4E430DBDD9D600472176 /* beos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = beos.h; sourceTree = "<group>"; };
 		A4DA4E450DBDD9D600472176 /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
@@ -251,6 +255,9 @@
 		A47C4864105E86A2006D528B /* ime-core */ = {
 			isa = PBXGroup;
 			children = (
+				A4B664FE106D051D009BA1DB /* imi_option_event.cpp */,
+				A4B664FF106D051D009BA1DB /* imi_option_event.h */,
+				A4B66500106D051D009BA1DB /* imi_option_keys.h */,
 				A47C4865105E86B5006D528B /* ic_history.cpp */,
 				A47C4866105E86B5006D528B /* ic_history.h */,
 				A47C4867105E86B5006D528B /* imi_context.cpp */,
@@ -438,6 +445,7 @@
 				A47C4897105E86DB006D528B /* shuangpin_data.cpp in Sources */,
 				A47C4898105E86DB006D528B /* shuangpin_seg.cpp in Sources */,
 				A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */,
+				A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -36,8 +36,9 @@
 #ifndef SUNPINYIN_CONFIG_KEYS_H
 #define SUNPINYIN_CONFIG_KEYS_H
 
-#define CONFIG_VIEW_CANDIDATE_WIN_SIZE      "View/CandidateWindowSize"
-#define CONFIG_PINYIN_MEMORY_POWER          "Pinyin/MemoryPower"
+#define CONFIG_GENERAL_PAGE_SIZE            "General/PageSize"
+#define CONFIG_GENERAL_MEMORY_POWER         "General/MemoryPower"
+#define CONFIG_GENERAL_CHARSET_LEVEL        "General/CharsetLevel"
 
 #define CONFIG_PINYIN_PUNCT_MAPPING         "Pinyin/PunctMapping"
 #define CONFIG_PINYIN_SCHEME                "Pinyin/Scheme"

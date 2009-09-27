@@ -39,7 +39,7 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     addRef();
     
     factory.setPinyinScheme(m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN));
-    factory.setCandiWindowSize(m_config->get(CONFIG_VIEW_CANDIDATE_WIN_SIZE, 10U));
+    factory.setCandiWindowSize(m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10U));
     
     m_pv = factory.createSession();
     if (!m_pv)
@@ -207,9 +207,9 @@ bool
 EngineImpl::onConfigChanged(const COptionEvent& event)
 {
     ibus::log << __func__ << ": " << event.name << endl;
-    if (event.name == CONFIG_PINYIN_MEMORY_POWER) {
+    if (event.name == CONFIG_GENERAL_MEMORY_POWER) {
         update_history_power();
-    } else if (event.name == CONFIG_VIEW_CANDIDATE_WIN_SIZE) {
+    } else if (event.name == CONFIG_GENERAL_PAGE_SIZE) {
         update_cand_window_size();
     } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_SHIFT) {
         update_mode_key_shift();
@@ -219,7 +219,10 @@ EngineImpl::onConfigChanged(const COptionEvent& event)
         update_page_key_comma();
     } else if (event.name == CONFIG_KEYBOARD_PAGE_MINUS) {
         update_page_key_minus();
+    } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
+        update_charset_level();
     }
+    
     return false;
 }
 
@@ -326,17 +329,27 @@ EngineImpl::update_letter_property(bool full)
 void
 EngineImpl::update_history_power()
 {
-    unsigned power = m_config->get(CONFIG_PINYIN_MEMORY_POWER, 3U);
+    unsigned power = m_config->get(CONFIG_GENERAL_MEMORY_POWER, 3U);
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
     ic->setHistoryPower(power);
 }
 
 void
+EngineImpl::update_charset_level()
+{
+    unsigned charset = m_config->get(CONFIG_GENERAL_CHARSET_LEVEL, 2U);
+    CIMIContext* ic = m_pv->getIC();
+    assert(ic);
+    charset &= 3;               // charset can only be 0,1,2,3
+    ic->setCharsetLevel(charset);
+}
+
+void
 EngineImpl::update_cand_window_size()
 {
-    unsigned size = m_config->get(CONFIG_VIEW_CANDIDATE_WIN_SIZE, 10U);
-    size == size;
+    unsigned size = m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10U);
+    size = size;
     // TODO
 }
 

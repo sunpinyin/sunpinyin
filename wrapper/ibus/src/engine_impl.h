@@ -57,8 +57,10 @@ private:
     void update_mode_key_control();
     void update_page_key_minus();
     void update_page_key_comma();
+    void update_charset_level();
+    
     void update_lookup_table();
-
+    
 private:
     SunPinyinProperty *m_status_prop;
     SunPinyinProperty *m_letter_prop;

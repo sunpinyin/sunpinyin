@@ -111,7 +111,7 @@ unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
         int nSize = m_pystr.size();
         if (islower(m_pystr[nSize-1])) {
             m_nLastValidPos = idx - 1;
-            new_pystr.insert((unsigned)0, 1, m_pystr[nSize-1]);
+            new_pystr.insert((size_t)0, 1, m_pystr[nSize-1]);
             m_pystr.erase(nSize-1, 1);
             m_segs.erase (m_segs.begin()+j-1);
         } 

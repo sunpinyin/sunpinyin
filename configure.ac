@@ -29,6 +29,14 @@ AC_CONFIG_SRCDIR(src/slm/slm.cpp)
 AM_CONFIG_HEADER(config.h)
 AM_CONDITIONAL(DEBUG, test "$enable-debug" = yes)
 
+GETTEXT_PACKAGE=sunpinyin
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [The gettext domain])
+
+dnl Init gettext
+ALL_LINGUAS="zh_CN"
+AM_GLIB_GNU_GETTEXT
+
 dnl AC_C_BIGENDIAN defines WORDS_BIGENDIAN if it is true by default
 AC_C_BIGENDIAN
 AC_C_BIGENDIAN([my_host_endian=be],[my_host_endian=le],[
@@ -258,7 +266,7 @@ fi
 # Checks for header files.
 AC_PATH_X
 AC_HEADER_STDC
-AC_CHECK_HEADERS(limit.h assert.h getopt.h fcntl.h locale.h stdlib.h string.h unistd.h wchar.h sys/mman.h)
+AC_CHECK_HEADERS(limit.h assert.h getopt.h fcntl.h locale.h stdlib.h string.h unistd.h wchar.h sys/mman.h libintl.h)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

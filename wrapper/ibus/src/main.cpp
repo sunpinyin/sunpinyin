@@ -78,7 +78,7 @@ init ()
     ibus_sunpinyin_init (bus);
     
     component = ibus_component_new ("org.freedesktop.IBus.SunPinyin",
-                                    "Chinese SunPinyin Component",
+                                    "SunPinyin2",
                                     "0.1.0",
                                     "LGPL/CDDL",
                                     "Kov Chai <tchaikov@gmail.com>",

@@ -61,8 +61,7 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
     // we will fill the missing items in when we have them
     ibus_lookup_table_set_page_size(m_lookup_table, size);
     g_array_set_size(m_lookup_table->candidates, total);
-    // XXX: any way to tell ibus the total number of candidates in
-    // lookup_table, a.k.a. table->candidates->len ???
+
     for (int i = 0, begin = 0; i < size; ++i) {
         const int len = append_candidate(cl, i, begin);
         if (len)

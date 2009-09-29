@@ -41,8 +41,8 @@ import ibus
 import gettext
 
 GETTEXT_PACKAGE="sunpinyin"
-_ = lambda msg: gettext.dgettext(msg)
-GLADE_FILE = "setup.glade"
+_ = lambda msg: gettext.gettext(msg)
+GLADE_FILE = path.join(path.dirname(__file__), "setup.glade")
 SEPARATOR = "/"
 
 class Logger:
@@ -100,8 +100,8 @@ class TrivalOption(Option):
         self.v = self.read()
         self.widget.set_active(self.v)
 
-    def store_config(self):
-        v = self.save()
+    def save_config(self):
+        v = self.save_ui_setting()
         self.write(v)
         
     def save_ui_setting(self):
@@ -127,11 +127,15 @@ class ComboBoxOption(TrivalOption):
         for v in self.options:
             model.append([_(str(v))])
         self.widget.set_model(model)
-        
+
+    def save_ui_setting(self):
+        self.v = self.options[self.widget.get_active()]
+        return self.v
+    
     def load_config(self):
         self.v = self.read()
         self.widget.set_active(self.options.index(self.v))
-      
+
 class RadioOption(Option):
     """option represented using multiple Raidio buttons
     """
@@ -150,10 +154,10 @@ class RadioOption(Option):
         assert button is not None, "button: %r not found" % name
         button.set_active(True)
 
-    def store_config(self):
+    def save_config(self):
         active_opt = None
         for opt in self.options:
-            radio_name = SEPARATOR.join(self.name, opt)
+            radio_name = SEPARATOR.join([self.name, opt])
             radio = self.xml.get_widget(radio_name)
             if radio.get_active():
                 active_opt = opt
@@ -218,11 +222,11 @@ class MultiCheckDialog (object):
         for opt in self.__options:
             opt.widget.set_active(is_active)
 
-    def store_config(self):
+    def save_config(self):
         """write to in-memory storage, will flush to config if not 'cancel'ed in main_window
         """
         for opt in self.__options:
-            opt.store_config()
+            opt.save_config()
             
     def on_button_check_all_clicked(self, button):
         self.__set_active_all(True)
@@ -351,9 +355,9 @@ class MainWindow ():
         self.on_chk_punctmapping_enabled_toggled(None)
         self.on_radio_shuangpin_toggled(None)
         
-    def __store_config(self):
+    def __save_config(self):
         for opt in self.__options:
-            opt.store_config()
+            opt.save_config()
 
     def __update_enabling_button(self, checkbox_name, button_name):
         """enable a setup button when checked, disable it otherwise

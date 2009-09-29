@@ -44,14 +44,14 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     m_pv = factory.createSession();
     if (!m_pv)
         return;
-    update_history_power();
-    
+
     m_hotkey_profile = new CHotkeyProfile();
-    update_hotkey_profile();
     m_pv->setHotkeyProfile(m_hotkey_profile);
     
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
+    
+    update_config();
 }
 
 EngineImpl::~EngineImpl()
@@ -77,15 +77,6 @@ EngineImpl::~EngineImpl()
     delete m_letter_prop;
     delete m_punct_prop;
     delete m_setup_prop;
-}
-
-void
-EngineImpl::update_hotkey_profile()
-{
-    update_page_key_minus();
-    update_page_key_comma();
-    update_mode_key_shift();
-    update_mode_key_control();
 }
 
 static CKeyEvent
@@ -211,6 +202,8 @@ EngineImpl::onConfigChanged(const COptionEvent& event)
         update_history_power();
     } else if (event.name == CONFIG_GENERAL_PAGE_SIZE) {
         update_cand_window_size();
+    } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
+        update_charset_level();
     } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_SHIFT) {
         update_mode_key_shift();
     } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_CONTROL) {
@@ -219,11 +212,21 @@ EngineImpl::onConfigChanged(const COptionEvent& event)
         update_page_key_comma();
     } else if (event.name == CONFIG_KEYBOARD_PAGE_MINUS) {
         update_page_key_minus();
-    } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
-        update_charset_level();
     }
     
     return false;
+}
+
+void
+EngineImpl::update_config()
+{
+    update_history_power();
+    update_cand_window_size();
+    update_charset_level();
+    update_page_key_minus();
+    update_page_key_comma();
+    update_mode_key_shift();
+    update_mode_key_control();
 }
 
 void
@@ -349,8 +352,7 @@ void
 EngineImpl::update_cand_window_size()
 {
     unsigned size = m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10U);
-    size = size;
-    // TODO
+    m_pv->setCandiWindowSize(size);
 }
 
 void

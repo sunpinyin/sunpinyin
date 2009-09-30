@@ -160,7 +160,7 @@ bool
 CShuangpinSchemePolicy::onConfigChanged(const COptionEvent& event)
 {
     if (event.name == SHUANGPIN_TYPE) {
-        setShuangpinType( (EShuangpinType) event.get_unsigned());
+        setShuangpinType( (EShuangpinType) event.get_int());
         return true;
     }
     return false;

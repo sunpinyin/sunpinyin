@@ -63,8 +63,8 @@ public:
     bool get(const char* key, bool val);
     void set(const char* key, bool val);
     
-    unsigned get(const char* key, unsigned val);
-    void set(const char* key, unsigned val);
+    int get(const char* key, int val);
+    void set(const char* key, int val);
     
     std::string get(const char *key, const std::string& default_val);
     void set(const char* key, const std::string& val);

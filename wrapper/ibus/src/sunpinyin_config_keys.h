@@ -63,5 +63,6 @@
 #define CONFIG_KEYBOARD_MODE_SWITCH_CONTROL "Keyboard/ModeSwitch/Control"
 #define CONFIG_KEYBOARD_PAGE_COMMA          "Keyboard/Page/CommaPeriod"
 #define CONFIG_KEYBOARD_PAGE_MINUS          "Keyboard/Page/MinusEquals"
+#define CONFIG_KEYBOARD_PAGE_BRACKET        "Keyboard/Page/Brackets"
 
 #endif // SUNPINYIN_CONFIG_KEYS_H

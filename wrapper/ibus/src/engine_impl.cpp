@@ -39,7 +39,7 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     addRef();
     
     factory.setPinyinScheme(m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN));
-    factory.setCandiWindowSize(m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10U));
+    factory.setCandiWindowSize(m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10));
     
     m_pv = factory.createSession();
     if (!m_pv)
@@ -85,7 +85,7 @@ translate_key(guint key_val, guint key_code, guint modifiers)
     // XXX: may need to move this logic into CKeyEvent
     if (isascii(key_val) && !isspace(key_val)) {
         // we only care about key_val here
-        return CKeyEvent(key_code, key_val, modifiers);
+        return CKeyEvent(0, key_val, modifiers);
     } else {
         // what matters is key_code, but ibus sents me key_code as key_val
         return CKeyEvent(key_val, 0, modifiers);
@@ -212,6 +212,8 @@ EngineImpl::onConfigChanged(const COptionEvent& event)
         update_page_key_comma();
     } else if (event.name == CONFIG_KEYBOARD_PAGE_MINUS) {
         update_page_key_minus();
+    } else if (event.name == CONFIG_KEYBOARD_PAGE_BRACKET) {
+        update_page_key_bracket();
     }
     
     return false;
@@ -225,6 +227,7 @@ EngineImpl::update_config()
     update_charset_level();
     update_page_key_minus();
     update_page_key_comma();
+    update_page_key_bracket();
     update_mode_key_shift();
     update_mode_key_control();
 }
@@ -332,7 +335,7 @@ EngineImpl::update_letter_property(bool full)
 void
 EngineImpl::update_history_power()
 {
-    unsigned power = m_config->get(CONFIG_GENERAL_MEMORY_POWER, 3U);
+    unsigned power = m_config->get(CONFIG_GENERAL_MEMORY_POWER, 3);
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
     ic->setHistoryPower(power);
@@ -341,7 +344,7 @@ EngineImpl::update_history_power()
 void
 EngineImpl::update_charset_level()
 {
-    unsigned charset = m_config->get(CONFIG_GENERAL_CHARSET_LEVEL, 2U);
+    unsigned charset = m_config->get(CONFIG_GENERAL_CHARSET_LEVEL, 2);
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
     charset &= 3;               // charset can only be 0,1,2,3
@@ -351,7 +354,7 @@ EngineImpl::update_charset_level()
 void
 EngineImpl::update_cand_window_size()
 {
-    unsigned size = m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10U);
+    unsigned size = m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10);
     m_pv->setCandiWindowSize(size);
 }
 
@@ -379,28 +382,36 @@ EngineImpl::update_mode_key_control()
 void
 EngineImpl::update_page_key_minus()
 {
-    bool enabled = m_config->get(CONFIG_KEYBOARD_PAGE_MINUS, false);
-
-    if (enabled) {
-        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_MINUS));
-        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
-    } else {
-        m_hotkey_profile->removePageUpKey(CKeyEvent(IM_VK_MINUS));
-        m_hotkey_profile->removePageDownKey(CKeyEvent(IM_VK_EQUALS));
-    }
+    update_page_key(CONFIG_KEYBOARD_PAGE_MINUS, false,
+                    IM_VK_MINUS, IM_VK_EQUALS);
 }
 
 void
 EngineImpl::update_page_key_comma()
 {
-    bool enabled = m_config->get(CONFIG_KEYBOARD_PAGE_COMMA, false);
+    update_page_key(CONFIG_KEYBOARD_PAGE_COMMA, false,
+                    IM_VK_COMMA, IM_VK_PERIOD);
+}
+
+void
+EngineImpl::update_page_key_bracket()
+{
+    update_page_key(CONFIG_KEYBOARD_PAGE_BRACKET, false,
+                    IM_VK_OPEN_BRACKET, IM_VK_CLOSE_BRACKET);
+}
+
+void
+EngineImpl:: update_page_key(const char* conf_key, bool default_val, 
+                             unsigned page_up, unsigned page_down)
+{
+    bool enabled = m_config->get(conf_key, default_val);
 
     if (enabled) {
-        m_hotkey_profile->addPageUpKey(CKeyEvent(IM_VK_COMMA));
-        m_hotkey_profile->addPageDownKey(CKeyEvent(IM_VK_PERIOD));
+        m_hotkey_profile->addPageUpKey(CKeyEvent(0, page_up));
+        m_hotkey_profile->addPageDownKey(CKeyEvent(0, page_down));
     } else {
-        m_hotkey_profile->removePageUpKey(CKeyEvent(IM_VK_COMMA));
-        m_hotkey_profile->removePageDownKey(CKeyEvent(IM_VK_PERIOD));
+        m_hotkey_profile->removePageUpKey(CKeyEvent(0, page_up));
+        m_hotkey_profile->removePageDownKey(CKeyEvent(0, page_down));
     }
 }
 

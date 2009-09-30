@@ -57,6 +57,10 @@ private:
     void update_mode_key_control();
     void update_page_key_minus();
     void update_page_key_comma();
+    void update_page_key_bracket();
+    void update_page_key(const char* conf_key, bool default_val, 
+                         unsigned page_up, unsigned page_down);
+    
     void update_charset_level();
     
     void update_lookup_table();

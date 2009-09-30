@@ -17,16 +17,16 @@ struct COptionEvent
     };
 
     COptionEvent(const std::string& name, const std::string& val,
-                 unsigned type = TYPE_SHARED|TYPE_GLOBAL);
-    COptionEvent(const std::string& name, unsigned val,
-                 unsigned type = TYPE_SHARED|TYPE_GLOBAL);
+                 int type = TYPE_SHARED|TYPE_GLOBAL);
+    COptionEvent(const std::string& name, int val,
+                 int type = TYPE_SHARED|TYPE_GLOBAL);
     COptionEvent(const std::string& name, bool  val,
-                 unsigned type = TYPE_SHARED|TYPE_GLOBAL);
+                 int type = TYPE_SHARED|TYPE_GLOBAL);
     COptionEvent(const std::string& name, const std::vector<std::string>& val,
-                 unsigned type = TYPE_SHARED|TYPE_GLOBAL);
+                 int type = TYPE_SHARED|TYPE_GLOBAL);
     bool is_shared() const { return type & TYPE_SHARED; }
     bool is_global() const { return type & TYPE_GLOBAL; }
-    unsigned get_unsigned() const;
+    int get_int() const;
     bool get_bool() const;
     std::string get_string() const;
     std::vector<std::string> get_string_list() const;
@@ -35,18 +35,18 @@ struct COptionEvent
     std::vector<bool> get_bool_list() const;
     std::vector<int> get_int_list() const;
     
-    unsigned type;
+    int type;
     std::string name;
     
     struct variant_
     {
-        variant_(unsigned);
+        variant_(int);
         variant_(const std::string&);
         variant_(bool);
         variant_(const std::vector<std::string>&);
         struct val_
         {
-            unsigned                 d_unsigned;
+            int                      d_int;
             std::string              d_string;
             bool                     d_bool;
             std::vector<std::string> d_strings;

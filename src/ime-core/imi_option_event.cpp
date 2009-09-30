@@ -2,10 +2,10 @@
 #include <algorithm>
 #include "imi_option_event.h"
 
-COptionEvent::variant_::variant_(unsigned v) 
+COptionEvent::variant_::variant_(int v) 
     : type(VAL_UNSIGNED)
 {
-    data.d_unsigned = v;
+    data.d_int = v;
 }
 
 COptionEvent::variant_::variant_(const std::string& v)
@@ -27,24 +27,24 @@ COptionEvent::variant_::variant_(bool v)
 }
 
 COptionEvent::COptionEvent(const std::string& k, const std::string& v,
-                           unsigned t) 
+                           int t) 
     : type(t), name(k), value(v)
 {}
 
-COptionEvent::COptionEvent(const std::string& k, unsigned v,
-                           unsigned t) 
+COptionEvent::COptionEvent(const std::string& k, int v,
+                           int t) 
     : type(t), name(k), value(v)
 {}
 
 COptionEvent::COptionEvent(const std::string& k, bool v,
-                           unsigned t) 
+                           int t) 
     : type(t), name(k), value(v)
 {}
 
-unsigned
-COptionEvent::get_unsigned() const
+int
+COptionEvent::get_int() const
 {
-    return value.data.d_unsigned;
+    return value.data.d_int;
 }
 
 bool

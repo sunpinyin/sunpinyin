@@ -45,9 +45,14 @@ struct ConfigItem
     std::string name;
     ConfigItem(const std::string& key)
     {
+        section = "engine/SunPinyin/";
         size_t pos = key.rfind('/');
-        assert (pos != key.npos);
-        section = key.substr(0, pos);
+        if (pos != key.npos) {
+            section += key.substr(0, pos);
+            pos += 1;
+        } else {
+            pos = 0;
+        }
         name = key.substr(pos);
     }
 };
@@ -126,8 +131,8 @@ SunPinyinConfig::set(const char* key, const std::string& val)
     ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), &v);
 }
 
-unsigned
-SunPinyinConfig::get(const char* key, unsigned val)
+int
+SunPinyinConfig::get(const char* key, int val)
 {
     assert(m_config != NULL);
     
@@ -135,15 +140,15 @@ SunPinyinConfig::get(const char* key, unsigned val)
     gboolean got;
     ConfigItem item(key);
     got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
-    unsigned result = val;
+    int result = val;
     if (got) {
-        result =  g_value_get_uint(&v);
+        result =  g_value_get_int(&v);
     }
     return result;
 }
 
 void 
-SunPinyinConfig::set(const char* key, unsigned value)
+SunPinyinConfig::set(const char* key, int value)
 {
     assert(m_config != NULL);
     
@@ -225,8 +230,8 @@ g_value_to_event(const gchar *section, const gchar *name, GValue *value)
     unsigned type = get_event_type_by_name(event_name);
     
     switch (G_VALUE_TYPE(value)) {
-    case G_TYPE_UINT:
-        return COptionEvent(event_name, g_value_get_uint(value), type);
+    case G_TYPE_INT:
+        return COptionEvent(event_name, g_value_get_int(value), type);
     case G_TYPE_STRING:
         return COptionEvent(event_name, g_value_get_string(value), type);
     case G_TYPE_BOOLEAN:
@@ -234,7 +239,7 @@ g_value_to_event(const gchar *section, const gchar *name, GValue *value)
                             g_value_get_boolean(value)?true:false, type);
     default:
         assert(false && "unknown gvalue");
-        return COptionEvent(event_name, 0U);
+        return COptionEvent(event_name, 0);
     }   
 }
 
@@ -245,8 +250,6 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          GValue *value,
                                          gpointer user_data)
 {
-    ibus::log << __func__ << ": " << section << "/" << name << endl;
-    
     static const char* prefix = "engine/SunPinyin/";
     if (!strstr(section, prefix))
         return;

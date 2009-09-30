@@ -144,27 +144,25 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             _moveRight (changeMasks);
         }
         m_pHotkeyProfile->rememberLastKey(key);
-    } else if ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
-               (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) {
-        if (!m_pIC->isEmpty ()) {
-            changeMasks |= KEYEVENT_USED;
-            int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
-            if (sz > 0 && m_candiPageFirst > 0) {
-                m_candiPageFirst -= m_candiWindowSize;
-                if (m_candiPageFirst < 0) m_candiPageFirst = 0;
-                changeMasks |= CANDIDATE_MASK;
-            }
+    } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
+                 (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) &&
+                !m_pIC->isEmpty() ) {
+        changeMasks |= KEYEVENT_USED;
+        int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+        if (sz > 0 && m_candiPageFirst > 0) {
+            m_candiPageFirst -= m_candiWindowSize;
+            if (m_candiPageFirst < 0) m_candiPageFirst = 0;
+            changeMasks |= CANDIDATE_MASK;
         }
         m_pHotkeyProfile->rememberLastKey(key);
-    } else if ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
-               (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) {
-        if (!m_pIC->isEmpty ()) {
-            changeMasks |= KEYEVENT_USED;
-            int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
-            if (sz > 0 && m_candiPageFirst + m_candiWindowSize < sz) {
-                m_candiPageFirst += m_candiWindowSize;
-                changeMasks |= CANDIDATE_MASK;
-            }
+    } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
+                 (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) &&
+                !m_pIC->isEmpty() ) {
+        changeMasks |= KEYEVENT_USED;
+        int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+        if (sz > 0 && m_candiPageFirst + m_candiWindowSize < sz) {
+            m_candiPageFirst += m_candiWindowSize;
+            changeMasks |= CANDIDATE_MASK;
         }
         m_pHotkeyProfile->rememberLastKey(key);
     } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {

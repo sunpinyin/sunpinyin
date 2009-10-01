@@ -4,7 +4,7 @@
   <!-- interface-naming-policy project-wide -->
   <widget class="GtkWindow" id="main_window">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">sunpinyin setup</property>
+    <property name="title" translatable="yes">SunPinyin Setup</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <signal name="destroy" handler="on_window_destroy" after="yes"/>
@@ -99,7 +99,7 @@ PinYinJiaJia</property>
                     <child>
                       <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Pinyin Mode Setup&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Pinyin Mode&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -203,7 +203,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkRadioButton" id="General/InitialStatus/Letter/Full">
-                                <property name="label" translatable="yes">Quan jiao</property>
+                                <property name="label" translatable="yes">Full-width Letter</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -218,7 +218,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkRadioButton" id="General/InitialStatus/Letter/Half">
-                                <property name="label" translatable="yes">Ban jiao</property>
+                                <property name="label" translatable="yes">Half-width Letter</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -391,7 +391,7 @@ PinYinJiaJia</property>
                             <property name="homogeneous">True</property>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/ModeSwitch/Shift">
-                                <property name="label" translatable="yes">Shift</property>
+                                <property name="label">Shift</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -401,7 +401,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/ModeSwitch/Control">
-                                <property name="label" translatable="yes">Ctrl</property>
+                                <property name="label">Ctrl</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -419,7 +419,7 @@ PinYinJiaJia</property>
                     <child>
                       <widget class="GtkLabel" id="label7">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Ch-En Switch key&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Ch/En Switch key&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -458,7 +458,7 @@ PinYinJiaJia</property>
                             <property name="homogeneous">True</property>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/FullLetter/ShiftSemi">
-                                <property name="label" translatable="yes">Shift+;</property>
+                                <property name="label">Shift+;</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -468,7 +468,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/FullLetter/ShiftPeriod">
-                                <property name="label" translatable="yes">Shilft+.</property>
+                                <property name="label">Shilft+.</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -486,7 +486,7 @@ PinYinJiaJia</property>
                     <child>
                       <widget class="GtkLabel" id="label8">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Quan-BanJiao Switch&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Full/Half-width Switch&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -525,7 +525,7 @@ PinYinJiaJia</property>
                             <property name="homogeneous">True</property>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/Page/MinusEquals">
-                                <property name="label" translatable="yes">"-"  /  "="</property>
+                                <property name="label">"-"  /  "="</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -535,7 +535,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/Page/Brackets">
-                                <property name="label" translatable="yes">"["  /  "]"</property>
+                                <property name="label">"["  /  "]"</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -548,7 +548,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="Keyboard/Page/CommaPeriod">
-                                <property name="label" translatable="yes">","  /  "."</property>
+                                <property name="label">","  /  "."</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -616,7 +616,7 @@ PinYinJiaJia</property>
                             <property name="homogeneous">True</property>
                             <child>
                               <widget class="GtkRadioButton" id="General/Charset/GB2312">
-                                <property name="label" translatable="yes">GB2312</property>
+                                <property name="label">GB2312</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -626,7 +626,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkRadioButton" id="General/Charset/GBK">
-                                <property name="label" translatable="yes">GBK</property>
+                                <property name="label">GBK</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -640,7 +640,7 @@ PinYinJiaJia</property>
                             </child>
                             <child>
                               <widget class="GtkRadioButton" id="General/Charset/GB18030">
-                                <property name="label" translatable="yes">GB18030</property>
+                                <property name="label">GB18030</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -742,7 +742,7 @@ PinYinJiaJia</property>
                               <widget class="GtkComboBox" id="General/MemoryPower">
                                 <property name="visible">True</property>
                                 <property name="active">3</property>
-                                <property name="items" translatable="yes">1
+				<property name="items" translatable="no">1
 2
 3
 4
@@ -976,7 +976,7 @@ PinYinJiaJia</property>
             <property name="homogeneous">True</property>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/ZhiZi">
-                <property name="label" translatable="yes">z -&gt; zh</property>
+                <property name="label">z -&gt; zh</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -986,7 +986,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/ChiCi">
-                <property name="label" translatable="yes">c -&gt; ch</property>
+                <property name="label">c -&gt; ch</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1000,7 +1000,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/ShiSi">
-                <property name="label" translatable="yes">s -&gt; sh</property>
+                <property name="label">s -&gt; sh</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1014,7 +1014,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/AnAng">
-                <property name="label" translatable="yes">an -&gt; ang</property>
+                <property name="label">an -&gt; ang</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1028,7 +1028,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/OnOng">
-                <property name="label" translatable="yes">on -&gt; ong</property>
+                <property name="label">on -&gt; ong</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1042,7 +1042,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/EnEng">
-                <property name="label" translatable="yes">en -&gt; eng</property>
+                <property name="label">en -&gt; eng</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1056,7 +1056,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/InIng">
-                <property name="label" translatable="yes">in -&gt; ing</property>
+                <property name="label">in -&gt; ing</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1070,7 +1070,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/EngOng">
-                <property name="label" translatable="yes">eng -&gt; ong</property>
+                <property name="label">eng -&gt; ong</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1083,7 +1083,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/IanIang">
-                <property name="label" translatable="yes">ian -&gt; iang</property>
+                <property name="label">ian -&gt; iang</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1099,7 +1099,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/UanUang">
-                <property name="label" translatable="yes">uan -&gt; uang</property>
+                <property name="label">uan -&gt; uang</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1114,7 +1114,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/NeLe">
-                <property name="label" translatable="yes">l -&gt; n</property>
+                <property name="label">l -&gt; n</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1130,7 +1130,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/FoHe">
-                <property name="label" translatable="yes">f -&gt; h</property>
+                <property name="label">f -&gt; h</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1146,7 +1146,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/LeRi">
-                <property name="label" translatable="yes">r -&gt; l</property>
+                <property name="label">r -&gt; l</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1162,7 +1162,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/KeGe">
-                <property name="label" translatable="yes">k -&gt; g</property>
+                <property name="label">k -&gt; g</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1274,7 +1274,7 @@ PinYinJiaJia</property>
             <property name="homogeneous">True</property>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/IgnIng">
-                <property name="label" translatable="yes">ign -&gt; ing</property>
+                <property name="label">ign -&gt; ing</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1284,7 +1284,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/ImgIng">
-                <property name="label" translatable="yes">img -&gt; ing</property>
+                <property name="label">img -&gt; ing</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1298,7 +1298,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/UeiUi">
-                <property name="label" translatable="yes">uei -&gt; ui</property>
+                <property name="label">uei -&gt; ui</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1312,7 +1312,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/UenUn">
-                <property name="label" translatable="yes">uen -&gt; un</property>
+                <property name="label">uen -&gt; un</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1326,7 +1326,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/IouIu">
-                <property name="label" translatable="yes">iou -&gt; iu</property>
+                <property name="label">iou -&gt; iu</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1441,7 +1441,7 @@ PinYinJiaJia</property>
             <property name="homogeneous">True</property>
             <child>
               <widget class="GtkCheckButton" id="chk_dot_node">
-                <property name="label" translatable="yes">"." -&gt; "&#xB7;"</property>
+                <property name="label">"." -&gt; "&#xB7;"</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1450,7 +1450,7 @@ PinYinJiaJia</property>
             </child>
             <child>
               <widget class="GtkCheckButton" id="chk_dollar_yuan">
-                <property name="label" translatable="yes">"$" -&gt; "&#xFFE5;"</property>
+                <property name="label">"$" -&gt; "&#xFFE5;"</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>

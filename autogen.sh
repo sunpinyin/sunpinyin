@@ -57,5 +57,5 @@ autoconf
 
 if test "x$1" != "x--do-not-run-configure" ; then
     #./configure $@
-    ./configure --disable-cle --enable-ibus --disable-documents --prefix=/usr
+    ./configure --disable-cle --enable-ibus --disable-scim --disable-documents --prefix=/usr --libexecdir=/usr/lib/ibus-sunpinyin
 fi

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="48"
+   height="48"
+   id="svg2710">
+  <defs
+     id="defs2712">
+    <filter
+       id="filter4889">
+      <feGaussianBlur
+         id="feGaussianBlur4891"
+         stdDeviation="0.8789348"
+         inkscape:collect="always" />
+    </filter>
+  </defs>
+  <g
+     id="layer1">
+    <text
+       x="-2.4050589"
+       y="43"
+       id="text2720"
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#35556b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Adobe Kaiti Std;-inkscape-font-specification:Adobe Kaiti Std"><tspan
+         x="-2.4050589"
+         y="43"
+         id="tspan2722">英</tspan></text>
+    <text
+       x="-0.94521457"
+       y="43.750927"
+       id="text3520"
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;opacity:1;fill:#36556b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4889);font-family:Adobe Kaiti Std;-inkscape-font-specification:Adobe Kaiti Std"><tspan
+         x="-0.94521457"
+         y="43.750927"
+         id="tspan3522">英</tspan></text>
+  </g>
+</svg>

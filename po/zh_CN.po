@@ -1,13 +1,13 @@
-# Copyright (C) 2007 Kov Chai <tchaikov@gmail.com>
+# Copyright (C) 2007,2009 Kov Chai <tchaikov@gmail.com>
 # This file is distributed under the same license as the sunpinyin package.
 # Kov Chai <tchaikov@gmail.com>, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sunpinyin 1.0\n"
+"Project-Id-Version: sunpinyin 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-19 20:01+0800\n"
-"PO-Revision-Date: 2008-11-16 15:52+0800\n"
+"POT-Creation-Date: 2009-10-01 18:55+0800\n"
+"PO-Revision-Date: 2009-10-01 18:55+0800\n"
 "Last-Translator: Kov Chai <tchaikov@gmail.com>\n"
 "Language-Team: Kov Chai <tchaikov@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -158,6 +158,176 @@ msgstr "这个数字越大，我的记得越快，不过忘得也更快。"
 #: wrapper/scim/sunpinyin_imengine_setup.cpp:248
 msgid "Options"
 msgstr "设置选项"
+
+#: wrapper/ibus/src/main.cpp:91
+msgid "Simplified Chinese Input Method developed by SUN"
+msgstr "由 Sun 开发的简体中文输入法"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:68
+msgid "Switch to Chinese input mode"
+msgstr "切换到中文输入模式"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:71
+msgid "Switch to English input mode"
+msgstr "切换到英文输入模式"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:83
+msgid "Switch to full-width letter input mode"
+msgstr "改用全角字母"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:86
+msgid "Switch to half-width letter input mode"
+msgstr "改用半角字母"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:97
+msgid "Switch to Chinese punctuation"
+msgstr "改用中文标点"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:100
+msgid "Switch to English punctuation"
+msgstr "改用英文标点"
+
+#: wrapper/ibus/src/sunpinyin_property.cpp:184
+msgid "Configure SunPinyin"
+msgstr "配置 SunPinyin"
+
+#: wrapper/ibus/setup/setup.glade:7
+msgid "SunPinyin Setup"
+msgstr "SunPinyin 配置"
+
+#: wrapper/ibus/setup/setup.glade:44
+msgid "Quan Pin"
+msgstr "全拼"
+
+#: wrapper/ibus/setup/setup.glade:57
+msgid "Shuang Pin"
+msgstr "双拼"
+
+#: wrapper/ibus/setup/setup.glade:98
+msgid "<b>Pinyin Mode</b>"
+msgstr "拼音模式"
+
+#: wrapper/ibus/setup/setup.glade:139
+msgid "Chinese"
+msgstr "中文"
+
+#: wrapper/ibus/setup/setup.glade:152
+msgid "English"
+msgstr "英文"
+
+#: wrapper/ibus/setup/setup.glade:170
+msgid "Chinese punctuation"
+msgstr "中文标点"
+
+#: wrapper/ibus/setup/setup.glade:185
+msgid "English punctuation"
+msgstr "英文标点"
+
+#: wrapper/ibus/setup/setup.glade:202
+msgid "Full-width Letter"
+msgstr "全角字母"
+
+#: wrapper/ibus/setup/setup.glade:217
+msgid "Half-width Letter"
+msgstr "半角字母"
+
+#: wrapper/ibus/setup/setup.glade:239
+msgid "<b>Initial Status</b>"
+msgstr "<b>初始状态</b>"
+
+#: wrapper/ibus/setup/setup.glade:279
+msgid "Fuzzy Pinyin"
+msgstr "模糊拼音"
+
+#: wrapper/ibus/setup/setup.glade:293
+msgid "Auto Correct"
+msgstr "自动纠错"
+
+#: wrapper/ibus/setup/setup.glade:308 wrapper/ibus/setup/setup.glade:940
+msgid "Fuzzy Pinyin Setup"
+msgstr "模糊拼音设置"
+
+#: wrapper/ibus/setup/setup.glade:323 wrapper/ibus/setup/setup.glade:1238
+msgid "Auto Correct Setup"
+msgstr "自动纠错设置"
+
+#: wrapper/ibus/setup/setup.glade:344
+msgid "<b>QuanPin Setup</b>"
+msgstr "<b>全拼设置</b>"
+
+#: wrapper/ibus/setup/setup.glade:361
+msgid "Pinyin Mode"
+msgstr "拼音模式"
+
+#: wrapper/ibus/setup/setup.glade:418
+msgid "<b>Ch/En Switch key</b>"
+msgstr "<b>汉/英切换热键</b>"
+
+#: wrapper/ibus/setup/setup.glade:485
+msgid "<b>Quan-BanJiao Switch</b>"
+msgstr "<b>全/半角切换</b>"
+
+#: wrapper/ibus/setup/setup.glade:565
+msgid "<b>Page Switch</b>"
+msgstr "<b>翻页</b>"
+
+#: wrapper/ibus/setup/setup.glade:585
+msgid "Keyboard"
+msgstr "快捷键"
+
+#: wrapper/ibus/setup/setup.glade:658
+msgid "<b>Character Set</b>"
+msgstr "<b>字符集</b>"
+
+#: wrapper/ibus/setup/setup.glade:700
+msgid "Candidate Num"
+msgstr "候选词的个数"
+
+#: wrapper/ibus/setup/setup.glade:722
+msgid "Memory Strength"
+msgstr "记忆强度"
+
+#: wrapper/ibus/setup/setup.glade:751
+msgid "<b>Options</b>"
+msgstr "<b>设置选项</b>"
+
+#: wrapper/ibus/setup/setup.glade:790
+msgid "Punct mapping"
+msgstr "自定义标点映射"
+
+#: wrapper/ibus/setup/setup.glade:804
+msgid "Mapping Setup"
+msgstr "自定义标点映射配置"
+
+#: wrapper/ibus/setup/setup.glade:823
+msgid "<b>Symbol Mapping</b>"
+msgstr "<b>标点映射</b>"
+
+#: wrapper/ibus/setup/setup.glade:843
+msgid "General"
+msgstr "通用"
+
+#: wrapper/ibus/setup/setup.glade:854
+msgid "copyright (c) 2009"
+msgstr "版权所有 (c)"
+
+#: wrapper/ibus/setup/setup.glade:863
+msgid "About"
+msgstr "关于"
+
+#: wrapper/ibus/setup/setup.glade:1169 wrapper/ibus/setup/setup.glade:1337
+#: wrapper/ibus/setup/setup.glade:1467
+msgid "All"
+msgstr "全选"
+
+#: wrapper/ibus/setup/setup.glade:1184 wrapper/ibus/setup/setup.glade:1351
+#: wrapper/ibus/setup/setup.glade:1481
+msgid "None"
+msgstr "全不选"
+
+#: wrapper/ibus/setup/setup.glade:1405
+msgid "Punct Mapping"
+msgstr "自定义标点映射"
 
 #~ msgid "Changing this will dismiss the un-committed preedit strings"
 #~ msgstr "修改此项会使未输入的字串作废"

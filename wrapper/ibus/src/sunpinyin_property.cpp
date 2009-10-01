@@ -33,9 +33,13 @@
  * to such option by the copyright holder. 
  */
 
+#include <libintl.h>
 #include <ibus.h>
 #include "ibus_portable.h"
 #include "sunpinyin_property.h"
+
+#define N_(String) (String)
+#define _(String)  gettext(String)
 
 static const char *PROP_STATUS = "status";
 static const char *PROP_LETTER = "full_letter";
@@ -60,11 +64,13 @@ SunPinyinProperty::create_status_prop(IBusEngine *engine, bool state)
 {
     SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_STATUS);
     prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"EN");
-    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/eng.png";
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/eng.svg";
+    prop->m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to Chinese input mode"));
     prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"CN");
-    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/han.png";
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/han.svg";
+    prop->m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to English input mode"));
     prop->init(state);
-
+    
     return prop;
 }
 
@@ -72,10 +78,12 @@ SunPinyinProperty *
 SunPinyinProperty::create_letter_prop(IBusEngine *engine, bool state)
 {
     SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_LETTER);
-    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"f");
+    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"Aa");
     prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/halfwidth.png";
-    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"F");
+    prop->m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to full-width letter input mode"));
+    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"Ａａ");
     prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/fullwidth.png";
+    prop->m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to half-width letter input mode"));
     prop->init(state);
     return prop;
 }
@@ -84,11 +92,12 @@ SunPinyinProperty *
 SunPinyinProperty::create_punct_prop(IBusEngine *engine, bool state)
 {
     SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_PUNCT);
-    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"p");
+    prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L",.");
     prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/enpunc.png";
-    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"P");
+    prop->m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to Chinese punctuation"));
+    prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"，。");
     prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/cnpunc.png";
-
+    prop->m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to English punctuation"));
     prop->init(state);
     return prop;
 
@@ -142,8 +151,9 @@ SunPinyinProperty::init(bool state)
     int which = m_state ? 1 : 0;
     PropertyInfo& info = m_info[which];
     ibus_property_set_label(m_prop, info.label);
-    ibus_property_set_icon (m_prop, info.icon.c_str());
-    ibus_property_set_visible (m_prop, TRUE);
+    ibus_property_set_icon(m_prop, info.icon.c_str());
+    ibus_property_set_tooltip(m_prop, info.tooltip);
+    ibus_property_set_visible(m_prop, TRUE);
     ibus_property_set_state(m_prop, state ? PROP_STATE_CHECKED : PROP_STATE_UNCHECKED);
 }
 
@@ -170,9 +180,10 @@ SetupLauncher::SetupLauncher()
                                NULL, /* tooltip */ TRUE, /* sensitive */
                                TRUE, /* visible */ PROP_STATE_UNCHECKED, /* state */
                                NULL);
-    m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"setup");
-    m_info.tooltip = ibus_text_new_from_ucs4((const gunichar*) L"Configure SunPinyin");
+    m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"Perference");
+    m_info.tooltip = ibus_text_new_from_static_string(_("Configure SunPinyin"));
     m_info.icon    = SUNPINYIN_ICON_DIR"/setup.svg";
+    init();
 }
 
 void
@@ -213,5 +224,6 @@ SetupLauncher::init()
 {
     ibus_property_set_label(m_prop, m_info.label);
     ibus_property_set_icon (m_prop, m_info.icon.c_str());
+    ibus_property_set_tooltip(m_prop, m_info.tooltip);
     ibus_property_set_visible (m_prop, TRUE);
 }

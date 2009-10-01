@@ -34,14 +34,17 @@
 #
 
 import sys
+import os
 from os import path
 import gtk
 import gtk.glade as glade
 import ibus
 import gettext
+import locale
 
 GETTEXT_PACKAGE="sunpinyin"
 _ = lambda msg: gettext.gettext(msg)
+
 GLADE_FILE = path.join(path.dirname(__file__), "setup.glade")
 SEPARATOR = "/"
 
@@ -125,7 +128,7 @@ class ComboBoxOption(TrivalOption):
     def init(self):
         model = gtk.ListStore(str)
         for v in self.options:
-            model.append([_(str(v))])
+            model.append([str(v)])
         self.widget.set_model(model)
 
     def save_ui_setting(self):
@@ -289,6 +292,7 @@ class MainWindow ():
         gtk.main()
         
     def __init_ui(self, name):
+        self.__init_gettext()
         glade_file = path.join(path.dirname(__file__), GLADE_FILE)
         self.__xml = glade.XML (glade_file, name)
         self.__init_options()
@@ -297,8 +301,8 @@ class MainWindow ():
         self.window.show_all()
 
     def __init_gettext(self):
-        local.setlocal(local.LC_ALL, "")
-        localdir = os.getenv("IBUS_LOCALEDIR")
+        locale.setlocale(locale.LC_ALL, "")
+        localedir = os.getenv("IBUS_LOCALEDIR")
         gettext.bindtextdomain(GETTEXT_PACKAGE, localedir)
         gettext.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
         glade.bindtextdomain(GETTEXT_PACKAGE, localedir)

@@ -186,12 +186,13 @@ $(top_builddir)/data/pydict_sc.bin: $(top_builddir)/data/lm_sc.t3g
 
 icondir                  = $(IBUS_SUNPINYIN_ICONDIR)
 icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \
-                           $(top_builddir)/data/eng.png            \
-                           $(top_builddir)/data/han.png            \
+                           $(top_builddir)/data/eng.svg            \
+                           $(top_builddir)/data/han.svg            \
                            $(top_builddir)/data/cnpunc.png         \
                            $(top_builddir)/data/enpunc.png         \
                            $(top_builddir)/data/fullwidth.png      \
-                           $(top_builddir)/data/halfwidth.png
+                           $(top_builddir)/data/halfwidth.png      \
+                           $(top_builddir)/data/setup.svg
 
 test: ibus-engine-sunpinyin
 	$(builddir)/ibus-engine-sunpinyin --ibus

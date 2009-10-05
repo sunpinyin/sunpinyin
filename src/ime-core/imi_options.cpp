@@ -187,8 +187,6 @@ PairParser::parse(const COptionEvent& event)
 size_t 
 PairParser::parse(const std::vector<std::string> pairs)
 {
-    ibus::log << __func__ << ": # pair = " << pairs.size() << endl;
-    
     size_t npairs = std::min(sizeof(m_pairs)/sizeof(m_pairs[0]),
                              pairs.size());
 
@@ -198,7 +196,6 @@ PairParser::parse(const std::vector<std::string> pairs)
     int i = 0;
     for (;i < npairs; ++i) {
         const std::string& pair = pairs[i];
-        ibus::log << __func__ << ":" << i << ":" << pair << endl;
         std::string::size_type found = pair.find(':');
         if (found == pair.npos)
             continue;
@@ -239,9 +236,6 @@ PairParser::strdup(const std::string& s)
 char*
 PairParser::alloc(size_t size)
 {
-    ibus::log << __func__ << ":" << size << endl;
-    ibus::log << __func__ << ":" << hex << (long)m_free << "-" << hex << (long)m_end << endl;
-
     if (m_end > m_free + size) {
         m_free += size;
         return m_free;

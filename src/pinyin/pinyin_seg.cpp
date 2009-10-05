@@ -38,7 +38,7 @@
 #include <climits>
 #include "pinyin_seg.h"
 
-void CGetFuzzySyllablesOp::initFuzzyMap (const char **fuzzyPairs, unsigned num)
+void CGetFuzzySyllablesOp::initFuzzyMap (const char * const* fuzzyPairs, unsigned num)
 {
     m_fuzzyMap.clear();
 

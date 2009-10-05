@@ -43,11 +43,85 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <cassert>
 
 #include "imi_option_keys.h"
 #include "imi_keys.h"
 #include "imi_options.h"
 #include "imi_view_classic.h"
+
+class PairParser
+{
+public:
+    PairParser()
+        : m_free(m_buf), m_end(m_buf+256)
+    {}
+
+    /**
+     * transform an event to interleaved <key,value> array of (char*)
+     * @param event a list of string, each element should be in the form of "key:value".
+     * @returns the number of pairs transformed
+     * @note this function uses a local buffer for the returned array
+     */
+    size_t parse(const COptionEvent& event)
+    {
+        std::vector<std::string> pairs = event.get_string_list();
+        const size_t pairs_len = sizeof(m_pairs)/sizeof(m_pairs[0]);
+        size_t npairs = std::min(pairs_len, pairs.size());
+        
+        int i = 0;
+        for (;i < npairs; ++i) {
+            const std::string& pair = pairs[i];
+            std::string::size_type found = pair.find(':');
+            if (found == pair.npos)
+                continue;
+            const std::string key = pair.substr(0, found);
+            const std::string val = pair.substr(found);
+            char *skey = strdup(key);
+            char *sval = strdup(val);
+            if (skey && sval) {
+                m_pairs[2*i] = skey;
+                m_pairs[2*i+1] = sval;
+            } else {
+                // running out of memory
+                break;
+            }
+        }
+        // reclaim the used memory
+        m_free = m_buf;
+        return i;
+    }
+
+    const char* const* get_pairs() const 
+    {
+        return m_pairs;
+    }
+    
+private:
+    char* strdup(const std::string& s) 
+    {
+        size_t len = s.length()+1;
+        char* str = alloc(len);
+        if (str) {
+            strncpy(str, s.c_str(), len);
+        }
+        return str;
+    }
+    
+    char* alloc(size_t size)
+    {
+        if (m_end < m_free + size) {
+            m_free += size;
+            return m_free;
+        }
+        return NULL;
+    }
+    
+    char* m_pairs[32];
+    char  m_buf[256];
+    char* m_free;
+    const char* m_end;
+};
 
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
@@ -98,15 +172,31 @@ CSimplifiedChinesePolicy::createContext()
 void
 CSimplifiedChinesePolicy::destroyContext (CIMIContext *context)
 {
+    assert(context != NULL);
+    saveUserHistory();
+    delete context;
+}
+
+bool
+CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
+{
+    if (event.name == PINYIN_PUNCTMAPPING) {
+        PairParser parser;
+        size_t num = parser.parse(event);
+        setPunctMapping(parser.get_pairs());
+        return true;
+    }
+    return false;
+}
+
+bool
+CSimplifiedChinesePolicy::saveUserHistory ()
+{
     char path[256];
     const char *home = getenv ("HOME");
     snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
     m_historyCache.saveToFile(path);
 }
-    
-CShuangpinSchemePolicy::CShuangpinSchemePolicy()
-    : m_shuangpinType(MS2003)
-{}
 
 bool
 CSimplifiedChinesePolicy::createDirectory(const char *path) {
@@ -124,15 +214,9 @@ CSimplifiedChinesePolicy::createDirectory(const char *path) {
     return true;
 }
 
-size_t init_pinyin_pairs(const char** pinyins, size_t len, const COptionEvent& event)
-{
-    std::vector<std::string> pairs = event.get_string_list();
-    size_t num = std::min(len, pairs.size()) / 2;
-    for (int i = 0; i  < num*2; ++i) {
-        pinyins[i] = pairs[i].c_str();
-    }
-    return num;
-}
+CShuangpinSchemePolicy::CShuangpinSchemePolicy()
+    : m_shuangpinType(MS2003)
+{}
 
 bool
 CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
@@ -140,16 +224,15 @@ CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
     if (event.name == QUANPIN_FUZZY_ENABLED) {
         setFuzzyForwarding(event.get_bool());
     } else if (event.name == QUANPIN_FUZZY_PINYINS) {
-        const char* pinyins[MAX_FUZZY_PINYINS];
-        size_t num = init_pinyin_pairs(pinyins, MAX_FUZZY_PINYINS, event);
-        setFuzzyPinyinPairs(pinyins, num);
+        PairParser parser;
+        size_t num = parser.parse(event);
+        setFuzzyPinyinPairs(parser.get_pairs(), num);
     } else if (event.name == QUANPIN_AUTOCORRECTING_ENABLED) {
         setAutoCorrecting(event.get_bool());
     } else if (event.name == QUANPIN_AUTOCORRECTING_PINYINS) {
-        const char* pinyins[MAX_AUTOCORRECTION_PINYINS];
-        size_t num = init_pinyin_pairs(pinyins, MAX_AUTOCORRECTION_PINYINS,
-                                       event);
-        setAutoCorrectionPairs(pinyins, num);
+        PairParser parser;
+        size_t num = parser.parse(event);
+        setAutoCorrectionPairs(parser.get_pairs(), num);
     } else {
         return false;
     }

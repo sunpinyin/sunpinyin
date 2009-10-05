@@ -89,7 +89,7 @@ public:
     typedef std::multimap<const std::string, std::string> CFuzzyMap;
 
     CGetFuzzySyllablesOp () : m_bEnabled(false) {}
-    void initFuzzyMap (const char **fuzzyPairs, unsigned num);
+    void initFuzzyMap (const char* const* fuzzyPairs, unsigned num);
 
     void setEnable (bool value=true) {m_bEnabled = value;}
     bool isEnabled () {return m_bEnabled;}
@@ -112,7 +112,7 @@ public:
     void setEnable (bool value=true) {m_bEnabled = value;}
     bool isEnabled () {return m_bEnabled;}
 
-    void setCorrectionPairs (const char **pairs, unsigned num) 
+    void setCorrectionPairs (const char* const* pairs, unsigned num) 
     {
         m_correctionPairs.clear ();
         for (unsigned i=0; i<num; ++i) {

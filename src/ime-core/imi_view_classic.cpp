@@ -116,8 +116,11 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
 
     if (m_pHotkeyProfile && m_pHotkeyProfile->isModeSwitchKey(key)) {
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, (!m_bCN)?1:0);
+        if (!m_pIC->isEmpty ()) {
+            changeMasks |= CANDIDATE_MASK | PREEDIT_MASK;
+            clearIC ();
+        }
         m_pHotkeyProfile->rememberLastKey(key);
-        return 0;
         
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isPunctSwitchKey(key)) {
         // On CTRL+. switch Full/Half punc

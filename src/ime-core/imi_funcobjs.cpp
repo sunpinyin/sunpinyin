@@ -72,13 +72,13 @@ const wstring& CGetFullSymbolOp::operator () (unsigned ch)
     return ret;
 }
 
-void CGetFullPunctOp::initPunctMap (const char **punc_map)
+void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
 {
     m_punctMap.clear ();
     m_punctClosingSts.clear ();
 
     TWCHAR cwstr[256];
-    const char **p = punc_map;
+    const char *const *p = punc_map;
 
     while (*p) {
         const char *k = *p++;
@@ -120,12 +120,8 @@ const wstring& CGetFullPunctOp::operator () (unsigned ch)
         "]",    "〕",
         "{",    "｛",
         "}",    "｝",
-        "@",    "＠",
-        "#",    "＃",
         "$",    "￥",
-        "%",    "％",
-        "&",    "＆",
-        "*",    "＊",
+        "*",    "×",
         "+",    "＋",
         "|",    "｜",
         NULL,

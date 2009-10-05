@@ -62,18 +62,21 @@ struct CSimplifiedChinesePolicy : public IConfigurable
     CIMIContext* createContext ();
     void destroyContext (CIMIContext *context);
     
-    void setPunctMapping (const char **map)
+    void setPunctMapping (const char *const* map)
         {m_getFullPunctOp.initPunctMap (map);}
 
     void enableFullSymbol (bool v=true) {m_bEnableFullSymbol = v;}
     void enableFullPunct (bool v=true) {m_bEnableFullPunct = v;}
 
+    virtual bool onConfigChanged (const COptionEvent& event);
+    
     template<class> friend class SingletonHolder;
     
 protected:
     ~CSimplifiedChinesePolicy () {}
 
-    bool createDirectory(const char *path);
+    bool createDirectory (const char *path);
+    bool saveUserHistory ();
     
     CIMIData             m_coreData;
     CBigramHistory       m_historyCache;
@@ -115,13 +118,13 @@ public:
         MAX_AUTOCORRECTION_PINYINS = 32
     };
 
-    void setFuzzyPinyinPairs (const char **pairs, unsigned num)
+    void setFuzzyPinyinPairs (const char* const* pairs, unsigned num)
         {m_getFuzzySyllablesOp.initFuzzyMap (pairs, num);}
 
     void setAutoCorrecting (bool v=true)
         {m_getCorrectionPairOp.setEnable (v);}
 
-    void setAutoCorrectionPairs (const char **pairs, unsigned num) 
+    void setAutoCorrectionPairs (const char* const* pairs, unsigned num) 
         {m_getCorrectionPairOp.setCorrectionPairs (pairs, num);}
 
     virtual bool onConfigChanged(const COptionEvent& event);
@@ -220,7 +223,6 @@ public:
         InputStylePolicy::instance().release();
         if (pview) {
             LanguagePolicy::instance().destroyContext(pview->getIC());
-            delete pview->getIC();
             delete pview->getPySegmentor();
             delete pview;
         }

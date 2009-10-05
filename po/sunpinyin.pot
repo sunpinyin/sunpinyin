@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 18:55+0800\n"
+"POT-Creation-Date: 2009-10-05 13:09+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,128 +183,137 @@ msgstr ""
 msgid "Shuang Pin"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:98
+#: wrapper/ibus/setup/setup.glade:78
+msgid ""
+"MS2003\n"
+"ZiRanMa\n"
+"ZiGuang\n"
+"ABC\n"
+"PinYinJiaJia"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:102
 msgid "<b>Pinyin Mode</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:139
+#: wrapper/ibus/setup/setup.glade:143
 msgid "Chinese"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:152
+#: wrapper/ibus/setup/setup.glade:156
 msgid "English"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:170
+#: wrapper/ibus/setup/setup.glade:174
 msgid "Chinese punctuation"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:185
+#: wrapper/ibus/setup/setup.glade:189
 msgid "English punctuation"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:202
-msgid "Full-widtb Letter"
+#: wrapper/ibus/setup/setup.glade:206
+msgid "Full-width Letter"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:217
+#: wrapper/ibus/setup/setup.glade:221
 msgid "Half-width Letter"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:239
+#: wrapper/ibus/setup/setup.glade:243
 msgid "<b>Initial Status</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:279
+#: wrapper/ibus/setup/setup.glade:283
 msgid "Fuzzy Pinyin"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:293
+#: wrapper/ibus/setup/setup.glade:297
 msgid "Auto Correct"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:308 wrapper/ibus/setup/setup.glade:940
+#: wrapper/ibus/setup/setup.glade:312 wrapper/ibus/setup/setup.glade:960
 msgid "Fuzzy Pinyin Setup"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:323 wrapper/ibus/setup/setup.glade:1238
+#: wrapper/ibus/setup/setup.glade:327 wrapper/ibus/setup/setup.glade:1258
 msgid "Auto Correct Setup"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:344
+#: wrapper/ibus/setup/setup.glade:348
 msgid "<b>QuanPin Setup</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:361
+#: wrapper/ibus/setup/setup.glade:365
 msgid "Pinyin Mode"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:418
-msgid "<b>Ch-En Switch key</b>"
+#: wrapper/ibus/setup/setup.glade:422
+msgid "<b>Ch/En Switch key</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:485
-msgid "<b>Quan-BanJiao Switch</b>"
+#: wrapper/ibus/setup/setup.glade:489
+msgid "<b>Full/Half-width Switch</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:565
+#: wrapper/ibus/setup/setup.glade:569
 msgid "<b>Page Switch</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:585
+#: wrapper/ibus/setup/setup.glade:589
 msgid "Keyboard"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:658
+#: wrapper/ibus/setup/setup.glade:662
 msgid "<b>Character Set</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:700
+#: wrapper/ibus/setup/setup.glade:704
 msgid "Candidate Num"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:722
+#: wrapper/ibus/setup/setup.glade:732
 msgid "Memory Strength"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:751
+#: wrapper/ibus/setup/setup.glade:771
 msgid "<b>Options</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:790
+#: wrapper/ibus/setup/setup.glade:810
 msgid "Punct mapping"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:804
+#: wrapper/ibus/setup/setup.glade:824
 msgid "Mapping Setup"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:823
+#: wrapper/ibus/setup/setup.glade:843
 msgid "<b>Symbol Mapping</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:843
+#: wrapper/ibus/setup/setup.glade:863
 msgid "General"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:854
+#: wrapper/ibus/setup/setup.glade:874
 msgid "copyright (c) 2009"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:863
+#: wrapper/ibus/setup/setup.glade:883
 msgid "About"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:1169 wrapper/ibus/setup/setup.glade:1337
-#: wrapper/ibus/setup/setup.glade:1467
+#: wrapper/ibus/setup/setup.glade:1189 wrapper/ibus/setup/setup.glade:1357
+#: wrapper/ibus/setup/setup.glade:1487
 msgid "All"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:1184 wrapper/ibus/setup/setup.glade:1351
-#: wrapper/ibus/setup/setup.glade:1481
+#: wrapper/ibus/setup/setup.glade:1204 wrapper/ibus/setup/setup.glade:1371
+#: wrapper/ibus/setup/setup.glade:1501
 msgid "None"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:1405
+#: wrapper/ibus/setup/setup.glade:1425
 msgid "Punct Mapping"
 msgstr ""

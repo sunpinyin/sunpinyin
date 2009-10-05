@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 
 # Copyright (c) 2009 Leo Zheng <zym361@gmail.com>, Kov Chai <tchaikov@gmail.com>
 #  *
@@ -92,18 +93,18 @@ class TrivalOption(Option):
 
     def init_ui(self):
         self.init()
-        self.load_config()
+        self.read_config()
 
     def init(self):
         pass
     
-    def load_config(self):
+    def read_config(self):
         """update user inferface with ibus.config
         """
         self.v = self.read()
         self.widget.set_active(self.v)
 
-    def save_config(self):
+    def write_config(self):
         v = self.save_ui_setting()
         self.write(v)
         
@@ -135,7 +136,7 @@ class ComboBoxOption(TrivalOption):
         self.v = self.options[self.widget.get_active()]
         return self.v
     
-    def load_config(self):
+    def read_config(self):
         self.v = self.read()
         self.widget.set_active(self.options.index(self.v))
 
@@ -148,16 +149,16 @@ class RadioOption(Option):
         self.xml = owner
 
     def init_ui(self):
-        self.load_config()
+        self.read_config()
         
-    def load_config(self):
+    def read_config(self):
         self.v = self.read()
         name = SEPARATOR.join([self.name, self.v])
         button = self.xml.get_widget(name)
         assert button is not None, "button: %r not found" % name
         button.set_active(True)
 
-    def save_config(self):
+    def write_config(self):
         active_opt = None
         for opt in self.options:
             radio_name = SEPARATOR.join([self.name, opt])
@@ -179,7 +180,7 @@ class MultiCheckDialog (object):
     TODO: another option is to use radio button
     """
     def __init__ (self, name, options):
-        self.name = name
+        self.short_name = name
         dlg_name = self.get_setup_name()
         self.__xml = glade.XML(GLADE_FILE, dlg_name)
         Logger.pr("loading glade::%s" % dlg_name)
@@ -191,13 +192,13 @@ class MultiCheckDialog (object):
     def get_setup_name(self):
         """assuming the name of dialog looks like 'dlg_fuzzy_setup'
         """
-        return '_'.join(['dlg', self.name, 'setup'])
+        return '_'.join(['dlg', self.short_name, 'setup'])
     
     def __init_ui(self):
-        handlers = {'_'.join(["on", self.name, "select_all_clicked"]) : self.on_button_check_all_clicked,
-                    '_'.join(["on", self.name, "unselect_all_clicked"]) : self.on_button_uncheck_all_clicked,
-                    '_'.join(["on", self.name, "ok_clicked"]) : self.on_button_ok_clicked,
-                    '_'.join(["on", self.name, "cancel_clicked"]) : self.on_button_cancel_clicked}
+        handlers = {'_'.join(["on", self.short_name, "select_all_clicked"]) : self.on_button_check_all_clicked,
+                    '_'.join(["on", self.short_name, "unselect_all_clicked"]) : self.on_button_uncheck_all_clicked,
+                    '_'.join(["on", self.short_name, "ok_clicked"]) : self.on_button_ok_clicked,
+                    '_'.join(["on", self.short_name, "cancel_clicked"]) : self.on_button_cancel_clicked}
         self.__xml.signal_autoconnect(handlers)
 
     def dummy(self):
@@ -206,18 +207,20 @@ class MultiCheckDialog (object):
         """
         pass
 
-    init_ui = load_config = dummy
+    init_ui = read_config = dummy
     
     def run(self):
         self.__init_ui()
-        self.__load_config()
+        self.__read_config()
         self.__dlg.run()
         
-    def __load_config(self):
+    def __read_config(self):
         for opt in self.__options:
-            opt.load_config()
+            opt.read_config()
 
     def __save_ui_settings(self):
+        """save to in-memory storage, will flush to config if not canceled in main_window
+        """
         for opt in self.__options:
             opt.save_ui_setting()
             
@@ -225,11 +228,9 @@ class MultiCheckDialog (object):
         for opt in self.__options:
             opt.widget.set_active(is_active)
 
-    def save_config(self):
-        """write to in-memory storage, will flush to config if not 'cancel'ed in main_window
-        """
+    def write_config(self):
         for opt in self.__options:
-            opt.save_config()
+            opt.write_config()
             
     def on_button_check_all_clicked(self, button):
         self.__set_active_all(True)
@@ -275,11 +276,37 @@ class CorrectingSetupDialog (MultiCheckDialog):
                    OptionInfo("QuanPin/AutoCorrecting/UeiUi", False)]
         super(CorrectingSetupDialog, self).__init__("correcting", options)
 
-class PunctMappingSetupDialog (MultiCheckDialog):
+class PunctMappingSetupDialog (MultiCheckDialog, Option):
+    # TODO: the UI should looks like a virtual keyboard,
+    #       user are allowed to 
     def __init__(self):
+        Option.__init__(self, "General/PunctMapping/Mappings", [])
         options = []
-        super(PunctMappingSetupDialog, self).__init__("punctmapping", options)
-    
+        MultiCheckDialog.__init__(self, "punctmapping", options)
+        
+    def read_config(self):
+        pairs = self.read()
+        mappings = dict([pair.split(':') for pair in pairs])
+        
+    def write_config(self):
+        # TODO: collect all mappings of punctuations
+        mappings = {'~':u'～',
+                    '@':u'＠',
+                    '#':u'＃',
+                    '%':u'％',
+                    '&':u'＆',
+                    '*':u'＊',
+                    '[':u'〔',
+                    ']':u'〕',
+                    '{':u'｛',
+                    '}':u'｝',
+                    '<':u'〈',
+                    '>':u'〉',
+                    '.':u'·',
+                    '|':u'‖'}
+        pairs = [':'.join(pair) for pair in mappings.items()]
+        self.write(pairs)
+     
 class MainWindow ():
     def __init__ (self):
         self.__bus = ibus.Bus()
@@ -288,7 +315,7 @@ class MainWindow ():
         
     def run(self):
         self.__init_ui("main_window")
-        self.__load_config()
+        self.__read_config()
         gtk.main()
         
     def __init_ui(self, name):
@@ -321,7 +348,7 @@ class MainWindow ():
             RadioOption("General/Charset", 'GBK', ['GB2312', 'GBK', 'GB18030'], self.__xml),
             CheckBoxOption("General/PunctMapping/Enabled", False, self.__xml),
             
-            ComboBoxOption("General/PageSize", 10, range(7, 11), self.__xml),
+            ComboBoxOption("General/PageSize", 10, range(5, 11), self.__xml),
             
             CheckBoxOption("Keyboard/Page/MinusEquals", False, self.__xml),
             CheckBoxOption("Keyboard/Page/Brackets", False, self.__xml),
@@ -350,18 +377,18 @@ class MainWindow ():
         else:
             return None
         
-    def __load_config(self):
+    def __read_config(self):
         for opt in self.__options:
             opt.init_ui()
-            opt.load_config()
+            opt.read_config()
         self.on_chk_fuzzy_enabled_toggled(None)
         self.on_chk_correcting_enabled_toggled(None)
         self.on_chk_punctmapping_enabled_toggled(None)
         self.on_radio_shuangpin_toggled(None)
         
-    def __save_config(self):
+    def __write_config(self):
         for opt in self.__options:
-            opt.save_config()
+            opt.write_config()
 
     def __update_enabling_button(self, checkbox_name, button_name):
         """enable a setup button when checked, disable it otherwise
@@ -401,11 +428,11 @@ class MainWindow ():
         self.__punctmapping_setup.run()
     
     def on_main_ok_clicked(self, button):
-        self.__save_config()
+        self.__write_config()
         self.__quit()
         
     def on_main_apply_clicked(self, button):
-        self.__save_config()
+        self.__write_config()
 
     def on_main_cancel_clicked(self, button):
         self.__quit()

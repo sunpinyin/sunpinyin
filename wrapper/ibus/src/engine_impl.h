@@ -62,7 +62,7 @@ private:
                          unsigned page_up, unsigned page_down);
     
     void update_charset_level();
-    
+    void update_punct_mappings();
     void update_lookup_table();
     
 private:

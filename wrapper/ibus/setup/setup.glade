@@ -712,7 +712,7 @@ PinYinJiaJia</property>
                               <widget class="GtkComboBox" id="General/PageSize">
                                 <property name="visible">True</property>
                                 <property name="active">0</property>
-                                <property name="items" translatable="no">5
+                                <property name="items">5
 6
 7
 8
@@ -742,7 +742,7 @@ PinYinJiaJia</property>
                               <widget class="GtkComboBox" id="General/MemoryPower">
                                 <property name="visible">True</property>
                                 <property name="active">3</property>
-				<property name="items" translatable="no">1
+                                <property name="items">1
 2
 3
 4
@@ -811,7 +811,6 @@ PinYinJiaJia</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="on_chk_punctmapping_enabled_toggled"/>
                               </widget>
@@ -1483,12 +1482,12 @@ PinYinJiaJia</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="select_all2">
+              <widget class="GtkButton" id="punctmapping_select_all">
                 <property name="label" translatable="yes">All</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_select_all_clicked"/>
+                <signal name="clicked" handler="on_punctmapping_select_all_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1497,12 +1496,12 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="cancel_all2">
+              <widget class="GtkButton" id="punctmapping_unselect_all">
                 <property name="label" translatable="yes">None</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_cancel_all_clicked"/>
+                <signal name="clicked" handler="on_punctmapping_unselect_all_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1511,13 +1510,13 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="ok2">
+              <widget class="GtkButton" id="punctmapping_ok">
                 <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_ok_clicked"/>
+                <signal name="clicked" handler="on_punctmapping_ok_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1526,13 +1525,13 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="cancel2">
+              <widget class="GtkButton" id="punctmapping_cancel">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_cancel_clicked"/>
+                <signal name="clicked" handler="on_punctmapping_cancel_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>

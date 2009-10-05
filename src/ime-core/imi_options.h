@@ -333,4 +333,36 @@ private:
 
     unsigned            m_tokenNum;
 };
+
+/**
+ * helper function to transform string vector to array of char*
+ */
+class PairParser
+{
+public:
+    PairParser()
+        : m_free(m_buf), m_end(m_buf+256)
+    {}
+
+    /**
+     * transform a string vector to interleaved <key,value> array of (char*)
+     * @param event a list of string, each element should be in the form of "key:value".
+     * @returns the number of pairs transformed
+     * @note this function uses a local buffer for the returned array
+     */
+    size_t parse(const std::vector<std::string> pairs);
+    size_t parse(const COptionEvent& event);
+    const char* const* get_pairs() const;
+    
+private:
+    char* strdup(const std::string& s);
+    char* alloc(size_t size);
+    
+    char* m_pairs[32];
+    char  m_buf[256];
+    char* m_free;
+    const char* m_end;
+};
+
+
 #endif

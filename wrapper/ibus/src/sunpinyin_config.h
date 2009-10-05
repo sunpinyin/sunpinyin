@@ -37,6 +37,7 @@
 #define SUNPINYIN_CONFIG_H
 
 #include <map>
+#include <vector>
 #include <string>
 #include <ibus.h>
 #include <imi_options.h>
@@ -69,12 +70,14 @@ public:
     std::string get(const char *key, const std::string& default_val);
     void set(const char* key, const std::string& val);
 
+    std::vector<std::string> get(const char *key, const std::vector<std::string>& val);
+    
     CSunpinyinSessionFactory::EPyScheme get_py_scheme(CSunpinyinSessionFactory::EPyScheme);
     void set_py_scheme(CSunpinyinSessionFactory::EPyScheme);
-
+    
     EShuangpinType get_shuangpin_type(EShuangpinType);
     void set_shuangpin_type(EShuangpinType);
-    
+
     /**
      * gets called in ibus_sunpinyin_init() so that SunPinyinEngine can read 
      * configuration when it starts up

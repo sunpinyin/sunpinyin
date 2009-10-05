@@ -40,7 +40,6 @@
 #define CONFIG_GENERAL_MEMORY_POWER         "General/MemoryPower"
 #define CONFIG_GENERAL_CHARSET_LEVEL        "General/CharsetLevel"
 
-#define CONFIG_PINYIN_PUNCT_MAPPING         "Pinyin/PunctMapping"
 #define CONFIG_PINYIN_SCHEME                "Pinyin/Scheme"
 #define CONFIG_PINYIN_SHUANGPIN_TYPE        "Pinyin/ShuangPinType"
 #define CONFIG_PINYIN_AMBIGUITY_ANY         "Pinyin/Ambiguity/Any"

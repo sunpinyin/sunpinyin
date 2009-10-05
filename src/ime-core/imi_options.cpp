@@ -49,79 +49,8 @@
 #include "imi_keys.h"
 #include "imi_options.h"
 #include "imi_view_classic.h"
+#include "debug.h"
 
-class PairParser
-{
-public:
-    PairParser()
-        : m_free(m_buf), m_end(m_buf+256)
-    {}
-
-    /**
-     * transform an event to interleaved <key,value> array of (char*)
-     * @param event a list of string, each element should be in the form of "key:value".
-     * @returns the number of pairs transformed
-     * @note this function uses a local buffer for the returned array
-     */
-    size_t parse(const COptionEvent& event)
-    {
-        std::vector<std::string> pairs = event.get_string_list();
-        const size_t pairs_len = sizeof(m_pairs)/sizeof(m_pairs[0]);
-        size_t npairs = std::min(pairs_len, pairs.size());
-        
-        int i = 0;
-        for (;i < npairs; ++i) {
-            const std::string& pair = pairs[i];
-            std::string::size_type found = pair.find(':');
-            if (found == pair.npos)
-                continue;
-            const std::string key = pair.substr(0, found);
-            const std::string val = pair.substr(found);
-            char *skey = strdup(key);
-            char *sval = strdup(val);
-            if (skey && sval) {
-                m_pairs[2*i] = skey;
-                m_pairs[2*i+1] = sval;
-            } else {
-                // running out of memory
-                break;
-            }
-        }
-        // reclaim the used memory
-        m_free = m_buf;
-        return i;
-    }
-
-    const char* const* get_pairs() const 
-    {
-        return m_pairs;
-    }
-    
-private:
-    char* strdup(const std::string& s) 
-    {
-        size_t len = s.length()+1;
-        char* str = alloc(len);
-        if (str) {
-            strncpy(str, s.c_str(), len);
-        }
-        return str;
-    }
-    
-    char* alloc(size_t size)
-    {
-        if (m_end < m_free + size) {
-            m_free += size;
-            return m_free;
-        }
-        return NULL;
-    }
-    
-    char* m_pairs[32];
-    char  m_buf[256];
-    char* m_free;
-    const char* m_end;
-};
 
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
@@ -180,7 +109,7 @@ CSimplifiedChinesePolicy::destroyContext (CIMIContext *context)
 bool
 CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 {
-    if (event.name == PINYIN_PUNCTMAPPING) {
+    if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
         PairParser parser;
         size_t num = parser.parse(event);
         setPunctMapping(parser.get_pairs());
@@ -247,4 +176,75 @@ CShuangpinSchemePolicy::onConfigChanged(const COptionEvent& event)
         return true;
     }
     return false;
+}
+
+size_t
+PairParser::parse(const COptionEvent& event)
+{
+    return parse(event.get_string_list());
+}
+
+size_t 
+PairParser::parse(const std::vector<std::string> pairs)
+{
+    ibus::log << __func__ << ": # pair = " << pairs.size() << endl;
+    
+    size_t npairs = std::min(sizeof(m_pairs)/sizeof(m_pairs[0]),
+                             pairs.size());
+
+    assert(m_free == m_buf);
+    
+    memset(m_pairs, 0, sizeof(m_pairs));
+    int i = 0;
+    for (;i < npairs; ++i) {
+        const std::string& pair = pairs[i];
+        ibus::log << __func__ << ":" << i << ":" << pair << endl;
+        std::string::size_type found = pair.find(':');
+        if (found == pair.npos)
+            continue;
+        const std::string key = pair.substr(0, found);
+        const std::string val = pair.substr(found+1);
+        char *skey = strdup(key);
+        char *sval = strdup(val);
+        if (skey && sval) {
+            m_pairs[2*i] = skey;
+            m_pairs[2*i+1] = sval;
+        } else {
+            // running out of memory
+            break;
+        }
+    }
+    // reclaim the used memory
+    m_free = m_buf;
+    return i;
+}
+
+const char* const*
+PairParser::get_pairs() const 
+{
+    return m_pairs;
+}
+    
+char*
+PairParser::strdup(const std::string& s)
+{
+    size_t len = s.length()+1;
+    char* str = alloc(len);
+    if (str) {
+        strncpy(str, s.c_str(), len);
+    }
+    return str;
+}
+    
+char*
+PairParser::alloc(size_t size)
+{
+    ibus::log << __func__ << ":" << size << endl;
+    ibus::log << __func__ << ":" << hex << (long)m_free << "-" << hex << (long)m_end << endl;
+
+    if (m_end > m_free + size) {
+        m_free += size;
+        return m_free;
+    }
+    return NULL;
 }

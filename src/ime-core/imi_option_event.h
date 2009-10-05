@@ -15,15 +15,11 @@ struct COptionEvent
         TYPE_SHARED = (1 << 0),
         TYPE_GLOBAL = (1 << 1)
     };
-
-    COptionEvent(const std::string& name, const std::string& val,
-                 int type = TYPE_SHARED|TYPE_GLOBAL);
-    COptionEvent(const std::string& name, int val,
-                 int type = TYPE_SHARED|TYPE_GLOBAL);
-    COptionEvent(const std::string& name, bool  val,
-                 int type = TYPE_SHARED|TYPE_GLOBAL);
-    COptionEvent(const std::string& name, const std::vector<std::string>& val,
-                 int type = TYPE_SHARED|TYPE_GLOBAL);
+    template<typename ValueType>
+    COptionEvent(const std::string& k, const ValueType& v,
+                 int t = TYPE_SHARED|TYPE_GLOBAL)
+        : type(t), name(k), value(v) 
+    {}
     bool is_shared() const { return type & TYPE_SHARED; }
     bool is_global() const { return type & TYPE_GLOBAL; }
     int get_int() const;

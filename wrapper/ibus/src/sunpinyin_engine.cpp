@@ -54,6 +54,7 @@ SunPinyinEngine::init ()
 void
 SunPinyinEngine::destroy ()
 {
+    ibus::log << __func__ << endl;
     delete m_impl;
     IBUS_OBJECT_CLASS (m_parent)->destroy ((IBusObject *)this);
 }
@@ -85,6 +86,7 @@ SunPinyinEngine::focus_in ()
 void
 SunPinyinEngine::focus_out ()
 {
+    ibus::log << __func__ << endl;
     if (!m_impl->is_valid()) return;
     m_impl->focus_out();
     m_parent->focus_out(this);
@@ -93,6 +95,7 @@ SunPinyinEngine::focus_out ()
 void
 SunPinyinEngine::reset ()
 {
+    ibus::log << __func__ << endl;
     if (!m_impl->is_valid()) return;
     
     m_impl->reset();
@@ -102,6 +105,7 @@ SunPinyinEngine::reset ()
 void
 SunPinyinEngine::enable ()
 {
+    ibus::log << __func__ << endl;
     if (!m_impl->is_valid()) return;
     
     m_impl->enable();
@@ -111,6 +115,7 @@ SunPinyinEngine::enable ()
 void
 SunPinyinEngine::disable ()
 {
+    ibus::log << __func__ << endl;
     if (!m_impl->is_valid()) return;
 
     m_impl->disable();

@@ -26,21 +26,6 @@ COptionEvent::variant_::variant_(bool v)
     data.d_bool = v;
 }
 
-COptionEvent::COptionEvent(const std::string& k, const std::string& v,
-                           int t) 
-    : type(t), name(k), value(v)
-{}
-
-COptionEvent::COptionEvent(const std::string& k, int v,
-                           int t) 
-    : type(t), name(k), value(v)
-{}
-
-COptionEvent::COptionEvent(const std::string& k, bool v,
-                           int t) 
-    : type(t), name(k), value(v)
-{}
-
 int
 COptionEvent::get_int() const
 {

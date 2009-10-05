@@ -14,6 +14,8 @@
 
 #include "engine_impl.h"
 
+using namespace std;
+
 EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     : m_ibus_engine(ibus_engine), m_wh(NULL), m_pv(NULL), m_hotkey_profile(NULL)
 {
@@ -231,6 +233,9 @@ EngineImpl::update_config()
     update_page_key_bracket();
     update_mode_key_shift();
     update_mode_key_control();
+    update_punct_mappings();
+    // update_quanpin_config();
+    // update_shuangpin_config();
 }
 
 void
@@ -416,3 +421,18 @@ EngineImpl:: update_page_key(const char* conf_key, bool default_val,
     }
 }
 
+void
+EngineImpl::update_punct_mappings()
+{
+    vector<string> mappings;
+    ibus::log << __func__ << ":" << m_config->get(PINYIN_PUNCTMAPPING_ENABLED, false) << endl;
+    
+    if (!m_config->get(PINYIN_PUNCTMAPPING_ENABLED, false))
+        return;
+    
+    mappings = m_config->get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
+    PairParser parser;
+    size_t n = parser.parse(mappings);
+    ibus::log << __func__ << ":" << n << endl;
+    ASimplifiedChinesePolicy::instance().setPunctMapping(parser.get_pairs());
+}

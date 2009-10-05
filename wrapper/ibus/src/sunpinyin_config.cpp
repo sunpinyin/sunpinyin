@@ -39,11 +39,13 @@
 #include "sunpinyin_config.h"
 #include "debug.h"
 
+using namespace std;
+
 struct ConfigItem
 {
-    std::string section;
-    std::string name;
-    ConfigItem(const std::string& key)
+    string section;
+    string name;
+    ConfigItem(const string& key)
     {
         section = "engine/SunPinyin/";
         size_t pos = key.rfind('/');
@@ -56,6 +58,8 @@ struct ConfigItem
         name = key.substr(pos);
     }
 };
+
+static vector<string> get_strings_from_gvalue(GValue* value);
 
 SunPinyinConfig::SunPinyinConfig()
 {
@@ -85,7 +89,7 @@ SunPinyinConfig::get(const char* key, bool val)
     ConfigItem item(key);
     got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
     bool result = val;
-    if (got) {
+    if (got && G_VALUE_TYPE(&v) == G_TYPE_BOOLEAN) {
         result = (g_value_get_boolean(&v) == TRUE);
     }
     return result;
@@ -112,9 +116,9 @@ SunPinyinConfig::get(const char* key, const std::string& val)
     gboolean got;
     ConfigItem item(key);
     got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
-    std::string result = val;
-    if (got) {
-        result = std::string(g_value_get_string(&v));
+    string result = val;
+    if (got && G_VALUE_TYPE(&v) == G_TYPE_STRING) {
+        result = string(g_value_get_string(&v));
     }
     return result;
 }
@@ -141,7 +145,7 @@ SunPinyinConfig::get(const char* key, int val)
     ConfigItem item(key);
     got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
     int result = val;
-    if (got) {
+    if (got && G_VALUE_TYPE(&val) == G_TYPE_INT) {
         result =  g_value_get_int(&v);
     }
     return result;
@@ -153,26 +157,41 @@ SunPinyinConfig::set(const char* key, int value)
     assert(m_config != NULL);
     
     GValue v = {0};
-    g_value_init(&v, G_TYPE_UINT);
-    g_value_set_uint(&v, value);
+    g_value_init(&v, G_TYPE_INT);
+    g_value_set_int(&v, value);
     ConfigItem item(key);
     ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), &v);
 }
 
+std::vector<std::string>
+SunPinyinConfig::get(const char *key, const std::vector<std::string>& val)
+{
+    assert(m_config != NULL);
+    
+    GValue v = {0};
+    gboolean got;
+    ConfigItem item(key);
+    got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    vector<string> result(val);
+    if (got && G_VALUE_TYPE(&v) == G_TYPE_VALUE_ARRAY) {
+        result =  get_strings_from_gvalue(&v);
+    }
+    return result;
+}
 
 CSunpinyinSessionFactory::EPyScheme
 SunPinyinConfig::get_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
 {
-    std::string default_name =
+    string default_name =
         get_scheme_name(scheme);
-    std::string name = get(CONFIG_PINYIN_SCHEME, default_name);
+    string name = get(CONFIG_PINYIN_SCHEME, default_name);
     return get_scheme(name);
 }
 
 void
 SunPinyinConfig::set_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
 {
-    std::string name =
+    string name =
         get_scheme_name(scheme);
     set(CONFIG_PINYIN_SCHEME, name);
 }
@@ -180,15 +199,15 @@ SunPinyinConfig::set_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
 EShuangpinType
 SunPinyinConfig::get_shuangpin_type(EShuangpinType type)
 {
-    std::string default_name = get_type_name(type);
-    std::string name = get(CONFIG_PINYIN_SHUANGPIN_TYPE, default_name);
+    string default_name = get_type_name(type);
+    string name = get(CONFIG_PINYIN_SHUANGPIN_TYPE, default_name);
     return get_type(name);
 }
 
 void
 SunPinyinConfig::set_shuangpin_type(EShuangpinType type)
 {
-    std::string name = get_type_name(type);
+    string name = get_type_name(type);
     set(CONFIG_PINYIN_SHUANGPIN_TYPE, name);
 }
 
@@ -216,15 +235,29 @@ get_event_type_by_name(const std::string& name)
         return COptionEvent::TYPE_SHARED|COptionEvent::TYPE_GLOBAL;
 }
 
+vector<string>
+get_strings_from_gvalue(GValue *value)
+{
+    GValueArray *array = (GValueArray *)g_value_get_boxed(value);
+    assert(array != NULL);
+    vector<string> strings;
+    for (unsigned i = 0; i < array->n_values; ++i) {
+        GValue *element = &(array->values[i]);
+        assert (G_VALUE_TYPE(element) == G_TYPE_STRING && "only array of string is supported");
+        strings.push_back(g_value_get_string(element));
+    }
+    return strings;
+}
+
 static COptionEvent
 g_value_to_event(const gchar *section, const gchar *name, GValue *value)
 {
-    std::string event_name;
+    string event_name;
     
     if (strlen(section) == 0) {
         event_name = name;
     } else {
-        event_name = std::string(section) + "\\" + std::string(name);
+        event_name = string(section) + "\\" + string(name);
     }
     
     unsigned type = get_event_type_by_name(event_name);
@@ -238,6 +271,9 @@ g_value_to_event(const gchar *section, const gchar *name, GValue *value)
         return COptionEvent(event_name,
                             g_value_get_boolean(value)?true:false, type);
     default:
+        // G_TYPE_VALUE_ARRAY() not a constant
+        if (G_TYPE_VALUE_ARRAY == G_VALUE_TYPE(value))
+            return COptionEvent(event_name, get_strings_from_gvalue(value), type);
         assert(false && "unknown gvalue");
         return COptionEvent(event_name, 0);
     }   
@@ -250,6 +286,8 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          GValue *value,
                                          gpointer user_data)
 {
+    ibus::log << __func__ << ": " << section << "/" << name << endl;
+    
     static const char* prefix = "engine/SunPinyin/";
     if (!strstr(section, prefix))
         return;
@@ -261,7 +299,7 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
 std::string
 SunPinyinConfig::get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme)
 {
-    std::string val = "ShuangPin";
+    string val = "ShuangPin";
     for (SchemeNames::iterator it = m_scheme_names.begin();
          it != m_scheme_names.end(); ++it) {
         if (it->second == scheme)
@@ -285,7 +323,7 @@ SunPinyinConfig::get_scheme(const std::string& name)
 std::string
 SunPinyinConfig::get_type_name(EShuangpinType type)
 {
-    std::string val = "MS2003";
+    string val = "MS2003";
     for (TypeNames::iterator it = m_type_names.begin();
          it != m_type_names.end(); ++it) {
         if (it->second == type)

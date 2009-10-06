@@ -49,7 +49,6 @@
 #include "imi_keys.h"
 #include "imi_options.h"
 #include "imi_view_classic.h"
-#include "debug.h"
 
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),

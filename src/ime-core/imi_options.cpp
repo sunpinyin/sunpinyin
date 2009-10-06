@@ -51,7 +51,6 @@
 #include "imi_view_classic.h"
 #include "debug.h"
 
-
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
       m_bEnableFullSymbol(false), m_bEnableFullPunct(true)
@@ -187,11 +186,10 @@ PairParser::parse(const COptionEvent& event)
 size_t 
 PairParser::parse(const std::vector<std::string> pairs)
 {
+    assert(m_free == m_buf);
+
     size_t npairs = std::min(sizeof(m_pairs)/sizeof(m_pairs[0]),
                              pairs.size());
-
-    assert(m_free == m_buf);
-    
     memset(m_pairs, 0, sizeof(m_pairs));
     int i = 0;
     for (;i < npairs; ++i) {
@@ -221,24 +219,27 @@ PairParser::get_pairs() const
 {
     return m_pairs;
 }
-    
+
 char*
 PairParser::strdup(const std::string& s)
 {
-    size_t len = s.length()+1;
+    size_t len = s.length() + 1;
     char* str = alloc(len);
     if (str) {
-        strncpy(str, s.c_str(), len);
+        strncpy(str, s.c_str(), s.length());
+        str[s.length()] = '\0';
     }
     return str;
 }
-    
+
 char*
 PairParser::alloc(size_t size)
 {
-    if (m_end > m_free + size) {
-        m_free += size;
-        return m_free;
+    char *result = NULL;
+    char *new_free = m_free + size;
+    if (m_end > new_free) {
+        result = m_free;
+        m_free = new_free;
     }
-    return NULL;
+    return result;
 }

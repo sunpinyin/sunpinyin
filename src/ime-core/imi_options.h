@@ -62,6 +62,13 @@ struct CSimplifiedChinesePolicy : public IConfigurable
     CIMIContext* createContext ();
     void destroyContext (CIMIContext *context);
     
+    /**
+     * set a customizable punctuation mapping
+     * @param punc_map an interleaved array of <key,value> pairs, which looks
+     *                 like ["key_1", "val_1", "key_2", "val_2", ...],
+     *                 where ispunct(key_n). system defined mapping for a 
+     *                 given punct will be overriden by user specified one.
+     */
     void setPunctMapping (const char *const* map)
         {m_getFullPunctOp.initPunctMap (map);}
 

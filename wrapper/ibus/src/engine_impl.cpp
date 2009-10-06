@@ -108,8 +108,10 @@ EngineImpl::process_key_event (guint key_val,
     
     if ( !m_pv->getStatusAttrValue(CIBusWinHandler::STATUS_ID_CN) ) {
         // we are in English input mode
-        if ( !m_hotkey_profile->isModeSwitchKey(key) )
+        if ( !m_hotkey_profile->isModeSwitchKey(key) ) {
+            m_hotkey_profile->rememberLastKey(key);
             return FALSE;
+        }
     }
     return m_pv->onKeyEvent(key);
 }

@@ -296,6 +296,7 @@ class PunctMappingSetupDialog (MultiCheckDialog, Option):
                     '%':u'％',
                     '&':u'＆',
                     '*':u'＊',
+                    '|':u'‖',
                     '[':u'〔',
                     ']':u'〕',
                     '{':u'｛',
@@ -303,7 +304,9 @@ class PunctMappingSetupDialog (MultiCheckDialog, Option):
                     '<':u'〈',
                     '>':u'〉',
                     '.':u'·',
-                    '|':u'‖'}
+#                     '\'':u'‘',
+#                     '\'':u'’',
+                    '/':u'／'}
         pairs = [':'.join(pair) for pair in mappings.items()]
         self.write(pairs)
      

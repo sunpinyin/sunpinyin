@@ -61,17 +61,17 @@ public:
     typedef std::map<unsigned, wstring> CPunctMap;
     typedef std::map<unsigned, bool> CPunctClosingStates;
 
-    CGetFullPunctOp () {}
+    CGetFullPunctOp ();
     /**
-     * set a customizable punctuation mapping
-     * @param punc_map an interleaved array of <key,value> pairs, which looks
-     *                 like ["key_1", "val_1", "key_2", "val_2", ...],
-     *                 where ispunct(key_n).
+     * @param punc_map NULL to reset the punct map to default setting
      */
     void initPunctMap (const char *const *punc_map);
     const wstring& operator () (unsigned ch);
 
 private:
+    void setPunctMap (const char *const *punc_map);
+    void removeExisting (const char *const *punct_map);
+    
     CPunctMap           m_punctMap;
     CPunctClosingStates m_punctClosingSts;
 };

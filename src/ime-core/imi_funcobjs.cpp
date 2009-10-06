@@ -72,11 +72,51 @@ const wstring& CGetFullSymbolOp::operator () (unsigned ch)
     return ret;
 }
 
+CGetFullPunctOp::CGetFullPunctOp()
+{
+    initPunctMap (NULL);
+}
+
 void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
 {
-    m_punctMap.clear ();
-    m_punctClosingSts.clear ();
+    static const char* system_punc_map [] = { 
+        ",",    "，",
+        ";",    "；",
+        "!",    "！",
+        "?",    "？",
+        ".",    "。",
+        ":",    "：",
+        "^",    "……",
+        "\\",   "、",
+        "\"",   "“",
+        "\"",   "”",
+        "_",    "——",
+        "<",    "《",
+        ">",    "》",
+        "(",    "（",
+        ")",    "）",
+        "[",    "【",
+        "]",    "】",
+        "{",    "『",
+        "}",    "』",
+        "$",    "￥",
+        "*",    "×",
+        "+",    "＋",
+        "|",    "｜",
+        NULL,
+    };
+    if (punc_map == NULL) {
+        m_punctMap.clear ();
+        m_punctClosingSts.clear ();
+        setPunctMap(system_punc_map);
+    } else {
+        removeExisting(punc_map);
+        setPunctMap(punc_map);
+    }
+}
 
+void CGetFullPunctOp::setPunctMap (const char *const *punc_map)
+{
     TWCHAR cwstr[256];
     const char *const *p = punc_map;
 
@@ -97,39 +137,20 @@ void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
     }
 }
 
+void CGetFullPunctOp::removeExisting (const char *const *punc_map)
+{
+    for (const char *const *k = punc_map; *k; k += 2) {
+        unsigned key = (*k)[0];
+        if (m_punctMap.find(key) != m_punctMap.end()) {
+            m_punctMap.erase(key);
+            m_punctClosingSts.erase(key);
+        }
+    }
+}
+
 const wstring& CGetFullPunctOp::operator () (unsigned ch)
 {
     static wstring ret;
-    static const char* punc_map [] = { 
-        ",",    "，",
-        ";",    "；",
-        "!",    "！",
-        "?",    "？",
-        ".",    "。",
-        ":",    "：",
-        "^",    "……",
-        "\\",   "、",
-        "\"",   "“",
-        "\"",   "”",
-        "_",    "——",
-        "<",    "《",
-        ">",    "》",
-        "(",    "（",
-        ")",    "）",
-        "[",    "〔",
-        "]",    "〕",
-        "{",    "｛",
-        "}",    "｝",
-        "$",    "￥",
-        "*",    "×",
-        "+",    "＋",
-        "|",    "｜",
-        NULL,
-    };
-
-    if (m_punctMap.empty())
-        initPunctMap (punc_map);
-
     CPunctClosingStates::iterator it = m_punctClosingSts.find (ch);
     if (it != m_punctClosingSts.end ()) {
         if (it->second) ch |= 0x80000000;
@@ -142,4 +163,3 @@ const wstring& CGetFullPunctOp::operator () (unsigned ch)
 
     return ret;
 }
-

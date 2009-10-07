@@ -108,7 +108,7 @@ bool
 CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 {
     if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
-        PairParser parser;
+        CPairParser parser;
         size_t num = parser.parse(event);
         setPunctMapping(parser.get_pairs());
         return true;
@@ -151,13 +151,13 @@ CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
     if (event.name == QUANPIN_FUZZY_ENABLED) {
         setFuzzyForwarding(event.get_bool());
     } else if (event.name == QUANPIN_FUZZY_PINYINS) {
-        PairParser parser;
+        CPairParser parser;
         size_t num = parser.parse(event);
         setFuzzyPinyinPairs(parser.get_pairs(), num);
     } else if (event.name == QUANPIN_AUTOCORRECTING_ENABLED) {
         setAutoCorrecting(event.get_bool());
     } else if (event.name == QUANPIN_AUTOCORRECTING_PINYINS) {
-        PairParser parser;
+        CPairParser parser;
         size_t num = parser.parse(event);
         setAutoCorrectionPairs(parser.get_pairs(), num);
     } else {
@@ -177,13 +177,13 @@ CShuangpinSchemePolicy::onConfigChanged(const COptionEvent& event)
 }
 
 size_t
-PairParser::parse(const COptionEvent& event)
+CPairParser::parse(const COptionEvent& event)
 {
     return parse(event.get_string_list());
 }
 
 size_t 
-PairParser::parse(const std::vector<std::string> pairs)
+CPairParser::parse(const std::vector<std::string> pairs)
 {
     assert(m_free == m_buf);
 
@@ -214,13 +214,13 @@ PairParser::parse(const std::vector<std::string> pairs)
 }
 
 const char* const*
-PairParser::get_pairs() const 
+CPairParser::get_pairs() const 
 {
     return m_pairs;
 }
 
 char*
-PairParser::strdup(const std::string& s)
+CPairParser::strdup(const std::string& s)
 {
     size_t len = s.length() + 1;
     char* str = alloc(len);
@@ -232,7 +232,7 @@ PairParser::strdup(const std::string& s)
 }
 
 char*
-PairParser::alloc(size_t size)
+CPairParser::alloc(size_t size)
 {
     char *result = NULL;
     char *new_free = m_free + size;

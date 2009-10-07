@@ -433,7 +433,7 @@ EngineImpl::update_punct_mappings()
         return;
     
     mappings = m_config->get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
-    PairParser parser;
+    CPairParser parser;
     parser.parse(mappings);
     ASimplifiedChinesePolicy::instance().setPunctMapping(parser.get_pairs());
 }

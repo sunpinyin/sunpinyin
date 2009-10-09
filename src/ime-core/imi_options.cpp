@@ -50,6 +50,8 @@
 #include "imi_options.h"
 #include "imi_view_classic.h"
 
+class CPairParser;
+
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
       m_bEnableFullSymbol(false), m_bEnableFullPunct(true)
@@ -122,7 +124,7 @@ CSimplifiedChinesePolicy::saveUserHistory ()
     char path[256];
     const char *home = getenv ("HOME");
     snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-    m_historyCache.saveToFile(path);
+    return m_historyCache.saveToFile(path);
 }
 
 bool

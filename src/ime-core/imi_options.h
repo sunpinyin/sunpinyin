@@ -344,10 +344,10 @@ private:
 /**
  * helper function to transform string vector to array of char*
  */
-class PairParser
+class CPairParser
 {
 public:
-    PairParser()
+    CPairParser()
         : m_free(m_buf), m_end(m_buf+256)
     {}
 

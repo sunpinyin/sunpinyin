@@ -60,4 +60,23 @@ ibus_property_set_state (IBusProperty  *prop,
     prop->state = state;
 }
 
+void
+ibus_property_set_tooltip (IBusProperty *prop,
+                           IBusText     *tooltip)
+{
+    g_assert (IBUS_IS_PROPERTY (prop));
+    g_return_if_fail (tooltip == NULL || IBUS_IS_TEXT (tooltip));
+
+    if (prop->tooltip) {
+        g_object_unref (prop->tooltip);
+    }
+
+    if (tooltip == NULL) {
+        prop->tooltip = ibus_text_new_from_static_string ("");
+    }
+    else {
+        prop->tooltip = (IBusText *)g_object_ref (tooltip);
+    }
+}
+
 #endif // WITH_IBUS_1_1_0

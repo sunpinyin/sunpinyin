@@ -293,13 +293,13 @@ PinYinJiaJia</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/Enabled">
+                              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/Enabled">
                                 <property name="label" translatable="yes">Auto Correct</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
-                                <signal name="toggled" handler="on_chk_correcting_enabled_toggled"/>
+                                <signal name="toggled" handler="on_chk_correction_enabled_toggled"/>
                               </widget>
                               <packing>
                                 <property name="top_attach">1</property>
@@ -403,6 +403,7 @@ PinYinJiaJia</property>
                               <widget class="GtkCheckButton" id="Keyboard/ModeSwitch/Control">
                                 <property name="label">Ctrl</property>
                                 <property name="visible">True</property>
+                                <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
@@ -1252,7 +1253,7 @@ PinYinJiaJia</property>
       </widget>
     </child>
   </widget>
-  <widget class="GtkDialog" id="dlg_correcting_setup">
+  <widget class="GtkDialog" id="dlg_correction_setup">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Auto Correct Setup</property>
     <property name="resizable">False</property>
@@ -1272,7 +1273,7 @@ PinYinJiaJia</property>
             <property name="n_columns">2</property>
             <property name="homogeneous">True</property>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/IgnIng">
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/IgnIng">
                 <property name="label">ign -&gt; ing</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1282,7 +1283,7 @@ PinYinJiaJia</property>
               </widget>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/ImgIng">
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/ImgIng">
                 <property name="label">img -&gt; ing</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1296,7 +1297,7 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/UeiUi">
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/UeiUi">
                 <property name="label">uei -&gt; ui</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1310,7 +1311,7 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/UenUn">
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/UenUn">
                 <property name="label">uen -&gt; un</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1324,7 +1325,7 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrecting/IouIu">
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/IouIu">
                 <property name="label">iou -&gt; iu</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1352,12 +1353,12 @@ PinYinJiaJia</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="correcting_select_all">
+              <widget class="GtkButton" id="correction_select_all">
                 <property name="label" translatable="yes">All</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_correcting_select_all_clicked"/>
+                <signal name="clicked" handler="on_correction_select_all_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1366,12 +1367,12 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="correcting_unselect_all">
+              <widget class="GtkButton" id="correction_unselect_all">
                 <property name="label" translatable="yes">None</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_correcting_uncheck_all_clicked"/>
+                <signal name="clicked" handler="on_correction_uncheck_all_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1380,13 +1381,13 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="correcting_ok">
+              <widget class="GtkButton" id="correction_ok">
                 <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_correcting_ok_clicked"/>
+                <signal name="clicked" handler="on_correction_ok_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1395,13 +1396,13 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="correcting_cancel">
+              <widget class="GtkButton" id="correction_cancel">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_correcting_cancel_clicked"/>
+                <signal name="clicked" handler="on_correction_cancel_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1433,44 +1434,786 @@ PinYinJiaJia</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkTable" id="table12">
+          <widget class="GtkVBox" id="vbox5">
             <property name="visible">True</property>
-            <property name="n_rows">3</property>
-            <property name="n_columns">2</property>
-            <property name="homogeneous">True</property>
+            <property name="orientation">vertical</property>
             <child>
-              <widget class="GtkCheckButton" id="chk_dot_node">
-                <property name="label">"." -&gt; "&#xB7;"</property>
+              <widget class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkCheckButton" id="chk_dollar_yuan">
-                <property name="label">"$" -&gt; "&#xFFE5;"</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton1">
+                    <property name="label">~
+`</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton2">
+                    <property name="label">!
+1</property>
+                    <property name="height_request">1</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton3">
+                    <property name="label">@
+2</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton4">
+                    <property name="label">#
+3</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton5">
+                    <property name="label">$
+4</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton6">
+                    <property name="label">%
+5</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton7">
+                    <property name="label">^
+6</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton8">
+                    <property name="label">&amp;
+7</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton9">
+                    <property name="label">*
+8</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton10">
+                    <property name="label">(
+9</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton11">
+                    <property name="label">)
+0</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton12">
+                    <property name="label">_
+-</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton13">
+                    <property name="label">+
+=</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">12</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton14">
+                    <property name="label">|
+\</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">13</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton15">
+                    <property name="label">&lt;-</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">14</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkHBox" id="hbox2">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton16">
+                    <property name="label">tab</property>
+                    <property name="width_request">27</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton17">
+                    <property name="label">Q</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton18">
+                    <property name="label">W</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton19">
+                    <property name="label">E</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton20">
+                    <property name="label">R</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton21">
+                    <property name="label">T</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton22">
+                    <property name="label">Y</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton23">
+                    <property name="label">U</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton24">
+                    <property name="label">I</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton25">
+                    <property name="label">O</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton26">
+                    <property name="label">P</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton27">
+                    <property name="label">{
+[</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton28">
+                    <property name="label">}
+]</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">12</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkHBox" id="hbox3">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton29">
+                    <property name="label">caps</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton30">
+                    <property name="label">A</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton31">
+                    <property name="label">S</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton32">
+                    <property name="label">D</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton33">
+                    <property name="label">F</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton34">
+                    <property name="label">G</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton35">
+                    <property name="label">H</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton36">
+                    <property name="label">J</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton37">
+                    <property name="label">K</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton38">
+                    <property name="label">L</property>
+                    <property name="visible">True</property>
+		    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton39">
+                    <property name="label">:
+;</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton40">
+                    <property name="label">"
+'</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton41">
+                    <property name="label">Enter</property>
+                    <property name="width_request">42</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">12</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">2</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkHBox" id="hbox4">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton42">
+                    <property name="label"> shift </property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton43">
+                    <property name="label">Z</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton44">
+                    <property name="label">X</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton45">
+                    <property name="label">C</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton46">
+                    <property name="label">V</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton47">
+                    <property name="label">B</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton48">
+                    <property name="label">N</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton49">
+                    <property name="label">M</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton50">
+                    <property name="label">&lt;
+,</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton51">
+                    <property name="label">&gt;
+.</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton52">
+                    <property name="label">?
+/</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton53">
+                    <property name="label"> shift </property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">3</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkHBox" id="hbox5">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton54">
+                    <property name="label">Ctrl</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton55">
+                    <property name="label">Win</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton56">
+                    <property name="label">Alt</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton57">
+                    <property name="label">                                                                  </property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton58">
+                    <property name="label">Alt</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton59">
+                    <property name="label">Win</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton60">
+                    <property name="label">[]]</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="togglebutton61">
+                    <property name="label">Ctrl</property>
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">4</property>
+              </packing>
             </child>
           </widget>
           <packing>

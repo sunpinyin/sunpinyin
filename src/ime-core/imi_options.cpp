@@ -50,8 +50,6 @@
 #include "imi_options.h"
 #include "imi_view_classic.h"
 
-class CPairParser;
-
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
       m_bEnableFullSymbol(false), m_bEnableFullPunct(true)
@@ -156,9 +154,9 @@ CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
         CPairParser parser;
         size_t num = parser.parse(event);
         setFuzzyPinyinPairs(parser.get_pairs(), num);
-    } else if (event.name == QUANPIN_AUTOCORRECTING_ENABLED) {
+    } else if (event.name == QUANPIN_AUTOCORRECTION_ENABLED) {
         setAutoCorrecting(event.get_bool());
-    } else if (event.name == QUANPIN_AUTOCORRECTING_PINYINS) {
+    } else if (event.name == QUANPIN_AUTOCORRECTION_PINYINS) {
         CPairParser parser;
         size_t num = parser.parse(event);
         setAutoCorrectionPairs(parser.get_pairs(), num);

@@ -236,6 +236,15 @@ EngineImpl::update_config()
     update_mode_key_shift();
     update_mode_key_control();
     update_punct_mappings();
+    if (m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN) ==
+        CSunpinyinSessionFactory::QUANPIN) {
+        update_fuzzy_pinyins();
+        update_correction_pinyins();
+    } else {
+        update_shuangpin_type();
+    }
+    
+
     // update_quanpin_config();
     // update_shuangpin_config();
 }
@@ -409,7 +418,7 @@ EngineImpl::update_page_key_bracket()
 }
 
 void
-EngineImpl:: update_page_key(const char* conf_key, bool default_val, 
+EngineImpl::update_page_key(const char* conf_key, bool default_val, 
                              unsigned page_up, unsigned page_down)
 {
     bool enabled = m_config->get(conf_key, default_val);
@@ -426,14 +435,47 @@ EngineImpl:: update_page_key(const char* conf_key, bool default_val,
 void
 EngineImpl::update_punct_mappings()
 {
-    vector<string> mappings;
-    ibus::log << __func__ << ":" << m_config->get(PINYIN_PUNCTMAPPING_ENABLED, false) << endl;
-    
     if (!m_config->get(PINYIN_PUNCTMAPPING_ENABLED, false))
         return;
-    
+    vector<string> mappings;
     mappings = m_config->get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
     CPairParser parser;
     parser.parse(mappings);
     ASimplifiedChinesePolicy::instance().setPunctMapping(parser.get_pairs());
+}
+
+void
+EngineImpl::update_fuzzy_pinyins()
+{
+    bool enabled = m_config->get(QUANPIN_FUZZY_ENABLED, false);
+    AQuanpinSchemePolicy::instance().setFuzzyForwarding(enabled);
+    if (!enabled)
+        return;
+    vector<string> fuzzy_pinyins;
+    fuzzy_pinyins = m_config->get(QUANPIN_FUZZY_PINYINS, fuzzy_pinyins);
+    CPairParser parser;
+    unsigned num_pairs = parser.parse(fuzzy_pinyins);
+    AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(parser.get_pairs(), num_pairs);
+}
+
+void
+EngineImpl::update_correction_pinyins()
+{
+    bool enabled = m_config->get(QUANPIN_AUTOCORRECTION_ENABLED, false);
+    AQuanpinSchemePolicy::instance().setAutoCorrecting(enabled);
+    if (!enabled)
+        return;
+    vector<string> correction_pinyins;
+    correction_pinyins = m_config->get(QUANPIN_AUTOCORRECTION_PINYINS, correction_pinyins);
+    CPairParser parser;
+    unsigned num_pairs = parser.parse(correction_pinyins);
+    AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(parser.get_pairs(), num_pairs);
+}
+
+void
+EngineImpl::update_shuangpin_type()
+{
+    EShuangpinType shuangpin_type = MS2003;
+    shuangpin_type = (EShuangpinType) m_config->get(SHUANGPIN_TYPE, shuangpin_type);
+    AShuangpinSchemePolicy::instance().setShuangpinType(shuangpin_type);
 }

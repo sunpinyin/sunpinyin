@@ -34,6 +34,7 @@
  */
 
 #include <cassert>
+#include <imi_option_keys.h>
 #include "engine_impl.h"
 #include "sunpinyin_config_keys.h"
 #include "sunpinyin_config.h"
@@ -184,7 +185,7 @@ SunPinyinConfig::get_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
 {
     string default_name =
         get_scheme_name(scheme);
-    string name = get(CONFIG_PINYIN_SCHEME, default_name);
+    string name = get(PINYIN_SCHEME, default_name);
     return get_scheme(name);
 }
 
@@ -193,14 +194,14 @@ SunPinyinConfig::set_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
 {
     string name =
         get_scheme_name(scheme);
-    set(CONFIG_PINYIN_SCHEME, name);
+    set(PINYIN_SCHEME, name);
 }
 
 EShuangpinType
 SunPinyinConfig::get_shuangpin_type(EShuangpinType type)
 {
     string default_name = get_type_name(type);
-    string name = get(CONFIG_PINYIN_SHUANGPIN_TYPE, default_name);
+    string name = get(SHUANGPIN_TYPE, default_name);
     return get_type(name);
 }
 
@@ -208,7 +209,7 @@ void
 SunPinyinConfig::set_shuangpin_type(EShuangpinType type)
 {
     string name = get_type_name(type);
-    set(CONFIG_PINYIN_SHUANGPIN_TYPE, name);
+    set(SHUANGPIN_TYPE, name);
 }
 
 void
@@ -229,7 +230,7 @@ static unsigned
 get_event_type_by_name(const std::string& name)
 {
     // pick out those options involves switching policies
-    if (name == CONFIG_PINYIN_SCHEME)
+    if (name == PINYIN_SCHEME)
         return COptionEvent::TYPE_GLOBAL;
     else
         return COptionEvent::TYPE_SHARED|COptionEvent::TYPE_GLOBAL;

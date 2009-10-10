@@ -371,5 +371,4 @@ private:
     const char* m_end;
 };
 
-
 #endif

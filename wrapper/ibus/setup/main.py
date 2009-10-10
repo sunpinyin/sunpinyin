@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 
 # Copyright (c) 2009 Leo Zheng <zym361@gmail.com>, Kov Chai <tchaikov@gmail.com>
-#  *
+# *
 # The contents of this file are subject to the terms of either the GNU Lesser
 # General Public License Version 2.1 only ("LGPL") or the Common Development and
 # Distribution License ("CDDL")(collectively, the "License"). You may not use this
@@ -168,38 +168,100 @@ class RadioOption(Option):
                 break
         assert active_opt is not None
         self.write(active_opt)
-        
-class OptionInfo(object):
-    def __init__(self, name, default):
+
+class MappingInfo:
+    def __init__(self, name, mapping):
         self.name = name
-        self.default = default
+        self.mapping = mapping
         
+class MappingOption(object):
+    """an option which presents some sort of mapping, e.g. fuzzy pinyin mapping
+
+    it is not directly related to a config option like TrivalOption does, but
+    we always have a checkbox in UI for each of it so user can change it easily.
+    """
+    def __init__(self, name, mappings, owner):
+        self.name = name
+        self.widget = owner.get_widget(name)
+        self.mappings = mappings
+        
+    def get_mappings(self):
+        if self.widget.get_active():
+            return [':'.join(self.mappings)]
+        else:
+            return []
+
+    def set_active(self, enabled):
+        self.widget.set_active(enabled)
+
+    def get_active(self):
+        return self.widget.get_active()
+    
+    is_enabled = property(get_active, set_active)
+
+    def key(self):
+        return self.mappings[0]
+    
+class MultiMappingOption(Option):
+    def __init__(self, name, options, default=[]):
+        Option.__init__(self, name, default)
+        self.options = options
+        self.saved_pairs = default
+        
+    def read_config(self):
+        if not self.saved_pairs:
+            self.saved_pairs = self.read()
+        keys = set([pair.split(':')[0] for pair in self.saved_pairs])
+        for opt in self.options:
+            opt.is_enabled = (opt.key() in keys)
+            # throw away unknown pair
+    
+    def write_config(self):
+        # ignore empty settings
+        if self.saved_pairs:
+            self.write(self.saved_pairs)
+        
+    def save_ui_setting(self):
+        self.saved_pairs = sum([opt.get_mappings() for opt in self.options
+                                if opt.is_enabled], [])
+        return self.saved_pairs
+    
+    def set_active_all(self, enabled):
+        for opt in self.options:
+            opt.is_enabled = enabled
+            
 class MultiCheckDialog (object):
-    """ a modale dialog box with 'choose all' and 'choose none' button
+    """ a modal dialog box with 'choose all' and 'choose none' button
     
     TODO: another option is to use radio button
     """
-    def __init__ (self, name, options):
-        self.short_name = name
-        dlg_name = self.get_setup_name()
-        self.__xml = glade.XML(GLADE_FILE, dlg_name)
-        Logger.pr("loading glade::%s" % dlg_name)
-        self.__dlg = self.__xml.get_widget(dlg_name)
-        assert self.__dlg is not None, "dialog %s not found in %s" % (dlg_name, GLADE_FILE)
-        self.__options = [CheckBoxOption(opt.name, opt.default, self.__xml) 
-                          for opt in options]
-
+    def __init__ (self, ui_name, config_name, mappings, option_klass=MappingOption):
+        self.ui_name = ui_name
+        self.config_name = config_name
+        self.mappings = mappings
+        self.option_klass = option_klass
+        self.saved_settings = []
+        self.mapping_options = None
+        
     def get_setup_name(self):
         """assuming the name of dialog looks like 'dlg_fuzzy_setup'
         """
-        return '_'.join(['dlg', self.short_name, 'setup'])
+        return '_'.join(['dlg', self.ui_name, 'setup'])
     
     def __init_ui(self):
-        handlers = {'_'.join(["on", self.short_name, "select_all_clicked"]) : self.on_button_check_all_clicked,
-                    '_'.join(["on", self.short_name, "unselect_all_clicked"]) : self.on_button_uncheck_all_clicked,
-                    '_'.join(["on", self.short_name, "ok_clicked"]) : self.on_button_ok_clicked,
-                    '_'.join(["on", self.short_name, "cancel_clicked"]) : self.on_button_cancel_clicked}
+        dlg_name = self.get_setup_name()
+        self.__xml = glade.XML(GLADE_FILE, dlg_name)
+        self.__dlg = self.__xml.get_widget(dlg_name)
+        assert self.__dlg is not None, "dialog %s not found in %s" % (dlg_name, GLADE_FILE)
+        handlers = {'_'.join(["on", self.ui_name, "select_all_clicked"]) : self.on_button_check_all_clicked,
+                    '_'.join(["on", self.ui_name, "unselect_all_clicked"]) : self.on_button_uncheck_all_clicked,
+                    '_'.join(["on", self.ui_name, "ok_clicked"]) : self.on_button_ok_clicked,
+                    '_'.join(["on", self.ui_name, "cancel_clicked"]) : self.on_button_cancel_clicked}
         self.__xml.signal_autoconnect(handlers)
+
+        options = [self.option_klass(m.name, m.mapping, self.__xml) 
+                   for m in self.mappings]
+        self.mapping_options = MultiMappingOption(self.config_name, options, self.saved_settings)
 
     def dummy(self):
         """a dummy func, i don't initialize myself upon other's request.
@@ -215,28 +277,22 @@ class MultiCheckDialog (object):
         self.__dlg.run()
         
     def __read_config(self):
-        for opt in self.__options:
-            opt.read_config()
-
+        self.mapping_options.read_config()
+        
     def __save_ui_settings(self):
         """save to in-memory storage, will flush to config if not canceled in main_window
         """
-        for opt in self.__options:
-            opt.save_ui_setting()
-            
-    def __set_active_all(self, is_active):
-        for opt in self.__options:
-            opt.widget.set_active(is_active)
+        self.saved_settings = self.mapping_options.save_ui_setting()
 
     def write_config(self):
-        for opt in self.__options:
-            opt.write_config()
+        if self.mapping_options is not None:
+            self.mapping_options.write_config()
             
     def on_button_check_all_clicked(self, button):
-        self.__set_active_all(True)
+        self.mapping_options.set_active_all(True)
         
     def on_button_uncheck_all_clicked(self, button):
-        self.__set_active_all(False)
+        self.mapping_options.set_active_all(False)
     
     def on_button_ok_clicked(self, button):
         """update given options with settings in UI, these settings will be
@@ -250,66 +306,106 @@ class MultiCheckDialog (object):
 
 class FuzzySetupDialog (MultiCheckDialog):
     def __init__(self):
-        options = [OptionInfo("QuanPin/Fuzzy/ShiSi", False),
-                   OptionInfo("QuanPin/Fuzzy/ZhiZi", False),
-                   OptionInfo("QuanPin/Fuzzy/ChiCi", False),
-                   OptionInfo("QuanPin/Fuzzy/ShiSi", False),
-                   OptionInfo("QuanPin/Fuzzy/AnAng", False),
-                   OptionInfo("QuanPin/Fuzzy/OnOng", False),
-                   OptionInfo("QuanPin/Fuzzy/EnEng", False),
-                   OptionInfo("QuanPin/Fuzzy/InIng", False),
-                   OptionInfo("QuanPin/Fuzzy/EngOng", False),
-                   OptionInfo("QuanPin/Fuzzy/IanIang", False),
-                   OptionInfo("QuanPin/Fuzzy/UanUang", False),
-                   OptionInfo("QuanPin/Fuzzy/NeLe", False),
-                   OptionInfo("QuanPin/Fuzzy/FoHe", False),
-                   OptionInfo("QuanPin/Fuzzy/LeRi", False),
-                   OptionInfo("QuanPin/Fuzzy/KeGe", False)]
-        super(FuzzySetupDialog, self).__init__("fuzzy", options)
-
-class CorrectingSetupDialog (MultiCheckDialog):
+        mappings = [MappingInfo('QuanPin/Fuzzy/ShiSi', ('sh','s')),
+                    MappingInfo('QuanPin/Fuzzy/ZhiZi', ('zh','z')),
+                    MappingInfo('QuanPin/Fuzzy/ChiCi', ('ch','c')),
+                    MappingInfo('QuanPin/Fuzzy/ShiSi', ('sh','s')),
+                    MappingInfo('QuanPin/Fuzzy/AnAng', ('an','ang')),
+                    MappingInfo('QuanPin/Fuzzy/OnOng', ('on','ong')),
+                    MappingInfo('QuanPin/Fuzzy/EnEng', ('en','eng')),
+                    MappingInfo('QuanPin/Fuzzy/InIng', ('in','ing')),
+                    MappingInfo('QuanPin/Fuzzy/EngOng', ('eng','ong')),
+                    MappingInfo('QuanPin/Fuzzy/IanIang', ('ian','iang')),
+                    MappingInfo('QuanPin/Fuzzy/UanUang', ('uan','uang')),
+                    MappingInfo('QuanPin/Fuzzy/NeLe', ('n','l')),
+                    MappingInfo('QuanPin/Fuzzy/FoHe', ('f','h')),
+                    MappingInfo('QuanPin/Fuzzy/LeRi', ('l','r')),
+                    MappingInfo('QuanPin/Fuzzy/KeGe', ('k','g'))]
+        MultiCheckDialog.__init__(self,
+                                  ui_name = 'fuzzy',
+                                  config_name = 'QuanPin/Fuzzy/Pinyins',
+                                  mappings = mappings)
+        
+class CorrectionSetupDialog (MultiCheckDialog):
     def __init__(self):
-        options = [OptionInfo("QuanPin/AutoCorrecting/IgnIng", False),
-                   OptionInfo("QuanPin/AutoCorrecting/UenUn", False),
-                   OptionInfo("QuanPin/AutoCorrecting/ImgIng", False),
-                   OptionInfo("QuanPin/AutoCorrecting/IouIu", False),
-                   OptionInfo("QuanPin/AutoCorrecting/UeiUi", False)]
-        super(CorrectingSetupDialog, self).__init__("correcting", options)
+        mappings = [MappingInfo('QuanPin/AutoCorrection/IgnIng', ('ign','ing')),
+                    MappingInfo('QuanPin/AutoCorrection/UenUn', ('uen','un')),
+                    MappingInfo('QuanPin/AutoCorrection/ImgIng', ('img','ing')),
+                    MappingInfo('QuanPin/AutoCorrection/IouIu', ('iou','iu')),
+                    MappingInfo('QuanPin/AutoCorrection/UeiUi', ('uei','ui'))]
+        MultiCheckDialog.__init__(self,
+                                  ui_name = 'correction',
+                                  config_name = 'QuanPin/AutoCorrection/Pinyins',
+                                  mappings = mappings)
 
-class PunctMappingSetupDialog (MultiCheckDialog, Option):
+class PunctMapping(MappingOption):
+    def __init__(self, name, mappings, owner):
+        self.keys = [m[0] for m in mappings]
+        values_with_closing = [v or k for k, v in mappings]
+        self.values = []
+        for v in values_with_closing:
+            try:
+                self.values.append(v[0])
+            except:
+                self.values.append(v)
+        self.keys.reverse()
+        self.values.reverse()
+        MappingOption.__init__(self, name, mappings, owner)
+
+    def get_mappings(self):
+        if self.widget.get_active():
+            pairs = []
+            for k,vs in self.mappings:
+                try:
+                    for v in vs:
+                        pairs.append(':'.join([k,v]))
+                except:
+                    v = vs
+                    if v is None:
+                        continue
+                    pairs.append(':'.join([k,v]))
+            return pairs
+        else:
+            return []
+
+    def set_active(self, enabled):
+        if enabled:
+            self.widget.set_label('\n'.join(self.values))
+        else:
+            self.widget.set_label('\n'.join(self.keys))
+        self.widget.set_active(enabled)
+
+    is_enabled = property(MappingOption.get_active, set_active)
+    
+    def key(self):
+        for k, v in self.mappings:
+            if v is not None:
+                return k
+        else:
+            return None
+
+class PunctMappingSetupDialog (MultiCheckDialog):
     # TODO: the UI should looks like a virtual keyboard,
-    #       user are allowed to 
+    #       user are allowed to choose the mappings to all punctuation keys.
     def __init__(self):
-        Option.__init__(self, "General/PunctMapping/Mappings", [])
-        options = []
-        MultiCheckDialog.__init__(self, "punctmapping", options)
-        
-    def read_config(self):
-        pairs = self.read()
-        mappings = dict([pair.split(':') for pair in pairs])
-        
-    def write_config(self):
-        # TODO: collect all mappings of punctuations
-        mappings = {'~':u'～',
-                    '@':u'＠',
-                    '#':u'＃',
-                    '%':u'％',
-                    '&':u'＆',
-                    '*':u'＊',
-                    '|':u'‖',
-                    '[':u'〔',
-                    ']':u'〕',
-                    '{':u'｛',
-                    '}':u'｝',
-                    '<':u'〈',
-                    '>':u'〉',
-                    '.':u'·',
-#                     '\'':u'‘',
-#                     '\'':u'’',
-                    '/':u'／'}
-        pairs = [':'.join(pair) for pair in mappings.items()]
-        self.write(pairs)
-     
+        mappings = [MappingInfo('togglebutton1', [('`',None), ('~',u'～')]),
+                    MappingInfo('togglebutton3', [('2',None), ('@',u'＠')]),
+                    MappingInfo('togglebutton4', [('3',None), ('#',u'＃')]),
+                    MappingInfo('togglebutton6', [('5',None), ('%',u'％')]),
+                    MappingInfo('togglebutton8', [('7',None), ('&',u'＆')]),
+                    MappingInfo('togglebutton9', [('8',None), ('*',u'＊')]),
+                    MappingInfo('togglebutton14', [('\\',None), ('|',u'‖')]),
+                    MappingInfo('togglebutton27', [('[',u'〔'), ('{',u'｛')]),
+                    MappingInfo('togglebutton28', [(']',u'〕'), (']',u'｝')]),
+                    MappingInfo('togglebutton50', [(',',None), ('<',u'〈')]),
+                    MappingInfo('togglebutton51', [('.',u'·'), ('>',u'〉')]),
+                    MappingInfo('togglebutton52', [('/',u'／'), ('?',None)])]
+                    #'\'',(u'‘',u'’'),
+        MultiCheckDialog.__init__(self, ui_name="punctmapping",
+                                  config_name="General/PunctMapping/Mappings",
+                                  mappings=mappings,
+                                  option_klass=PunctMapping)
+
 class MainWindow ():
     def __init__ (self):
         self.__bus = ibus.Bus()
@@ -340,7 +436,7 @@ class MainWindow ():
 
     def __init_options(self):
         self.__fuzzy_setup = FuzzySetupDialog()
-        self.__correcting_setup = CorrectingSetupDialog()
+        self.__correction_setup = CorrectionSetupDialog()
         self.__punctmapping_setup = PunctMappingSetupDialog()
         
         self.__options = [
@@ -367,9 +463,9 @@ class MainWindow ():
                                                                 'Pinyin++',
                                                                 'ZiGuang'], self.__xml),
             CheckBoxOption("QuanPin/Fuzzy/Enabled", False, self.__xml),
-            CheckBoxOption("QuanPin/AutoCorrecting/Enabled", False, self.__xml),
+            CheckBoxOption("QuanPin/AutoCorrection/Enabled", False, self.__xml),
             self.__fuzzy_setup,
-            self.__correcting_setup,
+            self.__correction_setup,
             self.__punctmapping_setup,
         ]
 
@@ -385,7 +481,7 @@ class MainWindow ():
             opt.init_ui()
             opt.read_config()
         self.on_chk_fuzzy_enabled_toggled(None)
-        self.on_chk_correcting_enabled_toggled(None)
+        self.on_chk_correction_enabled_toggled(None)
         self.on_chk_punctmapping_enabled_toggled(None)
         self.on_radio_shuangpin_toggled(None)
         
@@ -416,12 +512,12 @@ class MainWindow ():
     def on_button_fuzzy_setup_clicked(self, button):
         self.__fuzzy_setup.run()
         
-    def on_chk_correcting_enabled_toggled(self, button):
-        self.__update_enabling_button("QuanPin/AutoCorrecting/Enabled",
+    def on_chk_correction_enabled_toggled(self, button):
+        self.__update_enabling_button("QuanPin/AutoCorrection/Enabled",
                                       "button_autocorrect_setup")
         
-    def on_button_correcting_setup_clicked(self, button):
-        self.__correcting_setup.run()
+    def on_button_correction_setup_clicked(self, button):
+        self.__correction_setup.run()
         
     def on_chk_punctmapping_enabled_toggled(self, button):
         self.__update_enabling_button("General/PunctMapping/Enabled",

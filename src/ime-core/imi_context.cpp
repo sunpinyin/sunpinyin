@@ -598,6 +598,9 @@ void CIMIContext::_saveUserDict ()
     if (!m_pUserDict)
         return;
 
+    if (m_bestPath.empty())
+        return;
+    
     bool has_user_selected = false;
     std::vector<unsigned>::iterator it  = m_bestPath.begin();
     std::vector<unsigned>::iterator ite = m_bestPath.end() - 1;
@@ -633,7 +636,10 @@ void CIMIContext::_saveHistoryCache ()
     if (!m_pHistory)
         return;
 
-    std::vector <unsigned> result;
+    if (m_bestPath.empty())
+        return;
+
+    std::vector<unsigned> result;
     std::vector<unsigned>::const_iterator it  = m_bestPath.begin();
     std::vector<unsigned>::const_iterator ite = m_bestPath.end() - 1;
     for (; it != ite; ++it) {
@@ -648,3 +654,4 @@ void CIMIContext::_saveHistoryCache ()
         m_pHistory->memorize (&(result[0]), &(result[0]) + result.size());
 
 }
+

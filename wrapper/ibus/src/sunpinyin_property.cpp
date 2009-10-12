@@ -181,7 +181,7 @@ SetupLauncher::SetupLauncher()
                                TRUE, /* visible */ PROP_STATE_UNCHECKED, /* state */
                                NULL);
     m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"Perference");
-    m_info.tooltip = ibus_text_new_from_static_string(_("Configure SunPinyin"));
+    m_info.tooltip = ibus_text_new_from_static_string(_("Preference"));
     m_info.icon    = SUNPINYIN_ICON_DIR"/setup.svg";
     init();
 }

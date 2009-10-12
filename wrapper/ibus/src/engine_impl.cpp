@@ -11,6 +11,7 @@
 #include "sunpinyin_config.h"
 #include "sunpinyin_config_keys.h"
 #include "imi_ibus_win.h"
+#include "preedit_string.h"
 
 #include "engine_impl.h"
 
@@ -284,7 +285,7 @@ int decorate_preedit_char(IBusText *text, const IPreeditString& preedit,
                           unsigned long fg_color)
 {
     int i = begin;
-    while (i < end && preedit.charTypeAt(i) & type)
+    while (i < end && (preedit.charTypeAt(i) & type) == type)
         ++i;
     end = i;
     int len = end - begin;
@@ -295,20 +296,37 @@ int decorate_preedit_char(IBusText *text, const IPreeditString& preedit,
     return len;
 }
 
-void decorate_preedit_string(IBusText *text, const IPreeditString& preedit)
+
+enum {ORANGE = 0xE76F00, GRAY_BLUE = 0x35556B, WHITE = 0xFFFFFF, BLACK = 0x000000};
+
+void decorate_preedit_string_using_char_type(IBusText *text, const IPreeditString& preedit)
 {
     for (int i = 0, size = preedit.charTypeSize(); i < size; ) {
         int len = 0;
-        if ((len = decorate_preedit_char(text, preedit, i, size, preedit.ILLEGAL, 
-                                         0xE76F00)) > 0) {
+        if ((len = decorate_preedit_char(text, preedit, i, size, preedit.PINYIN_CHAR, 
+                                         GRAY_BLUE)) > 0) {
             i += len;
-        } else if ((len = decorate_preedit_char(text, preedit, i, size, 
-                                                preedit.USER_CHOICE, 
-                                                0x35556B)) > 0) {
+        } else if ((len = decorate_preedit_char(text, preedit, i, size,
+                                                preedit.BOUNDARY,
+                                                GRAY_BLUE)) > 0) {
             i += len;
         } else {
             ++i;
         }
+    }
+}
+
+    
+void decorate_preedit_string_using_caret_pos(IBusText *text, const IPreeditString& preedit, int caret)
+{
+    if (caret < preedit.size()) {
+        // add underline, otherwise gtk app won't have the same color scheme with that of x11 apps
+        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_UNDERLINE, IBUS_ATTR_UNDERLINE_SINGLE,
+                                   caret, preedit.size());
+        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_FOREGROUND, WHITE,
+                                   caret, preedit.size());
+        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_BACKGROUND, GRAY_BLUE,
+                                   caret, preedit.size());
     }
 }
 
@@ -318,12 +336,15 @@ EngineImpl::update_preedit_string(const IPreeditString& preedit)
     const int len = preedit.size();
     if (len > 0) {
         IBusText *text = ibus_text_new_from_ucs4((const gunichar*) preedit.string());
-        decorate_preedit_string(text, preedit);
+        
         
         const int caret = preedit.caret();
-        if (caret > 0 && caret <= len) {
-            // TODO: fake a caret?
+        if (caret < len) {
+            decorate_preedit_string_using_caret_pos(text, preedit, caret);
+        } else {
+            decorate_preedit_string_using_char_type(text, preedit);
         }
+        
         ibus_engine_update_preedit_text(m_ibus_engine, text, caret, TRUE);
         g_object_unref(text);
     } else {

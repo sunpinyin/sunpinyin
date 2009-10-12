@@ -38,7 +38,7 @@
 
 #define CONFIG_GENERAL_PAGE_SIZE            "General/PageSize"
 #define CONFIG_GENERAL_MEMORY_POWER         "General/MemoryPower"
-#define CONFIG_GENERAL_CHARSET_LEVEL        "General/CharsetLevel"
+#define CONFIG_GENERAL_CHARSET_LEVEL        "General/Charset"
 
 #define CONFIG_QUANPIN_FUZZY_ANY         "QuanPin/Fuzzy/Any"
 #define CONFIG_QUANPIN_FUZZY_ZhiZi       "QuanPin/Fuzzy/ZhiZi"

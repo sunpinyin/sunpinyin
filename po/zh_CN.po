@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sunpinyin 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-05 13:09+0800\n"
-"PO-Revision-Date: 2009-10-05 13:24+0800\n"
+"POT-Creation-Date: 2009-10-13 00:07+0800\n"
+"PO-Revision-Date: 2009-10-13 00:10+0800\n"
 "Last-Translator: Kov Chai <tchaikov@gmail.com>\n"
 "Language-Team: Kov Chai <tchaikov@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -189,8 +189,8 @@ msgid "Switch to English punctuation"
 msgstr "改用英文标点"
 
 #: wrapper/ibus/src/sunpinyin_property.cpp:184
-msgid "Configure SunPinyin"
-msgstr "配置 SunPinyin"
+msgid "Preference"
+msgstr "设置"
 
 #: wrapper/ibus/setup/setup.glade:7
 msgid "SunPinyin Setup"
@@ -274,39 +274,39 @@ msgstr "<b>全拼设置</b>"
 msgid "Pinyin Mode"
 msgstr "拼音模式"
 
-#: wrapper/ibus/setup/setup.glade:422
+#: wrapper/ibus/setup/setup.glade:423
 msgid "<b>Ch/En Switch key</b>"
 msgstr "<b>汉/英切换热键</b>"
 
-#: wrapper/ibus/setup/setup.glade:489
+#: wrapper/ibus/setup/setup.glade:490
 msgid "<b>Full/Half-width Switch</b>"
 msgstr "<b>全/半角切换</b>"
 
-#: wrapper/ibus/setup/setup.glade:569
+#: wrapper/ibus/setup/setup.glade:570
 msgid "<b>Page Switch</b>"
 msgstr "<b>翻页</b>"
 
-#: wrapper/ibus/setup/setup.glade:589
+#: wrapper/ibus/setup/setup.glade:590
 msgid "Keyboard"
 msgstr "快捷键"
 
-#: wrapper/ibus/setup/setup.glade:662
+#: wrapper/ibus/setup/setup.glade:663
 msgid "<b>Character Set</b>"
 msgstr "<b>字符集</b>"
 
-#: wrapper/ibus/setup/setup.glade:704
+#: wrapper/ibus/setup/setup.glade:705
 msgid "Candidate Num"
 msgstr "候选词的个数"
 
-#: wrapper/ibus/setup/setup.glade:732
+#: wrapper/ibus/setup/setup.glade:733
 msgid "Memory Strength"
 msgstr "记忆强度"
 
-#: wrapper/ibus/setup/setup.glade:771
+#: wrapper/ibus/setup/setup.glade:772
 msgid "<b>Options</b>"
 msgstr "<b>设置选项</b>"
 
-#: wrapper/ibus/setup/setup.glade:810
+#: wrapper/ibus/setup/setup.glade:811
 msgid "Punct mapping"
 msgstr "自定义标点映射"
 
@@ -324,25 +324,22 @@ msgstr "通用"
 
 #: wrapper/ibus/setup/setup.glade:874
 msgid "copyright (c) 2009"
-msgstr "版权所有 (c)"
+msgstr "版权所有 (c) 2009"
 
 #: wrapper/ibus/setup/setup.glade:883
 msgid "About"
 msgstr "关于"
 
 #: wrapper/ibus/setup/setup.glade:1189 wrapper/ibus/setup/setup.glade:1357
-#: wrapper/ibus/setup/setup.glade:1487
+#: wrapper/ibus/setup/setup.glade:2229
 msgid "All"
 msgstr "全选"
 
 #: wrapper/ibus/setup/setup.glade:1204 wrapper/ibus/setup/setup.glade:1371
-#: wrapper/ibus/setup/setup.glade:1501
+#: wrapper/ibus/setup/setup.glade:2243
 msgid "None"
 msgstr "全不选"
 
 #: wrapper/ibus/setup/setup.glade:1425
 msgid "Punct Mapping"
 msgstr "自定义标点映射"
-
-#~ msgid "Changing this will dismiss the un-committed preedit strings"
-#~ msgstr "修改此项会使未输入的字串作废"

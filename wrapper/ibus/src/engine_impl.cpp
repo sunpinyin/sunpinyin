@@ -39,8 +39,18 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     
     m_config = new SunPinyinConfig();
     addRef();
-    
-    factory.setPinyinScheme(m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN));
+
+
+    CSunpinyinSessionFactory::EPyScheme pinyin_scheme =
+        m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN);
+    factory.setPinyinScheme(pinyin_scheme);
+    if (pinyin_scheme == CSunpinyinSessionFactory::QUANPIN) {
+        update_fuzzy_pinyins();
+        update_correction_pinyins();
+    } else {
+        update_shuangpin_type();
+    }
+
     factory.setCandiWindowSize(m_config->get(CONFIG_GENERAL_PAGE_SIZE, 10));
     
     m_pv = factory.createSession();
@@ -236,15 +246,6 @@ EngineImpl::update_config()
     update_mode_key_shift();
     update_mode_key_control();
     update_punct_mappings();
-    if (m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN) ==
-        CSunpinyinSessionFactory::QUANPIN) {
-        update_fuzzy_pinyins();
-        update_correction_pinyins();
-    } else {
-        update_shuangpin_type();
-    }
-    
-
     // update_quanpin_config();
     // update_shuangpin_config();
 }

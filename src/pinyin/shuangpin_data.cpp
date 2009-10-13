@@ -599,7 +599,8 @@ int
 CShuangpinData::getMapString(char *shpstr, CMappedYin &syls)
 {
     assert(shpstr!=NULL);
-
+    assert(m_shuangpinPlan->mapinitials!=NULL);
+    
     char    *ch = shpstr;
     int     len = strlen(shpstr);
     char    buf[32] = "\0";

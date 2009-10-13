@@ -11,7 +11,6 @@
 #include "sunpinyin_config.h"
 #include "sunpinyin_config_keys.h"
 #include "imi_ibus_win.h"
-#include "preedit_string.h"
 
 #include "engine_impl.h"
 

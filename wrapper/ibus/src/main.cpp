@@ -36,6 +36,7 @@
 #include <locale.h>
 #include <libintl.h>
 #include <unistd.h>
+#include <signal.h>
 #include <ibus.h>
 #include "config.h"
 #include "engine.h"
@@ -122,7 +123,9 @@ int main(int argc, char *argv[])
         g_print ("Option parsing failed: %s\n", error->message);
         return -1;
     }
-    
+    // mask SIGTERM so that the destroy() method has the chance to be called
+    // in case user quits X session.
+    sighold(SIGTERM);
     init ();
     ibus_main ();
     ibus_sunpinyin_exit ();

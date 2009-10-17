@@ -340,6 +340,14 @@ class CorrectionSetupDialog (MultiCheckDialog):
 
 class PunctMapping(MappingOption):
     def __init__(self, name, mappings, owner):
+        MappingOption.__init__(self, name, mappings, owner)
+        if mappings:
+            self.widget.set_sensitive(True)
+            self.init_keys_values(mappings)
+        else:
+            self.widget.set_sensitive(False)
+            
+    def init_keys_values(self, mappings):
         self.keys = [m[0] for m in mappings]
         values_with_closing = [v or k for k, v in mappings]
         self.values = []
@@ -350,7 +358,6 @@ class PunctMapping(MappingOption):
                 self.values.append(v)
         self.keys.reverse()
         self.values.reverse()
-        MappingOption.__init__(self, name, mappings, owner)
 
     def get_mappings(self):
         if self.widget.get_active():
@@ -369,6 +376,7 @@ class PunctMapping(MappingOption):
             return []
 
     def set_active(self, enabled):
+        if not self.mappings: return
         if enabled:
             self.widget.set_label('\n'.join(self.values))
         else:
@@ -389,14 +397,19 @@ class PunctMappingSetupDialog (MultiCheckDialog):
     #       user are allowed to choose the mappings to all punctuation keys.
     def __init__(self):
         mappings = [MappingInfo('togglebutton1', [('`',None), ('~',u'～')]),
+                    MappingInfo('togglebutton2', []),
                     MappingInfo('togglebutton3', [('2',None), ('@',u'＠')]),
                     MappingInfo('togglebutton4', [('3',None), ('#',u'＃')]),
+                    MappingInfo('togglebutton5', []),
                     MappingInfo('togglebutton6', [('5',None), ('%',u'％')]),
+                    MappingInfo('togglebutton7', []),
                     MappingInfo('togglebutton8', [('7',None), ('&',u'＆')]),
                     MappingInfo('togglebutton9', [('8',None), ('*',u'＊')]),
                     MappingInfo('togglebutton14', [('\\',None), ('|',u'‖')]),
                     MappingInfo('togglebutton27', [('[',u'〔'), ('{',u'｛')]),
                     MappingInfo('togglebutton28', [(']',u'〕'), (']',u'｝')]),
+                    MappingInfo('togglebutton39', []),
+                    MappingInfo('togglebutton40', []),
                     MappingInfo('togglebutton50', [(',',None), ('<',u'〈')]),
                     MappingInfo('togglebutton51', [('.',u'·'), ('>',u'〉')]),
                     MappingInfo('togglebutton52', [('/',u'／'), ('?',None)])]

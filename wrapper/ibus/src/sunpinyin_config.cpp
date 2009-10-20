@@ -66,12 +66,6 @@ SunPinyinConfig::SunPinyinConfig()
 {
     m_scheme_names["QuanPin"]    = CSunpinyinSessionFactory::QUANPIN;
     m_scheme_names["ShuangPin"]  = CSunpinyinSessionFactory::SHUANGPIN;
-    m_type_names["MS2003"]       = MS2003;
-    m_type_names["ABC"]          = ABC;
-    m_type_names["ZIRANMA"]      = ZIRANMA;
-    m_type_names["PINYINJIAJIA"] = PINYINJIAJIA;
-    m_type_names["ZIGUANG"]      = ZIGUANG;
-    m_type_names["USERDEFINE"]   = USERDEFINE;
 }
 
 SunPinyinConfig::~SunPinyinConfig()
@@ -190,29 +184,6 @@ SunPinyinConfig::get_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
 }
 
 void
-SunPinyinConfig::set_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
-{
-    string name =
-        get_scheme_name(scheme);
-    set(PINYIN_SCHEME, name);
-}
-
-EShuangpinType
-SunPinyinConfig::get_shuangpin_type(EShuangpinType type)
-{
-    string default_name = get_type_name(type);
-    string name = get(SHUANGPIN_TYPE, default_name);
-    return get_type(name);
-}
-
-void
-SunPinyinConfig::set_shuangpin_type(EShuangpinType type)
-{
-    string name = get_type_name(type);
-    set(SHUANGPIN_TYPE, name);
-}
-
-void
 SunPinyinConfig::set_config(IBusConfig *config)
 {
     m_config = config;
@@ -224,6 +195,29 @@ SunPinyinConfig::listen_on_changed()
     assert(m_config != NULL);
     g_signal_connect(m_config, "value-changed",
                      G_CALLBACK(this->on_config_value_changed), NULL);
+}
+
+std::string
+SunPinyinConfig::get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme)
+{
+    string val = "ShuangPin";
+    for (SchemeNames::iterator it = m_scheme_names.begin();
+         it != m_scheme_names.end(); ++it) {
+        if (it->second == scheme)
+            val = it->first;
+    }
+    return val;
+}
+
+CSunpinyinSessionFactory::EPyScheme
+SunPinyinConfig::get_scheme(const std::string& name)
+{
+    CSunpinyinSessionFactory::EPyScheme val = CSunpinyinSessionFactory::SHUANGPIN;
+    SchemeNames::iterator it = m_scheme_names.find(name);
+    if (it != m_scheme_names.end()) {
+        val = it->second;
+    }
+    return val;
 }
 
 static unsigned
@@ -295,51 +289,4 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
     const char *sub_section = section + strlen(prefix);
     COptionEvent event = g_value_to_event(sub_section, name, value);
     AOptionEventBus::instance().publishEvent(event);
-}
-
-std::string
-SunPinyinConfig::get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme)
-{
-    string val = "ShuangPin";
-    for (SchemeNames::iterator it = m_scheme_names.begin();
-         it != m_scheme_names.end(); ++it) {
-        if (it->second == scheme)
-            val = it->first;
-    }
-    return val;
-}
-
-CSunpinyinSessionFactory::EPyScheme
-SunPinyinConfig::get_scheme(const std::string& name)
-{
-    CSunpinyinSessionFactory::EPyScheme val = CSunpinyinSessionFactory::SHUANGPIN;
-    SchemeNames::iterator it = m_scheme_names.find(name);
-    if (it != m_scheme_names.end()) {
-        val = it->second;
-    }
-    return val;
-}
-
-
-std::string
-SunPinyinConfig::get_type_name(EShuangpinType type)
-{
-    string val = "MS2003";
-    for (TypeNames::iterator it = m_type_names.begin();
-         it != m_type_names.end(); ++it) {
-        if (it->second == type)
-            val = it->first;
-    }
-    return val;
-}
-
-EShuangpinType
-SunPinyinConfig::get_type(const std::string& name)
-{
-    EShuangpinType val = MS2003;
-    TypeNames::iterator it = m_type_names.find(name);
-    if (it != m_type_names.end()) {
-        val = it->second;
-    }
-    return val;
 }

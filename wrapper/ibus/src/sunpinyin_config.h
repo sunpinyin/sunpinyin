@@ -45,6 +45,13 @@
 
 class EngineImpl;
 
+enum CharsetLevel
+{
+    GB2312,
+    GBK,
+    GB18030
+};
+
 class SunPinyinConfig
 {
     typedef std::map<std::string,
@@ -71,12 +78,9 @@ public:
     void set(const char* key, const std::string& val);
 
     std::vector<std::string> get(const char *key, const std::vector<std::string>& val);
-    
+
     CSunpinyinSessionFactory::EPyScheme get_py_scheme(CSunpinyinSessionFactory::EPyScheme);
     void set_py_scheme(CSunpinyinSessionFactory::EPyScheme);
-    
-    EShuangpinType get_shuangpin_type(EShuangpinType);
-    void set_shuangpin_type(EShuangpinType);
 
     /**
      * gets called in ibus_sunpinyin_init() so that SunPinyinEngine can read 
@@ -99,11 +103,8 @@ private:
                                         GValue *value,
                                         gpointer user_data);
 
-private:
     std::string get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme);
     CSunpinyinSessionFactory::EPyScheme get_scheme(const std::string& name);
-    std::string get_type_name(EShuangpinType);
-    EShuangpinType get_type(const std::string& name);
 };
 
 #endif // SUNPINYIN_CONFIG_H

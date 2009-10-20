@@ -40,7 +40,6 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     m_config = new SunPinyinConfig();
     addRef();
 
-
     CSunpinyinSessionFactory::EPyScheme pinyin_scheme =
         m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN);
     factory.setPinyinScheme(pinyin_scheme);
@@ -382,7 +381,7 @@ EngineImpl::update_history_power()
 void
 EngineImpl::update_charset_level()
 {
-    unsigned charset = m_config->get(CONFIG_GENERAL_CHARSET_LEVEL, 2);
+    unsigned charset = m_config->get(CONFIG_GENERAL_CHARSET_LEVEL, GBK);
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
     charset &= 3;               // charset can only be 0,1,2,3
@@ -497,6 +496,6 @@ void
 EngineImpl::update_shuangpin_type()
 {
     EShuangpinType shuangpin_type = MS2003;
-    shuangpin_type = (EShuangpinType) m_config->get(SHUANGPIN_TYPE, shuangpin_type);
+    shuangpin_type = (EShuangpinType) m_config->get(SHUANGPIN_TYPE, (int) shuangpin_type);
     AShuangpinSchemePolicy::instance().setShuangpinType(shuangpin_type);
 }

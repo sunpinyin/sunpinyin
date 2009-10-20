@@ -123,6 +123,7 @@ class CheckBoxOption(TrivalOption):
 
 class ComboBoxOption(TrivalOption):
     def __init__(self, name, default, options, owner):
+        default = options.index(default)
         super(ComboBoxOption, self).__init__(name, default, owner)
         self.options = options
         
@@ -131,14 +132,6 @@ class ComboBoxOption(TrivalOption):
         for v in self.options:
             model.append([str(v)])
         self.widget.set_model(model)
-
-    def save_ui_setting(self):
-        self.v = self.options[self.widget.get_active()]
-        return self.v
-    
-    def read_config(self):
-        self.v = self.read()
-        self.widget.set_active(self.options.index(self.v))
 
 class RadioOption(Option):
     """option represented using multiple Raidio buttons
@@ -470,11 +463,11 @@ class MainWindow ():
             CheckBoxOption("Keyboard/ModeSwitch/Control", False, self.__xml),
             
             RadioOption("Pinyin/Scheme", 'QuanPin', ['QuanPin', 'ShuangPin'], self.__xml),
-            ComboBoxOption("Pinyin/ShuangPinType", 'Pinyin++', ['MS2003',
-                                                                'ABC',
-                                                                'ZiRanMa',
-                                                                'Pinyin++',
-                                                                'ZiGuang'], self.__xml),
+            ComboBoxOption("Pinyin/ShuangPinType", 'MS2003', ['MS2003',
+                                                              'ABC',
+                                                              'ZiRanMa',
+                                                              'Pinyin++',
+                                                              'ZiGuang'], self.__xml),
             CheckBoxOption("QuanPin/Fuzzy/Enabled", False, self.__xml),
             CheckBoxOption("QuanPin/AutoCorrection/Enabled", False, self.__xml),
             self.__fuzzy_setup,

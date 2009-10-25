@@ -78,12 +78,7 @@ static const char * auto_correction_pairs[] = {
 };
 static const unsigned num_auto_correction_pairs = sizeof(auto_correction_pairs)/sizeof(*auto_correction_pairs)/2;
 
-typedef struct _PyTabEntry {
-    const char *pystr;
-    TSyllable   id;
-}PyTabEntry;
-
-static PyTabEntry 
+static TPyTabEntry 
 pinyin_table[] = {
     {"a",	0x00010},
     {"ai",	0x00040},
@@ -524,14 +519,14 @@ pinyin_table[] = {
 };
 
 static int 
-pytab_entry_compare (const char *s, PyTabEntry *v)
+pytab_entry_compare (const char *s, TPyTabEntry *v)
   {return strcmp (s, v->pystr);}
 
 TSyllable
 CPinyinData::encodeSyllable (const char *pinyin)
 {
     typedef int (*bsearch_compare) (const void*, const void*);
-    PyTabEntry *e = (PyTabEntry*) bsearch (pinyin, pinyin_table, 
+    TPyTabEntry *e = (TPyTabEntry*) bsearch (pinyin, pinyin_table, 
                                            sizeof(pinyin_table)/sizeof(pinyin_table[0]), 
                                            sizeof(pinyin_table[0]), 
                                            (bsearch_compare) pytab_entry_compare);
@@ -551,7 +546,7 @@ CPinyinData::decodeSyllable (TSyllable s, const char **i, const char **f)
     snprintf (buf, sizeof(buf), "%s%s", initials[s.initial], finals[s.final]);
 
     typedef int (*bsearch_compare) (const void*, const void*);
-    PyTabEntry *e = (PyTabEntry*) bsearch (buf, pinyin_table, 
+    TPyTabEntry *e = (TPyTabEntry*) bsearch (buf, pinyin_table, 
                                            sizeof(pinyin_table)/sizeof(pinyin_table[0]), 
                                            sizeof(pinyin_table[0]), 
                                            (bsearch_compare) pytab_entry_compare);
@@ -574,4 +569,25 @@ CPinyinData::getFuzzyPairs (unsigned &num)
 {
     num = num_fuzzy_pairs;
     return fuzzy_pairs;
+}
+
+const char **
+CPinyinData::getInitials (unsigned &num)
+{
+    num = num_initials;
+    return initials;
+}
+
+const char **
+CPinyinData::getFinals (unsigned &num)
+{
+    num = num_finals;
+    return finals;
+}
+
+const TPyTabEntry *
+CPinyinData::getPinyinTable(unsigned &num)
+{
+    num = sizeof(pinyin_table) / sizeof(TPyTabEntry);
+    return pinyin_table;
 }

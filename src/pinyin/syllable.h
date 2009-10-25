@@ -67,4 +67,9 @@ struct TSyllable {
 
 typedef std::vector<TSyllable> CSyllables;
 
+typedef struct _TPyTabEntry{
+    const char *pystr;
+    TSyllable   id;
+}TPyTabEntry;
+
 #endif

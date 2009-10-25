@@ -48,6 +48,10 @@ public:
     static TSyllable encodeSyllable (const char *);
     static const char *decodeSyllable (TSyllable, const char **i=NULL, const char **f=NULL);
 
+    static const char **getInitials (unsigned &num);
+    static const char **getFinals (unsigned &num);
+    static const TPyTabEntry* getPinyinTable (unsigned &num);
+
     static const char **getAutoCorrectionPairs (unsigned &num);
     static const char **getFuzzyPairs (unsigned &num);
 

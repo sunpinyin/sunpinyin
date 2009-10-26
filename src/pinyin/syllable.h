@@ -40,6 +40,10 @@
 
 #include <vector>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 struct TSyllable {
 #ifdef WORDS_BIGENDIAN
     unsigned other    : 12;
@@ -69,7 +73,7 @@ typedef std::vector<TSyllable> CSyllables;
 
 typedef struct _TPyTabEntry{
     const char *pystr;
-    TSyllable   id;
+    unsigned    id;
 }TPyTabEntry;
 
 #endif

@@ -64,9 +64,16 @@ struct TSyllable {
 
     operator unsigned int() const 
         { return *((unsigned *)this); }
-
+    
     bool isFullSyllable ()
         { return final != 0;}
+
+    bool operator == (TSyllable & syl) {
+        return (unsigned int )*this == (unsigned int)(syl);
+    }
+    bool operator != (TSyllable & syl) {
+        return !(*this == syl);
+    }
 };
 
 typedef std::vector<TSyllable> CSyllables;

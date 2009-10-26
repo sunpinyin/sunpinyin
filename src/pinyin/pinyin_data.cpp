@@ -78,7 +78,7 @@ static const char * auto_correction_pairs[] = {
 };
 static const unsigned num_auto_correction_pairs = sizeof(auto_correction_pairs)/sizeof(*auto_correction_pairs)/2;
 
-static TPyTabEntry 
+static const TPyTabEntry 
 pinyin_table[] = {
     {"a",	0x00010},
     {"ai",	0x00040},

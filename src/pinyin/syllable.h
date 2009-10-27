@@ -65,14 +65,19 @@ struct TSyllable {
     operator unsigned int() const 
         { return *((unsigned *)this); }
     
-    bool isFullSyllable ()
+    bool isFullSyllable () const
         { return final != 0;}
 
-    bool operator == (TSyllable & syl) {
+    bool operator == (const TSyllable & syl) const {
         return (unsigned int )*this == (unsigned int)(syl);
     }
-    bool operator != (TSyllable & syl) {
+    
+    bool operator != (const TSyllable & syl) const {
         return !(*this == syl);
+    }
+    
+    bool operator == (const unsigned s) const {
+        return (unsigned int)*this == s;
     }
 };
 

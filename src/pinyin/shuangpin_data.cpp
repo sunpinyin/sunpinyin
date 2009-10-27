@@ -66,7 +66,20 @@ static const char ms2003_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 'l', 'z', 
     'b', 'j', 'f', 'h', 'g', 'r', 'i', 'w', 'x', 'c', 'q', 'm', 'n', 'd', ';', 'u',
     'w', 'o', 'y', 'v', 'r', 'p', 'd', 's', 'v', 't', 's', };
 
-static TZeroInitial ms2003_zeroinitials[] = {};
+static TZeroInitial ms2003_zeroinitials[] = {
+    {"a", "oa"},
+    {"ai", "ol"},
+    {"an", "oj"},
+    {"ang", "oh"},
+    {"ao", "ok"},
+    {"e", "oe"},
+    {"ei", "oz"},
+    {"en", "of"},
+    {"eng", "og"},
+    {"er", "or"},
+    {"o", "oo"},
+    {"ou", "ob"},
+};
 
 
 //ZhiNengABC shuangpin plan map table
@@ -228,6 +241,7 @@ CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
     case MS2003:
         m_shuangpinPlan->mapinitials = (char*)ms2003_mapinitials;
         m_shuangpinPlan->mapfinals = (char*)ms2003_mapfinals;
+        m_shuangpinPlan->zeroinitals = ms2003_zeroinitials;
         break;
     case ABC:
         m_shuangpinPlan->mapinitials = (char*)abc_mapinitials;

@@ -269,6 +269,9 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         if (bCompleted) {
             memset(buf, '\0', sizeof(buf));
             sprintf(buf, "%c%c", m_pystr[len-2], ch);
+            if (m_pystr[len-2] == 'o') {
+                sprintf(buf, "%c", ch);
+            }
         } else {
             sprintf(buf, "%c", ch);
         }
@@ -277,7 +280,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         s_shpData.getMapString(buf, syls);
         if (syls.empty()) {
             if (bCompleted) {
-                sprintf(buf, "%c", ch);
+                sprintf(buf, "%c%c", m_pystr[len-2], ch);
                 syls.clear();
                 s_shpData.getMapString(buf, syls);
                 if (!syls.empty()) {
@@ -285,14 +288,24 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
                     CMappedYin::iterator iter_end = syls.end();
                     TSegment s;
 
-                    s.m_start =  m_pystr.size() - 1;
-                    s.m_len = 1;
-                    for (; iter!=iter_end; iter++) {
-                        s.m_syllables.push_back(s_shpData.encodeSyllable(iter->c_str()));
-                    }
-                    m_segs.push_back (s);
+                    s.m_start =  m_pystr.size() - 2;
+                    s.m_len = 2;
+                    ret = m_pystr.size() - 2;
                     m_nLastValidPos += 1;
-                    return m_pystr.size() - 1;
+                    for (; iter!=iter_end; iter++) {
+                        TSyllable tmpSyl = s_shpData.encodeSyllable(iter->c_str());
+                        if ((int)tmpSyl != 0) {
+                            s.m_syllables.push_back(tmpSyl);
+                            m_segs.push_back (s);
+                            if (m_pystr[len-2] == 'o') {
+                                s.m_type = IPySegmentor::SYLLABLE;
+                            }
+                        } else {
+                           seg_type = IPySegmentor::STRING;
+                           m_segs.push_back (TSegment (ch, ret, 1, seg_type));
+                        }
+                    }
+                    return ret;
                 }
             }  
             seg_type = IPySegmentor::INVALID;
@@ -309,17 +322,27 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
                 TSegment s;
                 s.m_start =  m_pystr.size() - 1;
                 s.m_len = 1;
-                for (; iter!=iter_end; iter++) {
-                    s.m_syllables.push_back(s_shpData.encodeSyllable(iter->c_str()));
-                }
-                m_segs.push_back (s);
+                ret = m_pystr.size() - 1;
                 m_nLastValidPos += 1;
-                return m_pystr.size() - 1;
+                for (; iter!=iter_end; iter++) {
+                    TSyllable tmpSyl = s_shpData.encodeSyllable(iter->c_str());
+                    if ((int)tmpSyl != 0) {
+                        s.m_syllables.push_back(tmpSyl);
+                        m_segs.push_back (s);
+                    } else {
+                        seg_type = IPySegmentor::STRING;
+                        m_segs.push_back (TSegment (ch, ret, 1, seg_type));
+                    }
+                }
+                return ret;
             } else {
                 TSegment &s = m_segs.back();
                 s.m_len = 2;
                 s.m_start =  m_pystr.size() - 2;
                 s.m_syllables.clear();
+                if (m_pystr[len-2]=='o') {
+                    s.m_type = IPySegmentor::SYLLABLE; 
+                }
                 for (; iter!=iter_end; iter++) {
                     s.m_syllables.push_back(s_shpData.encodeSyllable(iter->c_str()));
                 }

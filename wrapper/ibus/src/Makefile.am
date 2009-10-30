@@ -188,10 +188,10 @@ icondir                  = $(IBUS_SUNPINYIN_ICONDIR)
 icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \
                            $(top_builddir)/data/eng.svg            \
                            $(top_builddir)/data/han.svg            \
-                           $(top_builddir)/data/cnpunc.png         \
-                           $(top_builddir)/data/enpunc.png         \
-                           $(top_builddir)/data/fullwidth.png      \
-                           $(top_builddir)/data/halfwidth.png      \
+                           $(top_builddir)/data/cnpunc.svg         \
+                           $(top_builddir)/data/enpunc.svg         \
+                           $(top_builddir)/data/fullwidth.svg      \
+                           $(top_builddir)/data/halfwidth.svg      \
                            $(top_builddir)/data/setup.svg
 
 test: ibus-engine-sunpinyin

@@ -79,10 +79,10 @@ SunPinyinProperty::create_letter_prop(IBusEngine *engine, bool state)
 {
     SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_LETTER);
     prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"Aa");
-    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/halfwidth.png";
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/halfwidth.svg";
     prop->m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to full-width letter input mode"));
     prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"Ａａ");
-    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/fullwidth.png";
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/fullwidth.svg";
     prop->m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to half-width letter input mode"));
     prop->init(state);
     return prop;
@@ -93,10 +93,10 @@ SunPinyinProperty::create_punct_prop(IBusEngine *engine, bool state)
 {
     SunPinyinProperty *prop = new SunPinyinProperty(engine, PROP_PUNCT);
     prop->m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L",.");
-    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/enpunc.png";
+    prop->m_info[0].icon  = SUNPINYIN_ICON_DIR"/enpunc.svg";
     prop->m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to Chinese punctuation"));
     prop->m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"，。");
-    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/cnpunc.png";
+    prop->m_info[1].icon  = SUNPINYIN_ICON_DIR"/cnpunc.svg";
     prop->m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to English punctuation"));
     prop->init(state);
     return prop;

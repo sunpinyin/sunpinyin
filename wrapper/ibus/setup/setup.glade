@@ -323,12 +323,12 @@ PinYinJiaJia</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="button_autocorrect_setup">
+                              <widget class="GtkButton" id="button_correction_setup">
                                 <property name="label" translatable="yes">Auto Correct Setup</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_autocorrect_setup_clicked"/>
+                                <signal name="clicked" handler="on_button_correction_setup_clicked"/>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1909,7 +1909,7 @@ PinYinJiaJia</property>
                   <widget class="GtkToggleButton" id="togglebutton38">
                     <property name="label">L</property>
                     <property name="visible">True</property>
-		    <property name="sensitive">False</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                   </widget>

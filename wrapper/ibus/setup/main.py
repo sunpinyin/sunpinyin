@@ -520,7 +520,7 @@ class MainWindow ():
         
     def on_chk_correction_enabled_toggled(self, button):
         self.__update_enabling_button("QuanPin/AutoCorrection/Enabled",
-                                      "button_autocorrect_setup")
+                                      "button_correction_setup")
         
     def on_button_correction_setup_clicked(self, button):
         self.__correction_setup.run()

@@ -36,6 +36,7 @@
  */
 
 #include <climits>
+#include <cassert>
 #include "pinyin_seg.h"
 
 void CGetFuzzySyllablesOp::initFuzzyMap (const char * const* fuzzyPairs, unsigned num)

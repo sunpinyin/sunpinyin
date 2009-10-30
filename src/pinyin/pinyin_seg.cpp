@@ -359,13 +359,16 @@ unsigned CQuanpinSegmentor::_push (unsigned ch)
 RETURN:;
 
     if (m_pGetFuzzySyllablesOp && m_pGetFuzzySyllablesOp->isEnabled())
-        _addFuzzySyllables (m_segs.back ());
+        if ( m_segs.back().m_type == SYLLABLE)
+            _addFuzzySyllables (m_segs.back ());
 
     return ret;
 }
 
 void CQuanpinSegmentor::_addFuzzySyllables (TSegment& seg)
 {
+    assert (seg.m_type == SYLLABLE);
+
     seg.m_syllables.resize (1);
 
     CSyllables fuzzy_set = (*m_pGetFuzzySyllablesOp) (seg.m_syllables.front());

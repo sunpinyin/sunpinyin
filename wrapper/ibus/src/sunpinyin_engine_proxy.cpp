@@ -35,13 +35,11 @@
 
 #include "sunpinyin_engine_proxy.h"
 #include "sunpinyin_engine.h"
-#include "debug.h"
 
 extern "C" 
 {
     void ibus_sunpinyin_engine_init(IBusEngine *engine)
     {
-        ibus::log << __func__ << endl;
         SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
         thiz->init();
     }

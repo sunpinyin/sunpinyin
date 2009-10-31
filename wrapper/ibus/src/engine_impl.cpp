@@ -5,7 +5,6 @@
 #include <imi_keys.h>
 #include <imi_option_keys.h>
 
-#include "debug.h"
 #include "sunpinyin_property.h"
 #include "sunpinyin_lookup_table.h"
 #include "sunpinyin_config.h"
@@ -108,11 +107,6 @@ EngineImpl::process_key_event (guint key_val,
                                guint key_code,
                                guint modifiers)
 {
-    ibus::log << __func__ << "(): " 
-              << "key_val = " << hex << key_val << ", "
-              << "key_code = " << hex << key_code << ", "
-              << "modifiers = " << hex << modifiers << endl;
-
     CKeyEvent key = translate_key(key_val, key_code, modifiers);
     
     if ( !m_pv->getStatusAttrValue(CIBusWinHandler::STATUS_ID_CN) ) {
@@ -211,7 +205,6 @@ EngineImpl::cursor_down ()
 bool
 EngineImpl::onConfigChanged(const COptionEvent& event)
 {
-    ibus::log << __func__ << ": " << event.name << endl;
     if (event.name == CONFIG_GENERAL_MEMORY_POWER) {
         update_history_power();
     } else if (event.name == CONFIG_GENERAL_PAGE_SIZE) {

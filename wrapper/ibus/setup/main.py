@@ -455,12 +455,13 @@ class MainWindow ():
             
             ComboBoxOption("General/PageSize", 10, range(5, 11), self.__xml),
             
+            RadioOption("Keyboard/ModeSwitch", 'Shift', ['Shift', 'Control'], self.__xml),
+            RadioOption("Keyboard/FullPunct", 'None', ['ControlComma',
+                                                       'ControlPeriod',
+                                                       'None'], self.__xml),
             CheckBoxOption("Keyboard/Page/MinusEquals", False, self.__xml),
             CheckBoxOption("Keyboard/Page/Brackets", False, self.__xml),
             CheckBoxOption("Keyboard/Page/CommaPeriod", False, self.__xml),
-            CheckBoxOption("Keyboard/FullLetter/ShiftSemi", False, self.__xml),
-            CheckBoxOption("Keyboard/ModeSwitch/Shift", False, self.__xml),
-            CheckBoxOption("Keyboard/ModeSwitch/Control", False, self.__xml),
             
             RadioOption("Pinyin/Scheme", 'QuanPin', ['QuanPin', 'ShuangPin'], self.__xml),
             ComboBoxOption("Pinyin/ShuangPinType", 'MS2003', ['MS2003',

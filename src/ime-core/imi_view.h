@@ -127,7 +127,7 @@ private:
     bool matches(const CKeyEvent& lhs, const CKeyEvent& rhs) const
     {
         if (lhs == rhs)
-            return ( (!lhs.modifiers & IM_RELEASE_MASK) ||
+            return ( !(lhs.modifiers & IM_RELEASE_MASK) ||
                      m_prevKey.code == rhs.code );
         return false;
     }

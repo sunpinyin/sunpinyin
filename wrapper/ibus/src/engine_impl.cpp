@@ -218,10 +218,10 @@ EngineImpl::onConfigChanged(const COptionEvent& event)
         update_cand_window_size();
     } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
         update_charset_level();
-    } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_SHIFT) {
-        update_mode_key_shift();
-    } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH_CONTROL) {
-        update_mode_key_control();
+    } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH) {
+        update_mode_key();
+    } else if (event.name == CONFIG_KEYBOARD_PUNCT_SWITCH) {
+        update_punct_key();
     } else if (event.name == CONFIG_KEYBOARD_PAGE_COMMA) {
         update_page_key_comma();
     } else if (event.name == CONFIG_KEYBOARD_PAGE_MINUS) {
@@ -242,8 +242,8 @@ EngineImpl::update_config()
     update_page_key_minus();
     update_page_key_comma();
     update_page_key_bracket();
-    update_mode_key_shift();
-    update_mode_key_control();
+    update_mode_key();
+    update_punct_key();
     update_punct_mappings();
     // update_quanpin_config();
     // update_shuangpin_config();
@@ -396,23 +396,28 @@ EngineImpl::update_cand_window_size()
 }
 
 void
-EngineImpl::update_mode_key_shift()
+EngineImpl::update_mode_key()
 {
-    bool enabled = m_config->get(CONFIG_KEYBOARD_MODE_SWITCH_SHIFT, true);
-    if (enabled) {
+    string mode_switch("Shift");
+    mode_switch = m_config->get(CONFIG_KEYBOARD_MODE_SWITCH, mode_switch);
+    if (mode_switch == "Shift") {
         m_hotkey_profile->setModeSwitchKey(
             CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
+    } else if (mode_switch == "Control") {
+        m_hotkey_profile->setModeSwitchKey(
+            CKeyEvent(IM_VK_CONTROL, 0, IM_CTRL_MASK|IM_RELEASE_MASK));
     }
 }
 
 void
-EngineImpl::update_mode_key_control()
+EngineImpl::update_punct_key()
 {
-    bool enabled = m_config->get(CONFIG_KEYBOARD_MODE_SWITCH_CONTROL, false);
-    
-    if (enabled) {
-        m_hotkey_profile->setModeSwitchKey(
-            CKeyEvent(IM_VK_SHIFT, 0, IM_ALT_MASK|IM_RELEASE_MASK));
+    string punct_switch("ControlComma");
+    punct_switch = m_config->get(CONFIG_KEYBOARD_PUNCT_SWITCH, punct_switch);
+    if (punct_switch == "ControlComma") {
+        m_hotkey_profile->setPunctSwitchKey(CKeyEvent(0, IM_VK_COMMA, IM_CTRL_MASK));
+    } else if (punct_switch == "ControlPeriod") {
+        m_hotkey_profile->setPunctSwitchKey(CKeyEvent(0, IM_VK_PERIOD, IM_CTRL_MASK));
     }
 }
 

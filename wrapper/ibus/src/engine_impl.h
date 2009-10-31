@@ -53,8 +53,8 @@ private:
     void update_config();
     void update_history_power();
     void update_cand_window_size();
-    void update_mode_key_shift();
-    void update_mode_key_control();
+    void update_mode_key();
+    void update_punct_key();
     void update_page_key_minus();
     void update_page_key_comma();
     void update_page_key_bracket();

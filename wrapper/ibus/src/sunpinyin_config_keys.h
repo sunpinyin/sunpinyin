@@ -62,10 +62,10 @@
 #define CONFIG_QUANPIN_CORRECTION_IouIu  "QuanPin/AutoCorrecting/IouIu"
 #define CONFIG_QUANPIN_CORRECTION_UeiUi  "QuanPin/AutoCorrecting/UeiUi"
 
-#define CONFIG_KEYBOARD_MODE_SWITCH_SHIFT   "Keyboard/ModeSwitch/Shift"
-#define CONFIG_KEYBOARD_MODE_SWITCH_CONTROL "Keyboard/ModeSwitch/Control"
-#define CONFIG_KEYBOARD_PAGE_COMMA          "Keyboard/Page/CommaPeriod"
-#define CONFIG_KEYBOARD_PAGE_MINUS          "Keyboard/Page/MinusEquals"
-#define CONFIG_KEYBOARD_PAGE_BRACKET        "Keyboard/Page/Brackets"
+#define CONFIG_KEYBOARD_MODE_SWITCH      "Keyboard/ModeSwitch"
+#define CONFIG_KEYBOARD_PUNCT_SWITCH     "Keyboard/PunctSwitch"
+#define CONFIG_KEYBOARD_PAGE_COMMA       "Keyboard/Page/CommaPeriod"
+#define CONFIG_KEYBOARD_PAGE_MINUS       "Keyboard/Page/MinusEquals"
+#define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
 
 #endif // SUNPINYIN_CONFIG_KEYS_H

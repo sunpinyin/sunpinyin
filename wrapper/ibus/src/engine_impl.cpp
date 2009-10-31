@@ -93,7 +93,7 @@ static CKeyEvent
 translate_key(guint key_val, guint key_code, guint modifiers)
 {
     // XXX: may need to move this logic into CKeyEvent
-    if (isalnum(key_val) && !modifiers) {
+    if (isprint(key_val) && !isspace(key_val) && !(modifiers & IM_CTRL_MASK)) {
         // we only care about key_val here
         return CKeyEvent(0, key_val, modifiers);
     } else {

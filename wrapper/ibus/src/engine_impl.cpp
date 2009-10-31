@@ -94,7 +94,7 @@ static CKeyEvent
 translate_key(guint key_val, guint key_code, guint modifiers)
 {
     // XXX: may need to move this logic into CKeyEvent
-    if (isascii(key_val) && !isspace(key_val)) {
+    if (isalnum(key_val) && !modifiers) {
         // we only care about key_val here
         return CKeyEvent(0, key_val, modifiers);
     } else {
@@ -415,9 +415,9 @@ EngineImpl::update_punct_key()
     string punct_switch("ControlComma");
     punct_switch = m_config->get(CONFIG_KEYBOARD_PUNCT_SWITCH, punct_switch);
     if (punct_switch == "ControlComma") {
-        m_hotkey_profile->setPunctSwitchKey(CKeyEvent(0, IM_VK_COMMA, IM_CTRL_MASK));
+        m_hotkey_profile->setPunctSwitchKey(CKeyEvent(IM_VK_COMMA, 0, IM_CTRL_MASK));
     } else if (punct_switch == "ControlPeriod") {
-        m_hotkey_profile->setPunctSwitchKey(CKeyEvent(0, IM_VK_PERIOD, IM_CTRL_MASK));
+        m_hotkey_profile->setPunctSwitchKey(CKeyEvent(IM_VK_PERIOD, 0, IM_CTRL_MASK));
     }
 }
 

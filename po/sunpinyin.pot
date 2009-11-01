@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-13 00:07+0800\n"
+"POT-Creation-Date: 2009-11-01 01:48+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,7 +139,7 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: wrapper/ibus/src/main.cpp:91
+#: wrapper/ibus/src/main.cpp:92
 msgid "Simplified Chinese Input Method developed by SUN"
 msgstr ""
 
@@ -232,11 +232,11 @@ msgstr ""
 msgid "Auto Correct"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:312 wrapper/ibus/setup/setup.glade:960
+#: wrapper/ibus/setup/setup.glade:312 wrapper/ibus/setup/setup.glade:968
 msgid "Fuzzy Pinyin Setup"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:327 wrapper/ibus/setup/setup.glade:1258
+#: wrapper/ibus/setup/setup.glade:327 wrapper/ibus/setup/setup.glade:1266
 msgid "Auto Correct Setup"
 msgstr ""
 
@@ -248,72 +248,68 @@ msgstr ""
 msgid "Pinyin Mode"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:423
+#: wrapper/ibus/setup/setup.glade:424
 msgid "<b>Ch/En Switch key</b>"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:490
-msgid "<b>Full/Half-width Switch</b>"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:570
-msgid "<b>Page Switch</b>"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:590
-msgid "Keyboard"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:663
-msgid "<b>Character Set</b>"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:705
-msgid "Candidate Num"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:733
-msgid "Memory Strength"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:772
-msgid "<b>Options</b>"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:811
-msgid "Punct mapping"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:824
-msgid "Mapping Setup"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:843
-msgid "<b>Symbol Mapping</b>"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:863
-msgid "General"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:874
-msgid "copyright (c) 2009"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:883
-msgid "About"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:1189 wrapper/ibus/setup/setup.glade:1357
-#: wrapper/ibus/setup/setup.glade:2229
-msgid "All"
-msgstr ""
-
-#: wrapper/ibus/setup/setup.glade:1204 wrapper/ibus/setup/setup.glade:1371
-#: wrapper/ibus/setup/setup.glade:2243
+#: wrapper/ibus/setup/setup.glade:488 wrapper/ibus/setup/setup.glade:1212
+#: wrapper/ibus/setup/setup.glade:1379 wrapper/ibus/setup/setup.glade:2251
 msgid "None"
 msgstr ""
 
-#: wrapper/ibus/setup/setup.glade:1425
+#: wrapper/ibus/setup/setup.glade:508
+msgid "<b>Full/Half-width Punct Switch</b>"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:588
+msgid "<b>Page Switch</b>"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:608
+msgid "Keyboard"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:681
+msgid "<b>Character Set</b>"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:723
+msgid "Candidate Num"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:751
+msgid "Memory Strength"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:819
+msgid "Punct mapping"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:832
+msgid "Mapping Setup"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:851
+msgid "<b>Symbol Mapping</b>"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:871
+msgid "General"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:882
+msgid "copyright (c) 2009"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:891
+msgid "About"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:1197 wrapper/ibus/setup/setup.glade:1365
+#: wrapper/ibus/setup/setup.glade:2237
+msgid "All"
+msgstr ""
+
+#: wrapper/ibus/setup/setup.glade:1433
 msgid "Punct Mapping"
 msgstr ""

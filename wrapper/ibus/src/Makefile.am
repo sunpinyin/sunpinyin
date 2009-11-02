@@ -55,6 +55,7 @@ libsunpinyin_la_SOURCES = \
 	$(PINYIN_SRC_DIR)/pinyin_seg.cpp $(PINYIN_SRC_DIR)/pinyin_seg.h \
 	$(PINYIN_SRC_DIR)/shuangpin_data.cpp $(PINYIN_SRC_DIR)/shuangpin_data.h \
 	$(PINYIN_SRC_DIR)/shuangpin_seg.cpp $(PINYIN_SRC_DIR)/shuangpin_seg.h \
+	$(PINYIN_SRC_DIR)/datrie.h $(PINYIN_SRC_DIR)/datrie_impl.h \
         $(SUNPINYIN_SRC_DIR)/imi_context.cpp $(SUNPINYIN_SRC_DIR)/imi_context.h \
         $(SUNPINYIN_SRC_DIR)/imi_data.cpp $(SUNPINYIN_SRC_DIR)/imi_data.h \
         $(SUNPINYIN_SRC_DIR)/lattice_states.cpp $(SUNPINYIN_SRC_DIR)/lattice_states.h \
@@ -67,7 +68,10 @@ libsunpinyin_la_SOURCES = \
 	$(SUNPINYIN_SRC_DIR)/imi_funcobjs.cpp $(SUNPINYIN_SRC_DIR)/imi_funcobjs.h \
 	$(SUNPINYIN_SRC_DIR)/imi_options.cpp $(SUNPINYIN_SRC_DIR)/imi_options.h \
 	$(SUNPINYIN_SRC_DIR)/imi_option_event.cpp $(SUNPINYIN_SRC_DIR)/imi_option_event.h \
-	$(SUNPINYIN_SRC_DIR)/userdict.cpp $(SUNPINYIN_SRC_DIR)/userdict.h
+	$(SUNPINYIN_SRC_DIR)/imi_option_keys.h \
+	$(SUNPINYIN_SRC_DIR)/imi_defines.h \
+	$(SUNPINYIN_SRC_DIR)/userdict.cpp $(SUNPINYIN_SRC_DIR)/userdict.h \
+	$(SUNPINYIN_SRC_DIR)/utils.h
 
 libsunpinyin_la_CXXFLAGS = \
 	-D_USE_RAW_PROBABILITY \
@@ -116,8 +120,6 @@ ibus_engine_sunpinyin_SOURCES = \
 	imi_ibus_win.h \
 	ibus_portable.cpp \
 	ibus_portable.h \
-	debug.cpp \
-	debug.h \
 	$(NULL)
 
 ibus_engine_sunpinyin_CXXFLAGS = \
@@ -173,8 +175,8 @@ sunpinyin.xml: sunpinyin.xml.in
 # 
 # data files
 # 
-scim_sunpinyin_datadir   = $(IBUS_SUNPINYIN_DATADIR)
-scim_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
+ibus_sunpinyin_datadir   = $(IBUS_SUNPINYIN_DATADIR)
+ibus_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
                            $(top_builddir)/data/pydict_sc.bin \
                            $(top_builddir)/data/quanpin.dat 
 

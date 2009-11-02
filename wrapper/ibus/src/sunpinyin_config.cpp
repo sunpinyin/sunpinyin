@@ -38,7 +38,6 @@
 #include "engine_impl.h"
 #include "sunpinyin_config_keys.h"
 #include "sunpinyin_config.h"
-#include "debug.h"
 
 using namespace std;
 
@@ -281,8 +280,6 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          GValue *value,
                                          gpointer user_data)
 {
-    ibus::log << __func__ << ": " << section << "/" << name << endl;
-    
     static const char* prefix = "engine/SunPinyin/";
     if (!strstr(section, prefix))
         return;

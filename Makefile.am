@@ -34,8 +34,8 @@
 # Version 2 license, then the option applies only if the new code is made subject
 # to such option by the copyright holder. 
 # 
-SUBDIRS = build wrapper po $(BUILD_DIR_DOCUMENTS)
-
+SUBDIRS = build po data python wrapper $(BUILD_DIR_DOCUMENTS)
+DIST_SUBDIRS = build po raw data python wrapper $(BUILD_DIR_DOCUMENTS)
 noinst_HEADERS = \
 	src/config/linux.h	\
 	src/config/mac.h	\

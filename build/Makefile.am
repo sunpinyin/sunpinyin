@@ -89,7 +89,8 @@ genpyt_SOURCES = \
 	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
 	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h \
 	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h \
-	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h
+	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \
+	${PINYIN_SRC_DIR}/syllable.h
 
 genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR}
 

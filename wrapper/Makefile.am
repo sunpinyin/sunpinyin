@@ -34,10 +34,8 @@
 # Version 2 license, then the option applies only if the new code is made subject
 # to such option by the copyright holder. 
 # 
- 
-SUBDIRS =
 
-# below can make distclean more clean.
+SUBDIRS =
 
 if WRAPPER_CLE
 SUBDIRS += cle
@@ -59,3 +57,4 @@ if WRAPPER_BEOS
 SUBDIRS += beos
 endif
 
+DIST_SUBDIRS = gtk_standalone ibus

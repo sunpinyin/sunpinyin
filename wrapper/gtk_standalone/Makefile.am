@@ -53,6 +53,7 @@ sunpinyin_SOURCES = \
 	$(PINYIN_SRC_DIR)/pinyin_seg.cpp $(PINYIN_SRC_DIR)/pinyin_seg.h \
 	$(PINYIN_SRC_DIR)/shuangpin_data.cpp $(PINYIN_SRC_DIR)/shuangpin_data.h \
 	$(PINYIN_SRC_DIR)/shuangpin_seg.cpp $(PINYIN_SRC_DIR)/shuangpin_seg.h \
+	$(PINYIN_SRC_DIR)/datrie.h $(PINYIN_SRC_DIR)/datrie_impl.h \
         $(SUNPINYIN_SRC_DIR)/imi_context.cpp $(SUNPINYIN_SRC_DIR)/imi_context.h \
         $(SUNPINYIN_SRC_DIR)/imi_data.cpp $(SUNPINYIN_SRC_DIR)/imi_data.h \
         $(SUNPINYIN_SRC_DIR)/lattice_states.cpp $(SUNPINYIN_SRC_DIR)/lattice_states.h \
@@ -64,8 +65,10 @@ sunpinyin_SOURCES = \
 	$(SUNPINYIN_SRC_DIR)/ic_history.cpp $(SUNPINYIN_SRC_DIR)/ic_history.h \
 	$(SUNPINYIN_SRC_DIR)/imi_funcobjs.cpp $(SUNPINYIN_SRC_DIR)/imi_funcobjs.h \
 	$(SUNPINYIN_SRC_DIR)/imi_options.cpp $(SUNPINYIN_SRC_DIR)/imi_options.h \
-	$(SUNPINYIN_SRC_DIR)/imi_option_event.cpp $(SUNPINYIN_SRC_DIR)/imi_option_keys.h \
+	$(SUNPINYIN_SRC_DIR)/imi_option_event.cpp $(SUNPINYIN_SRC_DIR)/imi_option_event.h \
+	$(SUNPINYIN_SRC_DIR)/imi_defines.h \
 	$(SUNPINYIN_SRC_DIR)/userdict.cpp $(SUNPINYIN_SRC_DIR)/userdict.h \
+	$(SUNPINYIN_SRC_DIR)/utils.h \
         imi_gtkwin.cpp imi_gtkwin.h sunpinyin.cpp
 
 sunpinyin_CXXFLAGS = -DGTK_STANDALONE -D_USE_RAW_PROBABILITY -DSUNPINYIN_DATA_DIR=\"../../data\"\

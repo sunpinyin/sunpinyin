@@ -36,6 +36,51 @@
 # 
 
 INSTALL_FILES = lm_sc.t3g.be lm_sc.t3g.le pydict_sc.bin.be pydict_sc.bin.le
-ICON_FILES = sunpinyin_logo.xpm han.png eng.png cnpunc.png enpunc.png fullwidth.png halfwidth.png
+ICON_FILES = sunpinyin_logo.xpm \
+	han.png eng.png cnpunc.png enpunc.png fullwidth.png halfwidth.png \
+	han.svg eng.svg cnpunc.svg enpunc.svg fullwidth.svg halfwidth.svg \
+	setup.svg
 
-EXTRA_DIST = $(INSTALL_FILES) $(ICON_FILES)
+EXTRA_DIST = $(ICON_FILES)
+
+LM_SC_ARPA = $(top_builddir)/@RAW_DATA_DIR@/lm_sc.t3g.arpa
+DICTFILE = $(top_builddir)/@RAW_DATA_DIR@/dict.utf8
+PYTRIE_LOG = pydict_sc.log.utf8
+LM_SC_BIN = lm_sc.t3g
+
+noinst_PROGRAMS = tslmpack genpyt
+
+SOURCE_DIR = $(top_builddir)/@SOURCE_DIR@
+SLM_SRC_DIR = $(top_builddir)/@SLM_SRC_DIR@
+LEXICON_SRC_DIR = $(top_builddir)/@LEXICON_SRC_DIR@
+PINYIN_SRC_DIR = $(top_builddir)/@PINYIN_SRC_DIR@
+
+tslmpack_SOURCES = \
+	${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
+	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
+	${SLM_SRC_DIR}/thread/ValueCompress.cpp ${SLM_SRC_DIR}/thread/ValueCompress.h \
+	${SLM_SRC_DIR}/tslmpack/slmpack.cpp ${SLM_SRC_DIR}/tslmpack/common.h \
+	${SLM_SRC_DIR}/tslmpack/arpa_conv.cpp ${SLM_SRC_DIR}/tslmpack/arpa_conv.h \
+	${SLM_SRC_DIR}/tslmpack/arpa_slm.cpp ${SLM_SRC_DIR}/tslmpack/arpa_slm.h
+
+genpyt_SOURCES = \
+	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
+	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
+	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h \
+	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h \
+	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \
+	${PINYIN_SRC_DIR}/syllable.h
+
+genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR}
+
+$(LM_SC_BIN): tslmpack $(LM_SC_ARPA) $(DICTFILE)
+	./tslmpack $(LM_SC_ARPA) $(DICTFILE) $@
+
+pydict_sc.bin: genpyt $(DICTFILE) $(LM_SC_BIN)
+	./genpyt $(DICTFILE) $@ $(PYTRIE_LOG) $(LM_SC_BIN)
+
+quanpin.dat:
+	$(PYTHON) $(top_builddir)/python/pinyin_data.py
+
+noinst_DATA = $(LM_SC_BIN) pydict_sc.bin quanpin.dat
+CLEANFILES = $(LM_SC_BIN) pydict_sc.bin quanpin.dat tslmpack genpyt

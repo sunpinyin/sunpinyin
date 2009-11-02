@@ -49,7 +49,6 @@ case "${host_os}" in
 *beos*|*haiku*)     my_host_os=beos;;
 esac
 
-AC_LINK_FILES(data/lm_sc.t3g.${my_host_endian}, data/lm_sc.t3g)
 AC_LINK_FILES(src/config/${my_host_os}.h, src/host_os.h)
 
 RAW_DATA_DIR="raw"
@@ -99,17 +98,11 @@ dnl-----------------------------------------------------------------------
 dnl    --enable-documents
 dnl-----------------------------------------------------------------------
 AC_ARG_ENABLE(documents,
-    [AS_HELP_STRING([--enable-documents], [build documents])], , 
-    enable_documents=yes)
-if test "$enable_documents" = "yes"; then
-  SUNPINYIN_SLM_UTILITY_DOCUMENTS=1
-else
-  SUNPINYIN_SLM_UTILITY_DOCUMENTS=0
-  enable_documents=no
-fi
-AM_CONDITIONAL(SUNPINYIN_SLM_UTILITY_DOCUMENTS,
-        [test "$enable_documents" = "yes"])
-if test "$enable_documents" = "yes"; then
+    [AS_HELP_STRING([--enable-documents], [build documents])], 
+    [ENABLE_DOCUMENTS="${enableval}"], 
+    [ENABLE_DOCUMENTS="no"])
+
+if test "X$ENABLE_DOCUMENTS" = "Xyes"; then
   BUILD_DIR_DOCUMENTS=doc
   AC_SUBST(BUILD_DIR_DOCUMENTS)
   AC_CONFIG_FILES([doc/Makefile])
@@ -119,7 +112,7 @@ fi
 AC_ARG_ENABLE([cle],
     AC_HELP_STRING([--enable-cle], [compile as cle IME (default=auto), multiple wrappers could be compiled together ]),
     [ENABLE_CLE="${enableval}"],
-    [ENABLE_CLE="auto"])
+    [ENABLE_CLE="no"])
 if test "X${ENABLE_CLE}" = "Xauto" ; then
     case "${host_os}" in
     *beos*|*haiku*)
@@ -253,7 +246,8 @@ AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
- 
+IT_PROG_INTLTOOL([0.35.0])
+
 AC_CHECK_DECL([__SUNPRO_C], [SUNCC="yes"], [SUNCC="no"])
 if test "$SUNCC" = "yes"
 then
@@ -300,7 +294,7 @@ AC_MSG_CHECKING(for iconv)
     done
 AC_MSG_RESULT($have_iconv)
 if test "x$have_iconv" = "xno" ; then
-    AC_MSG_WARN([*** iconv library not found, "pytrie_gen" can't work properly.])
+    AC_MSG_WARN([*** iconv library not found, "pytrie_gen" cannot work properly.])
 fi
 
 if test "x$gt_cv_have_gettext" != "xyes" ; then
@@ -311,17 +305,14 @@ AC_SUBST(USE_NLS)
 AC_OUTPUT(Makefile
           build/Makefile
           wrapper/Makefile
-          wrapper/cle/Makefile
-          wrapper/cle/iiim/Makefile
-          wrapper/cle/iiim/cle/Makefile
           wrapper/gtk_standalone/Makefile
-          wrapper/scim/Makefile
           wrapper/ibus/Makefile
           wrapper/ibus/src/Makefile
           wrapper/ibus/src/sunpinyin.xml.in
           wrapper/ibus/setup/Makefile
           wrapper/ibus/setup/ibus-setup-sunpinyin
           wrapper/ibus/setup/config.py
-          wrapper/beos/Makefile
+          python/Makefile
           data/Makefile
+          raw/Makefile
           po/Makefile.in)

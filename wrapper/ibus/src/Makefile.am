@@ -180,12 +180,6 @@ ibus_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
                            $(top_builddir)/data/pydict_sc.bin \
                            $(top_builddir)/data/quanpin.dat 
 
-$(top_builddir)/data/quanpin.dat:
-	$(python) $(top_builddir)/python/pinyin_data.py
-
-$(top_builddir)/data/pydict_sc.bin: $(top_builddir)/data/lm_sc.t3g
-	make -C $(top_builddir)/build genpyt lexicon
-
 icondir                  = $(IBUS_SUNPINYIN_ICONDIR)
 icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm \
                            $(top_builddir)/data/eng.svg            \

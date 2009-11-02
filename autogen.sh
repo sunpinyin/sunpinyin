@@ -47,11 +47,7 @@ $LIBTOOLIZE --force --copy
 autoheader
 automake --add-missing --copy --foreign
 
-glib-gettextize --force --copy
-
-# sed don't support '-i' options on BeOS
-sed -e 's/^DISTFILES = ChangeLog /DISTFILES = /' ./po/Makefile.in.in > ./po/Makefile.in.in.new
-mv -f ./po/Makefile.in.in.new ./po/Makefile.in.in
+libtoolize --force --copy
 
 autoconf
 

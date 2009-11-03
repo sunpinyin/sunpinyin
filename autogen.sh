@@ -41,14 +41,11 @@ if test "x$BE_HOST_CPU" = "x" ; then
         LIBTOOLIZE=glibtoolize
     fi
 fi
-
-aclocal ${ACLOCAL_FLAGS}
 $LIBTOOLIZE --force --copy
+intltoolize --force --copy
+aclocal ${ACLOCAL_FLAGS}
 autoheader
 automake --add-missing --copy --foreign
-
-libtoolize --force --copy
-
 autoconf
 
 if test "x$1" != "x--do-not-run-configure" ; then

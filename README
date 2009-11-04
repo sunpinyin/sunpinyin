@@ -10,5 +10,5 @@ Currently, SunPinyin 2.0 is available on IBus.
 ibus-sunpinyin
 ===
 
-scim-sunpinyin is a wrapper around SunPinyin which enables user to use
+ibus-sunpinyin is a wrapper around SunPinyin which enables user to use
 SunPinyin with IBus framework. 

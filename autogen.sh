@@ -41,7 +41,10 @@ if test "x$BE_HOST_CPU" = "x" ; then
         LIBTOOLIZE=glibtoolize
     fi
 fi
+
 $LIBTOOLIZE --force --copy
+intltoolize --force --copy
+
 aclocal ${ACLOCAL_FLAGS}
 autoheader
 automake --add-missing --copy --foreign

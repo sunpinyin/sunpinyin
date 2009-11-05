@@ -49,7 +49,6 @@ case "${host_os}" in
 *beos*|*haiku*)     my_host_os=beos;;
 esac
 
-AC_LINK_FILES(raw/lm_sc.t3g.arpa.tar.bz2.${my_host_endian}, raw/lm_sc.t3g.arpa.tar.bz2)
 AC_LINK_FILES(src/config/${my_host_os}.h, src/host_os.h)
 
 RAW_DATA_DIR="raw"

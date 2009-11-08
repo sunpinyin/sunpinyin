@@ -139,7 +139,7 @@ SunPinyinConfig::get(const char* key, int val)
     ConfigItem item(key);
     got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
     int result = val;
-    if (got && G_VALUE_TYPE(&val) == G_TYPE_INT) {
+    if (got && G_VALUE_TYPE(&v) == G_TYPE_INT) {
         result =  g_value_get_int(&v);
     }
     return result;

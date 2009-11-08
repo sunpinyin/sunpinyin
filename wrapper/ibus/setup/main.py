@@ -123,7 +123,6 @@ class CheckBoxOption(TrivalOption):
 
 class ComboBoxOption(TrivalOption):
     def __init__(self, name, default, options, owner):
-        default = options.index(default)
         super(ComboBoxOption, self).__init__(name, default, owner)
         self.options = options
         
@@ -133,6 +132,29 @@ class ComboBoxOption(TrivalOption):
             model.append([str(v)])
         self.widget.set_model(model)
 
+    def save_ui_setting(self):
+        active = self.widget.get_active()
+        try:
+            # if the options are numbers, save the liternal of active option as
+            # a number
+            self.v = int(self.options[active])
+        except ValueError:
+            # otherwise save its index
+            self.v = active
+        return self.v
+
+    def read_config(self):
+        self.v = self.read()
+        assert self.options, "options should not be empty"
+        try:
+            # if the options are just numbers, we treat 'self.v' as the literal
+            # of option
+            dummy = int(self.options[0])
+            active = self.options.index(self.v)
+        except ValueError:
+            active = self.v
+        self.widget.set_active(active)
+        
 class RadioOption(Option):
     """option represented using multiple Raidio buttons
     """
@@ -456,9 +478,9 @@ class MainWindow ():
             ComboBoxOption("General/PageSize", 10, range(5, 11), self.__xml),
             
             RadioOption("Keyboard/ModeSwitch", 'Shift', ['Shift', 'Control'], self.__xml),
-            RadioOption("Keyboard/FullPunct", 'None', ['ControlComma',
-                                                       'ControlPeriod',
-                                                       'None'], self.__xml),
+            RadioOption("Keyboard/PunctSwitch", 'None', ['ControlComma',
+                                                         'ControlPeriod',
+                                                         'None'], self.__xml),
             CheckBoxOption("Keyboard/Page/MinusEquals", False, self.__xml),
             CheckBoxOption("Keyboard/Page/Brackets", False, self.__xml),
             CheckBoxOption("Keyboard/Page/CommaPeriod", False, self.__xml),

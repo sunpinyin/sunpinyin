@@ -459,7 +459,7 @@ PinYinJiaJia</property>
                             <property name="n_columns">3</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <widget class="GtkRadioButton" id="Keyboard/FullPunct/ControlComma">
+                              <widget class="GtkRadioButton" id="Keyboard/PunctSwitch/ControlComma">
                                 <property name="label">Ctrl + ,</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -469,14 +469,14 @@ PinYinJiaJia</property>
                               </widget>
                             </child>
                             <child>
-                              <widget class="GtkRadioButton" id="Keyboard/FullPunct/ControlPeriod">
+                              <widget class="GtkRadioButton" id="Keyboard/PunctSwitch/ControlPeriod">
                                 <property name="label">Ctrl + .</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
-                                <property name="group">Keyboard/FullPunct/ControlComma</property>
+                                <property name="group">Keyboard/PunctSwitch/ControlComma</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -484,14 +484,14 @@ PinYinJiaJia</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkRadioButton" id="Keyboard/FullPunct/None">
+                              <widget class="GtkRadioButton" id="Keyboard/PunctSwitch/None">
                                 <property name="label" translatable="yes">None</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
-                                <property name="group">Keyboard/FullPunct/ControlComma</property>
+                                <property name="group">Keyboard/PunctSwitch/ControlComma</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -585,7 +585,7 @@ PinYinJiaJia</property>
                     <child>
                       <widget class="GtkLabel" id="label9">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Page Switch&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Page Flip&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>

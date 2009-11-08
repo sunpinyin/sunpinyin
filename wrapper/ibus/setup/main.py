@@ -123,6 +123,10 @@ class CheckBoxOption(TrivalOption):
 
 class ComboBoxOption(TrivalOption):
     def __init__(self, name, default, options, owner):
+        try:
+            default = int(default)
+        except ValueError:
+            default = options.index(default)
         super(ComboBoxOption, self).__init__(name, default, owner)
         self.options = options
         

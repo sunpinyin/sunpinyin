@@ -16,3 +16,4 @@ icon_DATA                = sunpinyin-logo.png \
                            $(top_builddir)/data/halfwidth.svg      \
                            $(top_builddir)/data/setup.svg
 
+EXTRA_DIST = sunpinyin-logo.png

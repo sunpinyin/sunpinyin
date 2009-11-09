@@ -17,7 +17,7 @@
       <language>zh_CN</language>
       <license>LGPL</license>
       <author>Kov Chai &lt;tchaikov@gmail.com&gt;</author>
-      <icon>${pkgdatadir}/icons/sunpinyin_logo.xpm</icon>
+      <icon>${pkgdatadir}/icons/sunpinyin-logo.png</icon>
       <layout>us</layout>
       <longname>SunPinyin</longname>
       <description>SunPinyin Input Method</description>

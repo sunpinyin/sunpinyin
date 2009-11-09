@@ -93,7 +93,7 @@ init ()
                                                      "zh_CN",
                                                      "LGPL/CDDL",
                                                      "Kov Chai <tchaikov@gmail.com>",
-                                                     SUNPINYIN_ICON_DIR"/sunpinyin_logo.xpm",
+                                                     SUNPINYIN_ICON_DIR"/sunpinyin-logo.png",
                                                      "en"));
 
     factory = ibus_factory_new (ibus_bus_get_connection (bus));

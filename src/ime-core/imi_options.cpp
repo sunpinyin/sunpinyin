@@ -126,19 +126,17 @@ CSimplifiedChinesePolicy::saveUserHistory ()
 }
 
 bool
-CSimplifiedChinesePolicy::createDirectory(const char *path) {
-    struct stat stat_buf;
-    
-    if (stat (path, &stat_buf)) {
-        if (mkdir (path, S_IRUSR | S_IWUSR | S_IXUSR)) {
+CSimplifiedChinesePolicy::createDirectory(char *path) {
+    char *p = path;
+    while (p = strchr(p+1, '/')) {
+        *p = 0;
+        if (access(path, F_OK) != 0 && mkdir(path, S_IRWXU) != 0) {
             perror("unabled to mkdir() for user history.\n");
             return false;
         }
-    } else if (!S_ISDIR(stat_buf.st_mode)) {
-        fprintf(stderr, "%s is not a directory.\n", path);
-        return false;
+        *p = '/';
     }
-    return true;
+    return !(access(path, F_OK) != 0 && mkdir(path, S_IRWXU) != 0);
 }
 
 CShuangpinSchemePolicy::CShuangpinSchemePolicy()

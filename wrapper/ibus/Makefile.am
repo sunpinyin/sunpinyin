@@ -33,4 +33,4 @@
 # to such option by the copyright holder. 
 # 
 
-SUBDIRS = src setup
+SUBDIRS = src setup data

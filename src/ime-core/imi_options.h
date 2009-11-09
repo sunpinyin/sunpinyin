@@ -82,7 +82,7 @@ struct CSimplifiedChinesePolicy : public IConfigurable
 protected:
     ~CSimplifiedChinesePolicy () {}
 
-    bool createDirectory (const char *path);
+    bool createDirectory (char *path);
     bool saveUserHistory ();
     
     CIMIData             m_coreData;

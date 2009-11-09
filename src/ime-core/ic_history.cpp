@@ -230,7 +230,7 @@ bool CBigramHistory::bufferize(void** buf_ptr, size_t* sz)
 
 bool CBigramHistory::loadFromFile (const char *fname) {
      bool suc = false;
-     FILE* fp = fopen (fname, "w+");
+     FILE* fp = fopen (fname, "r+");
 
      if (fp) {
          struct stat info;

@@ -312,6 +312,7 @@ AC_OUTPUT(Makefile
           wrapper/ibus/setup/Makefile
           wrapper/ibus/setup/ibus-setup-sunpinyin
           wrapper/ibus/setup/config.py
+          wrapper/ibus/data/Makefile
           python/Makefile
           data/Makefile
           raw/Makefile

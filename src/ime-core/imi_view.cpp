@@ -45,11 +45,12 @@
 #pragma setlocale("zh_CN.UTF-8")
 
 CHotkeyProfile::CHotkeyProfile()
-    : m_modeSwitchKey(IM_VK_SHIFT, 0, IM_ALT_MASK),
-      m_punctSwitchKey(IM_VK_PERIOD, 0, IM_CTRL_MASK),
+    : m_punctSwitchKey(IM_VK_PERIOD, 0, IM_CTRL_MASK),
       m_symbolSwitchKey(IM_VK_SPACE, 0, IM_SHIFT_MASK),
       m_prevKey(0)
-{}
+{
+    addModeSwitchKey(CKeyEvent(IM_VK_SHIFT_L, 0, IM_ALT_MASK));
+}
 
 
 CIMIView::CIMIView()

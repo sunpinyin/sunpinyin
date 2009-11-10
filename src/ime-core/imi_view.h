@@ -56,6 +56,7 @@ public:
     {
         m_pageUpKeys.clear();
         m_pageDownKeys.clear();
+        m_modeSwitchKeys.clear();
     }
 
     void addPageUpKey (const CKeyEvent& key)
@@ -88,14 +89,25 @@ public:
         return (m_pageDownKeys.find (key) != m_pageDownKeys.end());
     }
 
-    void setModeSwitchKey (const CKeyEvent& key)
+    void addModeSwitchKey (const CKeyEvent& key)
     {
-        m_modeSwitchKey = key;
+        m_modeSwitchKeys.insert (key);
+    }
+
+    void removeModeSwitchKey (const CKeyEvent& key)
+    {
+        m_modeSwitchKeys.erase (key);
     }
     
     bool isModeSwitchKey (const CKeyEvent& key) const
     {
-        return matches(m_modeSwitchKey, key);
+        std::set<CKeyEvent>::const_iterator end(m_modeSwitchKeys.end());
+        for (std::set<CKeyEvent>::const_iterator it = m_modeSwitchKeys.begin();
+             it != end; ++it) {
+            if (matches(*it, key))
+                return true;
+        }
+        return false;
     }
     
     void setPunctSwitchKey (const CKeyEvent& key)
@@ -135,7 +147,7 @@ private:
 protected:
     std::set<CKeyEvent> m_pageUpKeys;
     std::set<CKeyEvent> m_pageDownKeys;
-    CKeyEvent           m_modeSwitchKey;
+    std::set<CKeyEvent> m_modeSwitchKeys;
     CKeyEvent           m_punctSwitchKey;
     CKeyEvent           m_symbolSwitchKey;
     CKeyEvent           m_prevKey;

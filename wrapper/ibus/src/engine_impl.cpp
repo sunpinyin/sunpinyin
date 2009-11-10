@@ -377,7 +377,7 @@ EngineImpl::update_charset_level()
     unsigned charset = m_config->get(CONFIG_GENERAL_CHARSET_LEVEL, GBK);
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
-    charset &= 3;               // charset can only be 0,1,2,3
+    charset &= 3;               // charset can only be 0,1,2 or 3
     ic->setCharsetLevel(charset);
 }
 
@@ -393,12 +393,22 @@ EngineImpl::update_mode_key()
 {
     string mode_switch("Shift");
     mode_switch = m_config->get(CONFIG_KEYBOARD_MODE_SWITCH, mode_switch);
+
+    CKeyEvent shift_l  (IM_VK_SHIFT_L, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
+    CKeyEvent shift_r  (IM_VK_SHIFT_R, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
+    CKeyEvent control_l(IM_VK_CONTROL_L, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
+    CKeyEvent control_r(IM_VK_CONTROL_R, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
+    
     if (mode_switch == "Shift") {
-        m_hotkey_profile->setModeSwitchKey(
-            CKeyEvent(IM_VK_SHIFT, 0, IM_SHIFT_MASK|IM_RELEASE_MASK));
+        m_hotkey_profile->removeModeSwitchKey(control_l);
+        m_hotkey_profile->removeModeSwitchKey(control_r);
+        m_hotkey_profile->addModeSwitchKey(shift_l);
+        m_hotkey_profile->addModeSwitchKey(shift_r);
     } else if (mode_switch == "Control") {
-        m_hotkey_profile->setModeSwitchKey(
-            CKeyEvent(IM_VK_CONTROL, 0, IM_CTRL_MASK|IM_RELEASE_MASK));
+        m_hotkey_profile->removeModeSwitchKey(shift_l);
+        m_hotkey_profile->removeModeSwitchKey(shift_r);
+        m_hotkey_profile->addModeSwitchKey(control_l);
+        m_hotkey_profile->addModeSwitchKey(control_r);
     }
 }
 
@@ -437,7 +447,7 @@ EngineImpl::update_page_key_bracket()
 
 void
 EngineImpl::update_page_key(const char* conf_key, bool default_val, 
-                             unsigned page_up, unsigned page_down)
+                            unsigned page_up, unsigned page_down)
 {
     bool enabled = m_config->get(conf_key, default_val);
 

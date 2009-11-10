@@ -69,8 +69,10 @@
 #define IM_VK_ENTER          0xff0d
 #define IM_VK_ESCAPE         0xff1b
 
-#define IM_VK_SHIFT          0xffe1
-#define IM_VK_CONTROL        0xffe3
+#define IM_VK_SHIFT_L        0xffe1
+#define IM_VK_SHIFT_R        0xffe2
+#define IM_VK_CONTROL_L      0xffe3
+#define IM_VK_CONTROL_R      0xffe4
 #define IM_VK_ALT            0xffe9
 
 struct CKeyEvent

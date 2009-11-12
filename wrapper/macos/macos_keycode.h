@@ -68,8 +68,10 @@
 #define OSX_VK_DOWN           0x7D
 #define OSX_VK_DELETE         0x75
 
-#define OSX_VK_CONTROL        0x3B
-#define OSX_VK_SHIFT          0x38
+#define OSX_VK_CONTROL_L      0x3B
+#define OSX_VK_CONTROL_R      0x3E
+#define OSX_VK_SHIFT_L        0x38
+#define OSX_VK_SHIFT_R        0x3C
 #define OSX_VK_ALT            0x3A
 
 extern CKeyEvent osx_keyevent_to_ime_keyevent (unsigned, unsigned, unsigned);

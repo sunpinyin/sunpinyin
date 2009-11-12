@@ -79,11 +79,17 @@ static unsigned osx_keycode_to_ime_keycode (unsigned keycode)
         case OSX_VK_DELETE:
             ret = IM_VK_DELETE;
             break;
-        case OSX_VK_CONTROL:
-            ret = IM_VK_CONTROL;
+        case OSX_VK_CONTROL_L:
+            ret = IM_VK_CONTROL_L;
             break;
-        case OSX_VK_SHIFT:
-            ret = IM_VK_SHIFT;
+        case OSX_VK_CONTROL_R:
+            ret = IM_VK_CONTROL_R;
+            break;
+        case OSX_VK_SHIFT_L:
+            ret = IM_VK_SHIFT_L;
+            break;
+        case OSX_VK_SHIFT_R:
+            ret = IM_VK_SHIFT_R;
             break;
         case OSX_VK_ALT:
             ret = IM_VK_ALT;

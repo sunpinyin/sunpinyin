@@ -39,10 +39,12 @@
 #include <config.h>
 #endif
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <cassert>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <algorithm>
 #include "ic_history.h"
 
@@ -228,28 +230,31 @@ bool CBigramHistory::bufferize(void** buf_ptr, size_t* sz)
     return false;
 }
 
-bool CBigramHistory::loadFromFile (const char *fname) {
+bool CBigramHistory::loadFromFile (const char *fname)
+{
+     
      bool suc = false;
-     FILE* fp = fopen (fname, "r+");
-
-     if (fp) {
-         struct stat info;
-
-         fstat (fileno(fp), &info);
-         void* buf = malloc (info.st_size);
-
-         if (buf) {
-             fread (buf, info.st_size, 1, fp);
-             suc = loadFromBuffer (buf, info.st_size);
-             free (buf);
-         }  
-
-         fclose (fp);
+     int fd = open (fname, O_CREAT, 0600);
+     if (fd == -1) {
+         perror("fopen bi-gram");
+         return suc;
+     }
+     
+     struct stat info;
+     fstat (fd, &info);
+     void* buf = malloc (info.st_size);
+     
+     if (buf) {
+         read (fd, buf, info.st_size);
+         suc = loadFromBuffer (buf, info.st_size);
+         free (buf);
      }  
+     close (fd);
      return suc;
 }
 
-bool CBigramHistory::saveToFile(const char *fname) {
+bool CBigramHistory::saveToFile(const char *fname)
+{
     bool suc = false;
     size_t sz = 0;
     void* buf = NULL;

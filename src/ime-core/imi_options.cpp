@@ -131,7 +131,7 @@ CSimplifiedChinesePolicy::createDirectory(char *path) {
     while (p = strchr(p+1, '/')) {
         *p = 0;
         if (access(path, F_OK) != 0 && mkdir(path, S_IRWXU) != 0) {
-            perror("unabled to mkdir() for user history.\n");
+            perror("unabled to mkdir() for user history");
             return false;
         }
         *p = '/';

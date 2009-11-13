@@ -178,7 +178,7 @@ public:
     void setCandiWindowSize (unsigned size) {m_candiWindowSize = size<10? size: 10;}
 
     virtual unsigned clearIC(void) {m_pIC->clear(); return 0;}
-    virtual bool onKeyEvent(const CKeyEvent& key) {return false;}
+    virtual bool onKeyEvent(const CKeyEvent&) {return false;}
 
     virtual void setStatusAttrValue(int key, int value);
     virtual int  getStatusAttrValue(int key);

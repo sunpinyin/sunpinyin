@@ -90,7 +90,7 @@ EngineImpl::~EngineImpl()
 }
 
 static CKeyEvent
-translate_key(guint key_val, guint key_code, guint modifiers)
+translate_key(guint key_val, guint /*key_code*/, guint modifiers)
 {
     // XXX: may need to move this logic into CKeyEvent
     if (isprint(key_val) && !isspace(key_val) && !(modifiers & IM_CTRL_MASK)) {
@@ -163,7 +163,7 @@ EngineImpl::page_down ()
 }
 
 void
-EngineImpl::property_activate (const std::string& property, unsigned state)
+EngineImpl::property_activate (const std::string& property, unsigned /*state*/)
 {
     if (m_status_prop->toggle(property)) {
         m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, 

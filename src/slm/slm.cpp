@@ -57,6 +57,11 @@ bool
 CThreadSlm::load(const char* fname, bool MMap)
 {
     int fd = open(fname, O_RDONLY);
+    if (fd == -1) {
+        perror("open lm");
+        return false;
+    }
+    
     m_bufSize = lseek(fd, 0, SEEK_END);
     lseek(fd, 0, SEEK_SET);
 
@@ -95,6 +100,7 @@ CThreadSlm::load(const char* fname, bool MMap)
             return false;
         }
         if (read(fd, m_buf, m_bufSize) != m_bufSize) {
+            perror("read lm");
             delete [] m_buf; m_buf = NULL;
             close(fd);
             return false;

@@ -182,6 +182,30 @@ SunPinyinConfig::get_py_scheme(CSunpinyinSessionFactory::EPyScheme scheme)
     return get_scheme(name);
 }
 
+bool
+SunPinyinConfig::is_initial_mode_cn()
+{
+    string init_mode("Chinese");
+    init_mode = get(CONFIG_GENERAL_INITIAL_MODE, init_mode);
+    return (init_mode == "Chinese");
+}
+
+bool
+SunPinyinConfig::is_initial_punct_full()
+{
+    string init_punct("Full");
+    init_punct = get(CONFIG_GENERAL_INITIAL_PUNCT, init_punct);
+    return (init_punct == "Full");
+}
+
+bool
+SunPinyinConfig::is_initial_letter_full()
+{
+    string init_letter("Half");
+    init_letter = get(CONFIG_GENERAL_INITIAL_LETTER, init_letter);
+    return (init_letter == "Full");
+}
+
 void
 SunPinyinConfig::set_config(IBusConfig *config)
 {

@@ -18,20 +18,6 @@ using namespace std;
 EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     : m_ibus_engine(ibus_engine), m_wh(NULL), m_pv(NULL), m_hotkey_profile(NULL)
 {
-    m_prop_list = ibus_prop_list_new();
-    
-    m_status_prop = SunPinyinProperty::create_status_prop(m_ibus_engine);
-    ibus_prop_list_append(m_prop_list, m_status_prop->get());
-    
-    m_letter_prop = SunPinyinProperty::create_letter_prop(m_ibus_engine);
-    ibus_prop_list_append(m_prop_list, m_letter_prop->get());
-    
-    m_punct_prop = SunPinyinProperty::create_punct_prop(m_ibus_engine);
-    ibus_prop_list_append(m_prop_list, m_punct_prop->get());
-
-    m_setup_prop = new SetupLauncher();
-    ibus_prop_list_append(m_prop_list, m_setup_prop->get());
-    
     m_lookup_table = new SunPinyinLookupTable();
     
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
@@ -60,6 +46,26 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
+
+    m_prop_list = ibus_prop_list_new();
+    
+    bool is_cn = m_config->is_initial_mode_cn();
+    m_status_prop = SunPinyinProperty::create_status_prop(m_ibus_engine, is_cn);
+    m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, is_cn);
+    ibus_prop_list_append(m_prop_list, m_status_prop->get());
+
+    bool is_letter_full = m_config->is_initial_letter_full();
+    m_letter_prop = SunPinyinProperty::create_letter_prop(m_ibus_engine, is_letter_full);
+    m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, is_letter_full);
+    ibus_prop_list_append(m_prop_list, m_letter_prop->get());
+
+    bool is_punct_full = m_config->is_initial_punct_full();
+    m_punct_prop = SunPinyinProperty::create_punct_prop(m_ibus_engine, is_punct_full);
+    m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, is_punct_full);
+    ibus_prop_list_append(m_prop_list, m_punct_prop->get());
+
+    m_setup_prop = new SetupLauncher();
+    ibus_prop_list_append(m_prop_list, m_setup_prop->get());
     
     update_config();
 }

@@ -82,6 +82,10 @@ public:
     CSunpinyinSessionFactory::EPyScheme get_py_scheme(CSunpinyinSessionFactory::EPyScheme);
     void set_py_scheme(CSunpinyinSessionFactory::EPyScheme);
 
+    bool is_initial_mode_cn();
+    bool is_initial_punct_full();
+    bool is_initial_letter_full();
+    
     /**
      * gets called in ibus_sunpinyin_init() so that SunPinyinEngine can read 
      * configuration when it starts up

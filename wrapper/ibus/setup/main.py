@@ -475,7 +475,7 @@ class MainWindow ():
             ComboBoxOption("General/MemoryPower", 3, range(10), self.__xml),
             RadioOption("General/InitialStatus/Mode", 'Chinese', ['Chinese', 'English'], self.__xml),
             RadioOption("General/InitialStatus/Punct", 'Full', ['Full', 'Half'], self.__xml),
-            RadioOption("General/InitialStatus/Letter", 'Full', ['Full', 'Half'], self.__xml),
+            RadioOption("General/InitialStatus/Letter", 'Half', ['Full', 'Half'], self.__xml),
             RadioOption("General/Charset", 'GBK', ['GB2312', 'GBK', 'GB18030'], self.__xml),
             CheckBoxOption("General/PunctMapping/Enabled", False, self.__xml),
             

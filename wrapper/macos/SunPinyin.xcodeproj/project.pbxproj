@@ -137,7 +137,7 @@
 		A4DA4E670DBDD9D600472176 /* slm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slm.cpp; sourceTree = "<group>"; };
 		A4DA4E680DBDD9D600472176 /* slm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slm.h; sourceTree = "<group>"; };
 		A4DA4E760DBDDA1800472176 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../config.h; sourceTree = "<group>"; };
-		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../../sunpinyin/ime/data/lm_sc.t3g; sourceTree = SOURCE_ROOT; };
+		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../data/lm_sc.t3g; sourceTree = SOURCE_ROOT; };
 		A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict_sc.bin; path = ../../data/pydict_sc.bin; sourceTree = "<group>"; };
 		A4FC48CA0F6530EF0069BE81 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A4FC48CC0F6531110069BE81 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };

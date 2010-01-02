@@ -36,6 +36,9 @@
  */
 
 #include <climits>
+#include <iostream>
+#include <algorithm>
+#include <functional>
 #include "shuangpin_seg.h"
 
 CShuangpinData CShuangpinSegmentor::s_shpData;
@@ -198,6 +201,8 @@ unsigned CShuangpinSegmentor::_clear (unsigned from)
 
 
     std::string new_pystr = m_pystr.substr (i, from-i);
+    m_nAlpha -= count_if(m_pystr.begin() + i, m_pystr.end(),
+                         std::not1(std::ptr_fun<int,int>(islower)));
     m_pystr.resize (i);
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 
@@ -215,14 +220,14 @@ void CShuangpinSegmentor::locateSegment (unsigned idx, unsigned &strIdx, unsigne
 {
     strIdx = segIdx = 0;
 
-    TSegmentVec::iterator it  = m_segs.begin();
-    TSegmentVec::iterator ite = m_segs.end();
+    TSegmentVec::const_iterator it  = m_segs.begin();
+    TSegmentVec::const_iterator ite = m_segs.end();
 
     for (; it != ite; ++it) {
-        if (strIdx + (*it).m_len > idx)
+        if (strIdx + it->m_len > idx)
            break; 
 
-        strIdx += (*it).m_len;
+        strIdx += it->m_len;
         segIdx += 1;
     }
 }
@@ -239,7 +244,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
     char        buf[4];
     int         len = 0;
 
-    m_pystr.push_back (ch); 
+    m_pystr.push_back (ch);
     len = m_pystr.size();
     if (m_bPreInvalid) {
         ret = m_pystr.size () - 1;
@@ -259,7 +264,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 
     if (!islower(ch) && !bInputCh) { 
         ret = m_pystr.size() - 1;
-        (ch == '\'') ? seg_type = IPySegmentor::SYLLABLE_SEP: seg_type = IPySegmentor::STRING;
+        seg_type = (ch == '\'') ? IPySegmentor::SYLLABLE_SEP : IPySegmentor::STRING;
         m_segs.push_back (TSegment (ch, ret, 1, seg_type));
         m_nAlpha += 1;
         m_nLastValidPos += 1;

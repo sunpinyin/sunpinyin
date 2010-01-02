@@ -411,16 +411,21 @@ CIMIClassicView::_insert (unsigned keyvalue, unsigned &changeMasks)
 void
 CIMIClassicView::_erase (bool backward, unsigned &changeMasks)
 {
-    if (m_cursorFrIdx == m_pIC->getLastFrIdx ())
-        m_pPySegmentor->pop ();
-    else if (m_cursorFrIdx != 0 || !backward)
-        m_pPySegmentor->deleteAt (m_cursorFrIdx-1, backward);
-    else
-        return;
-
-    if (backward) 
-        m_cursorFrIdx --;
-
+    if (backward) {
+        if (m_cursorFrIdx == m_pIC->getLastFrIdx())
+            m_pPySegmentor->pop();
+        else if (m_cursorFrIdx > 0)
+            m_pPySegmentor->deleteAt(m_cursorFrIdx-1, backward);
+        else
+            return;
+        _moveLeft(changeMasks, true);
+    } else {
+        if (m_cursorFrIdx < m_pIC->getLastFrIdx ())
+            m_pPySegmentor->deleteAt(m_cursorFrIdx-1, backward);
+        else
+            return;
+    }
+    
     IPySegmentor::TSegmentVec &segs = m_pPySegmentor->getSegments ();
 
     if (m_pIC->buildLattice (segs, m_pPySegmentor->updatedFrom()+1))

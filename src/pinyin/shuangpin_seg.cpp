@@ -36,7 +36,6 @@
  */
 
 #include <climits>
-#include <iostream>
 #include <algorithm>
 #include <functional>
 #include "shuangpin_seg.h"
@@ -241,7 +240,6 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 {
     CMappedYin  syls;
     unsigned    ret = 0;
-    char        buf[4];
     int         len = 0;
 
     m_pystr.push_back (ch);
@@ -270,7 +268,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         m_nLastValidPos += 1;
         return  ret;
     } else{
-
+        char buf[4];
         if (bCompleted) {
             memset(buf, '\0', sizeof(buf));
             sprintf(buf, "%c%c", m_pystr[len-2], ch);

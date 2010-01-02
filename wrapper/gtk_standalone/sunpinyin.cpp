@@ -42,6 +42,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <iconv.h>
+#include <unistd.h>
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
@@ -68,10 +69,29 @@ int main(int argc, char* argv[])
     #endif
 
     setlocale(LC_ALL, "zh_CN.UTF-8");
+    int opt;
+    char py_scheme = 's';
+    while ((opt = getopt(argc, argv, "p:")) != -1) {
+        switch (opt) {
+        case 'p':
+            py_scheme = *optarg;
+            break;
+        }
+    }
     gtk_init(&argc, &argv);
 
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory ();
-    factory.setPinyinScheme (CSunpinyinSessionFactory::SHUANGPIN);
+    switch (py_scheme) {
+    case 'q':
+        factory.setPinyinScheme (CSunpinyinSessionFactory::QUANPIN);
+        break;
+    case 's':
+        factory.setPinyinScheme (CSunpinyinSessionFactory::SHUANGPIN);
+        break;
+    default:
+        factory.setPinyinScheme (CSunpinyinSessionFactory::SHUANGPIN);
+        break;
+    }
     CIMIView *pv = factory.createSession ();
 
     CGTKWinHandler *pwh = new CGTKWinHandler(pv);

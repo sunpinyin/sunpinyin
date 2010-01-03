@@ -74,13 +74,13 @@ bool CDATrie<T, encoder>::load (const char * fname)
         return suc;
 
     m_len = * ((unsigned *) m_mem);
-    unsigned elm_size  = * ((unsigned short*) (m_mem + 4));
-    unsigned has_value = * ((unsigned short*) (m_mem + 6));
+    unsigned short elm_size  = * ((unsigned short*) (m_mem + sizeof(m_len)));
+    unsigned short has_value = * ((unsigned short*) (m_mem + sizeof(m_len) + sizeof(elm_size)));
 
     if (sizeof (T) != elm_size)
         return false;
 
-    m_base = (T *) (m_mem + 8);
+    m_base = (T *) (m_mem + sizeof(m_len) + sizeof(elm_size) + sizeof(has_value));
     m_check = m_base + m_len;
     m_value = has_value? (int *)(m_check + m_len): NULL;
 

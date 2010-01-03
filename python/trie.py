@@ -171,9 +171,10 @@ class DATrie (object):
 
         using_32bits = l > 2**15
         elm_size = 4 if using_32bits else 2
-        fmt_str = '%dl'%l if using_32bits else '%dh'%l
+        fmt_str = '%di'%l if using_32bits else '%dh'%l
 
-        f.write (struct.pack ('L', l))
+        # the data types here should be aligned with those in datrie.h
+        f.write (struct.pack ('I', l))
         f.write (struct.pack ('H', elm_size))
         f.write (struct.pack ('H', 1 if self.value else 0))
 
@@ -182,21 +183,21 @@ class DATrie (object):
 
         if self.value:
             if len(self.value) < l: self.value[l-1] = 0
-            f.write (struct.pack ('%dl'%l, *self.value))
+            f.write (struct.pack ('%di'%l, *self.value))
 
         f.close()
 
     def load (self, fname):
         f = open (fname, 'r')
 
-        l = struct.unpack ('L', f.read(4))[0]
+        l = struct.unpack ('I', f.read(4))[0]
         elm_size = struct.unpack ('H', f.read(2))[0]
         has_value = struct.unpack ('H', f.read(2))[0]
 
-        fmt_str = '%dl'%l if elm_size == 4 else '%dh'%l
+        fmt_str = '%di'%l if elm_size == 4 else '%dh'%l
         self.base  = struct.unpack (fmt_str, f.read(l*elm_size))
         self.check = struct.unpack (fmt_str, f.read(l*elm_size))
-        self.value = struct.unpack ('%dl'%l, f.read(l*4)) if has_value else []
+        self.value = struct.unpack ('%di'%l, f.read(l*4)) if has_value else []
 
         f.close()
 

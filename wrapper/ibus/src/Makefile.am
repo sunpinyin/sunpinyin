@@ -120,8 +120,6 @@ ibus_engine_sunpinyin_SOURCES = \
 	imi_ibus_win.h \
 	ibus_portable.cpp \
 	ibus_portable.h \
-	debug.h \
-	debug.cpp \
 	$(NULL)
 
 ibus_engine_sunpinyin_CXXFLAGS = \

@@ -20,7 +20,7 @@ Shortcut keys
 -------------
 
 Besides the keys which are customizable, scim-sunpinyin comes with
-some default shortcut key bindings not changable. They are listed as
+some default shortcut key bindings not changeable. They are listed as
 following:
 
 ctrl-backquote  switch between classic/instant style.

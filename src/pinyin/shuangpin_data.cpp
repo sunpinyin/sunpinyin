@@ -141,7 +141,6 @@ CShuangpinData::CShuangpinData (EShuangpinType shpPlan) : m_shuangpinPlan(NULL)
 
 CShuangpinData::~CShuangpinData()
 {
-   m_codingmap.clear(); 
    delete m_shuangpinPlan;
 }
 
@@ -215,6 +214,15 @@ CShuangpinData::getMapString(char *shpstr, CMappedYin &syls)
     return syls.size();
 }
 
+void
+CShuangpinData::setShuangpinType(EShuangpinType shpType)
+{
+    if (shpType == getShuangpinType()) {
+        return;
+    }
+    _genKeyboardMap(shpType);
+}
+
 
 void 
 CShuangpinData::_genCodingMap()
@@ -224,7 +232,7 @@ CShuangpinData::_genCodingMap()
 
     for (int i=0; i<len; ++i) {
         m_codingmap.insert (
-            std::pair<const std::string, TSyllable>
+            CEncodingMap::value_type
                 (pinyin_table[i].pystr, pinyin_table[i].id));
     }
 }
@@ -232,7 +240,7 @@ CShuangpinData::_genCodingMap()
 void 
 CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
 {
-    if (m_shuangpinPlan==NULL) {
+    if (m_shuangpinPlan == NULL) {
         m_shuangpinPlan = new TShuangpinPlan;
         memset(m_shuangpinPlan, 0, sizeof(TShuangpinPlan));
     }
@@ -263,5 +271,4 @@ CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
     default:
         break;
     }
-
 }

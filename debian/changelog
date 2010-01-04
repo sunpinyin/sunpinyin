@@ -1,8 +1,9 @@
-sunpinyin (1.0~hg20081104-1) unstable; urgency=low
+sunpinyin (2.0~hg20091111-1) unstable; urgency=low
 
   * Initial release (Closes: 478811)
-
- -- Kov Chai <tchaikov@gmail.com>  Tue, 04 Nov 2008 22:46:55 +0800
+  * release language model as plain text format
+  
+ -- Kov Chai <tchaikov@gmail.com>  Fri, 13 Nov 2009 00:10:46 +0800
 
 sunpinyin (1.0~hg20080607-2) unstable; urgency=low
 

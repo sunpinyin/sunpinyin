@@ -71,15 +71,18 @@ typedef std::map <char, CMappedYin*>     CKeyMap;
 class CShuangpinData
 {
 public:
-    CShuangpinData (enum EShuangpinType shpPlan = MS2003);
+    CShuangpinData (EShuangpinType shpPlan = MS2003);
     ~CShuangpinData ();
-
+    
+    
+    
     TSyllable encodeSyllable (const char *);
     const char *decodeSyllable (TSyllable, const char **i=NULL, const char **f=NULL);
 
     int getMapString(char *ch, CMappedYin & syls);
     EShuangpinType getShuangpinType () {return m_shuangpinPlan->type;}
-
+    void setShuangpinType(EShuangpinType shpPlan);
+    
 protected:
     void  _genCodingMap(); 
     void  _genKeyboardMap(EShuangpinType shyType);

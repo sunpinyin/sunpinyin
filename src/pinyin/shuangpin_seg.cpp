@@ -47,8 +47,7 @@ CShuangpinSegmentor::CShuangpinSegmentor (EShuangpinType shpType)
 {
     m_segs.reserve (32);
     m_pystr.reserve (32);
-    if (s_shpData.getShuangpinType() != shpType)
-        s_shpData = CShuangpinData(shpType);
+    s_shpData.setShuangpinType(shpType);
 }
 
 unsigned CShuangpinSegmentor::push (unsigned ch)

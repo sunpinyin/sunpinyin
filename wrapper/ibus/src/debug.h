@@ -11,6 +11,7 @@ namespace ibus
     extern std::fstream log;
 }
 
+using std::cout;
 using std::hex;
 using std::endl;
 

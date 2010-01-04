@@ -83,9 +83,9 @@ struct TSyllable {
 
 typedef std::vector<TSyllable> CSyllables;
 
-typedef struct _TPyTabEntry{
+typedef struct _TPyTabEntry {
     const char *pystr;
     unsigned    id;
-}TPyTabEntry;
+} TPyTabEntry;
 
 #endif

@@ -2,33 +2,27 @@ Source: sunpinyin
 Section: utils
 Priority: optional
 Maintainer: Kov Chai <tchaikov@gmail.com>
-Build-Depends: libscim-dev (>= 1.4.6), cdbs (>= 0.4.41), debhelper (>= 5), intltool-debian, autotools-dev, libgtk2.0-dev
+Build-Depends: debhelper (>= 7), autotools-dev, pkg-config,
+ libibus-dev (>= 1.2), libsqlite3-dev (>= 3.6), sqlite3,
+ python-support
 DM-Upload-Allowed: yes
-Standards-Version: 3.7.2
+Standards-Version: 3.8.3
 Homepage: http://www.opensolaris.org/os/project/input-method/
 
-Package: scim-sunpinyin
+Package: ibus-sunpinyin
 Architecture: any
 Section: utils
-Depends: scim, ${sunpinyin-data-depends}, ${shlibs:Depends}
-Description: Sunpinyin input method of Chinese Language Engine for SCIM
+Depends: ${sunpinyin-data-depends}, ${python:Depends},
+ ${shlibs:Depends}, ${misc:Depends}, ibus (>= 1.2)
+Description: Sunpinyin input method engine for ibus
  Sunpinyin is an SLM based input method engine developed by Sun.
  .
  This package contains SunPinyin input method for SCIM.
 
-Package: iiimf-le-sunpinyin-chinese
-Section: text
-Architecture: any
-Depends: iiimf-server, iiimf-le-sun-simplified-chinese, ${sunpinyin-data-depends}, ${shlibs:Depends}
-Description: Sunpinyin input method of Chinese Language Engine for iiimf-server
- Sunpinyin is an SLM based input method engine developed by Sun.
- .
- This package contains Sunpinyin input method of Chinese Language Engine for 
- Internet/Intranet Input Method.
-
 Package: sunpinyin-data-le
 Architecture: all
-Enhances: scim-sunpinyin, iiimf-le-sunpinyin-chinese
+Depends: ${misc:Depends}
+Enhances: ibus-sunpinyin
 Conflicts: sunpinyin-data-be
 Description: Little-endian data file for SunPinyin input method engine
  Sunpinyin is an SLM based input method engine developed by Sun.
@@ -38,7 +32,8 @@ Description: Little-endian data file for SunPinyin input method engine
 
 Package: sunpinyin-data-be
 Architecture: all
-Enhances: scim-sunpinyin, iiimf-le-sunpinyin-chinese
+Depends: ${misc:Depends}
+Enhances: ibus-sunpinyin
 Conflicts: sunpinyin-data-le
 Description: Big-endian data file for SunPinyin input method engine
  Sunpinyin is an SLM based input method engine developed by Sun.

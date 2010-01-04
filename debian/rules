@@ -8,10 +8,10 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 
 LDFLAGS += -Wl,--as-needed
 CXXFLAGS = -W -g
-DEB_CONFIGURE_EXTRA_FLAGS := --enable-cle \
-			--enable-scim \
-			--disable-iiimle \
-			--with-sunpinyin-datadir=\$${prefix}/share/sunpinyin
+DEB_CONFIGURE_EXTRA_FLAGS := --disable-cle \
+			--enable-ibus \
+			--disable-scim \
+			--disable-documents
 
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	DEB_CONFIGURE_EXTRA_FLAGS += --enable-debug
@@ -31,22 +31,36 @@ else
 	$(error endianness of $(DEB_HOST_ARCH) architecture is unknown\; cannot continue)
 endif
 
-DEB_DH_MAKESHLIBS_ARGS_scim-sunpinyin := -n
-DEB_DH_GENCONTROL_ARGS_scim-sunpinyin := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
-DEB_DH_GENCONTROL_ARGS_iiimf-le-sunpinyin-chinese := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
+DEB_DH_MAKESHLIBS_ARGS_ibus-sunpinyin := -n
+DEB_DH_GENCONTROL_ARGS_ibus-sunpinyin := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
 
 common-install-impl::
-	find debian/tmp/usr/lib -name '*.la' -print0 | xargs -0 rm
 	rm debian/tmp/usr/share/sunpinyin/*
 
-binary-fixup/sunpinyin-data-le::
-	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
-	    mv $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/$$f.le \
-	       $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/$$f;   \
-	done
+sunpinyin-data-common:
+	tslmpack lm_sc.t3g.arpa dict.utf8 lm_sc.t3g
+	genpyt dict.utf8 pydict_sc.bin ./pydict_sc.log.utf8 lm_sc.t3g
 
-binary-fixup/sunpinyin-data-ge::
-	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
-	    mv $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/$$f.be \
-	       $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/$$f;   \
-	done
+build/sunpinyin-data-le::sunpinyin-data-common
+	tslmendian -e le -i lm_sc.t3g -o lm_sc.t3g.le
+	cp pydict_sc.bin pydict_sc.bin.le
+#pyendian -e le -i pydict_sc.bin -o pydict_sc.bin.le
+
+build/sunpinyin-data-be::sunpinyin-data-common
+	tslmendian -e be -i lm_sc.t3g -o lm_sc.t3g.le
+	$(error cannot build pydict_sc.bin.le)
+
+clean::
+	rm -f lm_sc.t3g pydict_sc.bin
+
+# binary-fixup/sunpinyin-data-le::
+# 	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
+# 	    mv $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/$$f.le \
+# 	       $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/$$f;   \
+# 	done
+
+# binary-fixup/sunpinyin-data-ge::
+# 	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
+# 	    mv $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/$$f.be \
+# 	       $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/$$f;   \
+# 	done

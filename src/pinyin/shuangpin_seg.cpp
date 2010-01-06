@@ -261,7 +261,11 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 
     if (!islower(ch) && !bInputCh) { 
         ret = m_pystr.size() - 1;
-        seg_type = (ch == '\'') ? IPySegmentor::SYLLABLE_SEP : IPySegmentor::STRING;
+
+        if (ch == '\'' && m_inputBuf.size() > 1)
+            seg_type = IPySegmentor::SYLLABLE_SEP;
+        else
+            seg_type = IPySegmentor::STRING;
         m_segs.push_back (TSegment (ch, ret, 1, seg_type));
         m_nAlpha += 1;
         m_nLastValidPos += 1;

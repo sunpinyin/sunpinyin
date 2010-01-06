@@ -285,7 +285,7 @@ unsigned CQuanpinSegmentor::_push (unsigned ch)
 
     if (l == 0) { // not a valid syllable character, e.g., \', i, u, or A-Z
         IPySegmentor::ESegmentType seg_type;
-        if (ch == '\'')
+        if (ch == '\'' && m_inputBuf.size() > 1)
             seg_type = IPySegmentor::SYLLABLE_SEP;
         else if (islower (ch))
             seg_type = IPySegmentor::INVALID;

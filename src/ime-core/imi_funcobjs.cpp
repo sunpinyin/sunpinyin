@@ -90,6 +90,8 @@ void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
         "\\",   "、",
         "\"",   "“",
         "\"",   "”",
+        "'",    "‘",
+        "'",    "’",
         "_",    "——",
         "<",    "《",
         ">",    "》",
@@ -103,6 +105,8 @@ void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
         "*",    "×",
         "+",    "＋",
         "|",    "｜",
+        "=",    "＝",
+        "-",    "－",
         NULL,
     };
     if (punc_map == NULL) {

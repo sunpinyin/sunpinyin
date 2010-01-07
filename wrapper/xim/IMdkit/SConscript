@@ -1,0 +1,7 @@
+CFLAGS='-Wall -g'
+
+env=Environment(CFLAGS=CFLAGS)
+env.ParseConfig('pkg-config x11 --libs --cflags')
+
+env.Library('IMdkit', source=Glob('*.c'))
+

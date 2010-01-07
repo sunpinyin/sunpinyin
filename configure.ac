@@ -187,15 +187,32 @@ if test "X${ENABLE_IBUS}" = "Xyes" ; then
 fi
 AM_CONDITIONAL(WRAPPER_IBUS, [test "X${ENABLE_IBUS}" = "Xyes"])
 
+dnl
+dnl Xim wrapper
+dnl
+AC_ARG_ENABLE([xim],
+        AC_HELP_STRING([--enable-xim], [compile as xim (defualt=no)]),
+        [ENABLE_XIM="${enableval}"],
+        [ENABLE_XIM="no"])
+
+if test "X${ENABLE_XIM}" = "Xyes" ; then
+   GTK_VERSION=2.12.0
+   AC_SUBST(GTK_VERSION)
+   PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= $GTK_VERSION])
+   PKG_CHECK_MODULES(X11, x11)
+fi
+AM_CONDITIONAL(WRAPPER_XIM, [test "X${ENABLE_XIM}" = "Xyes"])
 
 dnl override the default setting of DATADIRs
 if test "x$SUNPINYIN_DATADIR" != "x" ; then
     SCIM_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
     CLE_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
     IBUS_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
+    XIM_SUNPINYIN_DATADIR="$SUNPINYIN_DATADIR"
     AC_SUBST(SCIM_SUNPINYIN_DATADIR)
     AC_SUBST(CLE_SUNPINYIN_DATADIR)
     AC_SUBST(IBUS_SUNPINYIN_DATADIR)
+    AC_SUBST(XIM_SUNPINYIN_DATADIR)
 fi
 
 AM_CONDITIONAL(OVERRIDE_DEFAULT_PINYINDATADIR, [test "x${SUNPINYIN_DATADIR}" != "x"])
@@ -315,7 +332,9 @@ AC_OUTPUT(Makefile
           wrapper/ibus/setup/ibus-setup-sunpinyin
           wrapper/ibus/setup/config.py
           wrapper/ibus/data/Makefile
+          wrapper/xim/Makefile
           python/Makefile
           data/Makefile
           raw/Makefile
           po/Makefile.in)
+          

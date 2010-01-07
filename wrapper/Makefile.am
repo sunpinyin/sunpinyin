@@ -57,4 +57,8 @@ if WRAPPER_BEOS
 SUBDIRS += beos
 endif
 
-DIST_SUBDIRS = gtk_standalone ibus
+if WRAPPER_XIM
+SUBDIRS += xim
+endif
+
+DIST_SUBDIRS = gtk_standalone ibus xim

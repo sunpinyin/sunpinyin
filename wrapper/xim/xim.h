@@ -45,7 +45,7 @@
 #include <IMdkit.h>
 #include <Xi18n.h>
 
-#include <stdbool.h>
+#include "common.h" 
 
 __BEGIN_DECLS
 

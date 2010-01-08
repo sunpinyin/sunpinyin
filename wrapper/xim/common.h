@@ -37,6 +37,24 @@
 #define _COMMON_H_
 
 #include <stdio.h>
+#include <stdbool.h>
+
+#ifdef __cplusplus
+ # ifndef __BEGIN_DECLS
+ # define __BEGIN_DECLS extern "C" {
+ # endif
+ # ifndef __END_DECLS
+ # define __END_DECLS }
+ # endif
+#else
+ # ifndef __BEGIN_DECLS
+ # define __BEGIN_DECLS
+ # endif
+ # ifndef __END_DECLS
+ # define __END_DECLS
+ # endif
+#endif
+
 
 #ifdef __cplusplus
 #define __EXPORT_API extern "C"
@@ -45,6 +63,7 @@
 #endif
 
 #ifdef LOG_ENABLED
+
 
 #define __PRINT(label, ...)                             \
     do {                                                \

@@ -38,7 +38,6 @@
 #include "imi_winHandler.h"
 #include "imi_options.h"
 
-#include "portability.h"
 #include "xim.h"
 #include "common.h"
 

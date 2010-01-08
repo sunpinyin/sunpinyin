@@ -41,6 +41,8 @@
 #include <X11/keysym.h>
 #include <X11/Xutil.h>
 
+#include "common.h"
+
 __BEGIN_DECLS
 
 void get_window_position(Window w, int* x, int* y);

@@ -36,21 +36,23 @@
 #ifndef _IC_H_
 #define _IC_H_
 
-#include <stdbool.h>
 
 #include <X11/Xproto.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/Xutil.h>
 
+#include "common.h"
+
 __BEGIN_DECLS
+
 
 #define MAX_IC_NUM 0x7fff
 #define GC_THRESHOLD 4096
 
+
 /* input context */
-typedef struct
-{
+typedef struct _IC {
     Window client_window;
     bool   is_enabled;
     bool   is_english;

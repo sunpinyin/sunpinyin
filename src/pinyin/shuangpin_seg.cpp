@@ -199,8 +199,10 @@ unsigned CShuangpinSegmentor::_clear (unsigned from)
 
 
     std::string new_pystr = m_pystr.substr (i, from-i);
-    m_nAlpha -= count_if(m_pystr.begin() + i, m_pystr.end(),
-                         std::not1(std::ptr_fun<int,int>(islower)));
+    for (const char* c = m_pystr.c_str(); *c != 0; ++c) {
+        if (islower(*c))
+            --m_nAlpha;
+    }
     m_pystr.resize (i);
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 

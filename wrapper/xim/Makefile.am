@@ -163,4 +163,6 @@ icon_DATA = \
 	data/sunpinyin-logo.png \
 	data/sunpinyin-logo-big.png \
 	data/han.png \
-	data/eng.png
+	data/eng.png \
+	data/han.svg \
+	data/eng.svg

@@ -29,6 +29,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  
 ******************************************************************/
 
+#include <limits.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include "FrameMgr.h"
@@ -99,7 +100,7 @@ static unsigned char *ReadXIMMessage (XIMS ims,
         if (client->byte_order == '?')
         {
             if (hdr->major_opcode != XIM_CONNECT)
-                return (unsigned char *) NULL; 	/* can do nothing */
+                return (unsigned char *) NULL; /* can do nothing */
             client->byte_order = (CARD8) rec[0];
         }
 
@@ -128,19 +129,29 @@ static unsigned char *ReadXIMMessage (XIMS ims,
     else if (ev->format == 32) {
         /* ClientMessage and WindowProperty */
         unsigned long length = (unsigned long) ev->data.l[0];
+        unsigned long get_length;
         Atom atom = (Atom) ev->data.l[1];
-        int	return_code;
-        Atom	actual_type_ret;
-        int	actual_format_ret;
+        int return_code;
+        Atom actual_type_ret;
+        int actual_format_ret;
         unsigned long bytes_after_ret;
         unsigned char *prop;
         unsigned long nitems;
 
+        /* Round up length to next 4 byte value. */
+        get_length = length + 3;
+        if (get_length > LONG_MAX)
+            get_length = LONG_MAX;
+        get_length /= 4;
+        if (get_length == 0) {
+            fprintf(stderr, "%s: invalid length 0\n", __func__);
+            return NULL;
+        }
         return_code = XGetWindowProperty (i18n_core->address.dpy,
                                           x_client->accept_win,
                                           atom,
-                                          0L,
-                                          length,
+                                          client->property_offset / 4,
+                                          get_length,
                                           True,
                                           AnyPropertyType,
                                           &actual_type_ret,
@@ -151,15 +162,27 @@ static unsigned char *ReadXIMMessage (XIMS ims,
         if (return_code != Success || actual_format_ret == 0 || nitems == 0) {
             if (return_code == Success)
                 XFree (prop);
+            client->property_offset = 0;
             return (unsigned char *) NULL;
         }
-        if (length != nitems)
-            length = nitems;
-	if (actual_format_ret == 16)
-	    length *= 2;
-	else if (actual_format_ret == 32)
-	    length *= 4;
-
+        /* Update the offset to read next time as needed */
+        if (bytes_after_ret > 0)
+            client->property_offset += length;
+        else
+            client->property_offset = 0;
+        switch (actual_format_ret) {
+        case 8:
+        case 16:
+        case 32:
+            length = nitems * actual_format_ret / 8;
+            break;
+        default:
+            fprintf(stderr, "%s: unknown property return format: %d\n",
+                        __func__, actual_format_ret);
+            XFree(prop);
+            client->property_offset = 0;
+            return NULL;
+        }
         /* if hit, it might be an error */
         if ((p = (unsigned char *) malloc (length)) == NULL)
             return (unsigned char *) NULL;
@@ -182,7 +205,7 @@ static void ReadXConnectMessage (XIMS ims, XClientMessageEvent *ev)
     XClient *x_client = NewXClient (i18n_core, new_client);
 
     if (ev->window != i18n_core->address.im_window)
-        return; 			/* incorrect connection request */
+        return; /* incorrect connection request */
     /*endif*/
     if (major_version != 0  ||  minor_version != 0)
     {
@@ -416,9 +439,9 @@ static Bool Xi18nXDisconnect (XIMS ims, CARD16 connect_id)
 
     XDestroyWindow (dpy, x_client->accept_win);
     _XUnregisterFilter (dpy,
-		        x_client->accept_win,
+                        x_client->accept_win,
                         WaitXIMProtocol,
-		        (XPointer)ims);
+                        (XPointer)ims);
     XFree (x_client);
     _Xi18nDeleteClient (i18n_core, connect_id);
     return True;

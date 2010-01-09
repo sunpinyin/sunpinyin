@@ -473,10 +473,7 @@ int _Xi18nStringConversionCallback (XIMS ims, IMProtocol *call_data)
     fm = FrameMgrInit (str_conversion_fr,
                        NULL,
                       _Xi18nNeedSwap (i18n_core, connect_id));
-#if 0
-    /* set length of preedit string */
-    FrameMgrSetSize (fm, strconv->text->length);
-#endif
+
     total_size = FrameMgrGetTotalSize (fm);
     reply = (unsigned char *) malloc (total_size);
     if (!reply)
@@ -493,9 +490,7 @@ int _Xi18nStringConversionCallback (XIMS ims, IMProtocol *call_data)
     FrameMgrPutToken (fm, strconv->position);
     FrameMgrPutToken (fm, strconv->direction);
     FrameMgrPutToken (fm, strconv->operation);
-#if 0
-    FrameMgrPutToken (fm, strconv->text->string);
-#endif
+
     _Xi18nSendMessage (ims, connect_id,
                        XIM_STR_CONVERSION,
                        0,

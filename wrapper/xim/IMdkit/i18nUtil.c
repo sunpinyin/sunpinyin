@@ -70,6 +70,7 @@ Xi18nClient *_Xi18nNewClient(Xi18n i18n_core)
     client->sync = False;
     client->byte_order = '?'; 	/* initial value */
     memset (&client->pending, 0, sizeof (XIMPending *));
+    client->property_offset = 0;
     client->next = i18n_core->address.clients;
     i18n_core->address.clients = client;
 

@@ -41,8 +41,8 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #define XIM_EXTENSION				128
 #define XIM_EXT_SET_EVENT_MASK			(0x30)
-#define	XIM_EXT_FORWARD_KEYEVENT		(0x32)
-#define	XIM_EXT_MOVE				(0x33)
+#define XIM_EXT_FORWARD_KEYEVENT		(0x32)
+#define XIM_EXT_MOVE				(0x33)
 #define COMMON_EXTENSIONS_NUM   		3
 
 #include <stdlib.h>
@@ -56,7 +56,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 /*
  * Padding macro
  */
-#define	IMPAD(length) ((4 - ((length)%4))%4)
+#define IMPAD(length) ((4 - ((length)%4))%4)
 
 /*
  * Target Atom for Transport Connection
@@ -149,6 +149,8 @@ typedef struct _Xi18nClient
      */
     int		sync;
     XIMPending  *pending;
+    /* property offset to read next data */
+    long        property_offset;
     void *trans_rec;		/* contains transport specific data  */
     struct _Xi18nClient *next;
 } Xi18nClient;

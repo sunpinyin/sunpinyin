@@ -623,9 +623,9 @@ static void GetIMValueFromName (Xi18n i18n_core,
             memmove (buf, data, total_size);
             FrameMgrFree (fm);
 
-	    /* add by hurrica...@126.com */
-	    free (data);
-	    /* ************************* */
+            /* ADDED BY SUZHE */
+            free (data);
+            /* ADDED BY SUZHE */
         }
         /*endif*/
     }
@@ -1050,28 +1050,64 @@ static void ResetICMessageProc (XIMS ims,
 static int WireEventToEvent (Xi18n i18n_core,
                              xEvent *event,
                              CARD16 serial,
-                             XEvent *ev)
+                             XEvent *ev,
+                             Bool byte_swap)
 {
-    ev->xany.serial = event->u.u.sequenceNumber & ((unsigned long) 0xFFFF);
+    FrameMgr fm;
+    extern XimFrameRec wire_keyevent_fr[];
+    BYTE b;
+    CARD16 c16;
+    CARD32 c32;
+    int ret = False;
+
+    /* create FrameMgr */
+    fm = FrameMgrInit(wire_keyevent_fr, (char *)(&(event->u)), byte_swap);
+
+
+    /* get & set type */
+    FrameMgrGetToken(fm, b);
+    ev->type = (unsigned int)b;
+    /* get detail */
+    FrameMgrGetToken(fm, b);
+    /* get & set serial */
+    FrameMgrGetToken(fm, c16);
+    ev->xany.serial = (unsigned long)c16;
     ev->xany.serial |= serial << 16;
     ev->xany.send_event = False;
     ev->xany.display = i18n_core->address.dpy;
-    switch (ev->type = event->u.u.type & 0x7F)
-    {
-    case KeyPress:
-    case KeyRelease:
-        ((XKeyEvent *) ev)->keycode = event->u.u.detail;
-        ((XKeyEvent *) ev)->window = event->u.keyButtonPointer.event;
-        ((XKeyEvent *) ev)->state = event->u.keyButtonPointer.state;
-        ((XKeyEvent *) ev)->time = event->u.keyButtonPointer.time;
-        ((XKeyEvent *) ev)->root = event->u.keyButtonPointer.root;
-        ((XKeyEvent *) ev)->x = event->u.keyButtonPointer.eventX;
-        ((XKeyEvent *) ev)->y = event->u.keyButtonPointer.eventY;
-        ((XKeyEvent *) ev)->x_root = 0;
-        ((XKeyEvent *) ev)->y_root = 0;
-        return True;
+
+    /* Remove SendEvent flag from event type to emulate KeyPress/Release */
+    ev->type &= 0x7F;
+
+    switch (ev->type) {
+      case KeyPress:
+      case KeyRelease:
+      {
+          XKeyEvent *kev = (XKeyEvent*)ev;
+
+          /* set keycode (detail) */
+          kev->keycode = (unsigned int)b;
+
+          /* get & set values */
+          FrameMgrGetToken(fm, c32); kev->time = (Time)c32;
+          FrameMgrGetToken(fm, c32); kev->root = (Window)c32;
+          FrameMgrGetToken(fm, c32); kev->window = (Window)c32;
+          FrameMgrGetToken(fm, c32); kev->subwindow = (Window)c32;
+          FrameMgrGetToken(fm, c16); kev->x_root = (int)c16;
+          FrameMgrGetToken(fm, c16); kev->y_root = (int)c16;
+          FrameMgrGetToken(fm, c16); kev->x = (int)c16;
+          FrameMgrGetToken(fm, c16); kev->y = (int)c16;
+          FrameMgrGetToken(fm, c16); kev->state = (unsigned int)c16;
+          FrameMgrGetToken(fm, b);   kev->same_screen = (Bool)b;
+      }
+      ret = True;
+      break;
+      default:
+      break;
     }
-    return False;
+    /* free FrameMgr */
+    FrameMgrFree(fm);
+    return ret;
 }
 
 static void ForwardEventMessageProc (XIMS ims,
@@ -1103,7 +1139,8 @@ static void ForwardEventMessageProc (XIMS ims,
     if (WireEventToEvent (i18n_core,
                           &wire_event,
                           forward->serial_number,
-                          &forward->event) == True)
+                          &forward->event,
+			  _Xi18nNeedSwap (i18n_core, connect_id)) == True)
     {
         if (i18n_core->address.improto)
         {

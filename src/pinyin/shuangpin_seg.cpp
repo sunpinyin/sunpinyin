@@ -200,7 +200,7 @@ unsigned CShuangpinSegmentor::_clear (unsigned from)
 
     std::string new_pystr = m_pystr.substr (i, from-i);
     for (const char* c = m_pystr.c_str() + i; *c != 0; ++c) {
-        if (islower(*c))
+        if (!islower(*c))
             --m_nAlpha;
     }
     m_pystr.resize (i);

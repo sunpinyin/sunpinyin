@@ -80,7 +80,7 @@ public:
     const char *decodeSyllable (TSyllable, const char **i=NULL, const char **f=NULL);
 
     int getMapString(char *ch, CMappedYin & syls);
-    EShuangpinType getShuangpinType () {return m_shuangpinPlan->type;}
+    EShuangpinType getShuangpinType () const {return m_shuangpinPlan->type;}
     void setShuangpinType(EShuangpinType shpPlan);
     
 protected:

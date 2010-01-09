@@ -142,7 +142,7 @@ __scan_all_ic()
     }
 }
 
-__EXPORT_API void icmgr_init_ui(void);  
+__EXPORT_API void icmgr_init_ui(void);
 
 __EXPORT_API void
 icmgr_init(void)

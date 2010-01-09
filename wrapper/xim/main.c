@@ -42,7 +42,7 @@
 #include "ic.h"
 #include "settings.h"
 
-#define XIM_NAME "xsunpinyiin"
+#define XIM_NAME "xsunpinyin"
 
 static void
 on_app_exit(int sig)

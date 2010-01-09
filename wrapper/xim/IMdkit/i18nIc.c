@@ -42,17 +42,15 @@ static void SetCardAttribute (XICAttribute *value_ret,
                               char *p,
                               XICAttr *ic_attr,
                               int value_length,
-                              int need_swap)
+                              int need_swap,
+                              void **value_buf)
 {
-    char *buf;
     FrameMgr fm;
 
-    if ((buf = (char *) malloc (value_length)) == NULL)
-        return;
     /*endif*/
     if (value_length == sizeof (CARD8))
     {
-        memmove (buf, p, value_length);
+        memmove (*value_buf, p, value_length);
     }
     else if (value_length == sizeof (CARD16))
     {
@@ -63,7 +61,7 @@ static void SetCardAttribute (XICAttribute *value_ret,
         /* get data */
         FrameMgrGetToken (fm, value);
         FrameMgrFree (fm);
-        memmove (buf, &value, value_length);
+        memmove (*value_buf, &value, value_length);
     }
     else if (value_length == sizeof(CARD32))
     {
@@ -74,7 +72,7 @@ static void SetCardAttribute (XICAttribute *value_ret,
         /* get data */
         FrameMgrGetToken (fm, value);
         FrameMgrFree (fm);
-        memmove (buf, &value, value_length);
+        memmove (*value_buf, &value, value_length);
     }
     /*endif*/
     value_ret->attribute_id = ic_attr->attribute_id;
@@ -82,16 +80,18 @@ static void SetCardAttribute (XICAttribute *value_ret,
     value_ret->name_length = ic_attr->length;
     value_ret->type = ic_attr->type;
     value_ret->value_length = value_length;
-    value_ret->value = buf;
+    value_ret->value = *value_buf;
+ 
+    *value_buf += value_length;
 }
 
 static void SetFontAttribute (XICAttribute *value_ret,
                               char *p,
                               XICAttr *ic_attr,
                               int value_length,
-                              int need_swap)
+                              int need_swap,
+                              void **value_buf)
 {
-    char *buf;
     char *base_name;
     CARD16 base_length;
     FrameMgr fm;
@@ -101,35 +101,35 @@ static void SetFontAttribute (XICAttribute *value_ret,
     /* get data */
     FrameMgrGetToken (fm, base_length);
     FrameMgrSetSize (fm, base_length);
-    if ((buf = (char *) malloc (base_length + 1)) == NULL)
-        return;
+
     /*endif*/
     FrameMgrGetToken (fm, base_name);
     FrameMgrFree(fm);
-    strncpy (buf, base_name, base_length);
-    buf[base_length] = (char) 0;
+    strncpy ((char *) (*value_buf), base_name, base_length);
+    ((char *) *value_buf)[base_length] = (char) 0;
 
     value_ret->attribute_id = ic_attr->attribute_id;
     value_ret->name = ic_attr->name;
     value_ret->name_length = ic_attr->length;
     value_ret->type = ic_attr->type;
     value_ret->value_length = value_length;
-    value_ret->value = buf;
+    value_ret->value = *value_buf;
+
+    *value_buf += (base_length + 1);
 }
 
 static void SetPointAttribute (XICAttribute *value_ret,
                                char *p,
                                XICAttr *ic_attr,
                                int value_length,
-                               int need_swap)
+                               int need_swap,
+                               void **value_buf)
 {
     XPoint *buf;
     FrameMgr fm;
     extern XimFrameRec xpoint_fr[];
 
-    if ((buf = (XPoint *) malloc (sizeof (XPoint))) == NULL)
-        return;
-    /*endif*/
+    buf = (XPoint *) (*value_buf);
 
     fm = FrameMgrInit (xpoint_fr, (char *) p, need_swap);
     /* get data */
@@ -137,32 +137,29 @@ static void SetPointAttribute (XICAttribute *value_ret,
     FrameMgrGetToken (fm, buf->y);
     FrameMgrFree (fm);
 
-    memmove (&(buf->x), p, sizeof (INT16));
-    p += sizeof (INT16);
-    memmove (&(buf->y), p, sizeof (INT16));
-
     value_ret->attribute_id = ic_attr->attribute_id;
     value_ret->name = ic_attr->name;
     value_ret->name_length = ic_attr->length;
     value_ret->type = ic_attr->type;
     value_ret->value_length = value_length;
     value_ret->value = (char *) buf;
+
+    *value_buf += value_length;
 }
 
 static void SetRectAttribute (XICAttribute *value_ret,
                               char *p,
                               XICAttr *ic_attr,
                               int value_length,
-                              int need_swap)
+                              int need_swap,
+                              void **value_buf)
 {
     XRectangle *buf;
     FrameMgr fm;
     extern XimFrameRec xrectangle_fr[];
 
-    if ((buf = (XRectangle *) malloc (sizeof (XRectangle))) == NULL)
-        return;
-    /*endif*/
-    
+    buf = (XRectangle *) (*value_buf);
+ 
     fm = FrameMgrInit (xrectangle_fr, (char *) p, need_swap);
     /* get data */
     FrameMgrGetToken (fm, buf->x);
@@ -178,7 +175,7 @@ static void SetRectAttribute (XICAttribute *value_ret,
     value_ret->value_length = value_length;
     value_ret->value = (char *) buf;
 
-    return;
+    *value_buf += value_length;
 }
 
 #if 0
@@ -186,18 +183,16 @@ static void SetHotKeyAttribute (XICAttribute *value_ret,
                                 char *p,
                                 XICAttr *ic_attr,
                                 int value_length,
-                                int need_swap)
+                                int need_swap,
+                                void **value_buf)
 {
     INT32 list_number;
     XIMTriggerKey *hotkeys;
 
     memmove (&list_number, p, sizeof(INT32)); p += sizeof(INT32);
 
-    hotkeys = (XIMTriggerKey *) malloc (list_number*sizeof (XIMTriggerKey));
-    if (hotkeys == NULL)
-        return;
-    /*endif*/
-    
+    hotkeys = (XIMTriggerKey *) (*value_buf);
+
     memmove (hotkeys, p, list_number*sizeof (XIMTriggerKey));
 
     value_ret->attribute_id = ic_attr->attribute_id;
@@ -206,6 +201,8 @@ static void SetHotKeyAttribute (XICAttribute *value_ret,
     value_ret->type = ic_attr->type;
     value_ret->value_length = value_length;
     value_ret->value = (char *) hotkeys;
+
+    *value_buf += value_length;
 }
 #endif
 
@@ -321,7 +318,8 @@ static int ReadICValue (Xi18n i18n_core,
                         void *p,
                         XICAttribute *value_ret,
                         CARD16 *number_ret,
-                        int need_swap)
+                        int need_swap,
+                        void **value_buf)
 {
     XICAttr *ic_attr = i18n_core->address.xic_attr;
     int i;
@@ -362,7 +360,8 @@ static int ReadICValue (Xi18n i18n_core,
                              p1,
                              (value_ret + ic_len),
                              &number,
-                             need_swap);
+                             need_swap,
+                             value_buf);
                 ic_len++;
                 *number_ret += number;
                 p1 += attribute_length;
@@ -379,28 +378,28 @@ static int ReadICValue (Xi18n i18n_core,
     case XimType_CARD16:
     case XimType_CARD32:
     case XimType_Window:
-        SetCardAttribute (value_ret, p, ic_attr, value_length, need_swap);
+        SetCardAttribute (value_ret, p, ic_attr, value_length, need_swap, value_buf);
         *number_ret = (CARD16) 1;
         return *number_ret;
 
     case XimType_XFontSet:
-        SetFontAttribute (value_ret, p, ic_attr, value_length, need_swap);
+        SetFontAttribute (value_ret, p, ic_attr, value_length, need_swap, value_buf);
         *number_ret = (CARD16) 1;
         return *number_ret;
 
     case XimType_XRectangle:
-        SetRectAttribute (value_ret, p, ic_attr, value_length, need_swap);
+        SetRectAttribute (value_ret, p, ic_attr, value_length, need_swap, value_buf);
         *number_ret = (CARD16) 1;
         return *number_ret;
 
     case XimType_XPoint:
-        SetPointAttribute(value_ret, p, ic_attr, value_length, need_swap);
+        SetPointAttribute(value_ret, p, ic_attr, value_length, need_swap, value_buf);
         *number_ret = (CARD16) 1;
         return *number_ret;
 
 #if 0
     case XimType_XIMHotKeyTriggers:
-        SetHotKeyAttribute (value_ret, p, ic_attr, value_length, need_swap);
+        SetHotKeyAttribute (value_ret, p, ic_attr, value_length, need_swap, value_buf);
 	*number_ret = (CARD16) 1;
 	return *number_ret;
 #endif
@@ -574,6 +573,54 @@ static int GetICValue (Xi18n i18n_core,
     return n;
 }
 
+static void SwapAttributes (XICAttribute *list,
+			   int number){
+    FrameMgr fm;
+    CARD16 c16;
+    extern XimFrameRec short_fr[];
+    CARD32 c32;
+    extern XimFrameRec long_fr[];
+    XPoint xpoint;
+    extern XimFrameRec xpoint_fr[];
+    XRectangle xrect;
+    extern XimFrameRec xrectangle_fr[];
+    int i;
+
+    for (i = 0; i < number; ++i, ++list) {
+	if (list->value == NULL)
+	    continue;
+	switch (list->type) {
+	case XimType_CARD16:
+	    fm = FrameMgrInit (short_fr, (char *)list->value, 1);
+	    FrameMgrGetToken (fm, c16);
+	    memmove(list->value, &c16, sizeof(CARD16));
+	    FrameMgrFree (fm);
+	    break;
+	case XimType_CARD32:
+	case XimType_Window:
+	    fm = FrameMgrInit (long_fr, (char *)list->value, 1);
+	    FrameMgrGetToken (fm, c32);
+	    memmove(list->value, &c32, sizeof(CARD32));
+	    FrameMgrFree (fm);
+	    break;
+	case XimType_XRectangle:
+	    fm = FrameMgrInit (xrectangle_fr, (char *)list->value, 1);
+	    FrameMgrGetToken (fm, xrect);
+	    memmove(list->value, &xrect, sizeof(XRectangle));
+	    FrameMgrFree (fm);
+	    break;
+	case XimType_XPoint:
+	    fm = FrameMgrInit (xpoint_fr, (char *)list->value, 1);
+	    FrameMgrGetToken (fm, xpoint);
+	    memmove(list->value, &xpoint, sizeof(XPoint));
+	    FrameMgrFree (fm);
+	    break;
+	default:
+	    break;
+	}
+    }
+}
+
 /* called from CreateICMessageProc and SetICValueMessageProc */
 void _Xi18nChangeIC (XIMS ims,
                      IMProtocol *call_data,
@@ -602,6 +649,11 @@ void _Xi18nChangeIC (XIMS ims,
     extern XimFrameRec set_ic_values_fr[];
     extern XimFrameRec set_ic_values_reply_fr[];
     CARD16 input_method_ID;
+ 
+    void *value_buf = NULL;
+    void *value_buf_ptr;
+
+    register int total_value_length = 0;
 
     memset (pre_attr, 0, sizeof (XICAttribute)*IC_SIZE);
     memset (sts_attr, 0, sizeof (XICAttribute)*IC_SIZE);
@@ -651,8 +703,23 @@ void _Xi18nChangeIC (XIMS ims,
         memmove (attrib_list[attrib_num].value, value, value_length);
 	((char *)attrib_list[attrib_num].value)[value_length] = '\0';
         attrib_num++;
+        total_value_length += (value_length + 1);
     }
     /*endwhile*/
+
+    value_buf = (void *) malloc (total_value_length);
+    value_buf_ptr = value_buf;
+
+    if (!value_buf)
+    {
+        _Xi18nSendMessage (ims, connect_id, XIM_ERROR, 0, 0, 0);
+        for (i = 0;  i < attrib_num;  i++)
+            XFree (attrib_list[i].value);
+        /*endfor*/
+        XFree (attrib_list);
+        return;
+    }
+    /*endif*/
 
     for (i = 0;  i < attrib_num;  i++)
     {
@@ -669,7 +736,8 @@ void _Xi18nChangeIC (XIMS ims,
                              attrib_list[i].value,
                              &pre_attr[preedit_ic_num],
                              &number,
-                             _Xi18nNeedSwap(i18n_core, connect_id));
+                             _Xi18nNeedSwap(i18n_core, connect_id),
+                             &value_buf_ptr);
                 preedit_ic_num += number;
             }
             else if (attrib_list[i].attribute_id == i18n_core->address.statusAttr_id)
@@ -680,7 +748,8 @@ void _Xi18nChangeIC (XIMS ims,
                              attrib_list[i].value,
                              &sts_attr[status_ic_num],
                              &number,
-                             _Xi18nNeedSwap (i18n_core, connect_id));
+                             _Xi18nNeedSwap (i18n_core, connect_id),
+                             &value_buf_ptr);
                 status_ic_num += number;
             }
             else
@@ -697,7 +766,8 @@ void _Xi18nChangeIC (XIMS ims,
                          attrib_list[i].value,
                          &ic_attr[ic_num],
                          &number,
-                         _Xi18nNeedSwap (i18n_core, connect_id));
+                         _Xi18nNeedSwap (i18n_core, connect_id),
+                         &value_buf_ptr);
             ic_num += number;
         }
         /*endif*/
@@ -719,10 +789,15 @@ void _Xi18nChangeIC (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto(ims, call_data)))
+        if (!(i18n_core->address.improto(ims, call_data))) {
+            XFree (value_buf);
             return;
+        }
         /*endif*/
     }
+
+    XFree (value_buf);
+
     /*endif*/
     if (create_flag == True)
     {
@@ -739,6 +814,7 @@ void _Xi18nChangeIC (XIMS ims,
     /*endif*/
     total_size = FrameMgrGetTotalSize (fm);
     reply = (unsigned char *) malloc (total_size);
+    
     if (!reply)
     {
         _Xi18nSendMessage (ims, connect_id, XIM_ERROR, 0, 0, 0);
@@ -797,30 +873,6 @@ void _Xi18nChangeIC (XIMS ims,
     /*endif*/
     FrameMgrFree (fm);
     XFree(reply);
-
-    /* add by hurrica...@126.com */
-    for (i = 0;  i < (int) changeic->ic_attr_num;  i++)
-    {
-        if (changeic->ic_attr[i].value)
-            XFree (changeic->ic_attr[i].value);
-        /*endif*/
-    }
-    /*endfor*/
-    for (i = 0;  i < (int) changeic->preedit_attr_num;  i++)
-    {
-	if (changeic->preedit_attr[i].value)
-	    XFree (changeic->preedit_attr[i].value);
-	/*endif*/
-    }
-    /*endfor*/
-    for (i = 0;  i < (int) changeic->status_attr_num;  i++)
-    {
-	if (changeic->status_attr[i].value)
-	    XFree (changeic->status_attr[i].value);
-	/*endif*/
-    }
-    /*endfor*/
-    /* *************************************** */
 }
 
 /* called from GetICValueMessageProc */
@@ -926,6 +978,8 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
         if (!(i18n_core->address.improto (ims, call_data)))
             return;
         /*endif*/
+	if (_Xi18nNeedSwap (i18n_core, connect_id))
+	  SwapAttributes(getic->ic_attr, getic->ic_attr_num);
     }
     /*endif*/
     iter_count = getic->ic_attr_num;

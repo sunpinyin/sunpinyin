@@ -106,11 +106,11 @@ static XimFrameRec xpcs_fr[] =
 
 static XimFrameRec ext_fr[] =
 {
-    _FRAME(BIT16), 		/* extension major-opcode */
-    _FRAME(BIT16), 		/* extension minor-opcode */
+    _FRAME(BIT8), 		/* extension major-opcode */
+    _FRAME(BIT8), 		/* extension minor-opcode */
     _FRAME(BIT16), 		/* length of extension name */
     _FRAME(BARRAY), 		/* extension name */
-    _PAD4(2),
+    _PAD4(1),
     _FRAME(EOL),
 };
 
@@ -508,6 +508,23 @@ xim_externaldef XimFrameRec forward_event_fr[] =
     _FRAME(BIT16), 		/* input-context-ID */
     _FRAME(BIT16), 		/* flag */
     _FRAME(BIT16), 		/* sequence number */
+    _FRAME(EOL),
+};
+
+xim_externaldef XimFrameRec wire_keyevent_fr[] = {
+    _FRAME(BIT8),		/* type */
+    _FRAME(BIT8),		/* detail */
+    _FRAME(BIT16),		/* serial number */
+    _FRAME(BIT32),		/* time */
+    _FRAME(BIT32),		/* root */
+    _FRAME(BIT32),		/* window */
+    _FRAME(BIT32),		/* subwindow */
+    _FRAME(BIT16),		/* rootX */
+    _FRAME(BIT16),		/* rootY */
+    _FRAME(BIT16),		/* X */
+    _FRAME(BIT16),		/* Y */
+    _FRAME(BIT16),		/* state */
+    _FRAME(BIT8),		/* sameScreen */
     _FRAME(EOL),
 };
 

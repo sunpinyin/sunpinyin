@@ -78,7 +78,6 @@
 		A412C8570F7942DB006B10AD /* SunPinyin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SunPinyin.icns; sourceTree = "<group>"; };
 		A422A7CF0DCD694400B41288 /* CandidateWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateWindow.h; sourceTree = "<group>"; };
 		A422A7D00DCD694400B41288 /* CandidateWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateWindow.m; sourceTree = "<group>"; };
-		A42E2EB30DD33E1A00165E46 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A44571AB0DBF42C200F793F9 /* macos_keycode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_keycode.h; sourceTree = "<group>"; };
 		A464E2BD0F65211A00148227 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = SOURCE_ROOT; };
 		A47C4865105E86B5006D528B /* ic_history.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ic_history.cpp; path = "../../src/ime-core/ic_history.cpp"; sourceTree = SOURCE_ROOT; };
@@ -464,7 +463,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				A485E5BB0DD28B8D00E472E5 /* English */,
-				A42E2EB30DD33E1A00165E46 /* zh_CN */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

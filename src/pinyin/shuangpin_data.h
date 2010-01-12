@@ -40,6 +40,8 @@
 
 #include <string>
 #include <map>
+
+#include "utils.h"
 #include "syllable.h"
 
 enum EShuangpinType {
@@ -68,7 +70,7 @@ typedef std::vector<std::string>         CMappedYin;
 typedef std::map<std::string, TSyllable> CEncodingMap;
 typedef std::map <char, CMappedYin*>     CKeyMap;
 
-class CShuangpinData
+class CShuangpinData : private CNonCopyable
 {
 public:
     CShuangpinData (EShuangpinType shpPlan = MS2003);

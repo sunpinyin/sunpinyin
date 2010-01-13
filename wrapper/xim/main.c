@@ -45,22 +45,28 @@
 #define XIM_NAME "xsunpinyin"
 
 static void
-on_app_exit(int sig)
+on_app_sig(int sig)
 {
-    preedit_finalize();
-    icmgr_finalize();
+    if (sig == SIGUSR1) {
+        /* reload the settings */
+        settings_load();
+    } else {
+        preedit_finalize();
+        icmgr_finalize();
 
-    settings_save();
-    settings_destroy();
+        settings_save();
+        settings_destroy();
     
-    exit(0);
+        exit(0);
+    }
 }
 
 static int
 _xerror_handler (Display *dpy, XErrorEvent *e)
 {
+    // display closed
     if (e->error_code == 0x9E) {
-        on_app_exit(SIGINT);
+        on_app_sig(SIGINT);
         exit(0);
     }
     g_debug (
@@ -92,9 +98,10 @@ main(int argc, char* argv[])
     preedit_set_handle(hdl);
     preedit_reload_ui();
 
-    signal(SIGHUP, on_app_exit);
-    signal(SIGINT, on_app_exit);
-    signal(SIGTERM, on_app_exit);
+    signal(SIGUSR1, on_app_sig);
+    signal(SIGHUP, on_app_sig);
+    signal(SIGINT, on_app_sig);
+    signal(SIGTERM, on_app_sig);
 
     gtk_main();
     

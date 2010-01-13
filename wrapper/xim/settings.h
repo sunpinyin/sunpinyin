@@ -37,8 +37,10 @@
 #define _SETTINGS_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 __BEGIN_DECLS
 

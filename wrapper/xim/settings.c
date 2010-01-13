@@ -38,9 +38,6 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/Xutil.h>
-#include <XimProto.h>
-#include <IMdkit.h>
-#include <Xi18n.h>
 
 #include "common.h"
 #include "xmisc.h"
@@ -125,10 +122,10 @@ static void
 __hotkey_enc(char* str, void* data)
 {
     hotkey_t* hk = data;
-    if ((hk->modifiers & ControlMask) != 0) {
+    if (hk->modifiers & ControlMask) {
         strncat(str, "Control+", 255);
     }
-    if ((hk->modifiers & ShiftMask) != 0) {
+    if (hk->modifiers & ShiftMask) {
         strncat(str, "Shift+", 255);
     }
 
@@ -187,7 +184,6 @@ __hotkey_dec(char* str, void* data)
     }
 }
 
-
 static void
 __init_default_values()
 {
@@ -195,7 +191,7 @@ __init_default_values()
     position_t pos;
     double d;
     varchar str;
-    
+
     /* trigger key */
     hk.modifiers = ControlMask;
     hk.keysym = XK_space;
@@ -265,6 +261,7 @@ settings_destroy()
 }
 
 #define SETTING_FILE ".sunpinyin/xim_config"
+#define DEFAULT_SETTING_FILE SUNPINYIN_XIM_DATA_DIR"/xim_config_default"
 
 void
 settings_load()
@@ -273,8 +270,15 @@ settings_load()
     char line[256];
     snprintf(path, 256, "%s/%s", getenv("HOME"), SETTING_FILE);
     FILE *fp = fopen(path, "r");
-    if (fp == NULL)
-        return;
+    if (fp == NULL) {
+        system("/usr/bin/mkdir -p 0600 ~/.sunpinyin");
+        char cmd[256];
+        snprintf(cmd, 256, "/usr/bin/cp %s %s", DEFAULT_SETTING_FILE,
+                 SETTING_FILE);
+        system(cmd);
+        if ((fp = fopen(path, "r")) == NULL)
+            return;
+    }
     while (1) {
         memset(line, 0, sizeof(char) * 256);
         if (fgets(line, 256, fp) == NULL)

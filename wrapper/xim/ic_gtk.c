@@ -140,11 +140,19 @@ show_ui_about(GtkWidget* wid, gpointer user_data)
 }
 
 static void
+launch_preferences(GtkWidget* wid, gpointer user_data)
+{
+    system("xsunpinyin-preferences&");
+}
+
+static void
 __init_tray(void)
 {
     icbar_tray = gtk_status_icon_new_from_file(ENG_ICON);
     GtkWidget* setting_menu_item =
         gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
+    g_signal_connect(setting_menu_item, "activate",
+                     G_CALLBACK(launch_preferences), NULL);
 
     GtkWidget* about_menu_item =
         gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
@@ -206,6 +214,7 @@ __init_icbar(void)
     gtk_box_pack_start(GTK_BOX(box), about_btn, false, false, 1);
     
     gtk_container_add(GTK_CONTAINER(icbar_window), box);
+    
     gtk_widget_show_all(box);
 }
 

@@ -126,7 +126,7 @@ libimdkit_la_LDFLAGS = -no-undefined -avoid-version \
 
 libimdkit_la_LIBADD = @X11_LIBS@
 
-bin_PROGRAMS = xsunpinyin
+bin_PROGRAMS = xsunpinyin xsunpinyin-preferences
 
 xsunpinyin_SOURCES = \
 	ic.cc \
@@ -150,6 +150,21 @@ xsunpinyin_CXXFLAGS = $(xsunpinyin_CFLAGS)
 xsunpinyin_LDFLAGS = @GTK_LIBS@
 xsunpinyin_LDADD = libimdkit.la libsunpinyin.la
 
+xsunpinyin_preferences_SOURCES = \
+	preferences.c \
+	settings.c \
+	xmisc.c
+
+xsunpinyin_preferences_CFLAGS = \
+	-DSUNPINYIN_XIM_DATA_DIR=\"$(SUNPINYIN_XIM_DATA_DIR)\" \
+	-DSUNPINYIN_DATA_DIR=\"$(SUNPINYIN_DATA_DIR)\" \
+	-export-dynamic @GTK_CFLAGS@ @X11_CFLAGS@
+
+xsunpinyin_preferences_CXXFLAGS = $(xsunpinyin-preferences_CFLAGS)
+
+xsunpinyin_preferences_LDFLAGS = @GTK_LIBS@
+
+
 #
 # data files installation
 #
@@ -165,4 +180,6 @@ icon_DATA = \
 	data/han.png \
 	data/eng.png \
 	data/han.svg \
-	data/eng.svg
+	data/eng.svg \
+	data/xim_config_default \
+	data/settings_ui.xml

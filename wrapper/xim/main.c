@@ -36,6 +36,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <signal.h>
+#include <langinfo.h>
 
 #include "xim.h"
 #include "xmisc.h"
@@ -45,22 +46,28 @@
 #define XIM_NAME "xsunpinyin"
 
 static void
-on_app_exit(int sig)
+on_app_sig(int sig)
 {
-    preedit_finalize();
-    icmgr_finalize();
+    if (sig == SIGUSR1) {
+        /* reload the settings */
+        settings_load();
+    } else {
+        preedit_finalize();
+        icmgr_finalize();
 
-    settings_save();
-    settings_destroy();
+        settings_save();
+        settings_destroy();
     
-    exit(0);
+        exit(0);
+    }
 }
 
 static int
 _xerror_handler (Display *dpy, XErrorEvent *e)
 {
+    // display closed
     if (e->error_code == 0x9E) {
-        on_app_exit(SIGINT);
+        on_app_sig(SIGINT);
         exit(0);
     }
     g_debug (
@@ -88,13 +95,31 @@ main(int argc, char* argv[])
     settings_init();
     settings_load();
 
-    XIMHandle* hdl = create_xim_server(XIM_NAME, getenv("LANG"));
+    /* check if the codeset is utf-8 */
+    if (strcmp(nl_langinfo(CODESET), "UTF-8") != 0) {
+        printf("Can't use xim server with codeset %s.\n",
+               nl_langinfo(CODESET));
+        return -1;
+    }
+
+    /* guess the locale */
+    char* locale = getenv("LC_CTYPE");
+    if (locale == NULL) {
+        locale = getenv("LANG");
+        if (locale == NULL) {
+            printf("Can't guess locale.\n");
+            return -1;
+        }
+    }
+    
+    XIMHandle* hdl = create_xim_server(XIM_NAME, locale);
     preedit_set_handle(hdl);
     preedit_reload_ui();
 
-    signal(SIGHUP, on_app_exit);
-    signal(SIGINT, on_app_exit);
-    signal(SIGTERM, on_app_exit);
+    signal(SIGUSR1, on_app_sig);
+    signal(SIGHUP, on_app_sig);
+    signal(SIGINT, on_app_sig);
+    signal(SIGTERM, on_app_sig);
 
     gtk_main();
     

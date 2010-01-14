@@ -1,3 +1,4 @@
+/* -*- mode: c++ -*- */
 /*
  * Copyright (c) 2010 Mike Qin <mikeandmore@gmail.com>
  *

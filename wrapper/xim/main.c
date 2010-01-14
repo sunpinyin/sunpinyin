@@ -51,6 +51,7 @@ on_app_sig(int sig)
     if (sig == SIGUSR1) {
         /* reload the settings */
         settings_load();
+        preedit_reload_ui();
     } else {
         preedit_finalize();
         icmgr_finalize();
@@ -70,7 +71,7 @@ _xerror_handler (Display *dpy, XErrorEvent *e)
         on_app_sig(SIGINT);
         exit(0);
     }
-    g_debug (
+    printf(
         "XError: "
         "serial=%lu error_code=%d request_code=%d minor_code=%d resourceid=%lu",
         e->serial, e->error_code, e->request_code, e->minor_code, e->resourceid);

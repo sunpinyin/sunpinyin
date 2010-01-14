@@ -1,2 +1,4 @@
-data/*.be usr/share/sunpinyin/
+data/lm_sc.t3g usr/share/sunpinyin/data/
+data/pydict_sc.bin usr/share/sunpinyin/data/
+data/quanpin.dat usr/share/sunpinyin/data/
 

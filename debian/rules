@@ -10,6 +10,7 @@ LDFLAGS += -Wl,--as-needed
 CXXFLAGS = -W -g
 DEB_CONFIGURE_EXTRA_FLAGS := --disable-cle \
 			--enable-ibus \
+			--enable-xim \
 			--disable-scim \
 			--disable-documents
 
@@ -34,24 +35,24 @@ endif
 DEB_DH_MAKESHLIBS_ARGS_ibus-sunpinyin := -n
 DEB_DH_GENCONTROL_ARGS_ibus-sunpinyin := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
 
-common-install-impl::
-	rm debian/tmp/usr/share/sunpinyin/*
+#common-install-impl::
+# 	rm debian/tmp/usr/share/sunpinyin/*
 
-sunpinyin-data-common:
-	tslmpack lm_sc.t3g.arpa dict.utf8 lm_sc.t3g
-	genpyt dict.utf8 pydict_sc.bin ./pydict_sc.log.utf8 lm_sc.t3g
+#sunpinyin-data-common:
+# 	./tslmpack lm_sc.t3g.arpa dict.utf8 lm_sc.t3g
+# 	./genpyt dict.utf8 pydict_sc.bin ./pydict_sc.log.utf8 lm_sc.t3g
+# 
+#build/sunpinyin-data-le::sunpinyin-data-common
+# 	./tslmendian -e le -i lm_sc.t3g -o lm_sc.t3g.le
+# 	cp pydict_sc.bin pydict_sc.bin.le
+##pyendian -e le -i pydict_sc.bin -o pydict_sc.bin.le
+# 
+#build/sunpinyin-data-be::sunpinyin-data-common
+# 	./tslmendian -e be -i lm_sc.t3g -o lm_sc.t3g.le
+# 	$(error cannot build pydict_sc.bin.le)
 
-build/sunpinyin-data-le::sunpinyin-data-common
-	tslmendian -e le -i lm_sc.t3g -o lm_sc.t3g.le
-	cp pydict_sc.bin pydict_sc.bin.le
-#pyendian -e le -i pydict_sc.bin -o pydict_sc.bin.le
-
-build/sunpinyin-data-be::sunpinyin-data-common
-	tslmendian -e be -i lm_sc.t3g -o lm_sc.t3g.le
-	$(error cannot build pydict_sc.bin.le)
-
-clean::
-	rm -f lm_sc.t3g pydict_sc.bin
+#clean::
+#	rm -f lm_sc.t3g pydict_sc.bin
 
 # binary-fixup/sunpinyin-data-le::
 # 	for f in pydict_sc.bin lm_sc.t3g ; do	                             \

@@ -17,7 +17,14 @@ Depends: ${sunpinyin-data-depends}, ${python:Depends},
 Description: Sunpinyin input method engine for ibus
  Sunpinyin is an SLM based input method engine developed by Sun.
  .
- This package contains SunPinyin input method for SCIM.
+ This package contains SunPinyin input method for IBus.
+
+Package: xsunpinyin
+Architecture: any
+Section: utils
+Depends: ${sunpinyin-data-depends}, ${shlibs:Depends}, ${misc:Depends}
+Description: Standalone xim server for Sunpinyin.
+ Sunpinyin is an SLM based input method engine developed by Sun.
 
 Package: sunpinyin-data-le
 Architecture: all

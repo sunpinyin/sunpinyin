@@ -36,11 +36,12 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+
+#include "common.h" 
 
 __BEGIN_DECLS
 

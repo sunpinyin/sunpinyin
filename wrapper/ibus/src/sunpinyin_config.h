@@ -105,7 +105,7 @@ private:
                                         const gchar *section,
                                         const gchar *name,
                                         GValue *value,
-                                        gpointer user_data);
+                                        SunPinyinConfig *user_data);
 
     std::string get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme);
     CSunpinyinSessionFactory::EPyScheme get_scheme(const std::string& name);

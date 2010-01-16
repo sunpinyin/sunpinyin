@@ -23,6 +23,8 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     
     m_config = new SunPinyinConfig();
+    m_config->listen_on_changed();
+    
     addRef();
 
     CSunpinyinSessionFactory::EPyScheme pinyin_scheme =

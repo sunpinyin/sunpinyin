@@ -15,4 +15,9 @@ using std::cout;
 using std::hex;
 using std::endl;
 
+#define PRINT_VAL(val)                          \
+    do {                                        \
+        cout << "  "#val" = " << val << endl;   \
+    } while (0)
+ 
 #endif // SUNPINYIN_DEBUG_H

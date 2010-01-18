@@ -1,0 +1,5 @@
+XIM=xsunpinyin
+XIM_ARGS=-d
+XIM_PROGRAM=/usr/bin/xsunpinyin
+GTK_IM_MODULE=xim
+QT_IM_MODULE=xim

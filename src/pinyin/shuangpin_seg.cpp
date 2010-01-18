@@ -95,18 +95,19 @@ unsigned CShuangpinSegmentor::pop ()
 
 unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
 {
-    unsigned i, j;
-    locateSegment (idx, i, j);
+    unsigned pyIdx, segIdx;
+    locateSegment (idx, pyIdx, segIdx);
 
     m_inputBuf.insert (idx, 1, ch);
     m_pystr.insert (idx, 1, ch);
 
-    std::string new_pystr = m_pystr.substr (i);
-    m_pystr.resize (i);
-    m_segs.erase (m_segs.begin()+j, m_segs.end());
-
+    std::string new_pystr = m_pystr.substr (pyIdx);
+    m_pystr.resize (pyIdx);
+    m_segs.erase (m_segs.begin()+segIdx, m_segs.end());
+    
     if (m_nLastValidPos == idx) {
         m_bPreInvalid = false;
+        
     } else if (m_nLastValidPos + 1 == idx) {
         m_bPreInvalid = false;
         int nSize = m_pystr.size();
@@ -114,21 +115,14 @@ unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
             m_nLastValidPos = idx - 1;
             new_pystr.insert((size_t)0, 1, m_pystr[nSize-1]);
             m_pystr.erase(nSize-1, 1);
-            m_segs.erase (m_segs.begin()+j-1);
+            m_segs.erase (m_segs.begin()+segIdx-1);
         } 
     
     } else if (m_nLastValidPos + 1 > idx) {
         m_bPreInvalid = false;
         m_nLastValidPos = idx;
     }
-    unsigned num = 0;
-    unsigned nSize = m_pystr.size();
-    for (int n = 0; n<nSize; n++) {
-        if (!islower(m_pystr.at(n))) {
-            num += 1;
-        }
-    }
-    m_nAlpha = num;
+    m_nAlpha = _getNumberOfNonAlpha();
 
     m_updatedFrom = UINT_MAX;
     std::string::const_iterator it = new_pystr.begin();
@@ -142,22 +136,18 @@ unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
 
 unsigned CShuangpinSegmentor::deleteAt (unsigned idx, bool backward)
 {
-    unsigned i, j;
+    unsigned pyIdx, segIdx;
     if (!backward) idx += 1;
-    locateSegment (idx, i, j);
+    locateSegment (idx, pyIdx, segIdx);
 
     m_inputBuf.erase (idx, 1);
     m_pystr.erase (idx, 1);
 
-    std::string new_pystr = m_pystr.substr (i);
-    m_pystr.resize (i);
-    TSegmentVec tmp_segs;
-    tmp_segs.assign (m_segs.begin()+j+1, m_segs.end());
-    m_segs.erase (m_segs.begin()+j, m_segs.end());
+    std::string new_pystr = m_pystr.substr (pyIdx);
+    m_pystr.resize (pyIdx);
+    TSegmentVec tmp_segs (m_segs.begin()+segIdx+1, m_segs.end());
+    m_segs.erase (m_segs.begin()+segIdx, m_segs.end());
 
-    if (idx==0) {
-        m_bPreInvalid = false;
-    }
     if (m_nLastValidPos + 1 < idx) {
        //del invalid ch, and do not effect current status. 
         m_pystr.insert(idx, new_pystr);
@@ -165,15 +155,7 @@ unsigned CShuangpinSegmentor::deleteAt (unsigned idx, bool backward)
         return m_inputBuf.size() -1;
     } else {
         m_bPreInvalid = false;
-        
-        unsigned nSize = m_pystr.size();
-        unsigned num = 0;
-        for (int n = 0; n<nSize; n++) {
-            if (!islower(m_pystr.at(n))) {
-                num += 1;
-            }
-        }
-        m_nAlpha = num;
+        m_nAlpha = _getNumberOfNonAlpha();
     }
 
     m_updatedFrom = UINT_MAX;
@@ -197,23 +179,35 @@ unsigned CShuangpinSegmentor::_clear (unsigned from)
     unsigned i, j;
     locateSegment (from, i, j);
 
-
     std::string new_pystr = m_pystr.substr (i, from-i);
-    for (const char* c = m_pystr.c_str() + i; *c != 0; ++c) {
-        if (!islower(*c))
-            --m_nAlpha;
-    }
     m_pystr.resize (i);
+    m_nAlpha = _getNumberOfNonAlpha();
+
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 
+    if (m_nLastValidPos + 1 >= from) {
+        m_bPreInvalid = false;
+    }
+    
     m_updatedFrom = from;
-    std::string::const_iterator it = new_pystr.begin();
-    for (; it!= new_pystr.end(); ++it) {
+    
+    for (std::string::const_iterator it = new_pystr.begin();
+         it!= new_pystr.end(); ++it) {
         unsigned tmp = _segmentor ((*it) & 0x7f);
         if (tmp < m_updatedFrom) m_updatedFrom = tmp;
     }
 
     return m_updatedFrom;
+}
+
+int CShuangpinSegmentor::_getNumberOfNonAlpha() const
+{
+    int nNonAlpha = 0;
+    for (const char* c = m_pystr.c_str(); *c != 0; ++c) {
+        if (!islower(*c))
+            ++nNonAlpha;
+    }
+    return nNonAlpha;
 }
 
 void CShuangpinSegmentor::locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx)
@@ -239,7 +233,6 @@ static char wchar_to_char (unsigned ch)
 
 unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 {
-    CMappedYin  syls;
     unsigned    ret = 0;
     int         len = 0;
 
@@ -252,10 +245,9 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         return ret;
     }
 
-    IPySegmentor::ESegmentType seg_type;
-    EShuangpinType    shpType = s_shpData.getShuangpinType();
+    EShuangpinType shpType = s_shpData.getShuangpinType();
     bool       bInputCh = false;
-    if ((shpType == MS2003 || shpType ==ZIGUANG) && ch==';') {
+    if ((shpType == MS2003 || shpType == ZIGUANG) && ch == ';') {
         bInputCh = true;
     }
     bool  bCompleted = !((len - m_nAlpha)%2) && 
@@ -263,7 +255,8 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 
     if (!islower(ch) && !bInputCh) { 
         ret = m_pystr.size() - 1;
-
+        
+        IPySegmentor::ESegmentType seg_type;
         if (ch == '\'' && m_inputBuf.size() > 1)
             seg_type = IPySegmentor::SYLLABLE_SEP;
         else
@@ -272,7 +265,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         m_nAlpha += 1;
         m_nLastValidPos += 1;
         return  ret;
-    } else{
+    } else {
         char buf[4];
         if (bCompleted) {
             memset(buf, '\0', sizeof(buf));
@@ -283,7 +276,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
         } else {
             sprintf(buf, "%c", ch);
         }
-
+        CMappedYin syls;
         syls.reserve(8);
         s_shpData.getMapString(buf, syls);
         if (syls.empty()) {
@@ -309,17 +302,15 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
                                 s.m_type = IPySegmentor::SYLLABLE;
                             }
                         } else {
-                           seg_type = IPySegmentor::STRING;
-                           m_segs.push_back (TSegment (ch, ret, 1, seg_type));
+                           m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::STRING));
                         }
                     }
                     return ret;
                 }
             }  
-            seg_type = IPySegmentor::INVALID;
             m_bPreInvalid = true;
             ret = m_pystr.size() - 1;
-            m_segs.push_back (TSegment (ch, ret, 1, seg_type));
+            m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::INVALID));
             
             return ret;
         } else {
@@ -338,8 +329,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
                         s.m_syllables.push_back(tmpSyl);
                         m_segs.push_back (s);
                     } else {
-                        seg_type = IPySegmentor::STRING;
-                        m_segs.push_back (TSegment (ch, ret, 1, seg_type));
+                        m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::STRING));
                     }
                 }
                 return ret;

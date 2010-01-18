@@ -217,7 +217,7 @@ SunPinyinConfig::listen_on_changed()
 {
     assert(m_config != NULL);
     g_signal_connect(m_config, "value-changed",
-                     G_CALLBACK(this->on_config_value_changed), NULL);
+                     G_CALLBACK(this->on_config_value_changed), this);
 }
 
 std::string
@@ -302,7 +302,7 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          const gchar *section,
                                          const gchar *name,
                                          GValue *value,
-                                         gpointer user_data)
+                                         SunPinyinConfig* thiz)
 {
     static const char* prefix = "engine/SunPinyin/";
     if (!strstr(section, prefix))

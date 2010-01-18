@@ -66,8 +66,9 @@ public:
 private:
     unsigned _segmentor  (unsigned ch);
     unsigned _clear (unsigned from);
-
-
+    int _getNumberOfNonAlpha() const;
+    
+    
     static CShuangpinData   s_shpData;
     std::string             m_pystr;
     wstring                 m_inputBuf;

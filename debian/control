@@ -29,7 +29,7 @@ Description: Standalone xim server for Sunpinyin.
 Package: sunpinyin-data-le
 Architecture: all
 Depends: ${misc:Depends}
-Enhances: ibus-sunpinyin
+Enhances: ibus-sunpinyin, xsunpinyin
 Conflicts: sunpinyin-data-be
 Description: Little-endian data file for SunPinyin input method engine
  Sunpinyin is an SLM based input method engine developed by Sun.
@@ -40,7 +40,7 @@ Description: Little-endian data file for SunPinyin input method engine
 Package: sunpinyin-data-be
 Architecture: all
 Depends: ${misc:Depends}
-Enhances: ibus-sunpinyin
+Enhances: ibus-sunpinyin, xsunpinyin
 Conflicts: sunpinyin-data-le
 Description: Big-endian data file for SunPinyin input method engine
  Sunpinyin is an SLM based input method engine developed by Sun.

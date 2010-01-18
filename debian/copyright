@@ -24,6 +24,10 @@ Files: wrapper/ibus/data/sunpinyin-logo.png
 Copyright: 2009, chumsdock <vorbei@gmail.com>
 License: LGPL-2.1 | CDDL
 
+Files: wrapper/xim/*
+Copyright: 2010, Mike Qin <mikeandmore@gmail.com>
+License: LGPL-2.1 | CDDL
+
 Files: debian/*
 Copyright: 2007-2009, Kefu Chai <tchaikov@gmail.com>
 License: GPL

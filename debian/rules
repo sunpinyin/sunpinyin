@@ -12,24 +12,34 @@ DEB_CONFIGURE_EXTRA_FLAGS := --disable-cle \
 			--enable-ibus \
 			--enable-xim \
 			--disable-scim \
-			--disable-documents
+			--disable-documents \
+			--libexecdir=/usr/lib/ibus-sunpinyin
 
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	DEB_CONFIGURE_EXTRA_FLAGS += --enable-debug
 endif
 
-ifneq (,$(findstring $(DEB_HOST_ARCH),alpha amd64 arm hurd-i386 i386 ia64 mipsel sh3 sh4))
-	ENDIANNESS := le
+LITTLE_ENDIAN_ARCHS := "alpha amd64 arm hurd-i386 i386 ia64 mipsel sh3 sh4"
+BIG_ENDIAN_ARCHS    := "hppa m68k mips powerpc ppc64 sparc s390"
+
+ifneq (,$(findstring $(DEB_BUILD_ARCH), $(LITTLE_ENDIAN_ARCHS)))
+	BUILD_ENDIANNESS := le
 endif
 
-ifneq (,$(findstring $(DEB_HOST_ARCH),hppa m68k mips powerpc ppc64 sparc s390))
-	ENDIANNESS := ge
+ifneq (,$(findstring $(DEB_BUILD_ARCH), $(BIG_ENDIAN_ARCHS)))
+	BUILD_ENDIANNESS := ge
 endif
 
-ifneq (,$ENDIANNESS)
-	SUNPINYIN_DATA_DEPENDS := sunpinyin-data-$(ENDIANNESS)
-else
-	$(error endianness of $(DEB_HOST_ARCH) architecture is unknown\; cannot continue)
+ifneq (,$(findstring $(DEB_HOST_ARCH), $(LITTLE_ENDIAN_ARCHS)))
+	HOST_ENDIANNESS := le
+endif
+
+ifneq (,$(findstring $(DEB_HOST_ARCH), $(BIG_ENDIAN_ARCHS)))
+	HOST_ENDIANNESS := ge
+endif
+
+ifneq ($(HOST_ENDIANNESS),$(BUILD_ENDIANNESS))
+	$(error cross-compiling not supported so far\; cannot continue)
 endif
 
 DEB_DH_MAKESHLIBS_ARGS_ibus-sunpinyin := -n

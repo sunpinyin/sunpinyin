@@ -43,7 +43,6 @@
 @interface SunPinyinController : IMKInputController {
     int                 _currentCharset;        // charset for candidates
     int                 _currentStyle;          // the current input style
-    int                 _factoryToken;          // the token gotten from sunpinyin session factory
     id                  _currentClient;         // the current active client
     NSString            *_preeditString;        // the cached preedit string
     CIMIView            *_pv;

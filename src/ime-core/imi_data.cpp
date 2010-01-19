@@ -81,7 +81,7 @@ CIMIData::loadResource(const char* lm_file_path, const char* pytrie_file_path)
         (m_pPinyinTrie = new CPinyinTrie()) != NULL && m_pPinyinTrie->load(pytrie_file_path)) {
         
         #ifdef DEBUG
-            printf("done! LM @%p, Trie @%p\n", (int)m_pLM, (int)m_pPinyinTrie);
+            printf("done! LM @%p, Trie @%p\n", m_pLM, m_pPinyinTrie);
             fflush(stdout);
         #endif
 

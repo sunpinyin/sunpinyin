@@ -312,7 +312,6 @@ Here are the three approaches:
 
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     
-    _factoryToken = factory.getToken();
     _pv = factory.createSession ();
 
     if (!_pv)

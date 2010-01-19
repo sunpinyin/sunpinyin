@@ -293,13 +293,10 @@ public:
         profile->destroyProfile(pview);
     }
 
-    void updateToken () {++m_tokenNum;}
-    unsigned getToken () const {return m_tokenNum;}
-
 private:
     CSunpinyinSessionFactory ()
         : m_pyScheme (QUANPIN), m_inputStyle(CLASSIC_STYLE), m_lang(SIMPLIFIED_CHINESE),
-          m_candiWindowSize(10), m_tokenNum(0) 
+          m_candiWindowSize(10)
     {
         m_profiles [_policiesToKey (SIMPLIFIED_CHINESE, QUANPIN, CLASSIC_STYLE)] = 
                 new CSunpinyinProfile <ASimplifiedChinesePolicy, AQuanpinSchemePolicy, AClassicStylePolicy> ();
@@ -337,8 +334,6 @@ private:
     ELanguage           m_lang;
     unsigned            m_candiWindowSize;
     CHotkeyProfile      m_hotkeyProfile;
-
-    unsigned            m_tokenNum;
 };
 
 /**

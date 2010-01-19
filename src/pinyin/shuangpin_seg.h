@@ -73,8 +73,8 @@ private:
     std::string             m_pystr;
     wstring                 m_inputBuf;
     TSegmentVec             m_segs;
-    int                     m_nAlpha;
-    bool                    m_bPreInvalid;
+    int                     m_nAlpha;      /* number of non-py chars in m_pystr*/
+    bool                    m_bPreInvalid; /* true if there is invalid py in m_pystr */
     unsigned                m_updatedFrom;
     unsigned                m_nLastValidPos;
 };

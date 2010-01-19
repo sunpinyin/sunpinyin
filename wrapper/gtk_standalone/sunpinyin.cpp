@@ -92,6 +92,7 @@ int main(int argc, char* argv[])
         factory.setPinyinScheme (CSunpinyinSessionFactory::SHUANGPIN);
         break;
     }
+    //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
     CIMIView *pv = factory.createSession ();
 
     CGTKWinHandler *pwh = new CGTKWinHandler(pv);

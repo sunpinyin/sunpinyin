@@ -226,11 +226,6 @@ void CShuangpinSegmentor::locateSegment (unsigned idx, unsigned &strIdx, unsigne
     }
 }
 
-static char wchar_to_char (unsigned ch)
-{
-    return ch;
-}
-
 unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 {
     unsigned    ret = 0;
@@ -246,14 +241,11 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
     }
 
     EShuangpinType shpType = s_shpData.getShuangpinType();
-    bool       bInputCh = false;
-    if ((shpType == MS2003 || shpType == ZIGUANG) && ch == ';') {
-        bInputCh = true;
-    }
-    bool  bCompleted = !((len - m_nAlpha)%2) && 
-                 ( islower(m_pystr[m_pystr.length()-1]) || bInputCh ) ;
+    bool isInputPy = ( islower(ch) ||
+                       (ch == ';' && (shpType == MS2003 || shpType == ZIGUANG)) );
+    bool bCompleted = !((len - m_nAlpha)%2) && isInputPy;
 
-    if (!islower(ch) && !bInputCh) { 
+    if (!isInputPy) { 
         ret = m_pystr.size() - 1;
         
         IPySegmentor::ESegmentType seg_type;
@@ -268,11 +260,7 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
     } else {
         char buf[4];
         if (bCompleted) {
-            memset(buf, '\0', sizeof(buf));
             sprintf(buf, "%c%c", m_pystr[len-2], ch);
-            if (m_pystr[len-2] == 'o') {
-                sprintf(buf, "%c", ch);
-            }
         } else {
             sprintf(buf, "%c", ch);
         }
@@ -298,11 +286,8 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
                         if ((int)tmpSyl != 0) {
                             s.m_syllables.push_back(tmpSyl);
                             m_segs.push_back (s);
-                            if (m_pystr[len-2] == 'o') {
-                                s.m_type = IPySegmentor::SYLLABLE;
-                            }
                         } else {
-                           m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::STRING));
+                            m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::STRING));
                         }
                     }
                     return ret;

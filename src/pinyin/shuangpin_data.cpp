@@ -67,18 +67,18 @@ static const char ms2003_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 'l', 'z', 
     'w', 'o', 'y', 'v', 'r', 'p', 'd', 's', 'v', 't', 's', };
 
 static TZeroInitial ms2003_zeroinitials[] = {
-    {"a", "oa"},
-    {"ai", "ol"},
-    {"an", "oj"},
-    {"ang", "oh"},
-    {"ao", "ok"},
-    {"e", "oe"},
-    {"ei", "oz"},
-    {"en", "of"},
-    {"eng", "og"},
-    {"er", "or"},
-    {"o", "oo"},
-    {"ou", "ob"},
+    {"a"   , "oa"},
+    {"ai"  , "ol"},
+    {"an"  , "oj"},
+    {"ang" , "oh"},
+    {"ao"  , "ok"},
+    {"e"   , "oe"},
+    {"ei"  , "oz"},
+    {"en"  , "of"},
+    {"eng" , "og"},
+    {"er"  , "or"},
+    {"o"   , "oo"},
+    {"ou"  , "ob"},
 };
 
 
@@ -86,28 +86,73 @@ static TZeroInitial ms2003_zeroinitials[] = {
 static const char abc_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'a', 'e', 'v', 'r', 'z', 'c', 's', 
     'y', 'w', };
+
 static const char abc_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 'l', 'q', 'k',
     'b', 'j', 'f', 'h', 'g', 'r', 'i', 'd', 'x', 'z', 'r', 'w', 'c', 't', 'y', 'u', 
     'd', 'o', 'c', 'm', 'p', 'n', 't', 's', 'v', 'm', 's', };
 
+static TZeroInitial abc_zeroinitials[] = {
+    {"a"   , "oa"},
+    {"ai"  , "ol"},
+    {"an"  , "oj"},
+    {"ang" , "oh"},
+    {"ao"  , "ok"},
+    {"e"   , "oe"},
+    {"ei"  , "oq"},
+    {"en"  , "of"},
+    {"eng" , "og"},
+    {"er"  , "or"},
+    {"o"   , "oo"},
+    {"ou"  , "ob"},
+};
 
 //ZiGuang shuangpin plan map table
 static const char ziguang_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'u', 'a', 'i', 'r', 'z', 'c', 's', 
     'y', 'w', };
+
 static const char ziguang_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 'p', 'k', 'q',
     'z', 'r', 'w', 's', 't', 'j', 'i', 'x', 'd', 'b', 'j', 'f', 'y', 'g', ';', 'u', 
     'x', 'o', 'y', 'n', 'l', 'm', 'g', 'h', 'v', 'n', 'h', };
 
+static TZeroInitial ziguang_zeroinitials[] = {
+    {"a"   , "oa"},
+    {"ai"  , "op"},
+    {"an"  , "or"},
+    {"ang" , "os"},
+    {"ao"  , "oq"},
+    {"e"   , "oe"},
+    {"ei"  , "ok"},
+    {"en"  , "ow"},
+    {"eng" , "ot"},
+    {"er"  , "oj"},
+    {"o"   , "oo"},
+    {"ou"  , "oz"},
+};
 
 //PinYinJiaJia shuangpin plan map table
 static const char pyjiajia_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'v', 'u', 'i', 'r', 'z', 'c', 's', 
     'y', 'w', };
+
 static const char pyjiajia_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 's', 'w', 'd',
     'p', 'f', 'r', 'g', 't', 'q', 'i', 'b', 'm', 'k', 'n', 'j', 'l', 'h', 'q', 'u', 
     'b', 'o', 'x', 'v', 'c', 'z', 'h', 'y', 'v', 'x', 'y', };
 
+static TZeroInitial pyjiajia_zeroinitials[] = {
+    {"a"   , "oa"},
+    {"ai"  , "os"},
+    {"an"  , "of"},
+    {"ang" , "og"},
+    {"ao"  , "od"},
+    {"e"   , "oe"},
+    {"ei"  , "ow"},
+    {"en"  , "or"},
+    {"eng" , "ot"},
+    {"er"  , "oq"},
+    {"o"   , "oo"},
+    {"ou"  , "op"},
+};
 
 //Ziranma shuangpin plan map table
 static const char ziranma_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
@@ -119,18 +164,18 @@ static const char ziranma_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 'l', 'z',
     'w', 'o', 'y', 'v', 'r', 'p', 'd', 's', 'v', 't', 's', };
 
 static TZeroInitial ziranma_zeroinitials[] = {
-    {"a", "aa"},
-    {"ai", "ai"},
-    {"an", "an"},
-    {"ang", "ah"},
-    {"ao", "ao"},
-    {"e", "ee"},
-    {"ei", "ei"},
-    {"en", "en"},
-    {"eng", "eg"},
-    {"er", "er"},
-    {"o", "oo"},
-    {"ou", "ou"},
+    {"a"   , "aa"},
+    {"ai"  , "ai"},
+    {"an"  , "an"},
+    {"ang" , "ah"},
+    {"ao"  , "ao"},
+    {"e"   , "ee"},
+    {"ei"  , "ei"},
+    {"en"  , "en"},
+    {"eng" , "eg"},
+    {"er"  , "er"},
+    {"o"   , "oo"},
+    {"ou"  , "ou"},
 };
 
 CShuangpinData::CShuangpinData (EShuangpinType shpPlan) : m_shuangpinPlan(NULL)
@@ -162,12 +207,12 @@ CShuangpinData::decodeSyllable (TSyllable s, const char **i, const char **f)
 }
 
 int 
-CShuangpinData::getMapString(char *shpstr, CMappedYin &syls)
+CShuangpinData::getMapString(const char *shpstr, CMappedYin &syls)
 {
     assert(shpstr!=NULL);
     assert(m_shuangpinPlan->mapinitials!=NULL);
     
-    char    *ch = shpstr;
+    const char *ch = shpstr;
     int     len = strlen(shpstr);
     char    buf[32] = "\0";
     
@@ -254,14 +299,17 @@ CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
     case ABC:
         m_shuangpinPlan->mapinitials = (char*)abc_mapinitials;
         m_shuangpinPlan->mapfinals = (char*)abc_mapfinals;
+        m_shuangpinPlan->zeroinitals = abc_zeroinitials;
         break;
     case ZIGUANG:
         m_shuangpinPlan->mapinitials = (char*)ziguang_mapinitials;
         m_shuangpinPlan->mapfinals = (char*)ziguang_mapfinals;
+        m_shuangpinPlan->zeroinitals = ziguang_zeroinitials;
         break;
     case PINYINJIAJIA:
         m_shuangpinPlan->mapinitials = (char*)pyjiajia_mapinitials;
         m_shuangpinPlan->mapfinals = (char*)pyjiajia_mapfinals;
+        m_shuangpinPlan->zeroinitals = pyjiajia_zeroinitials;
         break;
     case ZIRANMA:
         m_shuangpinPlan->mapinitials = (char*)ziranma_mapinitials;

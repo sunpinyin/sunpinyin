@@ -81,7 +81,7 @@ public:
     TSyllable encodeSyllable (const char *);
     const char *decodeSyllable (TSyllable, const char **i=NULL, const char **f=NULL);
 
-    int getMapString(char *ch, CMappedYin & syls);
+    int getMapString(const char *ch, CMappedYin & syls);
     EShuangpinType getShuangpinType () const {return m_shuangpinPlan->type;}
     void setShuangpinType(EShuangpinType shpPlan);
     

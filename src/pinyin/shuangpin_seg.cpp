@@ -36,14 +36,12 @@
  */
 
 #include <climits>
-#include <algorithm>
-#include <functional>
 #include "shuangpin_seg.h"
 
 CShuangpinData CShuangpinSegmentor::s_shpData;
 
 CShuangpinSegmentor::CShuangpinSegmentor (EShuangpinType shpType) 
-    : m_updatedFrom(0), m_nAlpha(0), m_bPreInvalid(false), m_nLastValidPos(0)
+    : m_updatedFrom(0), m_nAlpha(0), m_hasInvalid(false), m_nLastValidPos(0)
 {
     m_segs.reserve (32);
     m_pystr.reserve (32);
@@ -75,7 +73,7 @@ unsigned CShuangpinSegmentor::pop ()
     m_segs.pop_back ();
 
     if (size==1 || m_segs.back().m_type!=IPySegmentor::INVALID) {
-        m_bPreInvalid = false;
+        m_hasInvalid = false;
     }
     if (l == 1) 
         return m_updatedFrom = size - 1;
@@ -106,10 +104,10 @@ unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
     m_segs.erase (m_segs.begin()+segIdx, m_segs.end());
     
     if (m_nLastValidPos == idx) {
-        m_bPreInvalid = false;
+        m_hasInvalid = false;
         
     } else if (m_nLastValidPos + 1 == idx) {
-        m_bPreInvalid = false;
+        m_hasInvalid = false;
         int nSize = m_pystr.size();
         if (islower(m_pystr[nSize-1])) {
             m_nLastValidPos = idx - 1;
@@ -119,7 +117,7 @@ unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
         } 
     
     } else if (m_nLastValidPos + 1 > idx) {
-        m_bPreInvalid = false;
+        m_hasInvalid = false;
         m_nLastValidPos = idx;
     }
     m_nAlpha = _getNumberOfNonAlpha();
@@ -154,7 +152,7 @@ unsigned CShuangpinSegmentor::deleteAt (unsigned idx, bool backward)
         m_segs.insert (m_segs.end(), tmp_segs.begin(), tmp_segs.end());
         return m_inputBuf.size() -1;
     } else {
-        m_bPreInvalid = false;
+        m_hasInvalid = false;
         m_nAlpha = _getNumberOfNonAlpha();
     }
 
@@ -186,7 +184,7 @@ unsigned CShuangpinSegmentor::_clear (unsigned from)
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 
     if (m_nLastValidPos + 1 >= from) {
-        m_bPreInvalid = false;
+        m_hasInvalid = false;
     }
     
     m_updatedFrom = from;
@@ -226,112 +224,91 @@ void CShuangpinSegmentor::locateSegment (unsigned idx, unsigned &strIdx, unsigne
     }
 }
 
+int CShuangpinSegmentor::_encode(const char* buf, char ch, bool isComplete)
+{
+    CMappedYin syls;
+    syls.reserve(8);
+    s_shpData.getMapString(buf, syls);
+    if (syls.empty())
+        return -1;
+
+    const int len = m_pystr.size();
+    CMappedYin::const_iterator iter = syls.begin();
+    CMappedYin::const_iterator iter_end = syls.end();
+
+    if (isComplete) {
+        TSegment &s = m_segs.back();
+        s.m_len = 2;
+        s.m_start = len - s.m_len;
+        s.m_syllables.clear();
+        if (m_pystr[len-2]=='o') {
+            s.m_type = IPySegmentor::SYLLABLE; 
+        }
+        for (; iter!=iter_end; iter++) {
+            s.m_syllables.push_back(s_shpData.encodeSyllable(iter->c_str()));
+        }
+        m_nLastValidPos += 1;
+        return s.m_start;
+    } else {
+        TSegment s;
+        s.m_len = 1;
+        s.m_start = len - s.m_len;
+        m_nLastValidPos += 1;
+
+        for (; iter != iter_end; ++iter) {
+            TSyllable syl = s_shpData.encodeSyllable(iter->c_str());
+            if ((int)syl != 0) {
+                s.m_syllables.push_back(syl);
+                m_segs.push_back (s);
+            } else {
+                m_segs.push_back (TSegment (ch, s.m_start, 1, IPySegmentor::STRING));
+            }
+        }
+        return s.m_start;
+    }
+}
+
 unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
 {
-    unsigned    ret = 0;
-    int         len = 0;
+    int startFrom = 0;
 
     m_pystr.push_back (ch);
-    len = m_pystr.size();
-    if (m_bPreInvalid) {
-        ret = m_pystr.size () - 1;
-        m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::INVALID));
-        m_bPreInvalid = true;
-        return ret;
+    const int len = m_pystr.size();
+    if (m_hasInvalid) {
+        startFrom = len - 1;
+        m_segs.push_back (TSegment (ch, startFrom, 1, IPySegmentor::INVALID));
+        return startFrom;
     }
 
     EShuangpinType shpType = s_shpData.getShuangpinType();
     bool isInputPy = ( islower(ch) ||
                        (ch == ';' && (shpType == MS2003 || shpType == ZIGUANG)) );
-    bool bCompleted = !((len - m_nAlpha)%2) && isInputPy;
-
+    
     if (!isInputPy) { 
-        ret = m_pystr.size() - 1;
+        startFrom = len - 1;
         
         IPySegmentor::ESegmentType seg_type;
         if (ch == '\'' && m_inputBuf.size() > 1)
             seg_type = IPySegmentor::SYLLABLE_SEP;
         else
             seg_type = IPySegmentor::STRING;
-        m_segs.push_back (TSegment (ch, ret, 1, seg_type));
+        m_segs.push_back (TSegment (ch, startFrom, 1, seg_type));
         m_nAlpha += 1;
         m_nLastValidPos += 1;
-        return  ret;
     } else {
+        bool bCompleted = !((len - m_nAlpha)%2) && isInputPy;
         char buf[4];
         if (bCompleted) {
             sprintf(buf, "%c%c", m_pystr[len-2], ch);
         } else {
             sprintf(buf, "%c", ch);
         }
-        CMappedYin syls;
-        syls.reserve(8);
-        s_shpData.getMapString(buf, syls);
-        if (syls.empty()) {
-            if (bCompleted) {
-                sprintf(buf, "%c%c", m_pystr[len-2], ch);
-                syls.clear();
-                s_shpData.getMapString(buf, syls);
-                if (!syls.empty()) {
-                    CMappedYin::iterator iter = syls.begin();
-                    CMappedYin::iterator iter_end = syls.end();
-                    TSegment s;
-
-                    s.m_start =  m_pystr.size() - 2;
-                    s.m_len = 2;
-                    ret = m_pystr.size() - 2;
-                    m_nLastValidPos += 1;
-                    for (; iter!=iter_end; iter++) {
-                        TSyllable tmpSyl = s_shpData.encodeSyllable(iter->c_str());
-                        if ((int)tmpSyl != 0) {
-                            s.m_syllables.push_back(tmpSyl);
-                            m_segs.push_back (s);
-                        } else {
-                            m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::STRING));
-                        }
-                    }
-                    return ret;
-                }
-            }  
-            m_bPreInvalid = true;
-            ret = m_pystr.size() - 1;
-            m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::INVALID));
-            
-            return ret;
-        } else {
-            CMappedYin::iterator iter = syls.begin();
-            CMappedYin::iterator iter_end = syls.end();
-
-            if (!bCompleted) {
-                TSegment s;
-                s.m_start =  m_pystr.size() - 1;
-                s.m_len = 1;
-                ret = m_pystr.size() - 1;
-                m_nLastValidPos += 1;
-                for (; iter!=iter_end; iter++) {
-                    TSyllable tmpSyl = s_shpData.encodeSyllable(iter->c_str());
-                    if ((int)tmpSyl != 0) {
-                        s.m_syllables.push_back(tmpSyl);
-                        m_segs.push_back (s);
-                    } else {
-                        m_segs.push_back (TSegment (ch, ret, 1, IPySegmentor::STRING));
-                    }
-                }
-                return ret;
-            } else {
-                TSegment &s = m_segs.back();
-                s.m_len = 2;
-                s.m_start =  m_pystr.size() - 2;
-                s.m_syllables.clear();
-                if (m_pystr[len-2]=='o') {
-                    s.m_type = IPySegmentor::SYLLABLE; 
-                }
-                for (; iter!=iter_end; iter++) {
-                    s.m_syllables.push_back(s_shpData.encodeSyllable(iter->c_str()));
-                }
-                m_nLastValidPos += 1;
-                return m_pystr.size() - 2;
-            }
+        startFrom = _encode(buf, ch, bCompleted);
+        if (startFrom < 0) {
+            m_hasInvalid = true;
+            startFrom = m_pystr.size() - 1;
+            m_segs.push_back (TSegment (ch, startFrom, 1, IPySegmentor::INVALID));
         }
     }
+    return startFrom;
 }

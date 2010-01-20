@@ -67,15 +67,15 @@ private:
     unsigned _segmentor  (unsigned ch);
     unsigned _clear (unsigned from);
     int _getNumberOfNonAlpha() const;
-    
+    int _encode(const char* buf, char ch, bool isComplete);
     
     static CShuangpinData   s_shpData;
     std::string             m_pystr;
     wstring                 m_inputBuf;
     TSegmentVec             m_segs;
-    int                     m_nAlpha;      /* number of non-py chars in m_pystr*/
-    bool                    m_bPreInvalid; /* true if there is invalid py in m_pystr */
     unsigned                m_updatedFrom;
+    int                     m_nAlpha;     /* number of non-py chars in m_pystr*/
+    bool                    m_hasInvalid; /* true if there is invalid py in m_pystr */
     unsigned                m_nLastValidPos;
 };
 

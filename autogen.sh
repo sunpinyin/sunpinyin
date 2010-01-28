@@ -51,6 +51,6 @@ automake --add-missing --copy --foreign
 autoconf
 
 if test "x$1" != "x--do-not-run-configure" ; then
-    #./configure $@
-    ./configure --disable-cle --enable-ibus --disable-scim --disable-documents --prefix=/usr --libexecdir=/usr/lib/ibus-sunpinyin
+    ./configure $@
+    #./configure --disable-cle --enable-ibus --enable-xim --disable-scim --disable-documents --prefix=/usr --libexecdir=/usr/lib/ibus-sunpinyin
 fi

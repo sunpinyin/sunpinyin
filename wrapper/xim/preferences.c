@@ -164,7 +164,7 @@ state_changed()
 
     /* notify all running xsunpinyin with this user */
     char cmd[256];
-    snprintf(cmd, 256, "/usr/bin/pkill -10 xsunpinyin -u %d", getuid());
+    snprintf(cmd, 256, "/usr/bin/pkill -10 '^xsunpinyin$' -u %d", getuid());
     system(cmd);
 }
 

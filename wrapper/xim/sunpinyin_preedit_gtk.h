@@ -116,29 +116,26 @@ public:
         if (ppd->size() == 0) {
             hide_main_window();
             status_ = false;
-        } else {
-            if (!status_) {
-                show_main_window();
-                status_ = true;
-            }
-
-            PangoLayout* lay = gtk_label_get_layout(GTK_LABEL(candidate_area_));
-            int wid = -1, hei = -1;
-            pango_layout_get_pixel_size(lay, &wid, NULL);
-            gtk_window_get_size(GTK_WINDOW(main_wnd_), NULL, &hei);
-            gtk_window_resize(GTK_WINDOW(main_wnd_), wid + 1, hei);
-            gtk_window_get_size(GTK_WINDOW(main_wnd_), &width_, &height_);
-
-            // add some offsets
-            width_ += 10;
-            
-            adjust_position();
+        } else if (!status_) {
+            show_main_window();
+            status_ = true;
         }
     }
 
     void update_candidates_ui(const ICandidateList* pcl,
                               const char* utf_str) {
         gtk_label_set(GTK_LABEL(candidate_area_), utf_str);
+
+        PangoLayout* lay = gtk_label_get_layout(GTK_LABEL(candidate_area_));
+        int wid = -1;
+        pango_layout_get_pixel_size(lay, &wid, NULL);
+        gtk_window_resize(GTK_WINDOW(main_wnd_), wid + 1, 1);
+        gtk_window_get_size(GTK_WINDOW(main_wnd_), &width_, &height_);
+
+        // add some offsets
+        width_ += 10;
+
+        adjust_position();
     }
 
     bool status() {
@@ -147,7 +144,7 @@ public:
 
     void pause() {
         if (status_) {
-            gtk_widget_hide_all(main_wnd_);
+            hide_main_window();
             status_ = false;
             pause_ = true;
         }

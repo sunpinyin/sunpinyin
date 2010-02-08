@@ -175,7 +175,7 @@ AC_ARG_ENABLE([ibus],
     [ENABLE_IBUS="no"])
 
 if test "X${ENABLE_IBUS}" = "Xyes" ; then
-    # Check SCIM
+    # Check IBus
     AC_SUBST(IBUS_VERSION)
     PKG_CHECK_MODULES(IBUS,
                       [ibus-1.0 >= 1.2.0],
@@ -332,6 +332,7 @@ AC_OUTPUT(Makefile
           wrapper/ibus/setup/ibus-setup-sunpinyin
           wrapper/ibus/setup/config.py
           wrapper/ibus/data/Makefile
+          wrapper/scim/Makefile
           wrapper/xim/Makefile
           python/Makefile
           data/Makefile

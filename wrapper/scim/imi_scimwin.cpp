@@ -76,12 +76,6 @@ CScimWinHandler::~CScimWinHandler()
 }
 
 void
-CScimWinHandler::setOptions(CIMIOptions* pp)
-{
-    m_pPrefLink = pp;
-}
-
-void
 CScimWinHandler::commit(const TWCHAR* wstr)
 {
     if (wstr) {
@@ -123,8 +117,8 @@ CScimWinHandler::updateStatus(int key, int value)
     case STATUS_ID_FULLPUNC:
         m_ime->refresh_fullpunc_property(value != 0);
         break;
-    case STATUS_ID_FULLSIMBOL:
-        m_ime->refresh_fullsimbol_property(value != 0);
+    case STATUS_ID_FULLSYMBOL:
+        m_ime->refresh_fullsymbol_property(value != 0);
         break;
     default:
         SCIM_DEBUG_IMENGINE (2) << "Should not happen: updateStatus(" << key << ", " << value << ")\n";

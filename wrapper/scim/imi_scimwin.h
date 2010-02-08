@@ -65,7 +65,6 @@ public:
     /** Update status of current session using a GTK buttons. */
     virtual void  updateStatus(int key, int value);
 
-    virtual void setOptions(CIMIOptions* pp);
     /*@}*/
 
 private:

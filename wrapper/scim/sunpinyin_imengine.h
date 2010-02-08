@@ -38,17 +38,15 @@
 
 using namespace scim;
 
-struct CSunpinyinUserData;
+class CHotkeyProfile;
 
 class SunPyFactory : public IMEngineFactoryBase
 {
-    CSunpinyinUserData *m_user_data;
-    CSunpinyinOptions   m_pref;
-    CIMIData            m_pinyin_data;
     ConfigPointer       m_config;
     bool                m_valid;
     WideString          m_name;
     Connection          m_reload_signal_connection;
+    CHotkeyProfile     *m_hotkey_profile;
 
     friend class SunPyInstance;
     
@@ -72,27 +70,23 @@ public:
     
 private:
     bool init ();
-    bool load_system_data ();
     bool load_user_config ();
-    void load_user_data ();
 };
 
 class SunPyInstance : public IMEngineInstanceBase
 {
     SunPyFactory        *m_factory;
-    CIMIData            *m_pinyin_data;
-    CSunpinyinUserData  *m_user_data;
-    CSunpinyinOptions   *m_pref;
-    CIMIContext         *m_ic;
     CIMIView            *m_pv;
     CScimWinHandler     *m_wh;
+    CHotkeyProfile      *m_hotkey_profile;
     SunLookupTable      *m_lookup_table;
     
     Connection           m_reload_signal_connection;
     bool                 m_focused;
     
   public:
-    SunPyInstance(SunPyFactory *factory, CSunpinyinUserData *user_data,
+    SunPyInstance(SunPyFactory *factory,
+                  CHotkeyProfile *hotkey_profile,
                   const String& encoding, int id);
     virtual ~SunPyInstance();
     /**
@@ -127,15 +121,13 @@ public:
     using IMEngineInstanceBase::commit_string;
     
     void refresh_status_property(bool cn);
-    void refresh_fullsimbol_property(bool full);
+    void refresh_fullsymbol_property(bool full);
     void refresh_fullpunc_property(bool full);
     void redraw_preedit_string(const IPreeditString* ppd);
     void redraw_lookup_table(const ICandidateList* pcl);
 
 private:
-    void create_session(CSunpinyinOptions* pref,
-                        CIMIData* pinyin_data,
-                        CBigramHistory* history);
+    void create_session(CHotkeyProfile*);
     void destroy_session();
     
     void init_lookup_table_labels ();
@@ -144,11 +136,6 @@ private:
     void initialize_all_properties();
     
     AttributeList build_preedit_attribs(const IPreeditString* ppd);
-
-    bool try_switch_style(const SunKeyEvent& key);
-    bool try_switch_gbk(const SunKeyEvent& key);
-    bool try_switch_cn(const SunKeyEvent& key);
-    bool try_process_key(const SunKeyEvent& key);
 
     void lookup_page_up();
     void lookup_page_down();

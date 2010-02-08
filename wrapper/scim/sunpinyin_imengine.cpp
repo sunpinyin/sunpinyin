@@ -92,76 +92,6 @@
 
 using namespace scim;
 
-class CSunpinyinUserData
-{
-    CBigramHistory         m_history;
-    String                 m_history_path;
-    String                 m_user_data_directory;
-    
-public:    
-    CSunpinyinUserData() {
-        m_user_data_directory = String(scim_get_home_dir () +
-                                       String (SCIM_PATH_DELIM_STRING) +
-                                       String (".scim") + 
-                                       String (SCIM_PATH_DELIM_STRING) +
-                                       String ("sunpinyin"));
-        m_history_path        = String(m_user_data_directory +
-                                       String (SCIM_PATH_DELIM_STRING) +
-                                       String ("sunpinyin_history"));
-    }
-    
-    CBigramHistory* get_history() {
-        return &m_history;
-    }
-    
-    bool save_history() {
-        // ignore the return value, since m_history_path can be out of
-        // m_user_data_directory
-        SCIM_DEBUG_IMENGINE (3) << "save_history()\n";
-        
-        create_directory_if_necessary(m_user_data_directory);
-        
-        bool suc = false;
-        size_t sz = 0;
-        void* buf = NULL;
-        if (m_history.bufferize(&buf, &sz) && buf) {
-            FILE* fp = fopen (m_history_path.c_str(), "wb");
-            if (fp) {
-                suc = (fwrite(buf, 1, sz, fp) == sz);
-                fclose(fp);
-            }
-            free(buf);
-        }
-        return suc;
-    }
-    
-    bool load_history() {
-        bool suc = false;
-        FILE* fp = fopen(m_history_path.c_str(), "rb");
-        if (fp) {
-            struct stat info;
-            fstat(fileno(fp), &info);
-            void* buf = malloc(info.st_size);
-            if (buf) {
-                fread(buf, info.st_size, 1, fp);
-                suc = m_history.loadFromBuffer(buf, info.st_size);
-                free(buf);
-            }
-            fclose(fp);
-        }
-        return suc;
-    }
-    
-    bool create_directory_if_necessary(const String& directory) {
-        if (access (directory.c_str (), R_OK | W_OK)) {
-            mkdir (directory.c_str (), S_IRUSR | S_IWUSR | S_IXUSR);
-            if (access (directory.c_str (), R_OK | W_OK))
-                return false;
-        }
-        return true;
-    }
-};
-
 static IMEngineFactoryPointer _scim_pinyin_factory (0); 
 
 static ConfigPointer _scim_config (0);
@@ -219,16 +149,15 @@ extern "C" {
 
 // implementation of SunPyFactory
 SunPyFactory::SunPyFactory (const ConfigPointer &config)
-    : m_user_data(0),
-      m_config (config),
+    : m_config (config),
       m_valid (false)
 {
     SCIM_DEBUG_IMENGINE (3) << "SunPyFactory()\n";
     set_languages ("zh_CN");
     m_name = utf8_mbstowcs ("SunPinyin");
-    m_user_data = new CSunpinyinUserData;
-    m_valid = load_system_data() && init ();
+    m_valid = init ();
     m_reload_signal_connection = m_config->signal_connect_reload (slot (this, &SunPyFactory::reload_config));
+    m_hotkey_profile = new CHotkeyProfile();
 }
 
 bool
@@ -248,104 +177,15 @@ bool
 SunPyFactory::load_user_config()
 {
     // Load configurations.
-    m_pref.m_ViewType =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_VIEW_TYPE),
-                        0);
-    m_pref.m_GBK =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_CHARHSET),
-                        1);
-    m_pref.m_MinusAsPageUp =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_PAGE_MINUS),
-                            true);
-    m_pref.m_BracketAsPageUp =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_PAGE_BRACKET),
-                        true);
-    m_pref.m_CommaAsPageUp =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_PAGE_COMMA),
-                        false);
-    m_pref.m_MemoryPower =
-            m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_MEMORY_POWER),
-                            5);
-    m_pref.m_ContextRanking =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_CONTEXT_METHOD),
-                        true);
-    m_pref.m_LayoutVeritcal =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_USER_LAYOUT_VERTICAL),
-                        0);
-        
-    // Read ambiguities config.
-    m_pref.m_Fuzzy =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_ANY),
-                        0);
-    m_pref.m_Fuzzy_zh =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_ChiCi),
-                        0);
-    m_pref.m_Fuzzy_ch =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_ChiCi),
-                        0);
-    m_pref.m_Fuzzy_sh =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_ShiSi),
-                        0);
-    m_pref.m_Fuzzy_ln =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_NeLe),
-                        0);
-    m_pref.m_Fuzzy_fh =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_FoHe),
-                        0);
-    m_pref.m_Fuzzy_ang =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_AnAng),
-                            0);
-    m_pref.m_Fuzzy_eng =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_EnEng),
-                        0);
-    m_pref.m_Fuzzy_ing =
-        m_config->read (String (SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_InIng),
-                        0);        
-    // Adjust configurations
-    if (m_pref.m_MemoryPower > 10)
-        m_pref.m_MemoryPower = 10;
-    
+
     return true;
-}
-
-//
-// the IME wrapper may have the reference of CThreadSlm* or CPinyinTrie* from
-// m_pinyin_data, so, before calling (re)loadResouce() the wrapper should ensure
-// that the reference hold by CIMIContext is released. destroy_session() will do
-// it.  Currently, we will *ONLY* load_system_data() once after an instance of
-// SunPyFactory is created
-//
-bool
-SunPyFactory::load_system_data () {
-    // system wide data
-    const String lm_path        (String(SCIM_SUNPINYIN_DATADIR) +
-                                 String(SCIM_PATH_DELIM_STRING) +
-                                 String("lm_sc.t3g"));
-    const String py_trie_path   (String(SCIM_SUNPINYIN_DATADIR) +
-                                 String(SCIM_PATH_DELIM_STRING) +
-                                 String("pydict_sc.bin"));
-    
-    bool valid = m_pinyin_data.loadResource(lm_path.c_str(), py_trie_path.c_str());;
-
-    if (!valid) {
-        SCIM_DEBUG_IMENGINE (1) << "System Pinyin data (" <<
-            lm_path << ", " << py_trie_path << ") load failed!\n";
-    }
-    return valid;
-}
-
-void
-SunPyFactory::load_user_data () {
-    m_user_data->load_history();
 }
 
 SunPyFactory::~SunPyFactory ()
 {
     SCIM_DEBUG_IMENGINE (3) << "~SunPyFactory()\n";
-    if (m_valid)
-        m_user_data->save_history();
     m_reload_signal_connection.disconnect ();
-    delete m_user_data;
+    delete m_hotkey_profile;
 }
 
 WideString
@@ -391,7 +231,7 @@ SunPyFactory::get_help () const
 String
 SunPyFactory::get_uuid () const
 {
-    return String ("dabc0d83-013f-4fb3-b65f-a0fe0dc9a964");
+    return String ("3240fe82-585a-4f4a-96b3-0cad779c3b51");
 }
 
 String
@@ -404,7 +244,7 @@ IMEngineInstancePointer
 SunPyFactory::create_instance (const String& encoding, int id)
 {
     SCIM_DEBUG_IMENGINE (3) <<  "SunPyFactory::create_instance(" << id << ")\n";    
-    return new SunPyInstance (this, m_user_data, encoding, id);
+    return new SunPyInstance (this, m_hotkey_profile, encoding, id);
 }
 
 void
@@ -412,39 +252,46 @@ SunPyFactory::reload_config (const ConfigPointer &config)
 {
     m_config = config;
     m_valid = init ();
-    m_user_data->load_history();
 }
 
 // implementation of SunPyInstance
 SunPyInstance::SunPyInstance (SunPyFactory *factory,
-                              CSunpinyinUserData *user_data,
+                              CHotkeyProfile *hotkey_profile,
                               const String& encoding,
                               int id)
     : IMEngineInstanceBase (factory, encoding, id),
       m_factory (factory),
-      m_pinyin_data (&factory->m_pinyin_data),
-      m_user_data (user_data),
-      m_pref (&factory->m_pref),
-      m_ic (0),
       m_pv (0),
       m_wh (0),
+      m_hotkey_profile (hotkey_profile),
       m_lookup_table (0),
       m_focused (false)
 {
     SCIM_DEBUG_IMENGINE (3) << get_id() << ": SunPyInstance()\n";
-    create_session(m_pref, m_pinyin_data, m_user_data->get_history());
+    create_session(hotkey_profile);
+    if (!m_pv) return;
     m_reload_signal_connection = factory->m_config->signal_connect_reload (slot (this, &SunPyInstance::reload_config));
-    m_user_data->load_history();
     init_lookup_table_labels ();
-    m_pv->updateWindows(m_pv->clearIC());
 }
 
 SunPyInstance::~SunPyInstance ()
 {
     SCIM_DEBUG_IMENGINE (3) <<  get_id() << ": ~SunPyInstance()\n";
-    m_user_data->save_history();
     m_reload_signal_connection.disconnect ();
     destroy_session();
+}
+
+static CKeyEvent
+translate_key(const KeyEvent& key)
+{
+    // XXX: may need to move this logic into CKeyEvent
+    if (isprint(key.code) && !isspace(key.code) && !(key.mask & IM_CTRL_MASK)) {
+        // we only care about key_val here
+        return CKeyEvent(0, key.code, key.mask);
+    } else {
+        // what matters is key_code, but ibus sents me key_code as key_val
+        return CKeyEvent(key.code, 0, key.mask);
+    }
 }
 
 bool
@@ -456,33 +303,18 @@ SunPyInstance::process_key_event (const KeyEvent& key)
         key.layout << ")\n";
         
     if (!m_focused) return false;
-    
-    const SunKeyEvent ev(key);
-    
-    if ( m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_CN) ) {
-        return ( ev.is_release()  ||
-                 try_switch_style(ev) ||
-                 try_switch_gbk(ev)   ||
-                 try_switch_cn(ev)    ||
-                 try_process_key(ev));
-    } else {
-        // toggle EN/CN input mode if Shift is pressed
-        return try_switch_cn(ev);
-    }
-    // by pass the IME if we are in EN input mode
-}
 
-bool
-SunPyInstance::try_process_key(const SunKeyEvent& key)
-{
-    if (m_pref->isPageUpKey(key.code, key.value, key.modifier)) {
-        lookup_page_up ();
-    }
-    else if (m_pref->isPageDnKey(key.code, key.value, key.modifier)) {
-        lookup_page_down ();
-    }
+    CKeyEvent ev = translate_key(key);
     
-    return m_pv->onKeyEvent(key.code, key.value, key.modifier);
+    if ( !m_pv->getStatusAttrValue(CScimWinHandler::STATUS_ID_CN) ) {
+        // we are in English input mode
+        if ( !m_hotkey_profile->isModeSwitchKey(ev) ) {
+            m_hotkey_profile->rememberLastKey(ev);
+            return false;
+        }
+    }
+    return ( key.is_key_release() ||
+             m_pv->onKeyEvent(ev) );
 }
 
 void
@@ -497,7 +329,7 @@ SunPyInstance::update_lookup_table_page_size (unsigned int page_size)
 {
     if (page_size > 0) {
         SCIM_DEBUG_IMENGINE (3) << ": update_lookup_table_page_size(" << page_size << ")\n";
-        m_pv->s_CandiWindowSize = page_size;
+        m_pv->setCandiWindowSize(page_size);
         m_lookup_table->set_page_size(page_size);
     }
 }
@@ -505,10 +337,6 @@ SunPyInstance::update_lookup_table_page_size (unsigned int page_size)
 void
 SunPyInstance::lookup_table_page_up ()
 {
-    // XXX, it would be great, if View class expose a page_up() method
-//    m_pv->onKeyEvent(IM_VK_PAGE_UP, 0, 0);
-    // classic View overrides this method
-    // but modern View uses the default dummy implementation
     lookup_page_up();
     m_pv->onCandidatePageRequest(-1, true);
 }
@@ -548,8 +376,6 @@ SunPyInstance::reset ()
 {
     SCIM_DEBUG_IMENGINE (3) << get_id() << ": reset()\n";
     
-    m_pref->m_GBK = (get_encoding () != "GB2312");
-    
     m_lookup_table->clear ();
 
     hide_lookup_table ();
@@ -572,20 +398,6 @@ SunPyInstance::focus_in ()
     
     init_lookup_table_labels ();
     
-    CSunpinyinOptions* pref =
-        dynamic_cast<CSunpinyinOptions*>( m_pv->getPreference() );
-
-    if ( (m_pref->m_GBK != pref->m_GBK && get_encoding() != "GB2312") ||
-         m_pref->m_ViewType != pref->m_ViewType ) {
-        destroy_session();
-        // imi_cle hides preedit and candidates
-        create_session(m_pref, m_pinyin_data, m_user_data->get_history());
-    } else {
-        pref->m_MinusAsPageUp   = m_pref->m_MinusAsPageUp;
-        pref->m_CommaAsPageUp   = m_pref->m_CommaAsPageUp;
-        pref->m_BracketAsPageUp = m_pref->m_BracketAsPageUp;
-    }
-    
     //hide_aux_string ();
 
     m_pv->updateWindows(CIMIView::PREEDIT_MASK | CIMIView::CANDIDATE_MASK);
@@ -607,8 +419,8 @@ SunPyInstance::trigger_property (const String &property)
         const int is_CN = m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_CN);
         m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, is_CN?0:1);
     } else if (property == SCIM_PROP_LETTER) {
-        const int is_fullsimbol = m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSIMBOL);
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSIMBOL, is_fullsimbol?0:1);
+        const int is_fullsymbol = m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL);
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, is_fullsymbol?0:1);
     } else if (property == SCIM_PROP_PUNCT) {
         const int is_fullpunc = m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC);
         m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, is_fullpunc?0:1);
@@ -619,9 +431,8 @@ SunPyInstance::trigger_property (const String &property)
 void
 SunPyInstance::init_lookup_table_labels ()
 {
-    m_pv->s_CandiWindowSize = 10;
-
-    m_lookup_table->set_page_size (m_pv->s_CandiWindowSize);
+    m_pv->setCandiWindowSize(10);
+    m_lookup_table->set_page_size (10);
     m_lookup_table->show_cursor ();
 }
 
@@ -646,8 +457,8 @@ SunPyInstance::refresh_all_properties ()
                        m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_CN));
     m_wh->updateStatus(CIMIWinHandler::STATUS_ID_FULLPUNC,
                        m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC));
-    m_wh->updateStatus(CIMIWinHandler::STATUS_ID_FULLSIMBOL, 
-                       m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSIMBOL));
+    m_wh->updateStatus(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
+                       m_pv->getStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL));
 }
 
 
@@ -663,7 +474,7 @@ SunPyInstance::refresh_status_property(bool cn)
 }
 
 void
-SunPyInstance::refresh_fullsimbol_property(bool full)
+SunPyInstance::refresh_fullsymbol_property(bool full)
 {
     SCIM_DEBUG_IMENGINE (3) << get_id() << ": refresh_fullsimbol_property(" << full << ")\n";
     _letter_property.set_icon(
@@ -679,86 +490,25 @@ SunPyInstance::refresh_fullpunc_property(bool full)
     update_property(_punct_property);
 }
 
-
-//switch input GUI style between classic/modern style
-bool
-SunPyInstance::try_switch_style(const SunKeyEvent& key)
-{
-    SCIM_DEBUG_IMENGINE (3) << get_id() << ": try_switch_style(" << key.code << ")\n";
-    
-    if ( (key.modifier & IM_CTRL_MASK) == IM_CTRL_MASK &&
-         (key.code == IM_VK_BACK_QUOTE) )
-    {
-        m_pref->m_ViewType = !m_pref->m_ViewType;
-        focus_in();
-        return true;
-    } else {
-        return false;
-    }
-}
-
-//switch charset between GBK and GB2312
-bool
-SunPyInstance::try_switch_gbk(const SunKeyEvent& key)
-{
-    SCIM_DEBUG_IMENGINE (3) << get_id() << ": try_switch_gbk(" << key.code << ")\n";
-    
-    if ( (key.modifier & IM_CTRL_MASK) == IM_CTRL_MASK &&
-         (key.code == IM_VK_K)) {
-        if (m_pv) {
-            if (get_encoding() != "GB2312") {
-                m_pref->m_GBK = !m_pref->m_GBK;
-                focus_in();
-            }
-        }
-        //! just make Emacs' default key binding work
-        return false;
-    }
-    return false;
-}
-
-bool
-SunPyInstance::try_switch_cn(const SunKeyEvent& key)
-{
-    SCIM_DEBUG_IMENGINE (3) << get_id() << ": try_switch_cn(" << key.code << ")\n";
-    if (key.is_shift()) {
-        trigger_property (SCIM_PROP_STATUS);
-        return true;
-    }
-    return false;
-}
-
 void
-SunPyInstance::create_session(CSunpinyinOptions* pref,
-                              CIMIData* pinyin_data,
-                              CBigramHistory* history)
+SunPyInstance::create_session(CHotkeyProfile *hotkey_profile)
 {
     SCIM_DEBUG_IMENGINE (3) << get_id() <<  ": create_session()\n";
-    
-    CIMIContext* ic = new CIMIContext();
-    ic->setCoreData(pinyin_data);
-    ic->setHistoryMemory(history);
-    ic->setNonCompleteSyllable(true);
-    ic->clear();
 
-    pref->m_GBK = (get_encoding() != "GB2312");
-    int viewType = pref->m_ViewType?
-        CIMIViewFactory::SVT_MODERN:
-        CIMIViewFactory::SVT_CLASSIC;
-    CIMIView* pv = CIMIViewFactory::createView(viewType);
-    pv->setPreference(pref);
-    pv->attachWinHandler(m_wh);
-    pv->attachIC(ic);
+    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+    factory.setPinyinScheme(CSunpinyinSessionFactory::QUANPIN);
+    factory.setCandiWindowSize(10);
+    m_pv = factory.createSession();
+    if (!m_pv) {
+        SCIM_DEBUG_IMENGINE (3) << get_id() <<  " factory.createSession() failed\n";
+        return;
+    }
+    
+    m_pv->setHotkeyProfile(hotkey_profile);
 
-    SunLookupTable* lookup_table = new SunLookupTable();
-    
-    CScimWinHandler* wh = new CScimWinHandler(this, lookup_table);
-    wh->setOptions(pv->getPreference());
-    pv->attachWinHandler(wh);
-    
-    m_wh = wh;
-    m_pv = pv;
-    m_lookup_table = lookup_table;
+    m_lookup_table = new SunLookupTable();
+    m_wh = new CScimWinHandler(this, m_lookup_table);
+    m_pv->attachWinHandler(m_wh);
 }
 
 void
@@ -768,9 +518,8 @@ SunPyInstance::destroy_session()
     
     // wh and ic are not pointers, I don't think it's necessary to delete them
     // either
-    delete m_pv->getIC();
-    delete m_pv->getWinHandler();
     delete m_pv;
+    delete m_wh;
     delete m_lookup_table;
     
     m_pv = 0;
@@ -830,7 +579,6 @@ void
 SunPyInstance::redraw_lookup_table(const ICandidateList* pcl)
 {
     SCIM_DEBUG_IMENGINE (3) << get_id() << ": redraw_lookup_table()\n";
-    SCIM_DEBUG_IMENGINE (3) << "page size = " << m_pv->s_CandiWindowSize << "\n";
     
     m_lookup_table->update(*pcl);
     if (m_lookup_table->number_of_candidates()) {
@@ -847,6 +595,6 @@ SunPyInstance::reload_config(const ConfigPointer &config)
     SCIM_DEBUG_IMENGINE (3) << get_id() << ": reload_config()\n";
     reset();
     if (m_factory->valid()) {
-        m_factory->load_user_data();
+        m_factory->load_user_config();
     }
 }

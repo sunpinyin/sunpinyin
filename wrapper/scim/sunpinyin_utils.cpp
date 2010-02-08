@@ -38,54 +38,6 @@
 
 using namespace scim;
 
-KeyEvent SunKeyEvent::m_key;
-
-/**
- * translate from SCIM's KeyEvent to SunKeyEvent
- */
-SunKeyEvent::SunKeyEvent(const KeyEvent& key)
-    :  code(0), value(0), modifier(0)
-{
-    code = key.code;
-    // refer to definition of struct ImeKeyRec in sunpinyin/ime/iiim/cle/ime.h
-    value = key.get_ascii_code();
-    if (key.is_shift_down())     modifier |= IM_SHIFT_MASK;
-    if (key.is_control_down())   modifier |= IM_CTRL_MASK;
-    if (key.is_alt_down())       modifier |= IM_ALT_MASK;
-    
-    m_is_shift = is_shift_released(m_key, key);
-    m_key = key;
-}
-
-bool
-SunKeyEvent::is_release() const
-{
-    return !is_shift() && m_key.is_key_release();
-}
-
-bool
-SunKeyEvent::is_shift() const
-{
-    return m_is_shift;
-}
-
-// because shift by its own is a modifier key, we need take more care of it
-bool
-SunKeyEvent::is_key_shift(const KeyEvent& key)
-{
-    return ( key.code == SCIM_KEY_Shift_L &&
-             !(key.mask & ~(SCIM_KEY_ShiftMask | SCIM_KEY_ReleaseMask)));
-    // ensure that none of modifier keys is pressed except for shift
-}
-
-bool
-SunKeyEvent::is_shift_released(const KeyEvent& prev_key, const KeyEvent& curr_key)
-{
-    return ( is_key_shift(curr_key) &&
-             curr_key.is_key_release() &&
-             is_key_shift(prev_key));
-}
-
 WideString
 wstr_to_widestr(const TWCHAR* wstr)
 {

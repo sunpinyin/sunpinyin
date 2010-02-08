@@ -41,25 +41,8 @@
 #include "portability.h"
 
 #include <scim.h>
-#include <scim_event.h>
 
 using namespace scim;
-
-class SunKeyEvent
-{
-    static KeyEvent m_key;
-    bool m_is_shift;
-public:
-    unsigned code;
-    unsigned value;
-    unsigned modifier;
-    bool is_release() const;
-    bool is_shift() const;
-    SunKeyEvent(const KeyEvent& key);
-private:
-    static bool is_key_shift(const KeyEvent& key);
-    static bool is_shift_released(const KeyEvent& prev_key, const KeyEvent& curr_key);
-};
 
 WideString wstr_to_widestr(const TWCHAR* wstr);
 WideString wstr_to_widestr(const TWCHAR* wstr, size_t);

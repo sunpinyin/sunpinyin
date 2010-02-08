@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  * 
- * Copyright (c) 2008 Sun Microsystems, Inc. All Rights Reserved.
+ * Copyright (c) 2010 Yong Sun <mail@yongsun.me>
  * 
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
@@ -35,51 +35,40 @@
  * to such option by the copyright holder. 
  */
 
-#import <Cocoa/Cocoa.h>
-#import <Growl/Growl.h>
+#import "imi_session_wrapper.h"
 
-#import "CandidateWindow.h"
-#import "imi_data.h"
-#import "imi_options.h"
-#import "ic_history.h"
-
-typedef enum {
-    SWITCH_BY_NONE      = 0,
-    SWITCH_BY_CAPS      = 1,
-    SWITCH_BY_SHIFT     = 2,
-} SwitchingPolicies;
-
-//Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
-@interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
+CSunpinyinSessionWrapper::CSunpinyinSessionWrapper(id ic) : m_ic(ic), m_pv(0), m_wh(0), m_hotkey_profile(0)
 {
-    IBOutlet NSMenu*            _menu;
-    IBOutlet CandidateWindow*   _candiWin;
-    IBOutlet NSPanel*           _prefPanel;
-    IBOutlet NSTextField*       _ftTxtField;
+    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+    
+    m_pv = factory.createSession();
+    
+    if (!m_pv)
+        return;
 
-    bool                        _inputChinesePuncts;
-    bool                        _inputFullSymbols;
-    SwitchingPolicies           _switchingPolicy;
-    bool                        _usingUSKbLayout;
-    CIMIData*                   _data;
-    CBigramHistory*             _history;
+    m_hotkey_profile = new CHotkeyProfile();
+    m_pv->setHotkeyProfile (m_hotkey_profile);
+
+    m_wh = new CIMKitWindowHandler(m_ic);
+    m_pv->attachWinHandler (m_wh);
+    
+    addRef();
 }
 
--(NSMenu*)menu;
--(CandidateWindow*)candiWin;
+CSunpinyinSessionWrapper::~CSunpinyinSessionWrapper()
+{
+    if (m_pv) {
+        CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+        factory.destroySession(m_pv);
+    }
 
--(IBAction)showPrefPanel:(id)sender;
--(IBAction)showFontPanel:(id)sender;
--(IBAction)checkForUpdate:(id)sender;
+    delete m_hotkey_profile;
+    delete m_wh;
 
--(IBAction)toggleChinesePuncts:(id)sender;
--(bool)inputChinesePuncts;
--(IBAction)toggleFullSymbols:(id)sender;
--(bool)inputFullSymbols;
+    release();
+}
 
--(SwitchingPolicies)switchingPolicy;
--(bool)usingUSKbLayout;
-
--(NSDictionary *)registrationDictionaryForGrowl;
--(void)messageNotify:(NSString*)msg;
-@end
+bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
+{
+    return false;
+}

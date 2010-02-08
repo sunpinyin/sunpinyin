@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  * 
- * Copyright (c) 2008 Sun Microsystems, Inc. All Rights Reserved.
+ * Copyright (c) 2010 Yong Sun <mail@yongsun.me>
  * 
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
@@ -35,51 +35,29 @@
  * to such option by the copyright holder. 
  */
 
-#import <Cocoa/Cocoa.h>
-#import <Growl/Growl.h>
-
-#import "CandidateWindow.h"
-#import "imi_data.h"
 #import "imi_options.h"
-#import "ic_history.h"
+#import "imi_imkitwin.h"
 
-typedef enum {
-    SWITCH_BY_NONE      = 0,
-    SWITCH_BY_CAPS      = 1,
-    SWITCH_BY_SHIFT     = 2,
-} SwitchingPolicies;
-
-//Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
-@interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
+class CSunpinyinSessionWrapper : public IConfigurable, CNonCopyable
 {
-    IBOutlet NSMenu*            _menu;
-    IBOutlet CandidateWindow*   _candiWin;
-    IBOutlet NSPanel*           _prefPanel;
-    IBOutlet NSTextField*       _ftTxtField;
+public:
+     CSunpinyinSessionWrapper (id ic);
+    ~CSunpinyinSessionWrapper ();
+	
+	bool isValid () const 
+	    {return m_pv != NULL;}
+	
+	unsigned clear(void)
+	    {return isValid()? m_pv->clearIC(): 0;}
+	
+	bool onKeyEvent(const CKeyEvent& event)
+	    {return isValid()? m_pv->onKeyEvent(event): false;}	
+	
+    bool onConfigChanged (const COptionEvent& event);
 
-    bool                        _inputChinesePuncts;
-    bool                        _inputFullSymbols;
-    SwitchingPolicies           _switchingPolicy;
-    bool                        _usingUSKbLayout;
-    CIMIData*                   _data;
-    CBigramHistory*             _history;
-}
-
--(NSMenu*)menu;
--(CandidateWindow*)candiWin;
-
--(IBAction)showPrefPanel:(id)sender;
--(IBAction)showFontPanel:(id)sender;
--(IBAction)checkForUpdate:(id)sender;
-
--(IBAction)toggleChinesePuncts:(id)sender;
--(bool)inputChinesePuncts;
--(IBAction)toggleFullSymbols:(id)sender;
--(bool)inputFullSymbols;
-
--(SwitchingPolicies)switchingPolicy;
--(bool)usingUSKbLayout;
-
--(NSDictionary *)registrationDictionaryForGrowl;
--(void)messageNotify:(NSString*)msg;
-@end
+private:
+    id                   m_ic;
+    CIMIView            *m_pv;
+    CIMKitWindowHandler	*m_wh;
+    CHotkeyProfile      *m_hotkey_profile;
+};

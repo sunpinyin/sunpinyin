@@ -38,12 +38,10 @@
 #import "SunPinyinInputController.h"
 #import "SunPinyinApplicationDelegate.h"
 #import "macos_keycode.h"
-#import "imi_imkitwin.h"
-#import "imi_options.h"
+#import "imi_session_wrapper.h"
 
 // forward declaration of 'Private' category
 @interface SunPinyinController(Private) 
--(void)tryToSwitchStyle;
 -(void)createSession;
 -(void)destroySession;
 @end 
@@ -90,7 +88,7 @@ Here are the three approaches:
     // Key processing will not continue in that case.  In other words the 
     // system will not deliver a key down event to the application.
     // Returning NO means the original key down will be passed on to the client.
-    if (!_pv) return NO;
+    if (!_session->isValid()) return NO;
 
     _currentClient = sender;
     bool handled = NO;
@@ -115,7 +113,7 @@ Here are the three approaches:
             if (_englishMode) {
                 // We need two spaces to commit in modern style
                 CKeyEvent key_event (' ', ' ', 0);
-                _pv->onKeyEvent (key_event);
+                _session->onKeyEvent (key_event);
             }
             break;
         case NSKeyDown:
@@ -134,12 +132,10 @@ Here are the three approaches:
                 }
                 break;
             }
- 
-            [self tryToSwitchStyle];
             
             // translate osx keyevents to ime keyevents
             CKeyEvent key_event = osx_keyevent_to_ime_keyevent (keyCode, keyChar, modifiers);
-            handled = _pv->onKeyEvent (key_event);
+            handled = _session->onKeyEvent (key_event);
             break;
         defaults:
             break;
@@ -192,7 +188,7 @@ Here are the three approaches:
     NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (string && [string length])
         [self commitString:string];
-    if (_pv) _pv->clearIC();
+    _session->clear();
 }
 
 -(NSMenu*)menu
@@ -208,15 +204,11 @@ Here are the three approaches:
 -(void)toggleChinesePuncts:(id)sender
 {
     [[NSApp delegate] toggleChinesePuncts:sender];
-    if (_pv) _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
-                                     [[NSApp delegate] inputChinesePuncts]);
 }
 
 -(void)toggleFullSymbols:(id)sender
 {
     [[NSApp delegate] toggleFullSymbols:sender];
-    if (_pv) _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
-                                     [[NSApp delegate] inputFullSymbols]);
 }
 
 -(void)dealloc 
@@ -297,45 +289,15 @@ Here are the three approaches:
 // implementation of private interface
 @implementation SunPinyinController(Private)
 
--(void)tryToSwitchStyle
-{
-    /* input style changed, have to recreate session */
-    return;
-    [self destroySession];
-    [self createSession];
-}
-
 -(void)createSession
 {
-    if (![[NSApp delegate] sysData])
-        return;
-
-    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-    
-    _pv = factory.createSession ();
-
-    if (!_pv)
-        return;
-    
-    _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
-                            [[NSApp delegate] inputChinesePuncts]);
-    _pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
-                            [[NSApp delegate] inputFullSymbols]);
-
-    // create callback handler and attach to the view
-    CIMKitWindowHandler* pwh = new CIMKitWindowHandler(self);
-    _pv->attachWinHandler(pwh);
+    _session = new CSunpinyinSessionWrapper (self);
 }
 
 -(void)destroySession
 {
-    if (!_pv) return;
-
-    [[NSApp delegate] saveHistory];
-    
-    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-    factory.destroySession(_pv);
-    _pv = nil;
+    delete _session;
+    _session = nil;
 }
 
 @end // SunPinyinController(Private)

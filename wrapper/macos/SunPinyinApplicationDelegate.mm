@@ -38,12 +38,10 @@
 #include <sys/stat.h>
 #import "imi_view.h"
 #import "SunPinyinApplicationDelegate.h"
+#import "imi_option_keys.h"
 #import <Sparkle/Sparkle.h>
 
-static NSString* get_history_path ();
-static bool save_history (CICHistory*);
-static bool load_history (CICHistory*);
-static bool load_preferences ();
+void postConfigurationEvents(NSUserDefaults* pref);
 
 @implementation SunPinyinApplicationDelegate
 
@@ -58,43 +56,11 @@ static bool load_preferences ();
     return _candiWin;
 }
 
-//this method is to return a CIMIData instance which loads the language model and lexicon file
--(CIMIData*)sysData
-{
-    if (_data == NULL) {
-        _data = new CIMIData();
-        const char * res_path = [[[NSBundle mainBundle] resourcePath] UTF8String];
-        char slm_path[512], pydict_path[512];
-        snprintf (slm_path, sizeof(slm_path), "%s/%s", res_path, "lm_sc.t3g");
-        snprintf (pydict_path, sizeof(pydict_path), "%s/%s", res_path, "pydict_sc.bin");
-        if (_data->loadResource(slm_path, pydict_path))
-            return _data;
-
-        delete _data;
-        _data = NULL;
-    }
-
-    return _data;
-}
-
--(CBigramHistory*)history
-{
-    if (_history == nil) {
-        _history = new CBigramHistory();
-        load_history(_history);
-    }
-    return _history;
-}
-
--(void)saveHistory
-{
-    if (_history)
-        save_history(_history);
-}
-
-
 -(void)preferencesChanged:(NSNotification *)notification
 {
+    if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
+        return;
+	
     NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
     
     //setting full/half puncts and symbols
@@ -132,6 +98,8 @@ static bool load_preferences ();
     [_ftTxtField setFont:font];
     [_ftTxtField setStringValue:text];
     [_candiWin setFont:font];
+	
+	postConfigurationEvents (pref);
 }
 
 //add an awakeFromNib item so that we can set the action method.  Note that 
@@ -267,71 +235,44 @@ static bool load_preferences ();
 
 @end
 
-//this method is to return the path to history cache file.
-static NSString* get_history_path ()
+void postConfigurationEvents(NSUserDefaults* pref)
 {
-    NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/SunPinyin"];
-    NSFileManager* fm = [NSFileManager defaultManager];
-    if(![fm fileExistsAtPath:path])
-        [fm createDirectoryAtPath:path attributes:nil];
+    COptionEventBus& event_bus = AOptionEventBus::instance();
 
-    return [path stringByAppendingPathComponent:@"history"];
+    int  pinyin_scheme = [pref integerForKey: @"pinyinMode"];
+    event_bus.publishEvent(COptionEvent(PINYIN_SCHEME, pinyin_scheme));
+
+    int  shuangpin_type = [pref integerForKey: @"Shuangpin.Scheme"];
+    event_bus.publishEvent(COptionEvent(SHUANGPIN_TYPE, shuangpin_type));
+
+    bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
+    event_bus.publishEvent(COptionEvent(QUANPIN_FUZZY_ENABLED, quanpin_fuzzy_enabled));
+    
+    std::vector<std::string> fuzzy_pairs;
+    if ([pref boolForKey: @"Quanpin.Fuzzy.ZhiZi"])   fuzzy_pairs.push_back("zh:z");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.ChiCi"])   fuzzy_pairs.push_back("ch:c");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.ShiSi"])   fuzzy_pairs.push_back("sh:s");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.AnAng"])   fuzzy_pairs.push_back("an:ang");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.OnOng"])   fuzzy_pairs.push_back("on:ong");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.EnEng"])   fuzzy_pairs.push_back("en:eng");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.InIng"])   fuzzy_pairs.push_back("in:ing");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.EngOng"])  fuzzy_pairs.push_back("eng:ong");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.IanIang"]) fuzzy_pairs.push_back("ian:iang");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.UanUang"]) fuzzy_pairs.push_back("uan:uang");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.NeLe"])    fuzzy_pairs.push_back("n:l");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.FoHe"])    fuzzy_pairs.push_back("f:h");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.LeRi"])    fuzzy_pairs.push_back("l:r");
+    if ([pref boolForKey: @"Quanpin.Fuzzy.KeGe"])    fuzzy_pairs.push_back("k:g");
+    event_bus.publishEvent (COptionEvent(QUANPIN_FUZZY_PINYINS, fuzzy_pairs));
+
+    bool quanpin_autocorrecting_enabled = [pref boolForKey: @"Quanpin.AutoCorrecting.Enabled"];
+    event_bus.publishEvent(COptionEvent(QUANPIN_AUTOCORRECTION_ENABLED, quanpin_autocorrecting_enabled));
+    
+    std::vector<std::string> correcting_pairs;
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IgnIng"]) correcting_pairs.push_back("ign:ing");
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.UenUn"])  correcting_pairs.push_back("uen:un");
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.ImgIng"]) correcting_pairs.push_back("img:ing");
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IouIu"])  correcting_pairs.push_back("iou:iu");
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.UeiUi"])  correcting_pairs.push_back("uei:ui");
+    event_bus.publishEvent (COptionEvent(QUANPIN_AUTOCORRECTION_PINYINS, correcting_pairs));
 }
-
-static bool save_history (CICHistory* history)
-{
-    bool suc = NO;
-    size_t sz = 0;
-    void* buf = NULL;
-    NSString* path = get_history_path ();
-
-    if (history->bufferize(&buf, &sz) && buf) {
-        FILE* fp = fopen ([path UTF8String], "w+b");
-        if (fp) {
-            suc = (fwrite(buf, 1, sz, fp) == sz);
-            fclose(fp);
-        }   
-        free(buf);
-    }
-
-    return suc;
-}
-
-static bool load_history (CICHistory* history)
-{
-    bool suc = NO;
-
-    NSString* path = get_history_path ();
-    FILE* fp = fopen([path UTF8String], "rb");
-
-    if (fp) {
-        struct stat info;
-        fstat(fileno(fp), &info);
-        void* buf = malloc(info.st_size);
-        if (buf) {
-            fread(buf, info.st_size, 1, fp);
-            suc = history->loadFromBuffer(buf, info.st_size);
-            free(buf);
-        }   
-        fclose(fp);
-    }
-
-    return suc;
-}
-
-static bool load_preferences ()
-{
-    NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
-#if 0
-    opts->m_ViewType = [pref integerForKey: @"inputStyle"]?
-                       CIMIViewFactory::SVT_CLASSIC:
-                       CIMIViewFactory::SVT_MODERN;
-    opts->m_MinusAsPageUp = [pref boolForKey:@"pagingByMinusAndEqual"];
-    opts->m_BracketAsPageUp = [pref boolForKey:@"pagingByBrackets"];
-    opts->m_CommaAsPageUp = [pref boolForKey:@"pagingByCommaAndDot"];
-    opts->m_CandiWindowSize = [pref integerForKey:@"candiNumbers"];
-    opts->m_GBK = [[pref stringForKey:@"charset"] isEqualToString:@"GBK"];
-#endif
-    return YES;
-}
-

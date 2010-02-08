@@ -33,6 +33,7 @@
 		A47C4897105E86DB006D528B /* shuangpin_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4890105E86DB006D528B /* shuangpin_data.cpp */; };
 		A47C4898105E86DB006D528B /* shuangpin_seg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4892105E86DB006D528B /* shuangpin_seg.cpp */; };
 		A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */ = {isa = PBXBuildFile; fileRef = A47C48DE105E8CE8006D528B /* macos_keycode.mm */; };
+		A4829AE711060C69004F71A7 /* imi_session_wrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4829AE611060C69004F71A7 /* imi_session_wrapper.mm */; };
 		A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */; };
 		A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */; };
 		A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4B664FE106D051D009BA1DB /* imi_option_event.cpp */; };
@@ -117,6 +118,8 @@
 		A47C4893105E86DB006D528B /* shuangpin_seg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shuangpin_seg.h; path = ../../src/pinyin/shuangpin_seg.h; sourceTree = SOURCE_ROOT; };
 		A47C4894105E86DB006D528B /* syllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = syllable.h; path = ../../src/pinyin/syllable.h; sourceTree = SOURCE_ROOT; };
 		A47C48DE105E8CE8006D528B /* macos_keycode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = macos_keycode.mm; sourceTree = SOURCE_ROOT; };
+		A4829AE511060C69004F71A7 /* imi_session_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_session_wrapper.h; sourceTree = SOURCE_ROOT; };
+		A4829AE611060C69004F71A7 /* imi_session_wrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imi_session_wrapper.mm; sourceTree = SOURCE_ROOT; };
 		A485E5BB0DD28B8D00E472E5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imi_imkitwin.h; sourceTree = "<group>"; };
 		A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imi_imkitwin.mm; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A4829AE511060C69004F71A7 /* imi_session_wrapper.h */,
+				A4829AE611060C69004F71A7 /* imi_session_wrapper.mm */,
 				A47C48DE105E8CE8006D528B /* macos_keycode.mm */,
 				A44571AB0DBF42C200F793F9 /* macos_keycode.h */,
 				A4ADD1100DBEDD3400671528 /* imi_imkitwin.h */,
@@ -445,6 +450,7 @@
 				A47C4898105E86DB006D528B /* shuangpin_seg.cpp in Sources */,
 				A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */,
 				A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */,
+				A4829AE711060C69004F71A7 /* imi_session_wrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

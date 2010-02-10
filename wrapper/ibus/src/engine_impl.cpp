@@ -25,8 +25,6 @@ EngineImpl::EngineImpl(IBusEngine *ibus_engine)
     m_config = new SunPinyinConfig();
     m_config->listen_on_changed();
     
-    addRef();
-
     CSunpinyinSessionFactory::EPyScheme pinyin_scheme =
         m_config->get_py_scheme(CSunpinyinSessionFactory::QUANPIN);
     factory.setPinyinScheme(pinyin_scheme);
@@ -83,7 +81,6 @@ EngineImpl::~EngineImpl()
     delete m_wh;
     delete m_hotkey_profile;
     
-    release();
     delete m_config;
     
     delete m_lookup_table;

@@ -3,7 +3,7 @@
 #include "imi_option_event.h"
 
 COptionEvent::variant_::variant_(int v) 
-    : type(VAL_UNSIGNED)
+    : type(VAL_INTEGER)
 {
     data.d_int = v;
 }
@@ -51,28 +51,13 @@ COptionEvent::get_string_list() const
 }
 
 IConfigurable::IConfigurable()
-    : m_refcnt(0)
-{}
+{
+    AOptionEventBus::instance().registerAsListener(this);
+}
 
 IConfigurable::~IConfigurable()
 {
-    // assert(m_refcnt == 0);
-}
-
-void
-IConfigurable::addRef()
-{
-    if (m_refcnt++ == 0) {
-        AOptionEventBus::instance().registerAsListener(this);
-    }
-}
-
-void
-IConfigurable::release()
-{
-    if (--m_refcnt == 0) {
-        AOptionEventBus::instance().unregisterAsListener(this);
-    }
+    AOptionEventBus::instance().unregisterAsListener(this);
 }
 
 void

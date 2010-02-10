@@ -48,8 +48,8 @@ struct COptionEvent
             std::vector<std::string> d_strings;
         } data;
         enum {
-            VAL_UNSIGNED,
-            VAL_UNSIGNED_LIST,
+            VAL_INTEGER,
+            VAL_INTEGER_LIST,
             VAL_STRING,
             VAL_STRING_LIST,
             VAL_BOOL,
@@ -70,11 +70,6 @@ public:
      *         sent to another event listener, false otherwise.
      */
     virtual bool onConfigChanged(const COptionEvent&) { return false; }
-    void addRef();
-    void release();
-    
-private:
-    int m_refcnt;
 };
 
 class COptionEventBus

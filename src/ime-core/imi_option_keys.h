@@ -7,6 +7,7 @@
 #define PINYIN_SCHEME                   "Pinyin/Scheme"
 #define PINYIN_PUNCTMAPPING_ENABLED     "General/PunctMapping/Enabled"
 #define PINYIN_PUNCTMAPPING_MAPPINGS    "General/PunctMapping/Mappings"
+#define CONFIG_GENERAL_CHARSET_LEVEL    "General/Charset"
 #define QUANPIN_FUZZY_ENABLED           "QuanPin/Fuzzy/Enabled"
 #define QUANPIN_FUZZY_PINYINS           "QuanPin/Fuzzy/Pinyins"
 #define QUANPIN_AUTOCORRECTION_ENABLED  "QuanPin/AutoCorrection/Enabled"

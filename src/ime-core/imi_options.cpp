@@ -118,6 +118,8 @@ CSimplifiedChinesePolicy::createContext()
     pic->setHistoryMemory (&m_historyCache);
     pic->setUserDict (&m_userDict);
 
+	pic->setCharsetLevel (m_csLevel);
+
     pic->setFullSymbolForwarding (m_bEnableFullSymbol);
     pic->setGetFullSymbolOp (&m_getFullSymbolOp);
 
@@ -139,10 +141,12 @@ CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 {
     if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
         CPairParser parser;
-        size_t num = parser.parse(event);
         setPunctMapping(parser.get_pairs());
         return true;
+    } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
+        m_csLevel = event.get_int() & 3;
     }
+
     return false;
 }
 

@@ -73,7 +73,7 @@ struct CSimplifiedChinesePolicy : public IConfigurable
         {m_getFullPunctOp.initPunctMap (map);}
 
     void enableFullSymbol (bool v=true) {m_bEnableFullSymbol = v;}
-    void enableFullPunct (bool v=true) {m_bEnableFullPunct = v;}
+    void enableFullPunct  (bool v=true) {m_bEnableFullPunct = v;}
 
     virtual bool onConfigChanged (const COptionEvent& event);
     

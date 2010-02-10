@@ -36,7 +36,27 @@
  */
 
 #import "imi_options.h"
+#import "imi_option_keys.h"
 #import "imi_imkitwin.h"
+
+#define CONFIG_GENERAL_PAGE_SIZE         "General/PageSize"
+
+#define CONFIG_KEYBOARD_PAGE_COMMA       "Keyboard/Page/CommaPeriod"
+#define CONFIG_KEYBOARD_PAGE_MINUS       "Keyboard/Page/MinusEquals"
+#define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
+
+struct CSessionConfigStore : public CNonCopyable
+{
+    bool        m_paging_by_comma_period;
+    bool        m_paging_by_minus_equals;
+    bool        m_paging_by_brackets;
+
+    static CSessionConfigStore& instance () 
+    {
+        static CSessionConfigStore inst;
+        return inst;
+    }
+};
 
 class CSunpinyinSessionWrapper : public IConfigurable, CNonCopyable
 {
@@ -55,6 +75,17 @@ public:
 	
     bool onConfigChanged (const COptionEvent& event);
 
+private:
+    void apply_configuration();
+    
+    void update_cand_window_size(unsigned);
+    void update_charset_level(unsigned);
+    
+    void update_page_key_minus(bool);
+    void update_page_key_comma(bool);
+    void update_page_key_bracket(bool);
+    void update_page_key(unsigned, unsigned, bool);
+    
 private:
     id                   m_ic;
     CIMIView            *m_pv;

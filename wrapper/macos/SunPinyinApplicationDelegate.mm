@@ -37,8 +37,9 @@
 
 #include <sys/stat.h>
 #import "imi_view.h"
-#import "SunPinyinApplicationDelegate.h"
 #import "imi_option_keys.h"
+#import "imi_session_wrapper.h"
+#import "SunPinyinApplicationDelegate.h"
 #import <Sparkle/Sparkle.h>
 
 void postConfigurationEvents(NSUserDefaults* pref);
@@ -56,11 +57,8 @@ void postConfigurationEvents(NSUserDefaults* pref);
     return _candiWin;
 }
 
--(void)preferencesChanged:(NSNotification *)notification
+-(void)loadPreferences
 {
-    if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
-        return;
-	
     NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
     
     //setting full/half puncts and symbols
@@ -68,28 +66,28 @@ void postConfigurationEvents(NSUserDefaults* pref);
     _inputFullSymbols   = [pref boolForKey:@"inputFullSymbols"];
     _switchingPolicy    = (SwitchingPolicies) [pref integerForKey:@"switchingPolicy"];
     _usingUSKbLayout    = [pref boolForKey:@"usingUSKbLayout"];
-        
+    
     //setting background color
     NSData *data = [pref dataForKey:@"bgColor"];
     NSColor *color = data? (NSColor*) [NSUnarchiver unarchiveObjectWithData:data]:
-                           [NSColor orangeColor];
-
+    [NSColor orangeColor];
+    
     float alpha = [pref floatForKey:@"alpha"]/100.0;
     NSColor *bgColor = [color colorWithAlphaComponent:alpha];
     [_ftTxtField setBackgroundColor:color];
     [_candiWin setBgColor:bgColor];
-
+    
     data = [pref dataForKey:@"fgColor"];
     color = data? (NSColor*) [NSUnarchiver unarchiveObjectWithData:data]:
-                  [NSColor whiteColor];
+    [NSColor whiteColor];
     [_ftTxtField setTextColor:color];
     [_candiWin setFgColor:color];
-
+    
     data = [pref dataForKey:@"hlColor"];
     color = data? (NSColor*) [NSUnarchiver unarchiveObjectWithData:data]:
-                  [NSColor blueColor];
+    [NSColor blueColor];
     [_candiWin setHlColor:color];
-
+    
     //setting font
     NSString *ftname = [pref stringForKey:@"fontName"];
     float ftsize = [pref floatForKey:@"fontSize"];
@@ -102,6 +100,14 @@ void postConfigurationEvents(NSUserDefaults* pref);
 	postConfigurationEvents (pref);
 }
 
+-(void)preferencesChanged:(NSNotification *)notification
+{
+    if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
+        return;
+    
+	[self loadPreferences];
+}
+
 //add an awakeFromNib item so that we can set the action method.  Note that 
 //any menuItems without an action will be disabled when displayed in the Text 
 //Input Menud.
@@ -112,7 +118,8 @@ void postConfigurationEvents(NSUserDefaults* pref);
             selector:@selector(preferencesChanged:)
             name:NSUserDefaultsDidChangeNotification
             object:nil];
-            
+
+    [self loadPreferences];
     [GrowlApplicationBridge setGrowlDelegate: self];
 }
 
@@ -233,13 +240,15 @@ void postConfigurationEvents(NSUserDefaults* pref);
                             clickContext: nil];
 }
 
-@end
+@end //SunPinyinApplicationDelegate
 
 void postConfigurationEvents(NSUserDefaults* pref)
 {
     COptionEventBus& event_bus = AOptionEventBus::instance();
-
+    CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+    
     int  pinyin_scheme = [pref integerForKey: @"pinyinMode"];
+    factory.setPinyinScheme((CSunpinyinSessionFactory::EPyScheme)pinyin_scheme);
     event_bus.publishEvent(COptionEvent(PINYIN_SCHEME, pinyin_scheme));
 
     int  shuangpin_type = [pref integerForKey: @"Shuangpin.Scheme"];
@@ -275,4 +284,27 @@ void postConfigurationEvents(NSUserDefaults* pref)
     if ([pref boolForKey: @"Quanpin.AutoCorrecting.IouIu"])  correcting_pairs.push_back("iou:iu");
     if ([pref boolForKey: @"Quanpin.AutoCorrecting.UeiUi"])  correcting_pairs.push_back("uei:ui");
     event_bus.publishEvent (COptionEvent(QUANPIN_AUTOCORRECTION_PINYINS, correcting_pairs));
+    
+    int candi_number = [pref integerForKey:@"candiNumbers"];
+    factory.setCandiWindowSize(candi_number);
+    event_bus.publishEvent(COptionEvent(CONFIG_GENERAL_PAGE_SIZE, candi_number));
+
+    NSString *charset = [pref stringForKey:@"charset"];
+    int charset_level = [charset isEqualToString:@"GB18030"]? 2: 
+                            [charset isEqualToString:@"GBK"]? 1: 0;
+    event_bus.publishEvent (COptionEvent(CONFIG_GENERAL_CHARSET_LEVEL, charset_level));
+    
+    bool paging_by_minus_equals = [pref boolForKey:@"pagingByMinusAndEqual"];
+    event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_MINUS, paging_by_minus_equals));
+
+    bool paging_by_brackets = [pref boolForKey:@"pagingByBrackets"];
+    event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_BRACKET, paging_by_brackets));
+    
+    bool paging_by_comma_period = [pref boolForKey:@"pagingByCommaAndDot"];
+    event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_COMMA, paging_by_comma_period));
+    
+    // store the session specific configurations
+    CSessionConfigStore::instance().m_paging_by_minus_equals = paging_by_minus_equals;
+    CSessionConfigStore::instance().m_paging_by_brackets     = paging_by_brackets;        
+    CSessionConfigStore::instance().m_paging_by_comma_period = paging_by_comma_period;    
 }

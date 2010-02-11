@@ -25,6 +25,7 @@ static GtkColorButton* background_color_btn = NULL;
 static GtkFontButton* font_btn = NULL;
 static GtkColorButton* font_color_btn = NULL;
 static GtkAdjustment* opacity_value = NULL;
+static GtkAdjustment* ncandidates = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
@@ -86,6 +87,10 @@ init_settings(void)
     double scale;
     settings_get(PREEDIT_OPACITY, &scale);
     gtk_adjustment_set_value(opacity_value, scale);
+
+    int ncandi;
+    settings_get(CANDIDATES_SIZE, &ncandi);
+    gtk_adjustment_set_value(ncandidates, ncandi);
 }
 
 static void
@@ -105,6 +110,7 @@ init(void)
     RETRIEVE(font_btn, GTK_FONT_BUTTON);
     RETRIEVE(font_color_btn, GTK_COLOR_BUTTON);
     RETRIEVE(opacity_value, GTK_ADJUSTMENT);
+    RETRIEVE(ncandidates, GTK_ADJUSTMENT);
 
     init_settings();
     
@@ -159,6 +165,9 @@ state_changed()
     /* font color information */
     double scale = gtk_adjustment_get_value(opacity_value);
     settings_set(PREEDIT_OPACITY, &scale);
+
+    int ncandi = gtk_adjustment_get_value(ncandidates);
+    settings_set(CANDIDATES_SIZE, &ncandi);
     
     settings_save();
 

@@ -98,8 +98,8 @@ public:
         
         settings_get(PREEDIT_FONT_COLOR, value);
         gdk_color_parse(value, &color);
-        gtk_widget_modify_text(candidate_area_, GTK_STATE_NORMAL, &color);
-        gtk_widget_modify_text(preedit_area_, GTK_STATE_NORMAL, &color);
+        gtk_widget_modify_fg(candidate_area_, GTK_STATE_NORMAL, &color);
+        gtk_widget_modify_fg(preedit_area_, GTK_STATE_NORMAL, &color);
                              
     }
     

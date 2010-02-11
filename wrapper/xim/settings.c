@@ -53,9 +53,10 @@ static const char* setting_names[] = {
     "preedit_color",
     "preedit_font",
     "preedit_font_color",
+    "candidates_size",
 };
 
-static const int nsetting = 7;
+static const int nsetting = 8;
 
 static void*  setting_data[MAX_KEY];
 static size_t setting_size[MAX_KEY];
@@ -87,6 +88,20 @@ __double_dec(char* str, void* data)
 {
     double* ptr = data;
     sscanf(str, "%lf", ptr);
+}
+
+static void
+__int_enc(char* str, void* data)
+{
+    int* ptr = data;
+    snprintf(str, 256, "%d", *ptr);
+}
+
+static void
+__int_dec(char* str, void* data)
+{
+    int* ptr = data;
+    sscanf(str, "%d", ptr);
 }
 
 static void
@@ -191,6 +206,7 @@ __init_default_values()
     position_t pos;
     double d;
     varchar str;
+    int i;
 
     /* trigger key */
     hk.modifiers = ControlMask;
@@ -223,6 +239,9 @@ __init_default_values()
     memset(str, 0, sizeof(varchar));
     strcpy(str, "#000000");
     settings_set(PREEDIT_FONT_COLOR, str);
+
+    i = 10;
+    settings_set(CANDIDATES_SIZE, &i);
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -245,7 +264,8 @@ settings_init()
     REGISTER(PREEDIT_COLOR, varchar, __varchar_enc, __varchar_dec);
     REGISTER(PREEDIT_FONT, varchar, __varchar_enc, __varchar_dec);
     REGISTER(PREEDIT_FONT_COLOR, varchar, __varchar_enc, __varchar_dec);
-
+    REGISTER(CANDIDATES_SIZE, int, __int_enc, __int_dec);
+    
     __init_default_values();
 }
 

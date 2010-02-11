@@ -221,28 +221,23 @@ template <class LanguagePolicy, class PinyinSchemePolicy, class InputStylePolicy
 class CSunpinyinProfile : public ISunpinyinProfile
 {
 public:
-    CSunpinyinProfile () {};
+    CSunpinyinProfile () : m_langPolicy(LanguagePolicy::instance()), 
+                           m_pySchemePolicy(PinyinSchemePolicy::instance()),
+                           m_inputStylePolicy(InputStylePolicy::instance()) 
+    {}
 
     /* profile by itself is a profile, so we are creating a session here? */
     virtual CIMIView* createProfile ()
     {
-        typename LanguagePolicy::Type& langPolicy =
-            LanguagePolicy::instance();
-        typename PinyinSchemePolicy::Type& pySchemePolicy =
-            PinyinSchemePolicy::instance();
-        typename InputStylePolicy::Type& inputStylePolicy =
-            InputStylePolicy::instance();
-        
-        
-        if (!langPolicy.loadResources ())
+        if (!m_langPolicy.loadResources ())
             return NULL;
 
-        IPySegmentor* pseg = pySchemePolicy.createPySegmentor ();
+        IPySegmentor* pseg = m_pySchemePolicy.createPySegmentor ();
         if (pseg == NULL)
             return NULL;
         
-        CIMIContext *pic = langPolicy.createContext ();
-        CIMIView* pview = inputStylePolicy.createView ();
+        CIMIContext *pic = m_langPolicy.createContext ();
+        CIMIView* pview = m_inputStylePolicy.createView ();
         pview->attachIC (pic);
         pview->setPySegmentor (pseg);
         
@@ -257,6 +252,10 @@ public:
             delete pview;
         }
     }
+private:
+    typename LanguagePolicy::Type&      m_langPolicy;
+    typename PinyinSchemePolicy::Type&  m_pySchemePolicy;
+    typename InputStylePolicy::Type&    m_inputStylePolicy;
 };
 
 class CSunpinyinSessionFactory : private CNonCopyable

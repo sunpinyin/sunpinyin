@@ -92,9 +92,7 @@ struct CKeyEvent
     {
         return ((code < b.code) ||
                 ((code == b.code) &&
-                 ((value < b.value) ||
-                  ((value == b.value) &&
-                   (modifiers < b.modifiers)))));
+                 (modifiers < b.modifiers)));
     }
     
     bool operator == (const CKeyEvent& rhs) const

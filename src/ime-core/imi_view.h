@@ -176,6 +176,8 @@ public:
 
     void setHotkeyProfile (CHotkeyProfile *prof) { m_pHotkeyProfile = prof;}
     void setCandiWindowSize (unsigned size) {m_candiWindowSize = size<10? size: 10;}
+    CHotkeyProfile* getHotkeyProfile() { return m_pHotkeyProfile; }
+    unsigned getCandiWindowSize() { return m_candiWindowSize; }
 
     virtual unsigned clearIC(void) {m_pIC->clear(); return 0;}
     virtual bool onKeyEvent(const CKeyEvent&) {return false;}

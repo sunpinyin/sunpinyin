@@ -148,13 +148,6 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
             else {
                 if (evt->type == KeyPress) {
                     __move_preedit(ic);
-                    if (preedit_status()) {
-                        if (sym == 0x2D) // '-' into page up
-                            sym = XK_Page_Up;
-                        if (sym == 0x3D) // '=' into page down
-                            sym = XK_Page_Down;
-                    }
-                    
                     preedit_on_key(handle, sym, evt->state);
                 } else {
                     LOG("ignore");

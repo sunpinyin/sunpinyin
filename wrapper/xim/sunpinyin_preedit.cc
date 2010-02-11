@@ -135,6 +135,9 @@ preedit_init()
     instance = new SSWindowHandler<UIProvider>();
     view->getIC()->setCharsetLevel(1);// GBK
     view->attachWinHandler(instance);
+
+    view->getHotkeyProfile()->addPageUpKey(CKeyEvent(IM_VK_MINUS));
+    view->getHotkeyProfile()->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
 }
 
 __EXPORT_API void

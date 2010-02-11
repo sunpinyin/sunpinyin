@@ -72,6 +72,9 @@ public:
 	
 	bool onKeyEvent(const CKeyEvent& event)
 	    {return isValid()? m_pv->onKeyEvent(event): false;}	
+    
+    void setStatusAttrValue(int key, int value)
+        {if (m_pv) m_pv->setStatusAttrValue(key, value);}
 	
     bool onConfigChanged (const COptionEvent& event);
 

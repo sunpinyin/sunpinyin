@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="268"/>
 			<integer value="279"/>
+			<integer value="268"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -51,7 +51,7 @@
 					<object class="NSMenuItem" id="1072444278">
 						<reference key="NSMenu" ref="183480630"/>
 						<string key="NSTitle">Chinese Puncts</string>
-						<string key="NSKeyEquiv">,</string>
+						<string key="NSKeyEquiv">.</string>
 						<int key="NSKeyEquivModMask">262144</int>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<int key="NSState">1</int>
@@ -68,7 +68,7 @@
 						<reference key="NSMenu" ref="183480630"/>
 						<string key="NSTitle">Full-Width Symbol</string>
 						<string type="base64-UTF8" key="NSKeyEquiv">IA</string>
-						<int key="NSKeyEquivModMask">131072</int>
+						<int key="NSKeyEquivModMask">524288</int>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="935239157"/>
 						<reference key="NSMixedImage" ref="560774375"/>

@@ -204,11 +204,15 @@ Here are the three approaches:
 -(void)toggleChinesePuncts:(id)sender
 {
     [[NSApp delegate] toggleChinesePuncts:sender];
+    _session->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC,
+                                 [[NSApp delegate] inputChinesePuncts]);      
 }
 
 -(void)toggleFullSymbols:(id)sender
 {
     [[NSApp delegate] toggleFullSymbols:sender];
+    _session->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL,
+                                 [[NSApp delegate] inputFullSymbols]);    
 }
 
 -(void)dealloc 

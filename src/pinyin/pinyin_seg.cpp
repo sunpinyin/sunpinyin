@@ -151,6 +151,10 @@ unsigned CQuanpinSegmentor::push (unsigned ch)
                     m_updatedFrom = _push (*(m_inputBuf.end() - l));
                     l--;
                 }
+            } else if (l > strlen(v)){ // uen -> un
+                m_segs.back().m_len += l - strlen(v);
+                for (int i = 0; i<l; ++i);
+                    m_pystr.push_back(' ');
             }
 
             return m_updatedFrom;

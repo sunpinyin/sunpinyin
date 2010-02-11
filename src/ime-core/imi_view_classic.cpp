@@ -571,6 +571,7 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
     if (!m_tailSentence.empty ()) --candiIdx;
 
     if (candiIdx < 0) {
+        // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
         _doCommit ();
         clearIC ();
@@ -584,8 +585,10 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
         CLattice& lattice = m_pIC->getLattice ();
         while (m_candiFrIdx < m_pIC->getLastFrIdx () && 
                !lattice[m_candiFrIdx+1].isUnusedFrame () &&
-               !lattice[m_candiFrIdx+1].isSyllableFrame ())
+               !lattice[m_candiFrIdx+1].isSyllableFrame ()) {
             ++ m_candiFrIdx;
+            lattice[m_candiFrIdx].m_bwType |= CLatticeFrame::IGNORED;
+        }
 
         if (m_candiFrIdx == m_pIC->getLastFrIdx ()) {
             _doCommit ();
@@ -594,5 +597,12 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
             m_candiPageFirst = 0;
             _getCandidates ();
         }
+    } else if (candiIdx == 0 && m_candiList.size() == 0) {
+        // user might delete all the left over pinyin characters, this will
+        // made m_candiList empty
+        // 0 or space choices should commit previous selected candidates
+        mask |= PREEDIT_MASK | CANDIDATE_MASK;
+        _doCommit();
+        clearIC();
     }
 }

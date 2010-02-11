@@ -152,6 +152,7 @@ public:
         NO_BESTWORD             = 1 << 0,
         BESTWORD                = 1 << 1,
         USER_SELECTED           = 1 << 2,
+        IGNORED                 = 1 << 3,
     }; // BESTWORD_TYPE
 
     unsigned    m_type;

@@ -599,7 +599,7 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
         }
     } else if (candiIdx == 0 && m_candiList.size() == 0) {
         // user might delete all the left over pinyin characters, this will
-        // made m_candiList empty
+        // make m_candiList empty
         // 0 or space choices should commit previous selected candidates
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
         _doCommit();

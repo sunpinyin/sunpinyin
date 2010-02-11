@@ -37,6 +37,7 @@
 #include <libintl.h>
 #include <unistd.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <ibus.h>
 #include "config.h"
 #include "engine.h"
@@ -74,6 +75,11 @@ init ()
     ibus_init ();
 
     bus = ibus_bus_new ();
+    if (!ibus_bus_is_connected (bus)) {
+        g_warning("Can not connect to ibus");
+        exit (0);
+    }
+    
     g_signal_connect (bus, "disconnected", G_CALLBACK (ibus_disconnected_cb), NULL);
 	
     ibus_sunpinyin_init (bus);

@@ -728,23 +728,6 @@ PinYinJiaJia</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="General/PageSize">
-                                <property name="visible">True</property>
-                                <property name="active">0</property>
-                                <property name="items">5
-6
-7
-8
-9
-10</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="y_options">GTK_EXPAND</property>
-                              </packing>
-                            </child>
-                            <child>
                               <widget class="GtkLabel" id="mem_strength">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
@@ -758,26 +741,33 @@ PinYinJiaJia</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="General/MemoryPower">
+                              <widget class="GtkHScale" id="General/PageSize">
                                 <property name="visible">True</property>
-                                <property name="active">3</property>
-                                <property name="items">1
-2
-3
-4
-5
-6
-7
-8
-9
-10</property>
+                                <property name="can_focus">True</property>
+                                <property name="update_policy">delayed</property>
+                                <property name="adjustment">9 1 11 1 1 1</property>
+                                <property name="digits">0</property>
+                                <property name="value_pos">right</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkHScale" id="General/MemoryPower">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="update_policy">delayed</property>
+                                <property name="adjustment">3 0 11 1 1 1</property>
+                                <property name="digits">0</property>
+                                <property name="value_pos">right</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
-                                <property name="y_options">GTK_EXPAND</property>
                               </packing>
                             </child>
                           </widget>

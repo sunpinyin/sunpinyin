@@ -102,7 +102,7 @@ class TrivalOption(Option):
         """update user inferface with ibus.config
         """
         self.v = self.read()
-        self.widget.set_active(self.v)
+        self.__set_value(self.v)
 
     def write_config(self):
         v = self.save_ui_setting()
@@ -111,12 +111,24 @@ class TrivalOption(Option):
     def save_ui_setting(self):
         """save user interface settings into self.v
         """
-        self.v = self.widget.get_active()
+        self.v = self.__get_value()
         return self.v
     
     def is_changed(self):
-        return self.v != self.widget.get_active()
- 
+        return self.v != self.__get_value()
+
+    def __get_value(self):
+        try:
+            return self.widget.get_value()
+        except:
+            return self.widget.get_active()
+
+    def __set_value(self, v):
+        try:
+            self.widget.set_value(v)
+        except:
+            self.widget.set_active(v)
+            
 class CheckBoxOption(TrivalOption):
     def __init__(self, name, default, owner):
         super(CheckBoxOption, self).__init__(name, default, owner)
@@ -136,27 +148,24 @@ class ComboBoxOption(TrivalOption):
             model.append([str(v)])
         self.widget.set_model(model)
 
-    def save_ui_setting(self):
+    def __get_value(self):
         active = self.widget.get_active()
         try:
             # if the options are numbers, save the liternal of active option as
             # a number
-            self.v = int(self.options[active])
+            return int(self.options[active])
         except ValueError:
             # otherwise save its index
-            self.v = active
-        return self.v
-
-    def read_config(self):
-        self.v = self.read()
-        assert self.options, "options should not be empty"
+            return active
+    
+    def __set_value(self, v):
         try:
             # if the options are just numbers, we treat 'self.v' as the literal
             # of option
             dummy = int(self.options[0])
-            active = self.options.index(self.v)
+            active = self.options.index(v)
         except ValueError:
-            active = self.v
+            active = v
         self.widget.set_active(active)
         
 class RadioOption(Option):
@@ -472,15 +481,15 @@ class MainWindow ():
         self.__punctmapping_setup = PunctMappingSetupDialog()
         
         self.__options = [
-            ComboBoxOption("General/MemoryPower", 3, range(10), self.__xml),
+            TrivalOption("General/MemoryPower", 3, self.__xml),
+            TrivalOption("General/PageSize", 10, self.__xml),
+            
             RadioOption("General/InitialStatus/Mode", 'Chinese', ['Chinese', 'English'], self.__xml),
             RadioOption("General/InitialStatus/Punct", 'Full', ['Full', 'Half'], self.__xml),
             RadioOption("General/InitialStatus/Letter", 'Half', ['Full', 'Half'], self.__xml),
             RadioOption("General/Charset", 'GBK', ['GB2312', 'GBK', 'GB18030'], self.__xml),
             CheckBoxOption("General/PunctMapping/Enabled", False, self.__xml),
-            
-            ComboBoxOption("General/PageSize", 10, range(5, 11), self.__xml),
-            
+                                
             RadioOption("Keyboard/ModeSwitch", 'Shift', ['Shift', 'Control'], self.__xml),
             RadioOption("Keyboard/PunctSwitch", 'None', ['ControlComma',
                                                          'ControlPeriod',

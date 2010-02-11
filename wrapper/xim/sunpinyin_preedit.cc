@@ -149,8 +149,11 @@ preedit_finalize(void)
 }
 
 __EXPORT_API void
-preedit_reload_ui(void)
+preedit_reload(void)
 {
+    int ncandi;
+    settings_get(CANDIDATES_SIZE, &ncandi);
+    view->setCandiWindowSize(ncandi);
     instance->reload_ui();
 }
 

@@ -65,6 +65,7 @@ typedef char varchar[128];
 #define PREEDIT_COLOR 0x04
 #define PREEDIT_FONT 0x05
 #define PREEDIT_FONT_COLOR 0x06
+#define CANDIDATES_SIZE 0x07
 
 #define MAX_KEY 0xff
 

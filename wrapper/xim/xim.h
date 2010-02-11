@@ -62,7 +62,7 @@ void      preedit_init(void);
 void      preedit_finalize(void);
 
 void      preedit_set_handle(XIMHandle* handle);
-void      preedit_reload_ui(void);
+void      preedit_reload(void);
 
 void      preedit_move(int x, int y);
 void      preedit_on_key(XIMHandle* handle, unsigned int keycode,

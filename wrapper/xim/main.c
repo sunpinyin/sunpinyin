@@ -51,7 +51,7 @@ on_app_sig(int sig)
     if (sig == SIGUSR1) {
         /* reload the settings */
         settings_load();
-        preedit_reload_ui();
+        preedit_reload();
     } else {
         preedit_finalize();
         icmgr_finalize();
@@ -115,7 +115,7 @@ main(int argc, char* argv[])
     
     XIMHandle* hdl = create_xim_server(XIM_NAME, locale);
     preedit_set_handle(hdl);
-    preedit_reload_ui();
+    preedit_reload();
 
     signal(SIGUSR1, on_app_sig);
     signal(SIGHUP, on_app_sig);

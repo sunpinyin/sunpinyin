@@ -113,13 +113,14 @@ void postConfigurationEvents(NSUserDefaults* pref);
 //Input Menud.
 -(void)awakeFromNib
 {
+    [self loadPreferences];
+    
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
             selector:@selector(preferencesChanged:)
             name:NSUserDefaultsDidChangeNotification
             object:nil];
 
-    [self loadPreferences];
     [GrowlApplicationBridge setGrowlDelegate: self];
 }
 

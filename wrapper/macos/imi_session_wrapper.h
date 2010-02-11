@@ -45,7 +45,7 @@
 #define CONFIG_KEYBOARD_PAGE_MINUS       "Keyboard/Page/MinusEquals"
 #define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
 
-struct CSessionConfigStore : public CNonCopyable
+struct CSessionConfigStore : private CNonCopyable
 {
     bool        m_paging_by_comma_period;
     bool        m_paging_by_minus_equals;
@@ -58,7 +58,7 @@ struct CSessionConfigStore : public CNonCopyable
     }
 };
 
-class CSunpinyinSessionWrapper : public IConfigurable, CNonCopyable
+class CSunpinyinSessionWrapper : public IConfigurable, private CNonCopyable
 {
 public:
      CSunpinyinSessionWrapper (id ic);

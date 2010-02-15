@@ -44,6 +44,7 @@
 #include "datrie.h"
 #include "utils.h"
 
+#include <climits>
 #include <vector>
 
 struct IPySegmentor
@@ -70,7 +71,7 @@ struct IPySegmentor
 
     virtual ~IPySegmentor () {}
     virtual TSegmentVec& getSegments () = 0;
-    virtual wstring& getInputBuffer () = 0;
+    virtual const wstring& getInputBuffer () const = 0;
     virtual const char* getSylSeps () = 0;
 
     virtual unsigned push (unsigned ch) = 0;
@@ -136,7 +137,7 @@ public:
     CQuanpinSegmentor ();
 
     virtual TSegmentVec& getSegments () {return m_segs;}
-    virtual wstring& getInputBuffer () {return m_inputBuf;}
+    virtual const wstring& getInputBuffer () const {return m_inputBuf;}
     virtual const char* getSylSeps () {return "'";}
 
     virtual unsigned push (unsigned ch);
@@ -157,7 +158,8 @@ private:
     inline unsigned _push  (unsigned ch);
     inline unsigned _clear (unsigned from);
     inline void _addFuzzySyllables (TSegment &seg);
-
+    inline unsigned _updateWith (const std::string& new_pystr, unsigned from = UINT_MAX);
+    
     CGetFuzzySyllablesOp       *m_pGetFuzzySyllablesOp;
     CGetCorrectionPairOp       *m_pGetCorrectionPairOp;
 

@@ -35,8 +35,8 @@
  * to such option by the copyright holder. 
  */
 
-#include <climits>
 #include <cassert>
+#include <algorithm>
 #include "pinyin_seg.h"
 
 void CGetFuzzySyllablesOp::initFuzzyMap (const char * const* fuzzyPairs, unsigned num)
@@ -118,11 +118,21 @@ CQuanpinSegmentor::CQuanpinSegmentor ()
     m_segs.reserve (32);
 }
 
-bool
-CQuanpinSegmentor::load(const char * pyTrieFileName)
+bool CQuanpinSegmentor::load(const char * pyTrieFileName)
 {
     return m_pytrie.load (pyTrieFileName);
 }
+
+#ifdef DEBUG
+void print_pystr(const std::string pystr)
+{
+    for (const char* c = pystr.c_str(); c != pystr.c_str() + pystr.length(); ++c)
+    {
+        printf("%c", *c & 0x7f);
+    }
+    printf("<\n");
+}
+#endif
 
 unsigned CQuanpinSegmentor::push (unsigned ch)
 {
@@ -136,27 +146,19 @@ unsigned CQuanpinSegmentor::push (unsigned ch)
         if (v) {
             unsigned orig_size = m_segs.size();
             _clear (m_pystr.size() - l);
-
-            m_updatedFrom = UINT_MAX;
-            const char * p = v;
-            while (*p) {
-                unsigned tmp = _push (*(p++));
-                if (tmp < m_updatedFrom) m_updatedFrom = tmp;
-            }
-
+            m_updatedFrom = _updateWith (v);
             // does not get better segmentation, revert to original
             if (m_segs.size () >= orig_size) {
                 _clear (m_pystr.size() - strlen(v));
-                while (l) {
-                    m_updatedFrom = _push (*(m_inputBuf.end() - l));
-                    l--;
-                }
-            } else if (l > strlen(v)){ // uen -> un
+                std::string new_pystr;
+                std::copy(m_inputBuf.end() - l, m_inputBuf.end(), back_inserter(new_pystr));
+                m_updatedFrom = _updateWith (new_pystr);
+            } else if (l != strlen(v)) {
+                // e.g. uen -> un
                 m_segs.back().m_len += l - strlen(v);
-                for (int i = 0; i<l; ++i);
-                    m_pystr.push_back(' ');
+                m_pystr.resize(m_inputBuf.length());
+                std::copy(m_inputBuf.end() - l, m_inputBuf.end(), m_pystr.end() - l);
             }
-
             return m_updatedFrom;
         }
 
@@ -184,12 +186,7 @@ unsigned CQuanpinSegmentor::pop ()
     std::string new_pystr = m_pystr.substr (size-l);
     m_pystr.resize (size-l);
 
-    m_updatedFrom = UINT_MAX;
-    std::string::const_iterator it = new_pystr.begin();
-    for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _push ((*it) & 0x7f);
-        if (tmp < m_updatedFrom) m_updatedFrom = tmp;
-    }
+    m_updatedFrom = _updateWith(new_pystr);
 
     return m_updatedFrom;
 }
@@ -206,12 +203,7 @@ unsigned CQuanpinSegmentor::insertAt (unsigned idx, unsigned ch)
     m_pystr.resize (i);
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 
-    m_updatedFrom = UINT_MAX;
-    std::string::const_iterator it = new_pystr.begin();
-    for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _push ((*it) & 0x7f);
-        if (tmp < m_updatedFrom) m_updatedFrom = tmp;
-    }
+    m_updatedFrom = _updateWith (new_pystr);
 
     return m_updatedFrom;
 }
@@ -229,12 +221,7 @@ unsigned CQuanpinSegmentor::deleteAt (unsigned idx, bool backward)
     m_pystr.resize (i);
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 
-    m_updatedFrom = UINT_MAX;
-    std::string::const_iterator it = new_pystr.begin();
-    for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _push ((*it) & 0x7f);
-        if (tmp < m_updatedFrom) m_updatedFrom = tmp;
-    }
+    m_updatedFrom = _updateWith (new_pystr);
 
     return m_updatedFrom;
 }
@@ -255,12 +242,7 @@ unsigned CQuanpinSegmentor::_clear (unsigned from)
     m_pystr.resize (i);
     m_segs.erase (m_segs.begin()+j, m_segs.end());
 
-    m_updatedFrom = from;
-    std::string::const_iterator it = new_pystr.begin();
-    for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _push ((*it) & 0x7f);
-        if (tmp < m_updatedFrom) m_updatedFrom = tmp;
-    }
+    m_updatedFrom = _updateWith (new_pystr, from);
 
     return m_updatedFrom;
 }
@@ -382,4 +364,16 @@ void CQuanpinSegmentor::_addFuzzySyllables (TSegment& seg)
     
     for (; it != ite; ++it)
         seg.m_syllables.push_back (*it);
+}
+
+unsigned CQuanpinSegmentor::_updateWith (const std::string& new_pystr, unsigned from)
+{
+    unsigned minUpdatedFrom = from;
+    std::string::const_iterator it = new_pystr.begin();
+    for (; it != new_pystr.end(); ++it) {
+        unsigned updatedFrom = _push(*it & 0x7f);
+        
+        if (updatedFrom < minUpdatedFrom) minUpdatedFrom = updatedFrom;
+    }
+    return minUpdatedFrom;
 }

@@ -71,15 +71,27 @@ int main(int argc, char* argv[])
     setlocale(LC_ALL, "zh_CN.UTF-8");
     int opt;
     char py_scheme = 's';
-    while ((opt = getopt(argc, argv, "p:")) != -1) {
+    bool do_auto_correction = false;
+    const char *auto_correction_pairs [] = {
+        "ign", "ing",
+        "img", "ing",
+        "uei", "ui",
+        "uen", "un",
+        "iou", "iu",
+    };
+
+    while ((opt = getopt(argc, argv, "p:c")) != -1) {
         switch (opt) {
         case 'p':
             py_scheme = *optarg;
             break;
+        case 'c':
+            do_auto_correction = true;
+            break;
         }
     }
-    gtk_init(&argc, &argv);
 
+    gtk_init(&argc, &argv);
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory ();
     switch (py_scheme) {
     case 'q':
@@ -91,6 +103,11 @@ int main(int argc, char* argv[])
     default:
         factory.setPinyinScheme (CSunpinyinSessionFactory::SHUANGPIN);
         break;
+    }
+    if (py_scheme == 'q' && do_auto_correction) {
+        AQuanpinSchemePolicy::instance().setAutoCorrecting(true);
+        AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs,
+                                                                sizeof(auto_correction_pairs)/sizeof(auto_correction_pairs[0])/2);
     }
     //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
     CIMIView *pv = factory.createSession ();

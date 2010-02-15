@@ -319,7 +319,7 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
     for (int i = 0; i < caret; ++i)
         charTypes.push_back (IPreeditString::HANZI_CHAR | IPreeditString::USER_CHOICE);
 
-    wstring& pystr = m_pPySegmentor->getInputBuffer ();
+    const wstring& pystr = m_pPySegmentor->getInputBuffer ();
     IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
     IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
     IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();

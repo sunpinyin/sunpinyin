@@ -50,7 +50,7 @@ public:
     CShuangpinSegmentor (EShuangpinType  shpType);
 
     virtual TSegmentVec& getSegments () {return m_segs;}
-    virtual wstring& getInputBuffer () {return m_inputBuf;}
+    virtual const wstring& getInputBuffer () const {return m_inputBuf;}
     virtual const char* getSylSeps () {return "'";}
 
     virtual unsigned push (unsigned ch);

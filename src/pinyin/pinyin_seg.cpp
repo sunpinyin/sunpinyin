@@ -147,16 +147,19 @@ unsigned CQuanpinSegmentor::push (unsigned ch)
             unsigned orig_size = m_segs.size();
             _clear (m_pystr.size() - l);
             m_updatedFrom = _updateWith (v);
-            // does not get better segmentation, revert to original
+            
             if (m_segs.size () >= orig_size) {
+                // does not get better segmentation, revert to original
                 _clear (m_pystr.size() - strlen(v));
                 std::string new_pystr;
                 std::copy(m_inputBuf.end() - l, m_inputBuf.end(), back_inserter(new_pystr));
                 m_updatedFrom = _updateWith (new_pystr);
-            } else if (l != strlen(v)) {
-                // e.g. uen -> un
-                m_segs.back().m_len += l - strlen(v);
-                m_pystr.resize(m_inputBuf.length());
+            } else {
+                if (l != strlen(v)) {
+                    // e.g. uen -> un
+                    m_segs.back().m_len += l - strlen(v);
+                    m_pystr.resize(m_inputBuf.length());
+                }
                 std::copy(m_inputBuf.end() - l, m_inputBuf.end(), m_pystr.end() - l);
             }
             return m_updatedFrom;

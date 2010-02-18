@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-09 23:37+0800\n"
+"POT-Creation-Date: 2010-02-18 20:15+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,36 +16,36 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:190
+#: ../wrapper/scim/sunpinyin_imengine.cpp:120
 msgid "The status of the current input method. Click to change it."
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:194
+#: ../wrapper/scim/sunpinyin_imengine.cpp:124
 msgid "The input mode of the letters. Click to toggle between half and full."
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:195
+#: ../wrapper/scim/sunpinyin_imengine.cpp:125
 msgid "Full/Half Letter"
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:198
+#: ../wrapper/scim/sunpinyin_imengine.cpp:128
 msgid ""
 "The input mode of the puncutations. Click to toggle between half and full."
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:199
+#: ../wrapper/scim/sunpinyin_imengine.cpp:129
 msgid "Full/Half Punct"
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:361
+#: ../wrapper/scim/sunpinyin_imengine.cpp:201
 msgid "Lei Zhang, <Phill.Zhang@sun.com>; Shuguagn Yan, <Ervin.Yan@sun.com>"
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:368
+#: ../wrapper/scim/sunpinyin_imengine.cpp:208
 msgid "Ported by Kov Chai, <tchaikov@gmail.com>"
 msgstr ""
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:375
+#: ../wrapper/scim/sunpinyin_imengine.cpp:215
 msgid ""
 "Hot Keys:\n"
 "\n"
@@ -139,7 +139,7 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: ../wrapper/ibus/src/main.cpp:92
+#: ../wrapper/ibus/src/main.cpp:98
 msgid "Simplified Chinese Input Method developed by SUN"
 msgstr ""
 

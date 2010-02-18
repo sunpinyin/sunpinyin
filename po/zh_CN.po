@@ -7,44 +7,44 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sunpinyin 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-09 23:37+0800\n"
-"PO-Revision-Date: 2009-11-09 23:37+0800\n"
+"POT-Creation-Date: 2010-02-18 20:15+0800\n"
+"PO-Revision-Date: 2010-02-18 20:18+0800\n"
 "Last-Translator: Kov Chai <tchaikov@gmail.com>\n"
 "Language-Team: Kov Chai <tchaikov@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:190
+#: ../wrapper/scim/sunpinyin_imengine.cpp:120
 msgid "The status of the current input method. Click to change it."
 msgstr "当前输入法的状态，点击可改变它。"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:194
+#: ../wrapper/scim/sunpinyin_imengine.cpp:124
 msgid "The input mode of the letters. Click to toggle between half and full."
 msgstr "字母输入模式，点击可在 全角 和 半角 之间切换。"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:195
+#: ../wrapper/scim/sunpinyin_imengine.cpp:125
 msgid "Full/Half Letter"
 msgstr "全/半角字母"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:198
+#: ../wrapper/scim/sunpinyin_imengine.cpp:128
 msgid ""
 "The input mode of the puncutations. Click to toggle between half and full."
 msgstr "标点的输入模式，点击可改变它。"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:199
+#: ../wrapper/scim/sunpinyin_imengine.cpp:129
 msgid "Full/Half Punct"
 msgstr "全/半角标点"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:361
+#: ../wrapper/scim/sunpinyin_imengine.cpp:201
 msgid "Lei Zhang, <Phill.Zhang@sun.com>; Shuguagn Yan, <Ervin.Yan@sun.com>"
 msgstr "张磊 <phill.zhang@sun.com>，颜曙光 <Ervin.Yan@sun.com>"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:368
+#: ../wrapper/scim/sunpinyin_imengine.cpp:208
 msgid "Ported by Kov Chai, <tchaikov@gmail.com>"
 msgstr "由 柴可夫 移植，<tchaikov@gmail.com>"
 
-#: ../wrapper/scim/sunpinyin_imengine.cpp:375
+#: ../wrapper/scim/sunpinyin_imengine.cpp:215
 msgid ""
 "Hot Keys:\n"
 "\n"
@@ -113,9 +113,7 @@ msgid ""
 "You may feel more comfortable in classic style, if you are used to input "
 "methods like scim-pinyin. In instant style, the most possible candidate word "
 "will show up in the preedit area right after its pinyin is input."
-msgstr ""
-"如果你习惯用 scim-pinyin 的话，可能“经典风格”更适合你。在用“即时转换风格”的时"
-"候，最佳的候选词会在输入拼音之后立即出现在预编辑区域。"
+msgstr "如果习惯用 scim-pinyin 的话，可能“经典风格”更适合你。在用“即时转换风格”的时候，最佳的候选词会在输入拼音之后立即出现在预编辑区域。"
 
 #: ../wrapper/scim/sunpinyin_imengine_setup.cpp:167
 msgid "Character Set:"
@@ -160,7 +158,7 @@ msgstr "这个数字越大，我的记得越快，不过忘得也更快。"
 msgid "Options"
 msgstr "设置选项"
 
-#: ../wrapper/ibus/src/main.cpp:92
+#: ../wrapper/ibus/src/main.cpp:98
 msgid "Simplified Chinese Input Method developed by SUN"
 msgstr "由 Sun 开发的简体中文输入法"
 

@@ -50,7 +50,11 @@ typedef enum {
 } SwitchingPolicies;
 
 //Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
+#if MAC_OS_X_VERSION_10_6 > MAC_OS_X_VERSION_MAX_ALLOWED
 @interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
+#else
+@interface SunPinyinApplicationDelegate : NSObject <GrowlApplicationBridgeDelegate>
+#endif
 {
     IBOutlet NSMenu*            _menu;
     IBOutlet CandidateWindow*   _candiWin;

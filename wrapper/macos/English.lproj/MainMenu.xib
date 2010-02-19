@@ -68,7 +68,7 @@
 						<reference key="NSMenu" ref="183480630"/>
 						<string key="NSTitle">Full-Width Symbol</string>
 						<string type="base64-UTF8" key="NSKeyEquiv">IA</string>
-						<int key="NSKeyEquivModMask">524288</int>
+						<int key="NSKeyEquivModMask">131072</int>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="935239157"/>
 						<reference key="NSMixedImage" ref="560774375"/>

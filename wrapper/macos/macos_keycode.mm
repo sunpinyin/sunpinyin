@@ -132,7 +132,7 @@ static unsigned osx_keycode_to_ime_keycode (unsigned keycode)
             ret = IM_VK_ALT;
             break;
         default:
-            ret = keycode;
+            ret = 0;
             break;
     }
     

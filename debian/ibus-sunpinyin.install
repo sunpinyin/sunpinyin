@@ -1,0 +1,4 @@
+debian/tmp/usr/share/ibus/component/sunpinyin.xml
+debian/tmp/usr/share/ibus-sunpinyin/setup/*
+debian/tmp/usr/lib/ibus-sunpinyin/*
+debian/tmp/usr/share/sunpinyin/icons/*

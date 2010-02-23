@@ -118,7 +118,7 @@ libimdkit_la_SOURCES = \
 	IMdkit/IMMethod.c \
 	IMdkit/IMValues.c 
 
-libimdkit_la_CFLAGS = @X11_CFLAGS@
+libimdkit_la_CFLAGS = @X11_CFLAGS@ -IIMdkit
 
 libimdkit_la_LDFLAGS = -no-undefined -avoid-version \
                           $(LIBTOOL_EXPORT_OPTIONS) \

@@ -1,8 +1,14 @@
+sunpinyin (2.0-1) unstable; urgency=low
+
+  * 2.0 final release
+
+ -- Mike <mike@mike-laptop>  Mon, 22 Feb 2010 19:31:25 -0800
+
 sunpinyin (2.0~hg20091111-1) unstable; urgency=low
 
   * Initial release (Closes: 478811)
   * release language model as plain text format
-  
+
  -- Kov Chai <tchaikov@gmail.com>  Fri, 13 Nov 2009 00:10:46 +0800
 
 sunpinyin (1.0~hg20080607-2) unstable; urgency=low

@@ -2,7 +2,7 @@
 
 import plistlib, hashlib, os, sys
 
-dir = "../../../data"
+dir = "../../../../sunpinyin/ime/data"
 filenames = [ "lm_sc.t3g.be", "lm_sc.t3g.le", "pydict_sc.bin.be", "pydict_sc.bin.le" ]
 files = []
 plist_file = "SunPinyinDataFiles.xml"
@@ -23,7 +23,7 @@ for filename in filenames:
     file = {}
 
     file["Name"] = filename
-    file["URL"] = "http://sunpinyin.googlecode.fom/files/%s" % filename
+    file["URL"] = "http://sunpinyin.googlecode.com/files/%s" % filename
     file["Size"] = int(os.path.getsize(path))
     file["SHA256"] = sha256(path)
 

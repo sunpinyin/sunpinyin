@@ -43,7 +43,9 @@ if test "x$BE_HOST_CPU" = "x" ; then
 fi
 
 $LIBTOOLIZE --force --copy
-intltoolize --force --copy
+if test `uname` != "Darwin" ; then
+    intltoolize --force --copy
+fi
 
 aclocal ${ACLOCAL_FLAGS}
 autoheader

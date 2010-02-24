@@ -44,6 +44,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <math.h>
+#include <errno.h>
+#include <string.h>
 
 #include "slm.h"
 
@@ -58,7 +60,7 @@ CThreadSlm::load(const char* fname, bool MMap)
 {
     int fd = open(fname, O_RDONLY);
     if (fd == -1) {
-        perror("open lm");
+        fprintf(stderr, "open %s: %s\n", fname, strerror(errno));
         return false;
     }
     

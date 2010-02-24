@@ -153,7 +153,7 @@ void postConfigurationEvents(NSUserDefaults* pref);
     NSFont *newFont = [sender convertFont:oldFont];
     
     NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
-    NSString* ftname = [newFont familyName];
+    NSString* ftname = [newFont fontName];
     float ftsize = [newFont pointSize];
     [pref setObject:ftname forKey:@"fontName"];
     [pref setFloat:ftsize forKey:@"fontSize"];

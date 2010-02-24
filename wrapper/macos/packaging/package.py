@@ -12,15 +12,16 @@ except:
 env = Environment(loader=FileSystemLoader('.'))
 plist = plistlib.readPlist("../build/SunPinyin.app/Contents/Info.plist")
 
-url_base = "http://opensolaris.org/os/project/input-method/files/"
-appcast_url = url_base + "sunpinyin_appcast.xml"
+url_base = "http://sunpinyin.googlecode.com/files/"
+xml_url_base = "http://release.sunpinyin.googlecode.com/hg/"
+appcast_url = xml_url_base + "SunpinyinAppcast.xml"
 
 pack_proj = "SunPinyin/SunPinyin.packproj"
 pkg = "SunPinyin/build/SunPinyin.pkg"
 resource_dir = "../build/SunPinyin.app/Contents/Resources"
 
 version = plist["CFBundleVersion"]
-releasenotes_url = url_base + "sunpinyin_rn.xml"
+releasenotes_url = xml_url_base + "SunpinyinReleaseNotes.xml"
 
 zip = "SunPinyin-%s.zip" % version
 file_url = url_base + zip

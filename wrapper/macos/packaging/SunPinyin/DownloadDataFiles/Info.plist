@@ -5,7 +5,7 @@
 	<key>TargetInstallDirectory</key>
 	<string>/Library/Input Methods/SunPinyin.app/Contents/Resources</string>
 	<key>FilesSpecPlistURL</key>
-	<string>http://www.opensolaris.org/os/project/input-method/files/SunPinyinDataFiles.xml</string>
+	<string>http://release.sunpinyin.googlecode.com/SunPinyinDataFiles.xml</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>

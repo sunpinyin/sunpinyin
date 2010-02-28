@@ -71,7 +71,7 @@ class Option(object):
 
     def write(self, v):
         section, key = self.__get_config_name()
-        return self.config.set_value(section, key, v)
+        return self.config.set_value(section, key, type(self.default)(v))
 
    
     def __get_config_name(self):

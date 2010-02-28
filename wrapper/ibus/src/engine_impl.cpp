@@ -100,7 +100,7 @@ translate_key(guint key_val, guint /*key_code*/, guint modifiers)
     // XXX: may need to move this logic into CKeyEvent
     if (isprint(key_val) && !isspace(key_val) && !(modifiers & IM_CTRL_MASK)) {
         // we only care about key_val here
-        return CKeyEvent(0, key_val, modifiers);
+        return CKeyEvent(key_val, key_val, modifiers);
     } else {
         // what matters is key_code, but ibus sents me key_code as key_val
         return CKeyEvent(key_val, 0, modifiers);
@@ -457,11 +457,11 @@ EngineImpl::update_page_key(const char* conf_key, bool default_val,
     bool enabled = m_config->get(conf_key, default_val);
 
     if (enabled) {
-        m_hotkey_profile->addPageUpKey(CKeyEvent(0, page_up));
-        m_hotkey_profile->addPageDownKey(CKeyEvent(0, page_down));
+        m_hotkey_profile->addPageUpKey(CKeyEvent(page_up, 0));
+        m_hotkey_profile->addPageDownKey(CKeyEvent(page_down, 0));
     } else {
-        m_hotkey_profile->removePageUpKey(CKeyEvent(0, page_up));
-        m_hotkey_profile->removePageDownKey(CKeyEvent(0, page_down));
+        m_hotkey_profile->removePageUpKey(CKeyEvent(page_up, 0));
+        m_hotkey_profile->removePageDownKey(CKeyEvent(page_down, 0));
     }
 }
 

@@ -86,7 +86,7 @@ bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
 void CSunpinyinSessionWrapper::apply_configuration()
 {
     m_hotkey_profile->setPunctSwitchKey(CKeyEvent(IM_VK_PERIOD, IM_VK_PERIOD, IM_CTRL_MASK));    
-    m_hotkey_profile->setSymbolSwitchKey(CKeyEvent(IM_VK_SPACE, IM_VK_SPACE, IM_SHIFT_MASK));
+    m_hotkey_profile->setSymbolSwitchKey(CKeyEvent(IM_VK_SPACE, IM_VK_SPACE, IM_ALT_MASK));
 
     update_page_key_minus  (CSessionConfigStore::instance().m_paging_by_minus_equals);
     update_page_key_comma  (CSessionConfigStore::instance().m_paging_by_comma_period);

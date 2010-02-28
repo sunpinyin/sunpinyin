@@ -105,6 +105,9 @@ struct CSimplifiedChinesePolicy : public IConfigurable
     void enableFullSymbol (bool v=true) {m_bEnableFullSymbol = v;}
     void enableFullPunct  (bool v=true) {m_bEnableFullPunct = v;}
 
+    void setDataDir (const std::string& data_dir)
+        {m_data_dir = data_dir;}
+
     virtual bool onConfigChanged (const COptionEvent& event);
     
     template<class> friend class SingletonHolder;
@@ -125,7 +128,7 @@ protected:
     CGetFullSymbolOp     m_getFullSymbolOp;
     bool                 m_bEnableFullPunct;
     CGetFullPunctOp      m_getFullPunctOp;
-    const char          *m_userDataDirPrefix;
+    std::string          m_data_dir;
 };
 
 typedef SingletonHolder<CSimplifiedChinesePolicy> ASimplifiedChinesePolicy;
@@ -136,8 +139,11 @@ public:
     
     IPySegmentor* createPySegmentor () 
     {
+        std::string data_dir   = m_data_dir.size()? m_data_dir: SUNPINYIN_DATA_DIR;
+        std::string pytab_path = data_dir + "/quanpin.dat";
+
         CQuanpinSegmentor *pseg = new CQuanpinSegmentor ();
-        if (pseg->load(SUNPINYIN_DATA_DIR"/quanpin.dat")) {
+        if (pseg->load(pytab_path.c_str())) {
             pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
             pseg->setGetCorrectionPairOp (&m_getCorrectionPairOp);
         } else {
@@ -164,6 +170,9 @@ public:
     void setAutoCorrectionPairs (const char* const* pairs, unsigned num) 
         {m_getCorrectionPairOp.setCorrectionPairs (pairs, num);}
 
+    void setDataDir (const std::string& data_dir)
+        {m_data_dir = data_dir;}
+
     virtual bool onConfigChanged(const COptionEvent& event);
     
     template<class> friend class SingletonHolder;
@@ -173,6 +182,7 @@ protected:
 
     CGetFuzzySyllablesOp m_getFuzzySyllablesOp;
     CGetCorrectionPairOp m_getCorrectionPairOp;
+    std::string          m_data_dir;
 };
 
 typedef SingletonHolder<CQuanpinSchemePolicy> AQuanpinSchemePolicy;

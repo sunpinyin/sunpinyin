@@ -62,7 +62,11 @@ CSimplifiedChinesePolicy::loadResources()
         return m_bLoaded;
 
     bool suc = true;
-    suc &= m_coreData.loadResource (SUNPINYIN_DATA_DIR"/lm_sc.t3g", SUNPINYIN_DATA_DIR"/pydict_sc.bin");
+    std::string data_dir  = m_data_dir.size()? m_data_dir: SUNPINYIN_DATA_DIR;
+    std::string lm_path   = data_dir + "/lm_sc.t3g";
+    std::string dict_path = data_dir + "/pydict_sc.bin";
+
+    suc &= m_coreData.loadResource (lm_path.c_str(), dict_path.c_str());
 
     char path[256];
     const char *home = getenv ("HOME");
@@ -88,7 +92,7 @@ CSimplifiedChinesePolicy::createContext()
     pic->setHistoryMemory (&m_historyCache);
     pic->setUserDict (&m_userDict);
 
-	pic->setCharsetLevel (m_csLevel);
+    pic->setCharsetLevel (m_csLevel);
 
     pic->setFullSymbolForwarding (m_bEnableFullSymbol);
     pic->setGetFullSymbolOp (&m_getFullSymbolOp);
@@ -109,7 +113,9 @@ CSimplifiedChinesePolicy::destroyContext (CIMIContext *context)
 bool
 CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 {
-    if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
+    if (event.name == SYSTEM_DATA_DIR) {
+        setDataDir(event.get_string());
+    } else if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
         CPairParser parser;
         setPunctMapping(parser.get_pairs());
         return true;
@@ -150,22 +156,27 @@ CShuangpinSchemePolicy::CShuangpinSchemePolicy()
 bool
 CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
 {
-    if (event.name == QUANPIN_FUZZY_ENABLED) {
+    if (event.name == SYSTEM_DATA_DIR) {
+        setDataDir(event.get_string());
+    } else if (event.name == QUANPIN_FUZZY_ENABLED) {
         setFuzzyForwarding(event.get_bool());
+        return true;
     } else if (event.name == QUANPIN_FUZZY_PINYINS) {
         CPairParser parser;
         size_t num = parser.parse(event);
         setFuzzyPinyinPairs(parser.get_pairs(), num);
+        return true;
     } else if (event.name == QUANPIN_AUTOCORRECTION_ENABLED) {
         setAutoCorrecting(event.get_bool());
+        return true;
     } else if (event.name == QUANPIN_AUTOCORRECTION_PINYINS) {
         CPairParser parser;
         size_t num = parser.parse(event);
         setAutoCorrectionPairs(parser.get_pairs(), num);
-    } else {
-        return false;
+        return true;
     }
-    return true;
+
+    return false;
 }
 
 bool

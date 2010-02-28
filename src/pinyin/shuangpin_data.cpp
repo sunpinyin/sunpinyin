@@ -45,20 +45,20 @@
 #include "pinyin_data.h"
 #include "shuangpin_data.h"
 
-#define INITIAL_NUM 24
+#define INITIAL_NUM 26
 #define FINAL_NUM   34
 #define ZEROINITIAL_NUM 12
 
-static const char *initials[INITIAL_NUM] = {"", "b", "p", "m", "f", "d", "t", "n", "l", 
+static const char *initials[INITIAL_NUM] = {"", "", "", "b", "p", "m", "f", "d", "t", "n", "l", 
     "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w", };
 
-static const char *finals[FINAL_NUM] = {"", "a", "o", "e", "ai", "ei", "ao", "ou", "an", 
-    "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", 
-    "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ue", "iong", };
+static const char *finals[FINAL_NUM] = {"", "a", "o", "e", "ai", "ei", "ao",
+    "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u",
+    "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ue", "iong", };
 
 
 //MS2003 shuangpin plan map table
-static const char ms2003_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd',
+static const char ms2003_mapinitials[INITIAL_NUM] = {'\0', '\0', 'o', 'b', 'p', 'm', 'f', 'd',
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'v', 'i', 'u', 'r', 'z', 'c', 's',
     'y', 'w', };
 
@@ -83,7 +83,7 @@ static TZeroInitial ms2003_zeroinitials[] = {
 
 
 //ZhiNengABC shuangpin plan map table
-static const char abc_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
+static const char abc_mapinitials[INITIAL_NUM] = {'\0', '\0', 'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'a', 'e', 'v', 'r', 'z', 'c', 's', 
     'y', 'w', };
 
@@ -107,7 +107,7 @@ static TZeroInitial abc_zeroinitials[] = {
 };
 
 //ZiGuang shuangpin plan map table
-static const char ziguang_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
+static const char ziguang_mapinitials[INITIAL_NUM] = {'\0', '\0', 'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'u', 'a', 'i', 'r', 'z', 'c', 's', 
     'y', 'w', };
 
@@ -131,7 +131,7 @@ static TZeroInitial ziguang_zeroinitials[] = {
 };
 
 //PinYinJiaJia shuangpin plan map table
-static const char pyjiajia_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
+static const char pyjiajia_mapinitials[INITIAL_NUM] = {'\0', '\0', 'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'v', 'u', 'i', 'r', 'z', 'c', 's', 
     'y', 'w', };
 
@@ -155,7 +155,7 @@ static TZeroInitial pyjiajia_zeroinitials[] = {
 };
 
 //Ziranma shuangpin plan map table
-static const char ziranma_mapinitials[INITIAL_NUM] = {'o', 'b', 'p', 'm', 'f', 'd', 
+static const char ziranma_mapinitials[INITIAL_NUM] = {'a', 'e', 'o', 'b', 'p', 'm', 'f', 'd', 
     't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'v', 'i', 'u', 'r', 'z', 'c', 's', 
     'y', 'w', };
 

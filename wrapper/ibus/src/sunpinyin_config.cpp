@@ -275,7 +275,7 @@ g_value_to_event(const gchar *section, const gchar *name, GValue *value)
     if (strlen(section) == 0) {
         event_name = name;
     } else {
-        event_name = string(section) + "\\" + string(name);
+        event_name = string(section) + "/" + string(name);
     }
     
     unsigned type = get_event_type_by_name(event_name);

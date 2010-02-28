@@ -241,9 +241,7 @@ int CShuangpinSegmentor::_encode(const char* buf, char ch, bool isComplete)
         s.m_len = 2;
         s.m_start = len - s.m_len;
         s.m_syllables.clear();
-        if (m_pystr[len-2]=='o') {
-            s.m_type = IPySegmentor::SYLLABLE; 
-        }
+        s.m_type = IPySegmentor::SYLLABLE; 
         for (; iter!=iter_end; iter++) {
             s.m_syllables.push_back(s_shpData.encodeSyllable(iter->c_str()));
         }

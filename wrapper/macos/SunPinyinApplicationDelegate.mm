@@ -97,7 +97,7 @@ void postConfigurationEvents(NSUserDefaults* pref);
     [_ftTxtField setStringValue:text];
     [_candiWin setFont:font];
 	
-	postConfigurationEvents (pref);
+    postConfigurationEvents (pref);
 }
 
 -(void)preferencesChanged:(NSNotification *)notification
@@ -105,7 +105,7 @@ void postConfigurationEvents(NSUserDefaults* pref);
     if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
         return;
     
-	[self loadPreferences];
+    [self loadPreferences];
 }
 
 //add an awakeFromNib item so that we can set the action method.  Note that 
@@ -247,6 +247,9 @@ void postConfigurationEvents(NSUserDefaults* pref)
 {
     COptionEventBus& event_bus = AOptionEventBus::instance();
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+
+    std::string res_path = [[[NSBundle mainBundle] resourcePath] UTF8String];
+    event_bus.publishEvent(COptionEvent(SYSTEM_DATA_DIR, res_path));
     
     int  pinyin_scheme = [pref integerForKey: @"pinyinMode"];
     factory.setPinyinScheme((CSunpinyinSessionFactory::EPyScheme)pinyin_scheme);

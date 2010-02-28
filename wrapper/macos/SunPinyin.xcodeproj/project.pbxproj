@@ -127,6 +127,7 @@
 		A4B664FF106D051D009BA1DB /* imi_option_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_option_event.h; path = "../../src/ime-core/imi_option_event.h"; sourceTree = SOURCE_ROOT; };
 		A4B66500106D051D009BA1DB /* imi_option_keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_option_keys.h; path = "../../src/ime-core/imi_option_keys.h"; sourceTree = SOURCE_ROOT; };
 		A4B8E1B20F645B870094E08B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		A4D4C740113A36F9003320BC /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A4DA4E430DBDD9D600472176 /* beos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = beos.h; sourceTree = "<group>"; };
 		A4DA4E450DBDD9D600472176 /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
 		A4DA4E460DBDD9D600472176 /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
@@ -469,6 +470,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				A485E5BB0DD28B8D00E472E5 /* English */,
+				A4D4C740113A36F9003320BC /* zh_CN */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

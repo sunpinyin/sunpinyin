@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="278"/>
+			<integer value="277"/>
 			<integer value="268"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -50,7 +50,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="1072444278">
 						<reference key="NSMenu" ref="183480630"/>
-						<string key="NSTitle">Chinese Puncts</string>
+						<string key="NSTitle">中文标点</string>
 						<string key="NSKeyEquiv">.</string>
 						<int key="NSKeyEquivModMask">262144</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -66,7 +66,7 @@
 					</object>
 					<object class="NSMenuItem" id="402399656">
 						<reference key="NSMenu" ref="183480630"/>
-						<string key="NSTitle">Full-Width Symbol</string>
+						<string key="NSTitle">全角符号</string>
 						<string type="base64-UTF8" key="NSKeyEquiv">IA</string>
 						<int key="NSKeyEquivModMask">524288</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -76,7 +76,7 @@
 					</object>
 					<object class="NSMenuItem" id="896308868">
 						<reference key="NSMenu" ref="183480630"/>
-						<string key="NSTitle">Preferences...</string>
+						<string key="NSTitle">首选项 ...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -95,7 +95,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{333, 566}, {432, 382}}</string>
 				<int key="NSWTFlags">1886912512</int>
-				<string key="NSWindowTitle">Preferences</string>
+				<string key="NSWindowTitle">输入法设置</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<object class="NSMutableString" key="NSViewClass">
 					<characters key="NS.bytes">View</characters>
@@ -129,11 +129,11 @@
 												<object class="NSTextFieldCell" key="NSCell" id="511728981">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Pinyin Mode:</string>
-													<object class="NSFont" key="NSSupport" id="197917625">
-														<string key="NSName">LucidaGrande</string>
+													<string key="NSContents">拼音模式：</string>
+													<object class="NSFont" key="NSSupport" id="996469043">
+														<string key="NSName">STHeitiSC-Light</string>
 														<double key="NSSize">13</double>
-														<int key="NSfFlags">1044</int>
+														<int key="NSfFlags">16</int>
 													</object>
 													<reference key="NSControlView" ref="470745416"/>
 													<object class="NSColor" key="NSBackgroundColor" id="126660839">
@@ -169,8 +169,12 @@
 													<object class="NSButtonCell" id="764653811">
 														<int key="NSCellFlags">-2080244224</int>
 														<int key="NSCellFlags2">0</int>
-														<string key="NSContents">Quan Pin</string>
-														<reference key="NSSupport" ref="197917625"/>
+														<string key="NSContents">全拼</string>
+														<object class="NSFont" key="NSSupport" id="197917625">
+															<string key="NSName">LucidaGrande</string>
+															<double key="NSSize">13</double>
+															<int key="NSfFlags">1044</int>
+														</object>
 														<reference key="NSControlView" ref="588621662"/>
 														<int key="NSButtonFlags">1211912703</int>
 														<int key="NSButtonFlags2">0</int>
@@ -187,7 +191,7 @@
 													<object class="NSButtonCell" id="971686497">
 														<int key="NSCellFlags">67239424</int>
 														<int key="NSCellFlags2">0</int>
-														<string key="NSContents">Shuang Pin</string>
+														<string key="NSContents">双拼</string>
 														<reference key="NSSupport" ref="197917625"/>
 														<reference key="NSControlView" ref="588621662"/>
 														<int key="NSTag">1</int>
@@ -270,14 +274,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<object class="NSTextField" id="702733738">
 												<reference key="NSNextResponder" ref="556411416"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{35, 129}, {133, 17}}</string>
+												<string key="NSFrame">{{36, 129}, {133, 17}}</string>
 												<reference key="NSSuperview" ref="556411416"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="79651666">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Pagings:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">翻页键：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="702733738"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -292,8 +296,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="121487339">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Use -/= to page up/down</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">使用 '-' 和 '=' 翻页</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="990578515"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">130</int>
@@ -319,8 +323,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="813143560">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Use [/] to page up/down</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">使用 '[' 和 ']' 翻页</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="629023827"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">130</int>
@@ -341,8 +345,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="319933815">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Use ,/. to page up/down</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">使用 ',' 和 '.' 翻页</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="875297347"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">130</int>
@@ -362,9 +366,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="121491139">
 													<int key="NSCellFlags">68288064</int>
-													<int key="NSCellFlags2">272630784</int>
-													<string key="NSContents">Switch English/Chinese:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<int key="NSCellFlags2">71304192</int>
+													<string key="NSContents">中英文切换：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="716757700"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -379,8 +383,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="110272516">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Force to use US layout</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">强制使用英文布局</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="168635732"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">130</int>
@@ -400,9 +404,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="603160133">
 													<int key="NSCellFlags">68288064</int>
-													<int key="NSCellFlags2">272630784</int>
-													<string key="NSContents">Keyboard Layout:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<int key="NSCellFlags2">71304192</int>
+													<string key="NSContents">键盘布局：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="201282708"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -427,7 +431,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">75</int>
 													<object class="NSMenuItem" key="NSMenuItem" id="723833028">
 														<reference key="NSMenu" ref="461553438"/>
-														<string key="NSTitle">None</string>
+														<string key="NSTitle">无</string>
 														<string key="NSKeyEquiv"/>
 														<int key="NSKeyEquivModMask">1048576</int>
 														<int key="NSMnemonicLoc">2147483647</int>
@@ -445,7 +449,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 															<reference ref="723833028"/>
 															<object class="NSMenuItem" id="854160556">
 																<reference key="NSMenu" ref="461553438"/>
-																<string key="NSTitle">With Caps Lock (⇪)</string>
+																<string key="NSTitle">使用Caps Lock (⇪)</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSKeyEquivModMask">1048576</int>
 																<int key="NSMnemonicLoc">2147483647</int>
@@ -482,7 +486,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="972022762">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">134217728</int>
-													<string key="NSContents">Check for Updates...</string>
+													<string key="NSContents">检查更新 ...</string>
 													<reference key="NSSupport" ref="197917625"/>
 													<reference key="NSControlView" ref="806911934"/>
 													<int key="NSButtonFlags">-2038284033</int>
@@ -512,7 +516,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">75</int>
 													<object class="NSMenuItem" key="NSMenuItem" id="139505003">
 														<reference key="NSMenu" ref="809213331"/>
-														<string key="NSTitle">MS2003</string>
+														<string key="NSTitle">微软2003</string>
 														<string key="NSKeyEquiv"/>
 														<int key="NSKeyEquivModMask">1048576</int>
 														<int key="NSMnemonicLoc">2147483647</int>
@@ -530,7 +534,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 															<reference ref="139505003"/>
 															<object class="NSMenuItem" id="297660508">
 																<reference key="NSMenu" ref="809213331"/>
-																<string key="NSTitle">ABC</string>
+																<string key="NSTitle">智能ABC</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSKeyEquivModMask">1048576</int>
 																<int key="NSMnemonicLoc">2147483647</int>
@@ -541,7 +545,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 															</object>
 															<object class="NSMenuItem" id="83198116">
 																<reference key="NSMenu" ref="809213331"/>
-																<string key="NSTitle">ZiRanMa</string>
+																<string key="NSTitle">自然码</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSKeyEquivModMask">1048576</int>
 																<int key="NSMnemonicLoc">2147483647</int>
@@ -552,7 +556,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 															</object>
 															<object class="NSMenuItem" id="596086471">
 																<reference key="NSMenu" ref="809213331"/>
-																<string key="NSTitle">Pinyin++</string>
+																<string key="NSTitle">拼音++</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSKeyEquivModMask">1048576</int>
 																<int key="NSMnemonicLoc">2147483647</int>
@@ -563,7 +567,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 															</object>
 															<object class="NSMenuItem" id="654793636">
 																<reference key="NSMenu" ref="809213331"/>
-																<string key="NSTitle">ZiGuang</string>
+																<string key="NSTitle">紫光</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSKeyEquivModMask">1048576</int>
 																<int key="NSMnemonicLoc">2147483647</int>
@@ -585,7 +589,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										<string key="NSFrame">{{10, 33}, {386, 320}}</string>
 										<reference key="NSSuperview" ref="920744728"/>
 									</object>
-									<string key="NSLabel">General</string>
+									<string key="NSLabel">通用</string>
 									<reference key="NSColor" ref="126660839"/>
 									<reference key="NSTabView" ref="920744728"/>
 								</object>
@@ -1023,8 +1027,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="424806521">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Fuzzy Pinyin</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">模糊音</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="783710730"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">2</int>
@@ -1045,8 +1049,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="60275823">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Auto Correct</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">自动纠错</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="639430431"/>
 													<int key="NSButtonFlags">1211912703</int>
 													<int key="NSButtonFlags2">2</int>
@@ -1061,7 +1065,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										</object>
 										<string key="NSFrame">{{10, 33}, {386, 320}}</string>
 									</object>
-									<string key="NSLabel">Quan Pin</string>
+									<string key="NSLabel">全拼</string>
 									<reference key="NSColor" ref="126660839"/>
 									<reference key="NSTabView" ref="920744728"/>
 								</object>
@@ -1075,14 +1079,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<object class="NSTextField" id="387956930">
 												<reference key="NSNextResponder" ref="343563030"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{110, 216}, {38, 17}}</string>
+												<string key="NSFrame">{{104, 216}, {49, 17}}</string>
 												<reference key="NSSuperview" ref="343563030"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="353713095">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">272630784</int>
-													<string key="NSContents">Font:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">字体：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="387956930"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -1097,8 +1101,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" key="NSCell" id="903783181">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">134217728</int>
-													<string key="NSContents">Select ...</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">更改 ...</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="396267292"/>
 													<int key="NSButtonFlags">-2038284033</int>
 													<int key="NSButtonFlags2">129</int>
@@ -1136,8 +1140,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSTextFieldCell" key="NSCell" id="419039838">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Background:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">背景色：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="706521650"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -1152,8 +1156,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSTextFieldCell" key="NSCell" id="79979143">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Highlighting:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">高亮色：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="344543120"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -1167,9 +1171,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="811252156">
 													<int key="NSCellFlags">68288064</int>
-													<int key="NSCellFlags2">272630784</int>
-													<string key="NSContents">Transparency:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<int key="NSCellFlags2">71304192</int>
+													<string key="NSContents">透明度：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="658605159"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -1210,8 +1214,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSTextFieldCell" key="NSCell" id="89216511">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Total Candidates:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<string key="NSContents">候选词个数：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="668219766"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -1350,9 +1354,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="163163325">
 													<int key="NSCellFlags">68288064</int>
-													<int key="NSCellFlags2">272630784</int>
-													<string key="NSContents">Candidate Charset:</string>
-													<reference key="NSSupport" ref="197917625"/>
+													<int key="NSCellFlags2">71304192</int>
+													<string key="NSContents">候选字符集：</string>
+													<reference key="NSSupport" ref="996469043"/>
 													<reference key="NSControlView" ref="450134849"/>
 													<reference key="NSBackgroundColor" ref="126660839"/>
 													<reference key="NSTextColor" ref="441432662"/>
@@ -1462,7 +1466,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										</object>
 										<string key="NSFrame">{{10, 33}, {386, 320}}</string>
 									</object>
-									<string key="NSLabel">Candidates</string>
+									<string key="NSLabel">候选窗口</string>
 									<reference key="NSColor" ref="126660839"/>
 									<reference key="NSTabView" ref="920744728"/>
 								</object>
@@ -3536,7 +3540,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<integer value="1"/>
-					<string>{{85, 534}, {195, 63}}</string>
+					<string>{{85, 534}, {130, 63}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3628,7 +3632,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{791, 824}, {198, 63}}</string>
+					<string>{{801, 880}, {198, 63}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3681,7 +3685,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{835, 845}, {129, 103}}</string>
+					<string>{{818, 881}, {130, 103}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

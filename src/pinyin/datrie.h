@@ -57,7 +57,7 @@ private:
 
 public:
      CDATrie () : m_mem(0), m_len(0), m_base(0), m_check(0), m_value(0) {};
-     CDATrie (T* base, T* check, int* value) : m_base(base), m_check(check), m_value(value) {};
+     CDATrie (T* base, T* check, int* value, unsigned len) : m_base(base), m_check(check), m_value(value), m_len(len) {};
 
     ~CDATrie () {free ();}
 

@@ -139,9 +139,6 @@ public:
     
     IPySegmentor* createPySegmentor () 
     {
-        std::string data_dir   = m_data_dir.size()? m_data_dir: SUNPINYIN_DATA_DIR;
-        std::string pytab_path = data_dir + "/quanpin.dat";
-
         return new CQuanpinSegmentor ();
     }
 
@@ -162,9 +159,6 @@ public:
     void setAutoCorrectionPairs (const char* const* pairs, unsigned num) 
         {m_getCorrectionPairOp.setCorrectionPairs (pairs, num);}
 
-    void setDataDir (const std::string& data_dir)
-        {m_data_dir = data_dir;}
-
     virtual bool onConfigChanged(const COptionEvent& event);
     
     template<class> friend class SingletonHolder;
@@ -174,7 +168,6 @@ protected:
 
     CGetFuzzySyllablesOp m_getFuzzySyllablesOp;
     CGetCorrectionPairOp m_getCorrectionPairOp;
-    std::string          m_data_dir;
 };
 
 typedef SingletonHolder<CQuanpinSchemePolicy> AQuanpinSchemePolicy;

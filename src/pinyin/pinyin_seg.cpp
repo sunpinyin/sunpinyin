@@ -114,7 +114,8 @@ const char * CGetCorrectionPairOp::operator () (std::string& pystr, unsigned& ma
 }
 
 CQuanpinSegmentor::CQuanpinSegmentor () 
-    : m_updatedFrom(0), m_pGetFuzzySyllablesOp(NULL), m_pGetCorrectionPairOp(NULL), m_pytrie(base, check, value, sizeof(base)/sizeof(*base))
+    : m_updatedFrom(0), m_pGetFuzzySyllablesOp(NULL), m_pGetCorrectionPairOp(NULL),
+      m_pytrie(base, check, value, sizeof(base)/sizeof(*base))
 {
     m_segs.reserve (32);
 }

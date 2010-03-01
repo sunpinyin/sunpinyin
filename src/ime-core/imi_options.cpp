@@ -156,9 +156,7 @@ CShuangpinSchemePolicy::CShuangpinSchemePolicy()
 bool
 CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
 {
-    if (event.name == SYSTEM_DATA_DIR) {
-        setDataDir(event.get_string());
-    } else if (event.name == QUANPIN_FUZZY_ENABLED) {
+    if (event.name == QUANPIN_FUZZY_ENABLED) {
         setFuzzyForwarding(event.get_bool());
         return true;
     } else if (event.name == QUANPIN_FUZZY_PINYINS) {

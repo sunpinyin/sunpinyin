@@ -142,15 +142,7 @@ public:
         std::string data_dir   = m_data_dir.size()? m_data_dir: SUNPINYIN_DATA_DIR;
         std::string pytab_path = data_dir + "/quanpin.dat";
 
-        CQuanpinSegmentor *pseg = new CQuanpinSegmentor ();
-        if (pseg->load(pytab_path.c_str())) {
-            pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
-            pseg->setGetCorrectionPairOp (&m_getCorrectionPairOp);
-        } else {
-            delete pseg;
-            pseg = NULL;
-        }
-        return pseg;
+        return new CQuanpinSegmentor ();
     }
 
     void setFuzzyForwarding (bool v=true)

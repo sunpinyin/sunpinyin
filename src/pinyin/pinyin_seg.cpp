@@ -38,6 +38,7 @@
 #include <cassert>
 #include <algorithm>
 #include "pinyin_seg.h"
+#include "quanpin_trie.h"
 
 void CGetFuzzySyllablesOp::initFuzzyMap (const char * const* fuzzyPairs, unsigned num)
 {
@@ -113,7 +114,7 @@ const char * CGetCorrectionPairOp::operator () (std::string& pystr, unsigned& ma
 }
 
 CQuanpinSegmentor::CQuanpinSegmentor () 
-    : m_updatedFrom(0), m_pGetFuzzySyllablesOp(NULL), m_pGetCorrectionPairOp(NULL)
+    : m_updatedFrom(0), m_pGetFuzzySyllablesOp(NULL), m_pGetCorrectionPairOp(NULL), m_pytrie(base, check, value)
 {
     m_segs.reserve (32);
 }

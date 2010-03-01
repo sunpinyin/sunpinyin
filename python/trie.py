@@ -187,6 +187,21 @@ class DATrie (object):
 
         f.close()
 
+    def output_static_c_arrays (self, fname):
+        f = open(fname, 'w+')
+        l = len (self.base)
+
+        type = "int" if l > 2**15 else "short"
+
+        f.write (self.__to_c_array (self.base,  type,  "base"))
+        f.write (self.__to_c_array (self.check, type,  "check"))
+        f.write (self.__to_c_array (self.value, "int", "value"))
+
+        f.close()
+
+    def __to_c_array (self, array, type, name):
+        return "static %s %s[] = {%s};\n\n" % (type, name, ', '.join (str(i) for i in array))
+
     def load (self, fname):
         f = open (fname, 'r')
 

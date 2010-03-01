@@ -536,6 +536,6 @@ def gen_suffix_trie (fname):
         trie.add (s[::-1], valid_syllables[s])
     
     pytrie.construct_from_trie (trie)
-    pytrie.save (fname)
+    pytrie.output_static_c_arrays (fname)
 
-gen_suffix_trie ("../data/quanpin.dat")
+gen_suffix_trie ("../src/pinyin/quanpin_trie.h")

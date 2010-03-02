@@ -170,8 +170,7 @@ xsunpinyin_preferences_LDFLAGS = @GTK_LIBS@
 #
 xsunpinyin_datadir   = $(SUNPINYIN_DATA_DIR)
 xsunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
-	$(top_builddir)/data/pydict_sc.bin \
-	$(top_builddir)/data/quanpin.dat
+	$(top_builddir)/data/pydict_sc.bin
 
 icondir   = $(SUNPINYIN_XIM_DATA_DIR)
 icon_DATA = \

@@ -79,8 +79,5 @@ $(LM_SC_BIN): tslmpack $(LM_SC_ARPA) $(DICTFILE)
 pydict_sc.bin: genpyt $(DICTFILE) $(LM_SC_BIN)
 	./genpyt $(DICTFILE) $@ $(PYTRIE_LOG) $(LM_SC_BIN)
 
-quanpin.dat:
-	$(PYTHON) $(top_builddir)/python/pinyin_data.py
-
-noinst_DATA = $(LM_SC_BIN) pydict_sc.bin quanpin.dat
-CLEANFILES = $(LM_SC_BIN) pydict_sc.bin quanpin.dat tslmpack genpyt
+noinst_DATA = $(LM_SC_BIN) pydict_sc.bin 
+CLEANFILES = $(LM_SC_BIN) pydict_sc.bin tslmpack genpyt

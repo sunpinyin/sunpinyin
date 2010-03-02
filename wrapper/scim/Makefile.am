@@ -172,8 +172,7 @@ sunpinyin_imengine_setup_la_LDFLAGS = -avoid-version \
 #
 scim_sunpinyin_datadir   = @SCIM_SUNPINYIN_DATADIR@
 scim_sunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
-                           $(top_builddir)/data/pydict_sc.bin \
-                           $(top_builddir)/data/quanpin.dat
+                           $(top_builddir)/data/pydict_sc.bin
 
 icondir                  = $(SCIM_ICONDIR)
 icon_DATA                = $(top_builddir)/data/sunpinyin_logo.xpm

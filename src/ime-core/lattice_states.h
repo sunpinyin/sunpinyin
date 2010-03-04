@@ -142,6 +142,10 @@ public:
     /** just use the CLatticeStateVec's iterator */
     typedef CLatticeStateVec::const_iterator  const_iterator;
 
+    typedef CLatticeStateVec::reference       reference;
+    typedef CLatticeStateVec::const_reference const_reference;
+    typedef CLatticeStateVec::size_type       size_type;
+
 public:
     void
     clear();
@@ -178,6 +182,13 @@ public:
         { return m_vec.end(); }
     //@}
 
+    reference
+    operator[] (size_type index)
+        {return m_vec[index];}
+
+    const_reference
+    operator[] (size_type index) const
+        {return m_vec[index];}
 
 protected:
     void

@@ -402,7 +402,13 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end, unsigned wid, 
 
 void CIMIContext::_backTraceBestPath ()
 {
-    TLatticeState *bs = &(*(m_lattice[m_tailIdx].m_latticeStates.begin()));
+    CLatticeStates& tail_states = m_lattice[m_tailIdx].m_latticeStates;
+
+    // there must be some transfer errors
+    if (tail_states.size() != 1)
+        return;
+
+    TLatticeState *bs = &(tail_states[0]);
 
     while (bs->m_pBackTraceNode) {
         unsigned start = bs->m_pBackTraceNode->m_frIdx;

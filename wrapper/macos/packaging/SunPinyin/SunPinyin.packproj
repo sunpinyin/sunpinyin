@@ -522,17 +522,17 @@
 						<key>IFPkgDescriptionDeleteWarning</key>
 						<string></string>
 						<key>IFPkgDescriptionDescription</key>
-						<string>SunPinyin is a cross-platform input method.</string>
+						<string>SunPinyin-2.0 is an SLM based Chinese Pinyin input method.</string>
 						<key>IFPkgDescriptionTitle</key>
-						<string>SunPinyin</string>
+						<string>SunPinyin-2.0</string>
 						<key>IFPkgDescriptionVersion</key>
-						<string>1.0</string>
+						<string>2.0</string>
 					</dict>
 				</dict>
 				<key>Display Information</key>
 				<dict>
 					<key>CFBundleGetInfoString</key>
-					<string>SunPinyin 1.0 Copyrights © 2009 OpenSolaris</string>
+					<string>SunPinyin 2.0 Copyrights © 2010 OpenSolaris</string>
 					<key>CFBundleIconFile</key>
 					<string>../../SunPinyin.icns</string>
 					<key>CFBundleIconFile Path Type</key>
@@ -540,9 +540,9 @@
 					<key>CFBundleIdentifier</key>
 					<string>org.opensolaris.pkg.SunPinyin</string>
 					<key>CFBundleName</key>
-					<string>SunPinyin</string>
+					<string>SunPinyin-2.0</string>
 					<key>CFBundleShortVersionString</key>
-					<string>1.0</string>
+					<string>2.0</string>
 				</dict>
 				<key>Options</key>
 				<dict>
@@ -568,7 +568,7 @@
 				<key>Version</key>
 				<dict>
 					<key>IFMajorVersion</key>
-					<integer>1</integer>
+					<integer>2</integer>
 					<key>IFMinorVersion</key>
 					<integer>0</integer>
 				</dict>

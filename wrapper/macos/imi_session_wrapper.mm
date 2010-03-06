@@ -66,6 +66,17 @@ CSunpinyinSessionWrapper::~CSunpinyinSessionWrapper()
     delete m_wh;
 }
 
+void CSunpinyinSessionWrapper::switchInputMode (bool isEnglish, ECommitPolicies policy)
+{
+    if (isEnglish) {
+        // We need two spaces to commit in modern style
+        if (COMMIT_PINYIN_STRING == policy)
+            onKeyEvent (CKeyEvent(IM_VK_ENTER, 0, 0));
+        else if (COMMIT_CONVERTED_SENTENCE == policy)
+            onKeyEvent (CKeyEvent(' ', ' ', 0));
+    }
+}
+
 bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
 {
     if (event.name == CONFIG_GENERAL_PAGE_SIZE) {

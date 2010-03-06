@@ -59,7 +59,7 @@ TLexiconState::getWords (unsigned &num)
 void
 TLexiconState::print (std::string prefix) const
 {
-    printf (prefix.c_str());
+    printf ("%s", prefix.c_str());
     printf ("from frame[%d] ", m_start);
 
     if (m_bPinyin) {
@@ -75,13 +75,13 @@ TLexiconState::print (std::string prefix) const
         printf ("%d \n", m_words.front().m_id);
     }
 
-    printf ("%\n");
+    printf ("\n");
 }
 
 void
 TLatticeState::print(std::string prefix) const
 {
-    printf(prefix.c_str());
+    printf("%s", prefix.c_str());
     char valbuf[256];
     m_score.toString(valbuf);
     printf("<State(%d:%d), from word %d, score %s>\n", m_slmState.getLevel(), m_slmState.getIdx(), m_backTraceWordId, valbuf);

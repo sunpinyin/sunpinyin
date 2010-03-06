@@ -42,6 +42,9 @@
 #import "imi_data.h"
 #import "imi_options.h"
 #import "ic_history.h"
+#import "imi_session_wrapper.h"
+
+typedef ECommitPolicies CommitPolicies;
 
 typedef enum {
     SWITCH_BY_NONE      = 0,
@@ -49,12 +52,10 @@ typedef enum {
     SWITCH_BY_SHIFT     = 2,
 } SwitchingPolicies;
 
-//Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
-#if MAC_OS_X_VERSION_10_6 > MAC_OS_X_VERSION_MAX_ALLOWED
-@interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
-#else
+// if MAC_OS_X_VERSION_10_6 > MAC_OS_X_VERSION_MAX_ALLOWED, 
+// @interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
+// Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
 @interface SunPinyinApplicationDelegate : NSObject <GrowlApplicationBridgeDelegate>
-#endif
 {
     IBOutlet NSMenu*            _menu;
     IBOutlet CandidateWindow*   _candiWin;
@@ -64,6 +65,7 @@ typedef enum {
     bool                        _inputChinesePuncts;
     bool                        _inputFullSymbols;
     SwitchingPolicies           _switchingPolicy;
+    CommitPolicies              _commitPolicy;
     bool                        _usingUSKbLayout;
     CIMIData*                   _data;
     CBigramHistory*             _history;
@@ -82,6 +84,7 @@ typedef enum {
 -(bool)inputFullSymbols;
 
 -(SwitchingPolicies)switchingPolicy;
+-(CommitPolicies)commitPolicy;
 -(bool)usingUSKbLayout;
 
 -(NSDictionary *)registrationDictionaryForGrowl;

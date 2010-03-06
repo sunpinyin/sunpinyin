@@ -65,6 +65,7 @@ void postConfigurationEvents(NSUserDefaults* pref);
     _inputChinesePuncts = [pref boolForKey:@"inputChinesePuncts"];
     _inputFullSymbols   = [pref boolForKey:@"inputFullSymbols"];
     _switchingPolicy    = (SwitchingPolicies) [pref integerForKey:@"switchingPolicy"];
+    _commitPolicy       = (CommitPolicies) [pref integerForKey:@"commitPolicy"];
     _usingUSKbLayout    = [pref boolForKey:@"usingUSKbLayout"];
     
     //setting background color
@@ -202,6 +203,11 @@ void postConfigurationEvents(NSUserDefaults* pref);
 -(SwitchingPolicies)switchingPolicy
 {
     return _switchingPolicy;
+}
+
+-(CommitPolicies)commitPolicy
+{
+    return _commitPolicy;
 }
 
 -(bool)usingUSKbLayout

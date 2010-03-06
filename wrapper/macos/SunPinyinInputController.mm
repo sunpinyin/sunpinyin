@@ -93,27 +93,25 @@ Here are the three approaches:
     _currentClient = sender;
     bool handled = NO;
     NSUInteger modifiers = [event modifierFlags];
-    SwitchingPolicies policy = [[NSApp delegate] switchingPolicy];
+    SwitchingPolicies switchPolicy = [[NSApp delegate] switchingPolicy];
+    CommitPolicies commitPolicy = [[NSApp delegate] commitPolicy];
 
-    if (SWITCH_BY_CAPS == policy) 
+    if (SWITCH_BY_CAPS == switchPolicy) {
         _englishMode = (modifiers & NSAlphaShiftKeyMask);
+        _session->switchInputMode(_englishMode, commitPolicy);
+    }
 
     switch ([event type]) {
         case NSFlagsChanged:
-            if (SWITCH_BY_SHIFT == policy && modifiers == 0 && 
-                _lastEventTypes[1] == NSFlagsChanged && _lastModifiers[1] == NSShiftKeyMask) 
+            if (SWITCH_BY_SHIFT == switchPolicy && modifiers == 0 && 
+                _lastEventTypes[1] == NSFlagsChanged && _lastModifiers[1] == NSShiftKeyMask &&
+                !(_lastModifiers[0] & NSShiftKeyMask))
             {
-                if (!(_lastModifiers[0] & NSShiftKeyMask))
-                    _englishMode = !_englishMode;
+                _englishMode = !_englishMode;
+                _session->switchInputMode(_englishMode, commitPolicy);
 
                 if (_englishMode)
                     [[NSApp delegate] messageNotify:NSLocalizedString(@"Switched to English mode", nil)];
-            }
-
-            if (_englishMode) {
-                // We need two spaces to commit in modern style
-                CKeyEvent key_event (' ', ' ', 0);
-                _session->onKeyEvent (key_event);
             }
             break;
         case NSKeyDown:
@@ -125,7 +123,7 @@ Here are the three approaches:
                 break;
 
             if (_englishMode) {
-                if (SWITCH_BY_CAPS == policy && isprint(keyChar)) {
+                if (SWITCH_BY_CAPS == switchPolicy && isprint(keyChar)) {
                     string = (modifiers & NSShiftKeyMask)? string: [string lowercaseString];
                     [self commitString:string];
                     handled = YES;
@@ -303,5 +301,4 @@ Here are the three approaches:
     delete _session;
     _session = nil;
 }
-
 @end // SunPinyinController(Private)

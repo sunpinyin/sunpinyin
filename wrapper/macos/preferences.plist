@@ -10,6 +10,8 @@
 	<false/>
 	<key>switchingPolicy</key>
 	<integer>0</integer>
+	<key>commitPolicy</key>
+	<integer>1</integer>
 	<key>usingUSKbLayout</key>
 	<false/>
 	<key>alpha</key>

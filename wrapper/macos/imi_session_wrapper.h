@@ -45,6 +45,12 @@
 #define CONFIG_KEYBOARD_PAGE_MINUS       "Keyboard/Page/MinusEquals"
 #define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
 
+typedef enum {
+    COMMIT_PINYIN_STRING        = 0,
+    COMMIT_CONVERTED_SENTENCE   = 1,
+    RESERVE_CONTEXT             = 2,
+} ECommitPolicies;
+
 struct CSessionConfigStore : private CNonCopyable
 {
     bool        m_paging_by_comma_period;
@@ -77,6 +83,8 @@ public:
         {if (m_pv) m_pv->setStatusAttrValue(key, value);}
 	
     bool onConfigChanged (const COptionEvent& event);
+    
+    void switchInputMode (bool isEnglish, ECommitPolicies policy);
 
 private:
     void apply_configuration();

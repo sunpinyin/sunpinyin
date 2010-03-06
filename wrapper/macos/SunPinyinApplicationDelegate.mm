@@ -42,8 +42,6 @@
 #import "SunPinyinApplicationDelegate.h"
 #import <Sparkle/Sparkle.h>
 
-void postConfigurationEvents(NSUserDefaults* pref);
-
 @implementation SunPinyinApplicationDelegate
 
 //this method is added so that our controllers can access the shared NSMenu.
@@ -98,7 +96,7 @@ void postConfigurationEvents(NSUserDefaults* pref);
     [_ftTxtField setStringValue:text];
     [_candiWin setFont:font];
 	
-    postConfigurationEvents (pref);
+    [self postConfigurationEvents];
 }
 
 -(void)preferencesChanged:(NSNotification *)notification
@@ -247,12 +245,16 @@ void postConfigurationEvents(NSUserDefaults* pref);
                             clickContext: nil];
 }
 
-@end //SunPinyinApplicationDelegate
-
-void postConfigurationEvents(NSUserDefaults* pref)
+-(void)postConfigurationEvents
 {
+    NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
+
     COptionEventBus& event_bus = AOptionEventBus::instance();
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
+
+    CSimplifiedChinesePolicy& lang_policy = ASimplifiedChinesePolicy::instance();
+    lang_policy.enableFullSymbol (_inputFullSymbols);
+    lang_policy.enableFullPunct (_inputChinesePuncts);
 
     std::string res_path = [[[NSBundle mainBundle] resourcePath] UTF8String];
     event_bus.publishEvent(COptionEvent(SYSTEM_DATA_DIR, res_path));
@@ -318,3 +320,5 @@ void postConfigurationEvents(NSUserDefaults* pref)
     CSessionConfigStore::instance().m_paging_by_brackets     = paging_by_brackets;        
     CSessionConfigStore::instance().m_paging_by_comma_period = paging_by_comma_period;    
 }
+
+@end //SunPinyinApplicationDelegate

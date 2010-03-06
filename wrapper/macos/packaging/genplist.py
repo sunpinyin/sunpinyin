@@ -2,10 +2,10 @@
 
 import plistlib, hashlib, os, sys
 
-dir = "../../../../sunpinyin/ime/data"
+dir = "../../../data"
 filenames = [ "lm_sc.t3g.be", "lm_sc.t3g.le", "pydict_sc.bin.be", "pydict_sc.bin.le" ]
 files = []
-plist_file = "SunPinyinDataFiles.xml"
+plist_file = "SunpinyinDataFiles.xml"
 
 def sha256(file):
     s = hashlib.sha256()

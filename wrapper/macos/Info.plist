@@ -63,7 +63,7 @@
         <string>Hans</string>
     </array>
     <key>SUFeedURL</key>
-    <string>http://opensolaris.org/os/project/input-method/files/sunpinyin_appcast.xml</string>
+    <string>http://release.sunpinyin.googlecode.com/hg/SunpinyinAppcast.xml</string>
     <key>SUPublicDSAKeyFile</key>
     <string>dsa_pub.pem</string>
     <key>SUScheduledCheckInterval</key>

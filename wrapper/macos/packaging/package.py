@@ -23,7 +23,7 @@ resource_dir = "../build/SunPinyin.app/Contents/Resources"
 version = plist["CFBundleVersion"]
 releasenotes_url = xml_url_base + "SunpinyinReleaseNotes.xml"
 
-zip = "SunPinyin-%s.zip" % version
+zip = "SunPinyin-MacOS-%s.zip" % version
 file_url = url_base + zip
 
 priv_key = "%s/.ssh/dsa_priv.pem" % os.path.expanduser('~')

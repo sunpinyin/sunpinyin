@@ -79,6 +79,9 @@ void CSunpinyinSessionWrapper::switchInputMode (bool isEnglish, ECommitPolicies 
 
 bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
 {
+    if (!isValid())
+        return false;
+
     if (event.name == CONFIG_GENERAL_PAGE_SIZE) {
         update_cand_window_size(event.get_int());
     } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {

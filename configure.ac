@@ -29,7 +29,7 @@ AC_CONFIG_SRCDIR(src/slm/slm.cpp)
 AM_CONFIG_HEADER(config.h)
 AM_CONDITIONAL(DEBUG, test "$enable-debug" = yes)
 
-GETTEXT_PACKAGE=sunpinyin
+GETTEXT_PACKAGE=sunpinyin2
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [The gettext domain])
 

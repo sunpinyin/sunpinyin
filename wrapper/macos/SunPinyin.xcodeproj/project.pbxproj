@@ -9,14 +9,15 @@
 /* Begin PBXBuildFile section */
 		0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0752CBF10F9C723600C7096E /* dsa_pub.pem */; };
 		0752CBF40F9C745200C7096E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
-		0752CC1A0F9C77EB00C7096E /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
+		0752CC1A0F9C77EB00C7096E /* Sparkle.framework in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */ = {isa = PBXBuildFile; fileRef = A412C8570F7942DB006B10AD /* SunPinyin.icns */; };
 		A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A422A7D00DCD694400B41288 /* CandidateWindow.m */; };
+		A45578F51146A75200592C6E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45578F41146A75200592C6E /* MainMenu.xib */; };
 		A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
-		A464E3740F65261800148227 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
+		A464E3740F65261800148227 /* Growl.framework in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
 		A47C487E105E86B5006D528B /* ic_history.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4865105E86B5006D528B /* ic_history.cpp */; };
 		A47C487F105E86B5006D528B /* imi_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4867105E86B5006D528B /* imi_context.cpp */; };
 		A47C4880105E86B5006D528B /* imi_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4869105E86B5006D528B /* imi_data.cpp */; };
@@ -34,7 +35,6 @@
 		A47C4898105E86DB006D528B /* shuangpin_seg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4892105E86DB006D528B /* shuangpin_seg.cpp */; };
 		A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */ = {isa = PBXBuildFile; fileRef = A47C48DE105E8CE8006D528B /* macos_keycode.mm */; };
 		A4829AE711060C69004F71A7 /* imi_session_wrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4829AE611060C69004F71A7 /* imi_session_wrapper.mm */; };
-		A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */; };
 		A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */; };
 		A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4B664FE106D051D009BA1DB /* imi_option_event.cpp */; };
 		A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B8E1B20F645B870094E08B /* Carbon.framework */; };
@@ -51,15 +51,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A464E3780F65263000148227 /* CopyFiles */ = {
+		A464E3780F65263000148227 /* Copy 3rd-party Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0752CC1A0F9C77EB00C7096E /* Sparkle.framework in CopyFiles */,
-				A464E3740F65261800148227 /* Growl.framework in CopyFiles */,
+				0752CC1A0F9C77EB00C7096E /* Sparkle.framework in Copy 3rd-party Frameworks */,
+				A464E3740F65261800148227 /* Growl.framework in Copy 3rd-party Frameworks */,
 			);
+			name = "Copy 3rd-party Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -79,6 +80,8 @@
 		A422A7CF0DCD694400B41288 /* CandidateWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateWindow.h; sourceTree = "<group>"; };
 		A422A7D00DCD694400B41288 /* CandidateWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateWindow.m; sourceTree = "<group>"; };
 		A44571AB0DBF42C200F793F9 /* macos_keycode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_keycode.h; sourceTree = "<group>"; };
+		A455789711469D3600592C6E /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		A455789911469D4C00592C6E /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		A464E2BD0F65211A00148227 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = SOURCE_ROOT; };
 		A47C4865105E86B5006D528B /* ic_history.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ic_history.cpp; path = "../../src/ime-core/ic_history.cpp"; sourceTree = SOURCE_ROOT; };
 		A47C4866105E86B5006D528B /* ic_history.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ic_history.h; path = "../../src/ime-core/ic_history.h"; sourceTree = SOURCE_ROOT; };
@@ -126,7 +129,6 @@
 		A4B664FF106D051D009BA1DB /* imi_option_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_option_event.h; path = "../../src/ime-core/imi_option_event.h"; sourceTree = SOURCE_ROOT; };
 		A4B66500106D051D009BA1DB /* imi_option_keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_option_keys.h; path = "../../src/ime-core/imi_option_keys.h"; sourceTree = SOURCE_ROOT; };
 		A4B8E1B20F645B870094E08B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
-		A4D4C740113A36F9003320BC /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A4DA4E430DBDD9D600472176 /* beos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = beos.h; sourceTree = "<group>"; };
 		A4DA4E450DBDD9D600472176 /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
 		A4DA4E460DBDD9D600472176 /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
@@ -240,7 +242,8 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				E99A791F0BFAA07E00935A00 /* preferences.plist */,
-				A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */,
+				A455789611469D3600592C6E /* MainMenu.strings */,
+				A45578F41146A75200592C6E /* MainMenu.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -363,7 +366,8 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				A464E3780F65263000148227 /* CopyFiles */,
+				A464E3780F65263000148227 /* Copy 3rd-party Frameworks */,
+				A45578A011469D9300592C6E /* Localize and Compile XIBs */,
 			);
 			buildRules = (
 			);
@@ -408,7 +412,7 @@
 				E99A79200BFAA07E00935A00 /* preferences.plist in Resources */,
 				A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */,
 				A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */,
-				A485E5BC0DD28B8D00E472E5 /* MainMenu.xib in Resources */,
+				A45578F51146A75200592C6E /* MainMenu.xib in Resources */,
 				A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */,
 				A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */,
 				0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */,
@@ -416,6 +420,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A45578A011469D9300592C6E /* Localize and Compile XIBs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Localize and Compile XIBs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ibtool --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool --compile zh_CN.lproj/MainMenu.nib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.nib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.nib";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -462,11 +484,19 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		A485E5BA0DD28B8D00E472E5 /* MainMenu.xib */ = {
+		A455789611469D3600592C6E /* MainMenu.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A455789711469D3600592C6E /* English */,
+				A455789911469D4C00592C6E /* zh_CN */,
+			);
+			name = MainMenu.strings;
+			sourceTree = "<group>";
+		};
+		A45578F41146A75200592C6E /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A485E5BB0DD28B8D00E472E5 /* English */,
-				A4D4C740113A36F9003320BC /* zh_CN */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

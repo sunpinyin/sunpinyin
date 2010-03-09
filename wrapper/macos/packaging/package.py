@@ -49,7 +49,7 @@ os.system("freeze -v %s" % pack_proj)
 
 print "[PACK] Compressing %s..." % zip
 os.chdir("SunPinyin/build")
-os.system("zip -r ../../%s SunPinyin.pkg" % zip)
+os.system("zip -y -r ../../%s SunPinyin.pkg" % zip)
 os.chdir("../..")
 
 print "[PACK] Signing %s..." % zip

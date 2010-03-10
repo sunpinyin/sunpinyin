@@ -76,7 +76,9 @@ public:
                            FALSE, FALSE, 1);
         gtk_box_pack_start(GTK_BOX(box), candidate_area_,
                            FALSE, FALSE, 1);
-
+        gtk_widget_show_all(box);
+        gtk_widget_realize(main_wnd_);
+        
         // get screen size
         get_screen_size(&screen_width_, &screen_height_);
         LOG("screen size %d %d", screen_width_, screen_height_);
@@ -87,7 +89,8 @@ public:
     void reload_ui() {
         GdkColor color;
         varchar value;
-
+        double opa = 1.0;
+        
         settings_get(PREEDIT_COLOR, value);
         gdk_color_parse(value, &color);
         gtk_widget_modify_bg(main_wnd_, GTK_STATE_NORMAL, &color);
@@ -100,7 +103,20 @@ public:
         gdk_color_parse(value, &color);
         gtk_widget_modify_fg(candidate_area_, GTK_STATE_NORMAL, &color);
         gtk_widget_modify_fg(preedit_area_, GTK_STATE_NORMAL, &color);
-                             
+
+        settings_get(PREEDIT_OPACITY, &opa);
+        GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
+        if (opa < 1.0) {
+            GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
+            if (cmap) {
+                gtk_widget_set_colormap(main_wnd_, cmap);
+                gtk_window_set_opacity(GTK_WINDOW(main_wnd_), opa);
+            }
+        } else {
+            GdkColormap* cmap = gdk_screen_get_rgb_colormap(screen);
+            gtk_window_set_opacity(GTK_WINDOW(main_wnd_), 1.0);
+            gtk_widget_set_colormap(main_wnd_, cmap);
+        }
     }
     
     void move(int x, int y) {
@@ -114,10 +130,8 @@ public:
         gtk_label_set_text(GTK_LABEL(preedit_area_), utf_str);
     
         if (ppd->size() == 0) {
-            hide_main_window();
             status_ = false;
         } else if (!status_) {
-            show_main_window();
             status_ = true;
         }
     }
@@ -136,6 +150,10 @@ public:
         width_ += 10;
 
         adjust_position();
+        if (status_)
+            gtk_widget_show(main_wnd_);
+        else
+            gtk_widget_hide(main_wnd_);
     }
 
     bool status() {
@@ -144,7 +162,7 @@ public:
 
     void pause() {
         if (status_) {
-            hide_main_window();
+            gtk_widget_hide(main_wnd_);
             status_ = false;
             pause_ = true;
         }
@@ -152,41 +170,12 @@ public:
 
     void go_on() {
         if (!status_ && pause_) {
-            show_main_window();
+            gtk_widget_show(main_wnd_);
             status_ = true;
             pause_ = false;
         }
     }
 private:
-
-    void show_main_window() {
-        /* we'll show it first, and then try to change the opacity
-         * this will cause some window manager render the shadow for us
-         *
-         * this might cause a gtk critical error
-         */
-        gtk_widget_show_all(main_wnd_);
-        
-        double opa = 1.0;
-        settings_get(PREEDIT_OPACITY, &opa);
-        if (opa < 1.0) {
-            GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
-            GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
-            if (cmap) {
-                gtk_widget_set_colormap(main_wnd_, cmap);
-                gtk_window_set_opacity(GTK_WINDOW(main_wnd_), opa);
-            }
-        }
-    }
-
-    void hide_main_window() {
-        gtk_widget_hide_all(main_wnd_);
-
-        GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
-        GdkColormap* cmap = gdk_screen_get_rgb_colormap(screen);
-        if (cmap)
-            gtk_widget_set_colormap(main_wnd_, cmap);
-    }
 
     int x_, y_;
     int width_, height_;

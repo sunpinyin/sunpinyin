@@ -1,5 +1,5 @@
 debian/tmp/usr/share/ibus/component/sunpinyin.xml
 debian/tmp/usr/share/ibus-sunpinyin/setup/*
-debian/tmp/usr/share/locale/*/LC_MESSAGES/sunpinyin.mo
+debian/tmp/usr/share/locale/*/LC_MESSAGES/sunpinyin2.mo 
 debian/tmp/usr/lib/ibus-sunpinyin/*
 debian/tmp/usr/share/sunpinyin/icons/*

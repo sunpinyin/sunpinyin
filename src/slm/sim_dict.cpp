@@ -121,7 +121,7 @@ CSIMDict::parseText(const char* filename)
         if (fp != NULL)
             fclose(fp);
         buf[sizeof(buf)-1] = 0;
-        fprintf(stderr, "Catch exception when loading dictionary at %s, existing...", buf);
+        fprintf(stderr, "Catch exception when loading dictionary at %s, exiting...", buf);
         exit(200);
     }
     return true;

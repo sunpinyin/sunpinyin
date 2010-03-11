@@ -133,14 +133,12 @@
 		A4DA4E450DBDD9D600472176 /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
 		A4DA4E460DBDD9D600472176 /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
 		A4DA4E470DBDD9D600472176 /* solaris.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = solaris.h; sourceTree = "<group>"; };
-		A4DA4E4A0DBDD9D600472176 /* host_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = host_os.h; sourceTree = "<group>"; };
 		A4DA4E620DBDD9D600472176 /* pytrie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pytrie.cpp; sourceTree = "<group>"; };
 		A4DA4E630DBDD9D600472176 /* pytrie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pytrie.h; sourceTree = "<group>"; };
 		A4DA4E640DBDD9D600472176 /* portability.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = portability.cpp; sourceTree = "<group>"; };
 		A4DA4E650DBDD9D600472176 /* portability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = portability.h; sourceTree = "<group>"; };
 		A4DA4E670DBDD9D600472176 /* slm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slm.cpp; sourceTree = "<group>"; };
 		A4DA4E680DBDD9D600472176 /* slm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slm.h; sourceTree = "<group>"; };
-		A4DA4E760DBDDA1800472176 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../config.h; sourceTree = "<group>"; };
 		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../data/lm_sc.t3g; sourceTree = SOURCE_ROOT; };
 		A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict_sc.bin; path = ../../data/pydict_sc.bin; sourceTree = "<group>"; };
 		A4FC48CA0F6530EF0069BE81 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -313,8 +311,6 @@
 		A4DA4E410DBDD9D600472176 /* sunpinyin-2.0 */ = {
 			isa = PBXGroup;
 			children = (
-				A4DA4E760DBDDA1800472176 /* config.h */,
-				A4DA4E4A0DBDD9D600472176 /* host_os.h */,
 				A4DA4E640DBDD9D600472176 /* portability.cpp */,
 				A4DA4E650DBDD9D600472176 /* portability.h */,
 				A4DA4E420DBDD9D600472176 /* config */,
@@ -519,6 +515,7 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../../cmakebuild;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
@@ -628,6 +625,7 @@
 			buildSettings = {
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../../cmakebuild;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
@@ -639,6 +637,7 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../../cmakebuild;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};

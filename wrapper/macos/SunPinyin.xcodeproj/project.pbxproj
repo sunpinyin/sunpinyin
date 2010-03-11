@@ -515,7 +515,11 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../../cmakebuild;
+				HEADER_SEARCH_PATHS = (
+					../../cmakebuild,
+					../..,
+					../../src,
+				);
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
@@ -625,7 +629,11 @@
 			buildSettings = {
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../../cmakebuild;
+				HEADER_SEARCH_PATHS = (
+					../../cmakebuild,
+					../..,
+					../../src,
+				);
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
@@ -637,7 +645,11 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../../cmakebuild;
+				HEADER_SEARCH_PATHS = (
+					../../cmakebuild,
+					../..,
+					../../src,
+				);
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};

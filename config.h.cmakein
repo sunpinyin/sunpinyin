@@ -140,7 +140,7 @@
 #cmakedefine PACKAGE_VERSION "${PACKAGE_VERSION}"
 
 /* Define to 1 if you have the ANSI C header files. */
-#cmakedefine STDC_HEADERS
+#undef STDC_HEADERS
 
 /* Version number of package */
 #cmakedefine VERSION "${VERSION}"

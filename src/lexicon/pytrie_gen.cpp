@@ -207,10 +207,10 @@ CPinyinTrieMaker::constructFromLexicon(const char* fileName)
     }
     fclose(fp);
 
-    printf("\n    %d primitive nodes", TNode::m_AllNodes.size());  fflush(stdout);
+    printf("\n    %zd primitive nodes", TNode::m_AllNodes.size());  fflush(stdout);
 
     threadNonCompletePinyin();
-    printf("\n    %d total nodes", TNode::m_AllNodes.size());  fflush(stdout);
+    printf("\n    %zd total nodes", TNode::m_AllNodes.size());  fflush(stdout);
 
     std::string pyPrefix = "";
     //print(stderr, &m_RootNode, pyPrefix);

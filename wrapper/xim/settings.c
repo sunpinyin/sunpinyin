@@ -38,6 +38,7 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/Xutil.h>
+#include <sys/stat.h>
 
 #include "common.h"
 #include "xmisc.h"
@@ -291,10 +292,11 @@ settings_load()
     snprintf(path, 256, "%s/%s", getenv("HOME"), SETTING_FILE);
     FILE *fp = fopen(path, "r");
     if (fp == NULL) {
-        system("/usr/bin/mkdir -p 0600 ~/.sunpinyin");
+        char config_dir[256];
+        snprintf(config_dir, 256, "%s/.sunpinyin", getenv("HOME"));
+        mkdir(config_dir, 0600);
         char cmd[256];
-        snprintf(cmd, 256, "/usr/bin/cp %s %s", DEFAULT_SETTING_FILE,
-                 SETTING_FILE);
+        snprintf(cmd, 256, "cp %s %s", DEFAULT_SETTING_FILE, path);
         system(cmd);
         if ((fp = fopen(path, "r")) == NULL)
             return;

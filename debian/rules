@@ -27,7 +27,7 @@ ifneq (,$(findstring $(DEB_BUILD_ARCH), $(LITTLE_ENDIAN_ARCHS)))
 endif
 
 ifneq (,$(findstring $(DEB_BUILD_ARCH), $(BIG_ENDIAN_ARCHS)))
-	BUILD_ENDIANNESS := ge
+	BUILD_ENDIANNESS := be
 endif
 
 ifneq (,$(findstring $(DEB_HOST_ARCH), $(LITTLE_ENDIAN_ARCHS)))
@@ -35,15 +35,16 @@ ifneq (,$(findstring $(DEB_HOST_ARCH), $(LITTLE_ENDIAN_ARCHS)))
 endif
 
 ifneq (,$(findstring $(DEB_HOST_ARCH), $(BIG_ENDIAN_ARCHS)))
-	HOST_ENDIANNESS := ge
+	HOST_ENDIANNESS := be
 endif
 
 ifneq ($(HOST_ENDIANNESS),$(BUILD_ENDIANNESS))
 	$(error cross-compiling not supported so far\; cannot continue)
 endif
 
-DEB_DH_MAKESHLIBS_ARGS_ibus-sunpinyin := -n
-DEB_DH_GENCONTROL_ARGS_ibus-sunpinyin := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
+SUNPINYIN_DATA_DEPENDS=sunpinyin-data-$(HOST_ENDIANNESS)
+DEB_DH_MAKESHLIBS_ARGS := -n
+DEB_DH_GENCONTROL_ARGS := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
 
 #common-install-impl::
 # 	rm debian/tmp/usr/share/sunpinyin/*

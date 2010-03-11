@@ -1,72 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>English</string>
-    <key>CFBundleExecutable</key>
-    <string>SunPinyin</string>
-    <key>CFBundleIconFile</key>
-    <string></string>
-    <key>CFBundleIdentifier</key>
-    <string>org.opensolaris.inputmethod.SunPinyin</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundleName</key>
-    <string>${PRODUCT_NAME}</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleSignature</key>
-    <string>????</string>
-    <key>CFBundleVersion</key>
-    <string>2.0</string>
-    <key>NSMainNibFile</key>
-    <string>MainMenu</string>
-    <key>NSPrincipalClass</key>
-    <string>NSApplication</string>
-    <!--                                                -->
-    <!--  Begin the require entries for InputMethodKit based input methods -->
-    <!--                                                -->
-    <!-- Input Methods are background only applications -->
-    <key>LSBackgroundOnly</key>
-    <string>0</string>
-    <key>LSUIElement</key>
-    <string>1</string>
-    <!--                                                -->
-    <!-- An InputMethodConnectionName must be specified -->
-    <!-- This string names the connection through which you services as an input method are published. -->
-    <!-- The InputMethodKit will use this name to create an NSConnection that clients connect to in order -->
-    <!--  to deliver text input.                        -->
-    <!--                                                -->
-    <key>InputMethodConnectionName</key>
-    <string>SunPinyin_1_Connection</string>
-    <!--                                                -->
-    <!-- The next step is to specify an input controller class -->
-    <!-- The InputMethodKit searches your bundle for the key InputMethodServerControllerClass -->
-    <!-- inputText:key:modifiers:client or handleEvent:client needs the delegateClass be specified -->
-    <!--                                                -->
-    <key>InputMethodServerControllerClass</key>
-    <string>SunPinyinController</string>
-    <key>InputMethodServerDelegateClass</key>
-    <string>SunPinyinController</string>
-    <!--                                                -->
-    <!-- Specify an icon file.  This is used to display your input method in the International Preference Input Menu panel. -->
-    <!--                                                -->
-    <key>tsInputMethodIconFileKey</key>
-    <string>SunPinyin.icns</string>
-    <!--                                                -->
-    <!-- The next required entry in the Info.plist XML file is your input method's character repertoire.  -->
-    <!-- This is an array of ISO language codes         -->
-    <!-- These codes help to categorize your input method to the user. -->
-    <key>tsInputMethodCharacterRepertoireKey</key>
-    <array>
-        <string>Hans</string>
-    </array>
-    <key>SUFeedURL</key>
-    <string>http://release.sunpinyin.googlecode.com/hg/SunpinyinAppcast.xml</string>
-    <key>SUPublicDSAKeyFile</key>
-    <string>dsa_pub.pem</string>
-    <key>SUScheduledCheckInterval</key>
-    <integer>86400</integer>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>SunPinyin</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opensolaris.inputmethod.SunPinyin</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>2.0</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>LSBackgroundOnly</key>
+	<string>0</string>
+	<key>LSUIElement</key>
+	<string>1</string>
+	<key>InputMethodConnectionName</key>
+	<string>SunPinyin_1_Connection</string>
+	<key>InputMethodServerControllerClass</key>
+	<string>SunPinyinController</string>
+	<key>InputMethodServerDelegateClass</key>
+	<string>SunPinyinController</string>
+	<key>tsInputMethodIconFileKey</key>
+	<string>SunPinyin.icns</string>
+	<key>tsInputMethodCharacterRepertoireKey</key>
+	<array>
+		<string>Hans</string>
+	</array>
+	<key>SUFeedURL</key>
+	<string>http://release.sunpinyin.googlecode.com/hg/SunpinyinAppcast.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
 </dict>
 </plist>

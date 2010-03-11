@@ -430,7 +430,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ibtool --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool --compile zh_CN.lproj/MainMenu.nib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.nib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.nib";
+			shellScript = "ibtool --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool --compile zh_CN.lproj/MainMenu.xib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.xib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.xib";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -547,7 +547,6 @@
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
 				);
 				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
-				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2 = "-DSUNPINYIN_USERDATA_DIR_PREFIX=\\\"Library/SunPinyin\\\"";
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",
@@ -581,7 +580,6 @@
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
 				);
 				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
-				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2 = "-DSUNPINYIN_USERDATA_DIR_PREFIX=\\\"Library/SunPinyin\\\"";
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",
@@ -614,7 +612,6 @@
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
 				);
 				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
-				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2 = "-DSUNPINYIN_USERDATA_DIR_PREFIX=\\\"Library/SunPinyin\\\"";
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",

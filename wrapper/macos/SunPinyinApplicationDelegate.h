@@ -76,7 +76,6 @@ typedef enum {
 
 -(IBAction)showPrefPanel:(id)sender;
 -(IBAction)showFontPanel:(id)sender;
--(IBAction)checkForUpdate:(id)sender;
 
 -(IBAction)toggleChinesePuncts:(id)sender;
 -(bool)inputChinesePuncts;

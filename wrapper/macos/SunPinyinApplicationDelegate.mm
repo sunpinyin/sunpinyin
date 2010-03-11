@@ -139,13 +139,6 @@
     [ftDlg makeKeyAndOrderFront:sender];
 }
 
--(IBAction)checkForUpdate:(id)sender
-{
-    SUUpdater *updater = [SUUpdater sharedUpdater];
-    
-    [updater checkForUpdates: sender];
-}
-
 -(void) changeFont:(id)sender
 {
     NSFont *oldFont =[_candiWin font];

@@ -34,6 +34,7 @@
  */
 
 #include <imi_uiobjects.h>
+#include "ibus_portable.h"
 #include "sunpinyin_lookup_table.h"
 
 SunPinyinLookupTable::SunPinyinLookupTable()
@@ -43,10 +44,8 @@ SunPinyinLookupTable::SunPinyinLookupTable()
 
 SunPinyinLookupTable::~SunPinyinLookupTable()
 {
-    if (m_lookup_table) {
-        g_object_unref (m_lookup_table);
-        m_lookup_table = NULL;
-    }
+    UNREF (m_lookup_table);
+    m_lookup_table = NULL;
 }
 
 int
@@ -131,7 +130,7 @@ SunPinyinLookupTable::append_candidate(const ICandidateList& cl,
     decorate_candidate(text, cl.candiType(item));
     int index = get_current_page_start() + item;
     ibus_lookup_table_set_candidate(m_lookup_table, index, text);
-    g_object_unref(text);       // XXX: shall we unref it?
+    UNREF(text);
     return len;
 }
 

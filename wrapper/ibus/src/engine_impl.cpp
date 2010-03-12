@@ -10,7 +10,7 @@
 #include "sunpinyin_config.h"
 #include "sunpinyin_config_keys.h"
 #include "imi_ibus_win.h"
-
+#include "ibus_portable.h"
 #include "engine_impl.h"
 
 using namespace std;
@@ -85,9 +85,7 @@ EngineImpl::~EngineImpl()
     
     delete m_lookup_table;
 
-    if (m_prop_list) {
-        g_object_unref (m_prop_list);
-    }
+    UNREF(m_prop_list);
     delete m_status_prop;
     delete m_letter_prop;
     delete m_punct_prop;
@@ -253,7 +251,7 @@ EngineImpl::commit_string (const std::wstring& str)
     IBusText *text;
     text = ibus_text_new_from_ucs4((const gunichar*) str.c_str());
     ibus_engine_commit_text(m_ibus_engine, text);
-    g_object_unref(text);
+    UNREF(text);
 }
 
 void
@@ -343,7 +341,7 @@ EngineImpl::update_preedit_string(const IPreeditString& preedit)
         }
         
         ibus_engine_update_preedit_text(m_ibus_engine, text, caret, TRUE);
-        g_object_unref(text);
+        UNREF(text);
     } else {
         ibus_engine_hide_preedit_text(m_ibus_engine);
     }

@@ -67,9 +67,7 @@ ibus_property_set_tooltip (IBusProperty *prop,
     g_assert (IBUS_IS_PROPERTY (prop));
     g_return_if_fail (tooltip == NULL || IBUS_IS_TEXT (tooltip));
 
-    if (prop->tooltip) {
-        g_object_unref (prop->tooltip);
-    }
+    UNREF (prop->tooltip);
 
     if (tooltip == NULL) {
         prop->tooltip = ibus_text_new_from_static_string ("");

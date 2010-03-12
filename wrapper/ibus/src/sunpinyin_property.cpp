@@ -51,12 +51,8 @@ PropertyInfo::PropertyInfo()
 
 PropertyInfo::~PropertyInfo()
 {
-    if (label) {
-        g_object_unref(label);
-    }
-    if (tooltip) {
-        g_object_unref(tooltip);
-    }
+    UNREF(label);
+    UNREF(tooltip);
 }
 
 SunPinyinProperty *
@@ -118,10 +114,7 @@ SunPinyinProperty::SunPinyinProperty(IBusEngine *engine, const std::string& name
 
 SunPinyinProperty::~SunPinyinProperty()
 {
-    if (m_prop) {
-        g_object_unref(m_prop);
-        m_prop = NULL;
-    }
+    UNREF(m_prop);
 }
 
 bool

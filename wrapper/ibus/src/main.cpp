@@ -41,6 +41,7 @@
 #include <ibus.h>
 #include "config.h"
 #include "engine.h"
+#include "ibus_portable.h"
 
 #define N_(String) (String)
 #define _(String)  gettext(String)
@@ -111,7 +112,7 @@ init ()
         ibus_bus_register_component (bus, component);
     }
     
-    g_object_unref (component);
+    UNREF (component);
 }
 
 int main(int argc, char *argv[])

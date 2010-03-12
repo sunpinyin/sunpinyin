@@ -139,7 +139,10 @@ public:
     
     IPySegmentor* createPySegmentor () 
     {
-        return new CQuanpinSegmentor ();
+        CQuanpinSegmentor *pseg = new CQuanpinSegmentor ();
+        pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
+        pseg->setGetCorrectionPairOp (&m_getCorrectionPairOp);
+        return pseg;
     }
 
     void setFuzzyForwarding (bool v=true)

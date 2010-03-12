@@ -430,7 +430,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ibtool --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool --compile zh_CN.lproj/MainMenu.xib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.xib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.xib";
+			shellScript = "ibtool --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool --compile zh_CN.lproj/MainMenu.nib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.nib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.nib";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

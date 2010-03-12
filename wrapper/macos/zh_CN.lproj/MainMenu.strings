@@ -214,3 +214,6 @@
 
 /* Class = "NSMenuItem"; title = "Commit Pinyin String"; ObjectID = "680"; */
 "680.title" = "提交拼音字符串";
+
+/* Class = "NSButtonCell"; title = "Check automatically"; ObjectID = "691"; */
+"691.title" = "自动检查更新";

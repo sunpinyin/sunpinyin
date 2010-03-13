@@ -19,6 +19,9 @@ Makefile.in.in
 .deps
 src/host_os.h
 
+data/lm_sc.t3g*
+data/pydict_sc.bin*
+
 po/POTFILES
 po/stamp-it
 
@@ -27,4 +30,10 @@ wrapper/ibus/src/sunpinyin.xml.in
 
 wrapper/macos/build/
 wrapper/macos/zh_CN.lproj/MainMenu.xib
+wrapper/macos/packaging/SunPinyin-MacOS-2.0.zip
+wrapper/macos/packaging/SunPinyin/DownloadDataFiles/build/
+wrapper/macos/packaging/SunPinyin/build/
+wrapper/macos/packaging/sunpinyin_appcast.xml
 *.nib
+
+build/*

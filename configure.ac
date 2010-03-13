@@ -110,23 +110,6 @@ if test "X$ENABLE_DOCUMENTS" = "Xyes"; then
   AC_CONFIG_FILES([doc/Makefile])
 fi
 
-
-AC_ARG_ENABLE([cle],
-    AC_HELP_STRING([--enable-cle], [compile as cle IME (default=auto), multiple wrappers could be compiled together ]),
-    [ENABLE_CLE="${enableval}"],
-    [ENABLE_CLE="no"])
-if test "X${ENABLE_CLE}" = "Xauto" ; then
-    case "${host_os}" in
-    *beos*|*haiku*)
-        ENABLE_CLE="no"
-        ;;
-    *)
-        ENABLE_CLE="yes"
-        ;;
-    esac
-fi
-AM_CONDITIONAL(WRAPPER_CLE, [test "X${ENABLE_CLE}" = "Xyes"])
-
 AC_ARG_ENABLE([gtkstandalone],
     AC_HELP_STRING([--enable-gtkstandalone], [compile standalone gtk program for demo/debug(default=no) ]),
     [ENABLE_GTKSTANDALONE="${enableval}"],
@@ -216,48 +199,6 @@ if test "x$SUNPINYIN_DATADIR" != "x" ; then
 fi
 
 AM_CONDITIONAL(OVERRIDE_DEFAULT_PINYINDATADIR, [test "x${SUNPINYIN_DATADIR}" != "x"])
-
-AC_ARG_ENABLE([bestandalone],
-    AC_HELP_STRING([--enable-bestandalone], [compile standalone program by BeAPI for demo/debug(default=no) ]),
-    [ENABLE_BE_STANDALONE="${enableval}"],
-    [ENABLE_BE_STANDALONE="no"])
-if test "x${ENABLE_BE_STANDALONE}" = "xyes" ; then
-    if test "$my_host_os" != "beos" ; then
-        AC_CHECK_TOOL(LITE_BEAPI_CONFIG, lite-beapi-config)
-        if test "x$ac_ct_LITE_BEAPI_CONFIG" != "x" ; then
-            LITE_BEAPI_CFLAGS=`$LITE_BEAPI_CONFIG --cflags`
-            LITE_BEAPI_LIBS=`$LITE_BEAPI_CONFIG --libs`
-            AC_SUBST(LITE_BEAPI_CFLAGS)
-            AC_SUBST(LITE_BEAPI_LIBS)
-        else
-            ENABLE_BE_STANDALONE="no"
-        fi
-    fi
-fi
-AM_CONDITIONAL(HAVE_LITE_BEAPI, [test "x$ac_ct_LITE_BEAPI_CONFIG" != "x"])
-AM_CONDITIONAL(WRAPPER_BE_STANDALONE, [test "X${ENABLE_BE_STANDALONE}" = "Xyes"])
-
-AC_ARG_ENABLE([becjk-module],
-    AC_HELP_STRING([--enable-becjk-module], [compile as module for BeCJK (default=auto) ]),
-    [ENABLE_BECJK_MODULE="${enableval}"],
-    [ENABLE_BECJK_MODULE="auto"])
-if test "X${ENABLE_BECJK_MODULE}" = "Xauto" || test "X${ENABLE_BECJK_MODULE}" = "Xyes"; then
-    AC_CHECK_HEADER(becjk/BeCJKInputModule.h)
-    if test "x$ac_cv_header_becjk_BeCJKInputModule_h" != "xyes" ; then
-        if test "x${ENABLE_BECJK_MODULE}" = "xyes" ; then
-            AC_MSG_ERROR([
-    *** You do not have development kit of BeCJK on your computer.
-    *** You can get development kit of BeCJK by downloading following package.
-    ***    http://etkxx.gro.clinux.org/beos/BeCJK-1.0-devel-20080124.zip
-    *** or
-    ***    http://etkxx.gro.clinux.org/beos/BeCJK-1.0-src-20080124.zip])
-        fi
-    else
-        ENABLE_BECJK_MODULE="yes"
-    fi
-fi
-AM_CONDITIONAL(WRAPPER_BECJK_MODULE, [test "X${ENABLE_BECJK_MODULE}" = "Xyes"])
-AM_CONDITIONAL(WRAPPER_BEOS, [test "X${ENABLE_BE_STANDALONE}" = "Xyes" || test "X${ENABLE_BECJK_MODULE}" = "Xyes"])
 
 # Checks for programs.
 AC_PROG_CC

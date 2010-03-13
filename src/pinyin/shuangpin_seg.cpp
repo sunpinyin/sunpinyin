@@ -61,8 +61,11 @@ unsigned CShuangpinSegmentor::pop ()
         return m_updatedFrom = 0;
 
     unsigned size = m_inputBuf.size ();
-    
-    if (!islower(m_pystr[size-1])) {
+
+    EShuangpinType shpType = s_shpData.getShuangpinType();
+    bool isInputPy = ( islower(m_pystr[size-1]) ||
+                       (m_pystr[size-1] == ';' && (shpType == MS2003 || shpType == ZIGUANG)) );
+    if (!isInputPy) {
         m_nAlpha -= 1;
     }
 

@@ -117,6 +117,7 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_config_keys.h \
 	imi_ibus_win.cpp \
 	imi_ibus_win.h \
+	ibus_common.h \
 	ibus_portable.cpp \
 	ibus_portable.h \
 	$(NULL)

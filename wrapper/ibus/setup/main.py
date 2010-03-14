@@ -430,7 +430,7 @@ class PunctMappingSetupDialog (MultiCheckDialog):
                     MappingInfo('togglebutton4', [('3',None), ('#',u'＃')]),
                     MappingInfo('togglebutton5', []),
                     MappingInfo('togglebutton6', [('5',None), ('%',u'％')]),
-                    MappingInfo('togglebutton7', []),
+                    MappingInfo('togglebutton7', [('6',None), ('^',u'…')]),
                     MappingInfo('togglebutton8', [('7',None), ('&',u'＆')]),
                     MappingInfo('togglebutton9', [('8',None), ('*',u'＊')]),
                     MappingInfo('togglebutton14', [('\\',None), ('|',u'‖')]),

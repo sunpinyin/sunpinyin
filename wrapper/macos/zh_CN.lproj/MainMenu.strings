@@ -75,7 +75,7 @@
 "438.title" = "中文标点";
 
 /* Class = "NSMenuItem"; title = "Full-Width Symbol"; ObjectID = "443"; */
-"443.title" = "全角符号";
+"443.title" = "全角字母";
 
 /* Class = "NSTextFieldCell"; title = "Switch English/Chinese:"; ObjectID = "459"; */
 "459.title" = "中英文切换：";

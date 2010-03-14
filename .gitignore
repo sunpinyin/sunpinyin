@@ -28,6 +28,8 @@ po/stamp-it
 wrapper/ibus/setup/ibus-setup-sunpinyin
 wrapper/ibus/src/sunpinyin.xml.in
 
+wrapper/macos/SunPinyin.xcodeproj/*.mode1v3
+wrapper/macos/SunPinyin.xcodeproj/*.pbxuser
 wrapper/macos/build/
 wrapper/macos/zh_CN.lproj/MainMenu.xib
 wrapper/macos/packaging/SunPinyin-MacOS-2.0.zip
@@ -37,3 +39,4 @@ wrapper/macos/packaging/sunpinyin_appcast.xml
 *.nib
 
 build/*
+swap/*

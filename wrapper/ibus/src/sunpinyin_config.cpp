@@ -35,7 +35,6 @@
 
 #include <cassert>
 #include <imi_option_keys.h>
-#include "engine_impl.h"
 #include "sunpinyin_config_keys.h"
 #include "sunpinyin_config.h"
 
@@ -61,6 +60,8 @@ struct ConfigItem
 
 static vector<string> get_strings_from_gvalue(GValue* value);
 
+IBusConfig* SunPinyinConfig::m_config;
+
 SunPinyinConfig::SunPinyinConfig()
 {
     m_scheme_names["QuanPin"]    = CSunpinyinSessionFactory::QUANPIN;
@@ -70,8 +71,13 @@ SunPinyinConfig::SunPinyinConfig()
 SunPinyinConfig::~SunPinyinConfig()
 {}
 
-IBusConfig *
-SunPinyinConfig::m_config = NULL;
+void
+SunPinyinConfig::set_config(IBusConfig* config)
+{
+    assert(config);
+    m_config = config;
+    listen_on_changed();
+}
 
 bool
 SunPinyinConfig::get(const char* key, bool val)
@@ -207,17 +213,11 @@ SunPinyinConfig::is_initial_letter_full()
 }
 
 void
-SunPinyinConfig::set_config(IBusConfig *config)
-{
-    m_config = config;
-}
-
-void
 SunPinyinConfig::listen_on_changed()
 {
     assert(m_config != NULL);
     g_signal_connect(m_config, "value-changed",
-                     G_CALLBACK(this->on_config_value_changed), this);
+                     G_CALLBACK(on_config_value_changed), 0);
 }
 
 std::string

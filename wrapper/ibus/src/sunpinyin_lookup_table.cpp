@@ -37,15 +37,12 @@
 #include "ibus_portable.h"
 #include "sunpinyin_lookup_table.h"
 
-SunPinyinLookupTable::SunPinyinLookupTable()
-{
-    m_lookup_table = ibus_lookup_table_new (9, 0, TRUE, TRUE);
-}
+SunPinyinLookupTable::SunPinyinLookupTable() 
+    : Pointer<IBusLookupTable>(ibus_lookup_table_new (9, 0, TRUE, TRUE))
+{}
 
 SunPinyinLookupTable::~SunPinyinLookupTable()
 {
-    UNREF (m_lookup_table);
-    m_lookup_table = NULL;
 }
 
 int
@@ -58,8 +55,8 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
     const int total = cl.total();    
     // expand the array in lookup_table
     // we will fill the missing items in when we have them
-    ibus_lookup_table_set_page_size(m_lookup_table, size);
-    g_array_set_size(m_lookup_table->candidates, total);
+    ibus_lookup_table_set_page_size(*this, size);
+    g_array_set_size((*this)->candidates, total);
 
     for (int i = 0, begin = 0; i < size; ++i) {
         const int len = append_candidate(cl, i, begin);
@@ -75,27 +72,21 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
 bool
 SunPinyinLookupTable::cursor_up()
 {
-    ibus_lookup_table_cursor_down(m_lookup_table);
+    ibus_lookup_table_cursor_down(*this);
     return true;
 }
 
 bool
 SunPinyinLookupTable::cursor_down()
 {
-    ibus_lookup_table_cursor_down(m_lookup_table);
+    ibus_lookup_table_cursor_down(*this);
     return true;
 }
 
 size_t
 SunPinyinLookupTable::get_cursor_pos() const
 {
-    return ibus_lookup_table_get_cursor_pos(m_lookup_table);
-}
-
-IBusLookupTable *
-SunPinyinLookupTable::get()
-{
-    return m_lookup_table;
+    return ibus_lookup_table_get_cursor_pos(*this);
 }
 
 // an alternative to ibus_lookup_table_append_candidate(m_lookup_table, text);
@@ -126,16 +117,15 @@ SunPinyinLookupTable::append_candidate(const ICandidateList& cl,
     if (!cand)
         return len;
     len = cl.candiSize(item);
-    IBusText *text = ibus_text_new_from_ucs4(cand);
+    ibus::Text text(ibus_text_new_from_ucs4(cand));
     decorate_candidate(text, cl.candiType(item));
     int index = get_current_page_start() + item;
-    ibus_lookup_table_set_candidate(m_lookup_table, index, text);
-    UNREF(text);
+    ibus_lookup_table_set_candidate(*this, index, text);
     return len;
 }
 
 void
-SunPinyinLookupTable::decorate_candidate(IBusText *text, int type)
+SunPinyinLookupTable::decorate_candidate(ibus::Text text, int type)
 {
     switch (type) {
     case ICandidateList::BEST_WORD:
@@ -154,7 +144,7 @@ SunPinyinLookupTable::decorate_candidate(IBusText *text, int type)
 int
 SunPinyinLookupTable::get_current_page_start() const
 {
-    guint cursor = ibus_lookup_table_get_cursor_pos(m_lookup_table);
-    guint cursor_in_page = ibus_lookup_table_get_cursor_in_page(m_lookup_table);
+    guint cursor = ibus_lookup_table_get_cursor_pos(*this);
+    guint cursor_in_page = ibus_lookup_table_get_cursor_in_page(*this);
     return cursor - cursor_in_page;
 }

@@ -36,111 +36,96 @@
 #include "sunpinyin_engine_proxy.h"
 #include "sunpinyin_engine.h"
 
-extern "C" 
+#define IBUS_SUNPINYIN_ENGINE(obj) \
+    (G_TYPE_CHECK_INSTANCE_CAST ((obj), IBUS_TYPE_SUNPINYIN_ENGINE, IBusSunPinyinEngine))
+
+#define IBUS_IS_SUNPINYIN_ENGINE(obj) \
+    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), IBUS_TYPE_SUNPINYIN_ENGINE))
+
+#define IBUS_SUNPINYIN_ENGINE_GET_CLASS(obj) \
+    (G_TYPE_INSTANCE_GET_CLASS ((obj), IBUS_TYPE_SUNPINYIN_ENGINE, IBusSunPinyinEngineClass))
+
+extern IBusEngineClass *parent_class;
+
+struct IBusSunPinyinEngine {
+    IBusEngine parent;
+
+    /* members */
+    SunPinyinEngine *engine;
+};
+
+#define GET_PY_ENGINE(__engine__)               \
+    (((IBusSunPinyinEngine *)(__engine__))->engine)
+
+
+void
+ibus_sunpinyin_engine_init(IBusEngine *py_engine)
 {
-    void ibus_sunpinyin_engine_init(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->init();
+    if (g_object_is_floating (py_engine))
+        g_object_ref_sink (py_engine);
+    GET_PY_ENGINE(py_engine) = new SunPinyinEngine(IBUS_ENGINE(py_engine));
+}
+
+void
+ibus_sunpinyin_engine_destroy(IBusEngine *py_engine)
+{
+    
+    delete GET_PY_ENGINE(py_engine);
+    GET_PY_ENGINE(py_engine) = NULL;
+    IBUS_OBJECT_CLASS (parent_class)->destroy( IBUS_OBJECT(py_engine));
+}
+
+gboolean
+ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
+                                        guint keyval,
+                                        guint keycode,
+                                        guint modifiers)
+{
+    if (GET_PY_ENGINE(engine)->is_valid()) {
+        return GET_PY_ENGINE(engine)->process_key_event(keyval, keycode, modifiers) ?
+            TRUE : FALSE;
+    } else {
+        return FALSE;
+    }
+}
+
+void
+ibus_sunpinyin_engine_property_activate (IBusEngine *engine,
+                                         const gchar *prop_name,
+                                         guint prop_state)
+{
+    if (GET_PY_ENGINE(engine)->is_valid()) {
+        GET_PY_ENGINE(engine)->property_activate(prop_name, prop_state);
+    }
+}
+
+void ibus_sunpinyin_engine_candidate_clicked (IBusEngine *engine,
+                                              guint index,
+                                              guint button,
+                                              guint state)
+{
+    GET_PY_ENGINE(engine)->candidate_clicked(index);
+}
+
+#define IMPL_WITH(name)                                   \
+    void                                                  \
+    ibus_sunpinyin_engine_##name (IBusEngine *engine)     \
+    {                                                     \
+        IBusSunPinyinEngine *py_engine =                  \
+            (IBusSunPinyinEngine *) engine;               \
+        if (py_engine->engine->is_valid()) {              \
+            py_engine->engine->name();                    \
+        }                                                 \
+        parent_class->name (engine);                      \
     }
 
-    void ibus_sunpinyin_engine_destroy(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->destroy();
-    }
-    
-#if defined(WITH_IBUS_1_1_0)
-    gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
-                                                     guint keyval,
-                                                     guint state)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        // XXX: use the mapped keyval as its keycode
-        return thiz->process_key_event(keyval, keyval, state) ? TRUE : FALSE;
-    }
-#elif defined(WITH_IBUS_1_2_0)
-    gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
-                                                     guint keyval,
-                                                     guint keycode,
-                                                     guint modifiers)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        return thiz->process_key_event(keyval, keycode, modifiers) ? TRUE : FALSE;
-    }
-#else
-    #error "Unsuppported IBus version."
-#endif
-    
-    void ibus_sunpinyin_engine_focus_in(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->focus_in();
-    }
-    
-    void ibus_sunpinyin_engine_focus_out(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->focus_out();
-    }
-    
-    void ibus_sunpinyin_engine_reset(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->reset();
-    }
-    
-    void ibus_sunpinyin_engine_enable(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->enable();
-    }
-    
-    void ibus_sunpinyin_engine_disable(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->disable();
-    }
-    
-    void ibus_sunpinyin_engine_page_up(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->page_up();
-    }
-    
-    void ibus_sunpinyin_engine_page_down(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->page_down();
-    }
-
-    void ibus_sunpinyin_engine_cursor_up(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->cursor_up();
-    }
-    
-    void ibus_sunpinyin_engine_cursor_down(IBusEngine *engine)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->cursor_down();
-    }
-    
-    void ibus_sunpinyin_engine_property_activate (IBusEngine *engine,
-                                                  const gchar *prop_name,
-                                                  guint prop_state)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->property_activate(prop_name, prop_state);
-    }
-
-    void ibus_sunpinyin_engine_candidate_clicked (IBusEngine *engine,
-                                                  guint index,
-                                                  guint button,
-                                                  guint state)
-    {
-        SunPinyinEngine *thiz = (SunPinyinEngine *)engine;
-        thiz->candidate_clicked(index);
-    }
-} // extern "C"
+IMPL_WITH(focus_in)
+IMPL_WITH(focus_out)
+IMPL_WITH(reset)
+IMPL_WITH(enable)
+IMPL_WITH(disable)
+IMPL_WITH(page_up)
+IMPL_WITH(page_down)
+IMPL_WITH(cursor_up)
+IMPL_WITH(cursor_down)
 

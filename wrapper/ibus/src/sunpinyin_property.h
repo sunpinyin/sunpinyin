@@ -37,7 +37,7 @@
 #define SUNPINYIN_PROPERTY_H
 
 #include <string>
-#include <ibus.h>
+#include "ibus_common.h"
 
 struct PropertyInfo
 {
@@ -45,45 +45,42 @@ struct PropertyInfo
     ~PropertyInfo();
     
     std::string icon;
-    IBusText   *label;
-    IBusText   *tooltip;
+    ibus::Text  label;
+    ibus::Text  tooltip;
 };
 
-class SunPinyinProperty
+class SunPinyinProperty : public ibus::Property
 {
-    IBusEngine       *m_engine;
+    ibus::Engine      m_engine;
     const std::string m_name;
     PropertyInfo      m_info[2];
-    IBusProperty     *m_prop;
     bool              m_state;
 
 public:
-    static SunPinyinProperty *create_status_prop(IBusEngine * engine,
-                                                 bool state = true);
-    static SunPinyinProperty *create_letter_prop(IBusEngine * engine,
-                                                 bool state = false);
-    static SunPinyinProperty *create_punct_prop(IBusEngine * engine,
+    static SunPinyinProperty create_status_prop(ibus::Engine engine,
+                                                bool state = true);
+    static SunPinyinProperty create_letter_prop(ibus::Engine engine,
+                                                bool state = false);
+    static SunPinyinProperty create_punct_prop(ibus::Engine engine,
                                                 bool state = false);
     ~SunPinyinProperty();
     bool toggle(const std::string& name);
     void update(bool state);
     bool state() const;
-    IBusProperty *get();
 
 private:
     void init(bool state);
-    SunPinyinProperty(IBusEngine *engine, const std::string& name);
+    SunPinyinProperty(ibus::Engine engine, const std::string& name);
 };
 
-class SetupLauncher
+class SetupLauncher : public ibus::Property
 {
     const std::string m_name;
     PropertyInfo      m_info;
-    IBusProperty     *m_prop;
+    
 public:
     SetupLauncher();
     void launch(const std::string& name);
-    IBusProperty *get();
     void init();
 };
 

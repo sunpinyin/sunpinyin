@@ -39,12 +39,12 @@
 #include <imi_winHandler.h>
 #include <imi_uiobjects.h>
 
-#include "engine_impl.h"
+#include "sunpinyin_engine.h"
 #include "imi_ibus_win.h"
 
 
 
-CIBusWinHandler::CIBusWinHandler(EngineImpl* engine)
+CIBusWinHandler::CIBusWinHandler(SunPinyinEngine* engine)
   : CIMIWinHandler(), m_engine(engine)
 {
     //

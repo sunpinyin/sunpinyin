@@ -37,10 +37,6 @@
 
 SUBDIRS =
 
-if WRAPPER_CLE
-SUBDIRS += cle
-endif
-
 if WRAPPER_GTK_STANDALONE
 SUBDIRS += gtk_standalone
 endif
@@ -51,10 +47,6 @@ endif
 
 if WRAPPER_IBUS
 SUBDIRS += ibus
-endif
-
-if WRAPPER_BEOS
-SUBDIRS += beos
 endif
 
 if WRAPPER_XIM

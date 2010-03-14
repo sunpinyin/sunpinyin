@@ -108,8 +108,6 @@ ibus_engine_sunpinyin_SOURCES = \
 	sunpinyin_engine.h \
 	sunpinyin_engine_proxy.cpp \
 	sunpinyin_engine_proxy.h \
-	engine_impl.cpp \
-	engine_impl.h \
 	sunpinyin_lookup_table.cpp \
 	sunpinyin_lookup_table.h \
 	sunpinyin_property.cpp \

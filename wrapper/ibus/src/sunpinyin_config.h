@@ -62,11 +62,15 @@ class SunPinyinConfig
     SchemeNames        m_scheme_names;
     TypeNames          m_type_names;
 
-    static IBusConfig *m_config;
+    static IBusConfig* m_config;
+
     
 public:
     SunPinyinConfig();
     ~SunPinyinConfig();
+    
+    static void set_config(IBusConfig *config);
+    
     
     bool get(const char* key, bool val);
     void set(const char* key, bool val);
@@ -87,17 +91,12 @@ public:
     bool is_initial_letter_full();
     
     /**
-     * gets called in ibus_sunpinyin_init() so that SunPinyinEngine can read 
-     * configuration when it starts up
-     */
-    static void set_config(IBusConfig *);
-
-    /**
      * register on_config_value_changed() as the signal handler of value-changed,
      */
-    void listen_on_changed();
+    static void listen_on_changed();
+    
+private:
 
-private:    
     /**
      * called by ibus when a value changed in config
      */

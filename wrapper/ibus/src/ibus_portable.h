@@ -50,11 +50,4 @@ void ibus_property_set_tooltip (IBusProperty  *prop,
                               IBusText    *tooltip);
 #endif // WITH_IBUS_1_1_0
 
-#define UNREF(obj)                                  \
-    do {                                            \
-        if (obj && !g_object_is_floating(obj)) {     \
-             g_object_unref(obj);                   \
-        }                                           \
-    } while (0)
-
 #endif // IBUS_COMPABILITY_H

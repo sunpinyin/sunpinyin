@@ -41,21 +41,21 @@
 #include <ibus.h>
 #include "config.h"
 #include "engine.h"
-#include "ibus_portable.h"
+#include "ibus_common.h"
+#include "sunpinyin_config.h"
 
 #define N_(String) (String)
 #define _(String)  gettext(String)
 
-static IBusBus *bus = NULL;
-static IBusFactory *factory = NULL;
+static ibus::Factory factory = NULL;
 
 // options
-static gboolean ibus = FALSE;
+static gboolean by_ibus = FALSE;
 static gboolean verbose = FALSE;
 
 static const GOptionEntry entries[] = 
 {
-    { "ibus",    'i', 0, G_OPTION_ARG_NONE, &ibus, "component is executed by ibus", NULL },
+    { "ibus",    'i', 0, G_OPTION_ARG_NONE, &by_ibus, "component is executed by ibus", NULL },
     { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "verbose", NULL },
     { NULL },
 };
@@ -68,14 +68,16 @@ ibus_disconnected_cb (IBusBus  *bus,
     ibus_quit ();
 }
 
+IBusBus *bus = NULL;
+ibus::Component component;
+
 static void
 init ()
 {
-    IBusComponent *component;
-    
     ibus_init ();
-
     bus = ibus_bus_new ();
+    g_object_ref_sink(bus);
+    
     if (!ibus_bus_is_connected (bus)) {
         g_warning("Can not connect to ibus");
         exit (0);
@@ -83,14 +85,18 @@ init ()
     
     g_signal_connect (bus, "disconnected", G_CALLBACK (ibus_disconnected_cb), NULL);
 	
-    ibus_sunpinyin_init (bus);
+    IBusConfig* config = ibus_bus_get_config(bus);
+    g_object_ref_sink(config);
+    
+    SunPinyinConfig::set_config(config);
+
     
     component = ibus_component_new ("org.freedesktop.IBus.SunPinyin",
                                     "SunPinyin2",
                                     "0.1.0",
                                     "LGPL/CDDL",
                                     "Kov Chai <tchaikov@gmail.com>",
-                                    "http://opensolaris.org/os/project/input-method/",
+                                    "http://code.google.com/p/sunpinyin/",
                                     "",
                                     "ibus-sunpinyin");
     ibus_component_add_engine (component,
@@ -102,17 +108,16 @@ init ()
                                                      "Kov Chai <tchaikov@gmail.com>",
                                                      SUNPINYIN_ICON_DIR"/sunpinyin-logo.png",
                                                      "en"));
-
+    
     factory = ibus_factory_new (ibus_bus_get_connection (bus));
     ibus_factory_add_engine (factory, "sunpinyin", IBUS_TYPE_SUNPINYIN_ENGINE);
-    
-    if (ibus) {
+
+    if (by_ibus) {
         ibus_bus_request_name (bus, "org.freedesktop.IBus.SunPinyin", 0);
     } else {
         ibus_bus_register_component (bus, component);
     }
-    
-    UNREF (component);
+    ibus_main ();
 }
 
 int main(int argc, char *argv[])
@@ -134,6 +139,4 @@ int main(int argc, char *argv[])
     // in case user quits X session.
     sighold(SIGTERM);
     init ();
-    ibus_main ();
-    ibus_sunpinyin_exit ();
 }

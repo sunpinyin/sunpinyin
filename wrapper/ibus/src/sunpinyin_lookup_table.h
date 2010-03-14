@@ -37,13 +37,14 @@
 #define SUNPINYIN_LOOKUP_TABLE_H
 
 #include <ibus.h>
+#include "ibus_common.h"
 
 class ICandidateList;
 
 /**
  * a helper class to maintain the IBusLookupTable
  */
-class SunPinyinLookupTable
+class SunPinyinLookupTable : public ibus::LookupTable
 {
 public:
     SunPinyinLookupTable();
@@ -57,10 +58,6 @@ public:
     bool cursor_up();
     bool cursor_down();
     size_t get_cursor_pos() const;
-    /**
-     * get the internal IBusLookupTable pointer
-     */
-    IBusLookupTable *get();
     
 private:
     /**
@@ -83,10 +80,7 @@ private:
      * @param text
      * @param type
      */
-    void decorate_candidate(IBusText *text, int type);
-
-private:
-    IBusLookupTable *m_lookup_table;
+    void decorate_candidate(ibus::Text text, int type);
 };
 
 #endif // SUNPINYIN_LOOKUP_TABLE_H

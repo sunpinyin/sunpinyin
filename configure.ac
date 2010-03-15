@@ -45,7 +45,7 @@ AC_C_BIGENDIAN([my_host_endian=be],[my_host_endian=le],[
 AC_MSG_ERROR([Cannot determine endianness])])
 
 case "${host_os}" in
-*linux*)            my_host_os=linux;;
+*bsd|*linux*)       my_host_os=linux;;
 *solaris*)          my_host_os=solaris;;
 *darwin*)           my_host_os=mac;;
 *beos*|*haiku*)     my_host_os=beos;;
@@ -207,6 +207,17 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 IT_PROG_INTLTOOL([0.35.0])
+
+AC_CHECK_PROGS([WGET], [wget curl])
+if test -z "$WGET"; then 
+   AC_MSG_WARN([cannot find wget (or equivalent) command])
+fi
+if test "x${WGET}" = "xwget" ; then
+   WGET="wget -q"
+fi
+if test "x${WGET}" = "xcurl" ; then
+   WGET="curl -O"
+fi
 
 AC_CHECK_DECL([__SUNPRO_C], [SUNCC="yes"], [SUNCC="no"])
 if test "$SUNCC" = "yes"

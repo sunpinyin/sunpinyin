@@ -145,6 +145,7 @@ CPinyinTrie::print(const TNode* pRoot, std::string& prefix, FILE *fp) const
         unsigned s = ptrans[i].m_Syllable;
         const TNode *pch = transfer(pRoot, s);
         const char *str = CPinyinData::decodeSyllable(s);
+        if (!str) break;
         prefix = prefix + str + '\'';
         print(pch, prefix, fp);
         prefix.resize(prefix.size()-strlen(str)-1);

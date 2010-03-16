@@ -76,8 +76,9 @@ public:
 private:
     char* strdup(const std::string& s);
     char* alloc(size_t size);
-    
-    char* m_pairs[32];
+
+    enum {MAX_PAIRS = 22};
+    char* m_pairs[MAX_PAIRS*2+1];
     char  m_buf[256];
     char* m_free;
     const char* m_end;

@@ -117,6 +117,7 @@ CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
         setDataDir(event.get_string());
     } else if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
         CPairParser parser;
+        unsigned num_pairs = parser.parse(event);
         setPunctMapping(parser.get_pairs());
         return true;
     } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
@@ -198,15 +199,16 @@ CPairParser::parse(const std::vector<std::string> pairs)
 {
     assert(m_free == m_buf);
 
-    size_t npairs = std::min(sizeof(m_pairs)/sizeof(m_pairs[0]),
-                             pairs.size());
-    memset(m_pairs, 0, sizeof(m_pairs));
+    size_t npairs = std::min( (size_t)MAX_PAIRS, pairs.size());
     int i = 0;
     for (;i < npairs; ++i) {
         const std::string& pair = pairs[i];
         std::string::size_type found = pair.find(':');
-        if (found == pair.npos)
+        if (found == pair.npos || pair.length() < 3)
             continue;
+        else if (found == 0 && pair[1] == ':')
+            found = 1;
+        
         const std::string key = pair.substr(0, found);
         const std::string val = pair.substr(found+1);
         char *skey = strdup(key);
@@ -219,6 +221,8 @@ CPairParser::parse(const std::vector<std::string> pairs)
             break;
         }
     }
+    m_pairs[2*i] = NULL;
+
     // reclaim the used memory
     m_free = m_buf;
     return i;

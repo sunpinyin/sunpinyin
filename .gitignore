@@ -27,6 +27,7 @@ raw/lm_sc.t3g.arpa
 
 po/POTFILES
 po/stamp-it
+po/Makefile.in.in
 
 wrapper/ibus/setup/ibus-setup-sunpinyin
 wrapper/ibus/src/sunpinyin.xml.in

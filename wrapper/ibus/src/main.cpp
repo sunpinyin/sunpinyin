@@ -47,7 +47,7 @@
 #define N_(String) (String)
 #define _(String)  gettext(String)
 
-static ibus::Factory factory = NULL;
+static ibus::Factory factory;
 
 // options
 static gboolean by_ibus = FALSE;

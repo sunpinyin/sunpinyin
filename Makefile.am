@@ -42,5 +42,5 @@ noinst_HEADERS = \
 	src/config/solaris.h	\
         src/config/beos.h
 
-EXTRA_DIST = OPENSOLARIS.LICENSE LGPL.LICENSE raw/dict.utf8
+EXTRA_DIST = OPENSOLARIS.LICENSE LGPL.LICENSE
 DISTCLEANFILES = src/host_os.h

@@ -110,6 +110,19 @@ if test "X$ENABLE_DOCUMENTS" = "Xyes"; then
   AC_CONFIG_FILES([doc/Makefile])
 fi
 
+dnl 
+dnl for generating architecture dependent binary files
+dnl 
+AC_ARG_ENABLE(all-arch-data,
+    AS_HELP_STRING([--enable-all-arch-data],
+	           [generate binary lanauge model for both big-endian and small-endian]),
+    [ENABLE_ALL_ARCH_DATA=$enableval],
+    [ENABLE_ALL_ARCH_DATA=no])
+AM_CONDITIONAL(BUILD_ALL_LM_FILES, [test "X${ENABLE_ALL_ARCH_DATA}" = "Xyes"])
+
+dnl 
+dnl for gtkstandalone wrapper
+dnl 
 AC_ARG_ENABLE([gtkstandalone],
     AC_HELP_STRING([--enable-gtkstandalone], [compile standalone gtk program for demo/debug(default=no) ]),
     [ENABLE_GTKSTANDALONE="${enableval}"],

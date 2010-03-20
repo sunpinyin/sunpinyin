@@ -1,32 +1,39 @@
-Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=196
-Packaged-By: Kov Chai <tchaikov@gmail.com>
-Packaged-Date: Fri, 18 Jan 2008 23:23:20 +0800
-Upstream-Name: SunPinyin
-Upstream-Source: http://www.opensolaris.org/os/project/input-method
-Upstream-Maintainer: Wei Xue <wei.xue@sun.com>
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
+Name: SunPinyin
+Source: http://sunpinyin.googlecode.com/
+Maintainer: Yong Sun <mail@yongsun.me>
 
 Files: *
 Copyright: 2007-2009, Sun Microsystems, Inc.
-License: LGPL-2.1 | CDDL
+License: LGPL-2.1 or CDDL
  On Debian systems, the complete text of LGPL-2.1 can be found in
  /usr/share/common-licenses/LGPL-2.1
  
 Files: wrapper/ibus/*
 Copyright: 2009, Kefu Chai <tchaikov@gmail.com>
-License: LGPL-2.1 | CDDL
+License: LGPL-2.1 or CDDL
 
 Files: wrapper/ibus/setup/*
 Copyright: 2009, Kefu Chai <tchaikov@gmail.com>,
- Copyright (c) Leo Zhang <zym361@gmail.com>
-License: LGPL-2.1 | CDDL
+           2009, Leo Zhang <zym361@gmail.com>
+License: LGPL-2.1 or CDDL
 
 Files: wrapper/ibus/data/sunpinyin-logo.png
 Copyright: 2009, chumsdock <vorbei@gmail.com>
-License: LGPL-2.1 | CDDL
+License: LGPL-2.1 or CDDL
 
 Files: wrapper/xim/*
 Copyright: 2010, Mike Qin <mikeandmore@gmail.com>
-License: LGPL-2.1 | CDDL
+License: LGPL-2.1 or CDDL
+
+Files: raw/dict.utf8.tar.bz2
+Copyright: 1997-2010, MDBG
+           2010 Kov Chai <tchaikov@gmail.com>
+License: CC-BY-SA-3.0
+
+Files: raw/lm_sc.t3g.arpa.tar.bz2
+Copyright: 2010, Kefu Chai <tchaikov@gmail.com>,
+License: CC-BY-SA-3.0
 
 Files: debian/*
 Copyright: 2007-2009, Kefu Chai <tchaikov@gmail.com>

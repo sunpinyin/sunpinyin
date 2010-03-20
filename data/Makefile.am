@@ -35,7 +35,7 @@
 # to such option by the copyright holder. 
 # 
 
-INSTALL_FILES = lm_sc.t3g.be lm_sc.t3g.le pydict_sc.bin.be pydict_sc.bin.le
+LM_FILES = lm_sc.t3g.be lm_sc.t3g.le pydict_sc.bin.be pydict_sc.bin.le
 ICON_FILES = sunpinyin_logo.xpm \
 	han.png eng.png cnpunc.png enpunc.png fullwidth.png halfwidth.png \
 	han.svg eng.svg cnpunc.svg enpunc.svg fullwidth.svg halfwidth.svg \
@@ -43,12 +43,19 @@ ICON_FILES = sunpinyin_logo.xpm \
 
 EXTRA_DIST = $(ICON_FILES)
 
+SUNPINYIN_DATA_DIR = $(pkgdatadir)/data
+
+if BUILD_ALL_LM_FILES
+lm_DATA = $(LM_FILES)
+lmdir = $(SUNPINYIN_DATA_DIR)
+endif
+
 LM_SC_ARPA = $(top_builddir)/@RAW_DATA_DIR@/lm_sc.t3g.arpa
 DICTFILE = $(top_builddir)/@RAW_DATA_DIR@/dict.utf8
 PYTRIE_LOG = pydict_sc.log.utf8
 LM_SC_BIN = lm_sc.t3g
 
-noinst_PROGRAMS = tslmpack genpyt
+noinst_PROGRAMS = tslmpack tslmendian genpyt
 
 SOURCE_DIR = $(top_builddir)/@SOURCE_DIR@
 SLM_SRC_DIR = $(top_builddir)/@SLM_SRC_DIR@
@@ -63,21 +70,42 @@ tslmpack_SOURCES = \
 	${SLM_SRC_DIR}/tslmpack/arpa_conv.cpp ${SLM_SRC_DIR}/tslmpack/arpa_conv.h \
 	${SLM_SRC_DIR}/tslmpack/arpa_slm.cpp ${SLM_SRC_DIR}/tslmpack/arpa_slm.h
 
+tslmendian_SOURCES = \
+	${SLM_SRC_DIR}/tslmendian/slm_file.cpp ${SLM_SRC_DIR}/tslmendian/slm_file.h \
+	${SLM_SRC_DIR}/tslmendian/slm_endian.cpp \
+	${SLM_SRC_DIR}/tslmendian/writer.cpp ${SLM_SRC_DIR}/tslmendian/writer.h \
+	${SLM_SRC_DIR}/slm.h
+
 genpyt_SOURCES = \
 	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
 	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
+	${SLM_SRC_DIR}/tslmendian/writer.cpp ${SLM_SRC_DIR}/tslmendian/writer.h \
+	${LEXICON_SRC_DIR}/trie_writer.h \
 	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h \
 	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h \
 	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \
 	${PINYIN_SRC_DIR}/syllable.h
 
-genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR}
+genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian
 
 $(LM_SC_BIN): tslmpack $(LM_SC_ARPA) $(DICTFILE)
 	./tslmpack $(LM_SC_ARPA) $(DICTFILE) $@
 
 pydict_sc.bin: genpyt $(DICTFILE) $(LM_SC_BIN)
-	./genpyt $(DICTFILE) $@ $(PYTRIE_LOG) $(LM_SC_BIN)
+	./genpyt -i $(DICTFILE) -o $@ -l $(PYTRIE_LOG) -s $(LM_SC_BIN)
+
+pydict_sc.bin.le: genpyt $(DICTFILE) $(LM_SC_BIN)
+	./genpyt -e le -i $(DICTFILE) -o $@ -l $(PYTRIE_LOG) -s $(LM_SC_BIN)
+
+pydict_sc.bin.be: genpyt $(DICTFILE) $(LM_SC_BIN)
+	./genpyt -e be -i $(DICTFILE) -o $@ -l $(PYTRIE_LOG) -s $(LM_SC_BIN)
+
+lm_sc.t3g.le: tslmendian lm_sc.t3g
+	./tslmendian -e le -i $(LM_SC_BIN) -o $@
+
+lm_sc.t3g.be: tslmendian lm_sc.t3g
+	./tslmendian -e be -i $(LM_SC_BIN) -o $@
+
 
 noinst_DATA = $(LM_SC_BIN) pydict_sc.bin 
-CLEANFILES = $(LM_SC_BIN) pydict_sc.bin tslmpack genpyt
+CLEANFILES = $(LM_SC_BIN) $(PYTRIE_LOG) pydict_sc.bin tslmpack genpyt

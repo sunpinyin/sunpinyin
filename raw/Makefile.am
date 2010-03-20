@@ -26,4 +26,4 @@ dict.utf8.tar.bz2:
 
 
 CLEANFILES = stamp-* lm_sc.t3g.arpa dict.utf8
-DISTCLEANFILES = lm_sc.t3g.arpa.tar.bz2 dict.utf8.tar.bz2
+#DISTCLEANFILES = lm_sc.t3g.arpa.tar.bz2 dict.utf8.tar.bz2

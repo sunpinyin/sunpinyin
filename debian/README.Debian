@@ -1,4 +1,4 @@
-sunpinyin for Debian                                -*- outline -*-
+sunpinyin for Debian                                -*- rst -*-
 --------------------
 
 SunPinyin is an SLM (Statistical Language Model) based input method
@@ -35,12 +35,10 @@ data files
 Sunpinyin can hardly work without lexicon and language model data
 files. First, we can not ship the _really_ large dataset for training
 the language model. Second, for the sake of performance, we use our
-binary format for storing the lexicon and language model data. But we
-can not include these binary files in the source package without
-violating DFSG. 
+binary format for storing the lexicon and language model data.
 
 So, to make sunpinyin usable, you may need to download the lexicon and
-language data file from opensolaris website [2]. Two files are
+language data file from open-gram website [2]. Two files are
 necessary for sunpinyin to work: 
  - lm_sc.t3g, pydict_sc.bin
 
@@ -50,7 +48,7 @@ And we prepare two file for each of them:
 The `be' and `le' stand for `Big Endian' and `Little Endian'. Download
 the right ones according to your computer's byte order, rename
 them to lm_sc.t3g and pydict_sc.bin respectively, then put them to
-/usr/share/sunpinyin/. 
+/usr/share/sunpinyin/data. 
 
 
 Create your own language model
@@ -59,8 +57,8 @@ Create your own language model
 The statistical language model is the building block of SunPinyin.
 Users are allowed to train their language models by using the tools
 provided by sunpinyin-slm. (sunpinyin-slm is not packaged in Debian
-yet, but its source code is available at the OpenSolaris input
-method's project web page [1].)
+yet, but its source code is available at this input method's project 
+home page [1].)
 
 * Terms
 ** Language model
@@ -163,7 +161,7 @@ method's project web page [1].)
     i.e. the file `lm_sc.t3g'.
 
 --
-[1] http://www.opensolaris.org/os/project/input-method/files/inputmethod-repo-snapshot.tar.gz
-[2] http://src.opensolaris.org/source/xref/nv-g11n/inputmethod/sunpinyin/ime/data/
+[1] http://code.google.com/p/sunpinyin/downloads/list
+[2] http://code.google.com/p/open-gram/downloads/list
 
- -- Kov Chai <tchaikov@gmail.com>  Sat, 12 Jul 2008 03:15:47 +0800
+ -- Kov Chai <tchaikov@gmail.com>  Sun, 21 Mar 2010 01:48:32 +0800

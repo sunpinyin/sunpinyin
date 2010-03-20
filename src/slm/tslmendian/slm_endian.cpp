@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "slm_file.h"
-
+#include "writer.h"
 
 void ShowUsage(const char* progname)
 {
@@ -53,35 +53,6 @@ void ShowUsage(const char* progname)
     printf("    -o <output-lm-file>  # converted output file name. the endian-ness is of host by default.\n");
     
     exit(100);
-}
-
-
-
-
-int parse_endian(const char* arg)
-{
-    if (!strcmp(arg, "le")) {
-        return LITTLE_ENDIAN;
-    } else if (!strcmp(arg, "ge")) {
-        return BIG_ENDIAN;
-    } else {
-        return -1;
-    }
-}
-
-const char* endian2str(int endian)
-{
-    static const char le[] = "little-endian";
-    static const char ge[] = "big-endian";
-    switch (endian) {
-    case LITTLE_ENDIAN:
-        return le;
-    case BIG_ENDIAN:
-        return ge;
-    default:
-        assert(0);
-    }
-    return NULL;
 }
 
 void showEndian(const CThreadSlmFile& slm_file)

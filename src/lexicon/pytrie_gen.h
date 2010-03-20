@@ -156,10 +156,10 @@ public:
     print(FILE* fp, TNode* root, std::string& pinyin);
 
     bool
-    write(const char* fileName, CWordEvaluator* psrt);
+    write(const char* fileName, CWordEvaluator* psrt, bool revert_endian);
 
     bool
-    write(FILE *fp, CWordEvaluator* psrt);
+    write(FILE *fp, CWordEvaluator* psrt, bool revert_endian);
 
 protected:
     TNode*

@@ -59,26 +59,13 @@
 
 
 #include "slm_file.h"
+#include "writer.h"
 
 using namespace std;
 
 // for convenience
 typedef CThreadSlm::TNode TNode;
 typedef CThreadSlm::TLeaf TLeaf;
-
-// change the byte order of given variable
-template <typename Type>
-Type change_byte_order(const Type& v)
-{
-    Type t = v;
-    const size_t size = sizeof(v);
-    uint8_t* first = (uint8_t*)(&t);
-    uint8_t* last  = first+size-1;
-    while (first < last) {
-        swap(*first++, *last--);
-    }
-    return t;
-}
 
 // byte order reversed CThreadSlm::TLeaf small-endian presentation on big-endian machine
 // 5-bits padding before m_pr_lo so that m_pr_lo is 4-byte aligned

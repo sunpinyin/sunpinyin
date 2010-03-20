@@ -46,7 +46,7 @@ RESULT_DIR = $(top_builddir)/@RESULT_DATA_DIR@
 if DEBUG
 AM_CXXFLAGS = -g -O0 -DDEBUG
 else
-AM_CXXFLAGS =  
+AM_CXXFLAGS =
 endif
 
 DICTFILE = ${CORPUS_DIR}/dict.utf8
@@ -84,15 +84,16 @@ PYTRIE_PRINTOUT = ${SWAP_DIR}/pydict_sc.log.utf8
 
 noinst_PROGRAMS = testvc slmseg mmseg ids2ngram idngram_merge slmbuild slmprune slminfo slmthread tslminfo tslmpack tslmendian getWordFreq genpyt
 
+genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian
+
 genpyt_SOURCES = \
 	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
 	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
+	${SLM_SRC_DIR}/tslmendian/writer.cpp ${SLM_SRC_DIR}/tslmendian/writer.h \
 	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h \
 	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h \
 	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \
 	${PINYIN_SRC_DIR}/syllable.h
-
-genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR}
 
 slmthread_SOURCES = \
 	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
@@ -121,6 +122,7 @@ tslmpack_SOURCES = \
 tslmendian_SOURCES = \
 	${SLM_SRC_DIR}/tslmendian/slm_file.cpp ${SLM_SRC_DIR}/tslmendian/slm_file.h \
 	${SLM_SRC_DIR}/tslmendian/slm_endian.cpp \
+	${SLM_SRC_DIR}/tslmendian/writer.cpp ${SLM_SRC_DIR}/tslmendian/writer.h \
 	${SLM_SRC_DIR}/slm.h
 
 slminfo_SOURCES = \
@@ -257,7 +259,7 @@ model_clean :
 	rm -f ${IDNGRAM_FILE3} ${RAW_LM_FILE3}
 
 lexicon :
-	./genpyt ${PINYIN_TEXTFILE} ${PYTRIE_FILE} ${PYTRIE_PRINTOUT} ${TSLM_FILE3}
+	./genpyt -i ${PINYIN_TEXTFILE} -o ${PYTRIE_FILE} -l ${PYTRIE_PRINTOUT} -s ${TSLM_FILE3}
 
 lexicon2 :
-	./genpyt ${PINYIN_TEXTFILE} ${PYTRIE_FILE} ${PYTRIE_PRINTOUT} ${TSLM_FILE}
+	./genpyt -i ${PINYIN_TEXTFILE} -o ${PYTRIE_FILE} -l ${PYTRIE_PRINTOUT} -s ${TSLM_FILE}

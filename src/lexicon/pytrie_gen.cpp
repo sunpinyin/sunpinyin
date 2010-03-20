@@ -6,14 +6,15 @@
 #include <assert.h>
 #endif
 
-#include <algorithm>
-
 #ifdef HAVE_ICONV_H
 #include <iconv.h>
 #endif
 
+#include <algorithm>
+
 #include "pytrie_gen.h"
 #include "pinyin_data.h"
+#include "trie_writer.h"
 
 static const char*
 skipSpace(const char* p)
@@ -110,7 +111,7 @@ unsigned getPureGBEncoding(const char* utf8str)
 #endif // HAVE_ICONV_H
 
 bool
-parseLine(char* buf, char* word_buf, int& id, std::set<TSyllableInfo>& pyset)
+parseLine(char* buf, char* word_buf, unsigned& id, std::set<TSyllableInfo>& pyset)
 {
     pyset.clear();
 
@@ -118,7 +119,6 @@ parseLine(char* buf, char* word_buf, int& id, std::set<TSyllableInfo>& pyset)
     if (*buf == '\n' || *buf == '#')
         return 0;
 
-    char* word_start = word_buf;
     char* p = (char*)skipSpace(buf);
     char* t = (char*)skipNonSpace(p);
     while(p < t) *word_buf++ = *p++;
@@ -171,10 +171,11 @@ CPinyinTrieMaker::constructFromLexicon(const char* fileName)
     static char buf[4096];
     static char word_buf[2048];
 
-    int id;
+    unsigned id;
     bool suc = true;
     std::set<TSyllableInfo> pyset;
     FILE *fp = fopen(fileName, "r");
+    if (!fp) return false;
     printf("Adding pinyin and corresponding words..."); fflush(stdout);
     while (fgets(buf, sizeof(buf), fp) != NULL) {
         if (!parseLine(buf, word_buf, id, pyset)) {
@@ -426,19 +427,20 @@ CPinyinTrieMaker::threadNonCompletePinyin(void)
 }
 
 bool
-CPinyinTrieMaker::write(const char* fileName, CWordEvaluator* psrt)
+CPinyinTrieMaker::write(const char* fileName, CWordEvaluator* psrt,
+                        bool revert_endian)
 {
     bool suc = false;
     FILE* fp = fopen(fileName, "wb");
     if (fp != NULL) {
-        suc = write(fp, psrt);
+        suc = write(fp, psrt, revert_endian);
         fclose(fp);
     }
     return suc;
 }
 
 bool
-CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt)
+CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt, bool revert_endian)
 {
     bool suc = true;
     static TWCHAR wbuf[1024];
@@ -466,12 +468,15 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt)
         offset += (sz+1)*sizeof(TWCHAR);
     }
 
-    suc = (fwrite(&nWord, sizeof(unsigned int), 1, fp) == 1);
-    suc = (fwrite(&nNode, sizeof(unsigned int), 1, fp) == 1);
-    suc = (fwrite(&lexiconOffset, sizeof(unsigned int), 1, fp) == 1);
+    Writer f(fp, revert_endian);
+    
+    suc = f.write(nWord);
+    suc = f.write(nNode);
+    suc = f.write(lexiconOffset);
 
     itNode = TNode::m_AllNodes.begin();
     itNodeLast = TNode::m_AllNodes.end();
+    
     for (; itNode != itNodeLast && suc; ++itNode) {
         CPinyinTrie::TNode outNode;
         TNode *pnode = *itNode;
@@ -488,7 +493,7 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt)
                 outNode.m_csLevel = itId->anony.m_csLevel;
         }
 
-        suc = (fwrite(&outNode, sizeof(outNode), 1, fp) == 1);
+        suc = f.write(outNode);
 
         CTrans::const_iterator itTrans = pnode->m_Trans.begin();
         CTrans::const_iterator itTransLast = pnode->m_Trans.end();
@@ -497,7 +502,7 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt)
             tru.m_Syllable = itTrans->first;
             tru.m_Offset = nodeOffsetMap[itTrans->second];
             assert(tru.m_Offset != 0 && tru.m_Offset < lexiconOffset);
-            suc = (fwrite(&tru, sizeof(tru), 1, fp) == 1);
+            suc = f.write(tru);
         }
 
         CWordVec vec;
@@ -518,7 +523,7 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt)
             wi.m_len = m_Lexicon[itv->m_id.anony.m_id].size();
             wi.m_bSeen = ((itv->m_bSeen)?(1):(0));
             wi.m_cost = itv->m_id.anony.m_cost;
-            suc = (fwrite(&wi, sizeof(wi), 1, fp) == 1);
+            suc = f.write(wi);
         }
     }
 
@@ -527,7 +532,7 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt)
     for (; itWordStr != itWordStrLast && suc; ++itWordStr) {
         MBSTOWCS(wbuf, itWordStr->c_str(), 1024);
         int sz = WCSLEN(wbuf);
-        suc = (fwrite(wbuf, (sz+1)*sizeof(TWCHAR), 1, fp) == 1);
+        suc = f.write(wbuf, (sz+1));
     }
     return suc;
 }

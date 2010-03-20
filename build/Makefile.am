@@ -82,7 +82,7 @@ PINYIN_NMP_TEXTFILE = ${SWAP_DIR}/dict_nmp.utf8
 PYTRIE_FILE = ${RESULT_DIR}/pydict_sc.bin
 PYTRIE_PRINTOUT = ${SWAP_DIR}/pydict_sc.log.utf8
 
-noinst_PROGRAMS = testvc slmseg mmseg ids2ngram idngram_merge slmbuild slmprune slminfo slmthread tslminfo tslmpack tslmendian getWordFreq genpyt
+#noinst_PROGRAMS = testvc slmseg mmseg ids2ngram idngram_merge slmbuild slmprune slminfo slmthread tslminfo tslmpack tslmendian getWordFreq genpyt
 
 genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian
 
@@ -90,6 +90,7 @@ genpyt_SOURCES = \
 	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
 	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
 	${SLM_SRC_DIR}/tslmendian/writer.cpp ${SLM_SRC_DIR}/tslmendian/writer.h \
+	${LEXICON_SRC_DIR}/trie_writer.h \
 	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h \
 	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h \
 	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \

@@ -1,14 +1,24 @@
+sunpinyin (2.0-3) unstable; urgency=low
+
+  * update debian/copyright
+  * add debian/watch
+  * fix the data file packaging
+  * use cdbs to generate control.in
+  * update README.Debian accordingly
+
+ -- Kov Chai <tchaikov@gmail.com>  Tue, 23 Mar 2010 00:47:41 +0800
+
 sunpinyin (2.0-2) unstable; urgency=low
 
   * fix a typo
 
- -- Mike <mike@mike-laptop>  Mon, 22 Feb 2010 23:27:43 -0800
+ -- Mike <mikeandmore@gmail.com>  Mon, 22 Feb 2010 23:27:43 -0800
 
 sunpinyin (2.0-1) unstable; urgency=low
 
   * 2.0 final release
 
- -- Mike <mike@mike-laptop>  Mon, 22 Feb 2010 19:31:25 -0800
+ -- Mike <mikeandmore@gmail.com>  Mon, 22 Feb 2010 19:31:25 -0800
 
 sunpinyin (2.0~hg20091111-1) unstable; urgency=low
 

@@ -23,17 +23,23 @@
 /* Class = "NSComboBoxCell"; title = "9"; ObjectID = "386"; */
 "386.title" = "9";
 
+/* Class = "NSComboBoxCell"; 386.objectValuesCopy[0] = "4"; ObjectID = "386"; */
+"386.objectValuesCopy[0]" = "4";
+
+/* Class = "NSComboBoxCell"; 386.objectValuesCopy[1] = "5"; ObjectID = "386"; */
+"386.objectValuesCopy[1]" = "5";
+
 /* Class = "NSComboBoxCell"; 386.objectValuesCopy[0] = "6"; ObjectID = "386"; */
-"386.objectValuesCopy[0]" = "6";
+"386.objectValuesCopy[2]" = "6";
 
 /* Class = "NSComboBoxCell"; 386.objectValuesCopy[1] = "7"; ObjectID = "386"; */
-"386.objectValuesCopy[1]" = "7";
+"386.objectValuesCopy[3]" = "7";
 
 /* Class = "NSComboBoxCell"; 386.objectValuesCopy[2] = "8"; ObjectID = "386"; */
-"386.objectValuesCopy[2]" = "8";
+"386.objectValuesCopy[4]" = "8";
 
 /* Class = "NSComboBoxCell"; 386.objectValuesCopy[3] = "9"; ObjectID = "386"; */
-"386.objectValuesCopy[3]" = "9";
+"386.objectValuesCopy[5]" = "9";
 
 /* Class = "NSTextFieldCell"; title = "Total Candidates:"; ObjectID = "387"; */
 "387.title" = "候选词个数：";
@@ -217,3 +223,21 @@
 
 /* Class = "NSButtonCell"; title = "Check automatically"; ObjectID = "691"; */
 "691.title" = "自动检查更新";
+
+/* Class = "NSTabViewItem"; label = "Punctations"; ObjectID = "694"; */
+"694.label" = "自定义标点";
+
+/* Class = "NSTableColumn"; headerCell.title = "ASCII Character"; ObjectID = "702"; */
+"702.headerCell.title" = "英文标点";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "703"; */
+"703.title" = "Text Cell";
+
+/* Class = "NSTableColumn"; headerCell.title = "Mapped String"; ObjectID = "705"; */
+"705.headerCell.title" = "中文标点";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "706"; */
+"706.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Radius:"; ObjectID = "722"; */
+"722.title" = "园角：";

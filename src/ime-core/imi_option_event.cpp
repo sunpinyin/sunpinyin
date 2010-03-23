@@ -20,6 +20,12 @@ COptionEvent::variant_::variant_(const std::vector<std::string>& v)
     data.d_strings = v;
 }
 
+COptionEvent::variant_::variant_(const std::vector<string_pair>& v)
+    : type(VAL_STRING_PAIR_LIST)
+{
+    data.d_string_pair_list = v;
+}
+
 COptionEvent::variant_::variant_(bool v)
     : type(VAL_BOOL)
 {
@@ -48,6 +54,12 @@ std::vector<std::string>
 COptionEvent::get_string_list() const
 {
     return value.data.d_strings;
+}
+
+std::vector<string_pair>
+COptionEvent::get_string_pair_list() const
+{
+    return value.data.d_string_pair_list;
 }
 
 IConfigurable::IConfigurable()

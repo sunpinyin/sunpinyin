@@ -66,6 +66,8 @@ private:
     unsigned    m_candiFrIdx;
     unsigned    m_candiPageFirst;
 
+    bool        m_numeric_mode;
+
     CCandidates m_candiList;
     wstring     m_tailSentence;
 
@@ -74,6 +76,7 @@ private:
 
     inline void _getCandidates ();
     inline void _makeSelection (int candiIdx, unsigned& mask);
+    inline void _deleteCandidate (int candiIdx, unsigned& mask);
 
     inline void _commitChar (TWCHAR ch);
     inline void _doCommit (bool bConvert=true);

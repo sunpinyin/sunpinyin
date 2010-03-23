@@ -5,6 +5,7 @@
  * these strings are used as names of instances of COptionEvent
  */
 #define SYSTEM_DATA_DIR                 "General/DataDir"
+#define USER_DATA_DIR                   "General/UserDataDir"
 #define PINYIN_SCHEME                   "Pinyin/Scheme"
 #define PINYIN_PUNCTMAPPING_ENABLED     "General/PunctMapping/Enabled"
 #define PINYIN_PUNCTMAPPING_MAPPINGS    "General/PunctMapping/Mappings"

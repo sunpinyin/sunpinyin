@@ -74,12 +74,7 @@ const wstring& CGetFullSymbolOp::operator () (unsigned ch)
 
 CGetFullPunctOp::CGetFullPunctOp()
 {
-    initPunctMap (NULL);
-}
-
-void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
-{
-    static const char* system_punc_map [] = { 
+    static const char* punc_map [] = { 
         ",",    "，",
         ";",    "；",
         "!",    "！",
@@ -109,46 +104,46 @@ void CGetFullPunctOp::initPunctMap (const char *const *punc_map)
         "-",    "－",
         NULL,
     };
-    if (punc_map == NULL) {
-        m_punctMap.clear ();
-        m_punctClosingSts.clear ();
-        setPunctMap(system_punc_map);
-    } else {
-        removeExisting(punc_map);
-        setPunctMap(punc_map);
-    }
-}
 
-void CGetFullPunctOp::setPunctMap (const char *const *punc_map)
-{
-    TWCHAR cwstr[256];
+    string_pairs default_punc_map;
+
     const char *const *p = punc_map;
-
     while (*p) {
         const char *k = *p++;
         const char *v = *p++;
+        default_punc_map.push_back (std::make_pair(k, v));
+    }
 
+    initPunctMap (default_punc_map);
+}
+
+void CGetFullPunctOp::initPunctMap (const string_pairs& punc_map)
+{
+    TWCHAR cwstr[256];
+    
+    m_punctMap.clear();
+    m_punctClosingSts.clear();
+    
+    string_pairs::const_iterator it  = punc_map.begin();
+    string_pairs::const_iterator ite = punc_map.end();
+    
+    for (; it != ite; ++it)
+    {
+        const char *k = it->first.c_str();
+        const char *v = it->second.c_str();
+
+        if (!v) continue;
+        
         memset(cwstr, 0, sizeof(cwstr));
         MBSTOWCS(&cwstr[0], v, (sizeof(cwstr) / sizeof(TWCHAR)) - 1);
-
+        
         unsigned key = *k;
         if (m_punctMap.find(*k) != m_punctMap.end ()) {
             m_punctClosingSts.insert (std::make_pair (key, false));
             key |= 0x80000000;
         }
-
+        
         m_punctMap[key] = wstring (cwstr);
-    }
-}
-
-void CGetFullPunctOp::removeExisting (const char *const *punc_map)
-{
-    for (const char *const *k = punc_map; *k; k += 2) {
-        unsigned key = (*k)[0];
-        if (m_punctMap.find(key) != m_punctMap.end()) {
-            m_punctMap.erase(key);
-            m_punctClosingSts.erase(key);
-        }
     }
 }
 

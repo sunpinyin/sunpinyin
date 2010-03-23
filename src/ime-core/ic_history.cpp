@@ -54,39 +54,6 @@ CICHistory::~CICHistory()
 {
 }
 
-bool CICHistory::seenBefore(unsigned wid)
-{
-    return false;
-}
-
-bool CICHistory::memorize(unsigned* its_wid, unsigned* ite_wid)
-{
-    return true;
-}
-
-double CICHistory::pr(unsigned* its_wid, unsigned* ite_wid)
-{
-    return 0.0;
-}
-
-double CICHistory::pr(unsigned* its_wid, unsigned* ite_wid, unsigned wid)
-{
-    return 0.0;
-}
-
-bool CICHistory::bufferize(void** buf_ptr, size_t* sz)
-{
-    *buf_ptr = NULL;
-    *sz = 0;
-    return true;
-}
-
-bool CICHistory::loadFromBuffer(void* buf_ptr, size_t sz)
-{
-    return true;
-}
-
-
 static bool bBigramHistoryInited = false;
 const size_t  CBigramHistory::contxt_memory_size = 8192;
 std::set<unsigned>  CBigramHistory::s_stopWords;
@@ -232,29 +199,33 @@ bool CBigramHistory::bufferize(void** buf_ptr, size_t* sz)
 
 bool CBigramHistory::loadFromFile (const char *fname)
 {
-     
-     bool suc = false;
-     int fd = open (fname, O_CREAT, 0600);
-     if (fd == -1) {
-         perror("fopen bi-gram");
-         return suc;
-     }
-     
-     struct stat info;
-     fstat (fd, &info);
-     void* buf = malloc (info.st_size);
-     
-     if (buf) {
-         read (fd, buf, info.st_size);
-         suc = loadFromBuffer (buf, info.st_size);
-         free (buf);
-     }  
-     close (fd);
-     return suc;
+    m_history_path = fname;
+
+    bool suc = false;
+    int fd = open (fname, O_CREAT, 0600);
+    if (fd == -1) {
+        perror("fopen bi-gram");
+        return suc;
+    }
+    
+    struct stat info;
+    fstat (fd, &info);
+    void* buf = malloc (info.st_size);
+    
+    if (buf) {
+        read (fd, buf, info.st_size);
+        suc = loadFromBuffer (buf, info.st_size);
+        free (buf);
+    }  
+    close (fd);
+    return suc;
 }
 
 bool CBigramHistory::saveToFile(const char *fname)
 {
+    if (!fname)
+        fname = m_history_path.c_str();
+
     bool suc = false;
     size_t sz = 0;
     void* buf = NULL;
@@ -371,4 +342,35 @@ void CBigramHistory::incBiFreq(TBigram& bg)
 {
     ++m_bifreq[bg];
     //printf("Remebering biFreq[%d,%d]-->%d\n", bg.first, bg.second, m_bifreq[bg]);
+}
+
+// so far, it's very expensive to erase a word from bigram pairs, need to design
+// a better data structure for this.
+//
+// And Even though, we may also need to remove the individual characters in this
+// word (identified by wid), which is current infeasible, 
+//
+// Here are what we need to do:
+//   1. get the wstring by word id from userdict
+//   2. iterate the character in this wstring
+//   3. get the word id from each character from system lexicon (not supported yet)
+//   4. remove the unigrams and bigrams of each character, and the entire word
+//
+void CBigramHistory::forget(unsigned wid)
+{
+    TUnigramPool::iterator uni_it = m_unifreq.find (wid);
+    if (uni_it != m_unifreq.end())
+        m_unifreq.erase(uni_it);
+
+    TBigramPool::iterator it  = m_bifreq.begin();
+    TBigramPool::iterator ite = m_bifreq.end();
+
+    while (it != ite) {
+        TBigram bigram = it->first;
+        
+        if (bigram.first == wid || bigram.second == wid)
+            m_bifreq.erase (it++);
+        else
+            ++it;
+    }
 }

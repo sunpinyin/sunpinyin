@@ -11,25 +11,22 @@ class COptionEventBus;
 
 struct COptionEvent
 {
-    enum Type {
-        TYPE_SHARED = (1 << 0),
-        TYPE_GLOBAL = (1 << 1)
-    };
     template<typename ValueType>
-    COptionEvent(const std::string& k, const ValueType& v,
-                 int t = TYPE_SHARED|TYPE_GLOBAL)
-        : type(t), name(k), value(v) 
+    COptionEvent(const std::string& k, const ValueType& v)
+        : name(k), value(v) 
     {}
-    bool is_shared() const { return type & TYPE_SHARED; }
-    bool is_global() const { return type & TYPE_GLOBAL; }
+
     int get_int() const;
     bool get_bool() const;
     std::string get_string() const;
     std::vector<std::string> get_string_list() const;
+    std::vector<string_pair> get_string_pair_list() const;
     
-    /* TODO */
-    std::vector<bool> get_bool_list() const;
-    std::vector<int> get_int_list() const;
+    /* TODO:
+     * string_pair get_string_pair() const;
+     * std::vector<bool> get_bool_list() const;
+     * std::vector<int> get_int_list() const;
+     */
     
     int type;
     std::string name;
@@ -40,20 +37,24 @@ struct COptionEvent
         variant_(const std::string&);
         variant_(bool);
         variant_(const std::vector<std::string>&);
+        variant_(const std::vector<string_pair>&);
         struct val_
         {
             int                      d_int;
             std::string              d_string;
             bool                     d_bool;
             std::vector<std::string> d_strings;
+            std::vector<string_pair> d_string_pair_list;
         } data;
         enum {
             VAL_INTEGER,
             VAL_INTEGER_LIST,
             VAL_STRING,
             VAL_STRING_LIST,
+            VAL_STRING_PAIR,
+            VAL_STRING_PAIR_LIST,
             VAL_BOOL,
-            VAL_BOOL_LIST
+            VAL_BOOL_LIST,
         } type;
     } value;
 };

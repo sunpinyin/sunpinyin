@@ -42,7 +42,6 @@
     NSView              *_view;
     NSMutableDictionary *_attr;
 
-    NSColor             *_bgColor;
     NSColor             *_fgColor;
     NSColor             *_hlColor;
     NSFont              *_font;
@@ -62,5 +61,7 @@
 
 -(void)showCandidates:(NSArray*)candiArray around:(NSRect)cursorRect;
 -(void)hideCandidates;
+
+-(void)setRadius:(float)radius;
 
 @end

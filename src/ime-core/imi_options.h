@@ -53,37 +53,6 @@
 #define SUNPINYIN_USERDATA_DIR_PREFIX ".sunpinyin"
 #endif
 
-/**
- * helper function to transform string vector to array of char*
- */
-class CPairParser
-{
-public:
-    CPairParser()
-    : m_free(m_buf), m_end(m_buf+256)
-    {}
-    
-    /**
-     * transform a string vector to interleaved <key,value> array of (char*)
-     * @param event a list of string, each element should be in the form of "key:value".
-     * @returns the number of pairs transformed
-     * @note this function uses a local buffer for the returned array
-     */
-    size_t parse(const std::vector<std::string> pairs);
-    size_t parse(const COptionEvent& event);
-    const char* const* get_pairs() const;
-    
-private:
-    char* strdup(const std::string& s);
-    char* alloc(size_t size);
-
-    enum {MAX_PAIRS = 22};
-    char* m_pairs[MAX_PAIRS*2+1];
-    char  m_buf[256];
-    char* m_free;
-    const char* m_end;
-};
-
 struct CSimplifiedChinesePolicy : public IConfigurable
 {
     CSimplifiedChinesePolicy ();
@@ -100,14 +69,17 @@ struct CSimplifiedChinesePolicy : public IConfigurable
      *                 where ispunct(key_n). system defined mapping for a 
      *                 given punct will be overriden by user specified one.
      */
-    void setPunctMapping (const char *const* map)
-        {m_getFullPunctOp.initPunctMap (map);}
+    void setPunctMapping (string_pairs punc_map)
+        {m_getFullPunctOp.initPunctMap (punc_map);}
 
     void enableFullSymbol (bool v=true) {m_bEnableFullSymbol = v;}
     void enableFullPunct  (bool v=true) {m_bEnableFullPunct = v;}
 
     void setDataDir (const std::string& data_dir)
         {m_data_dir = data_dir;}
+
+    void setUserDataDir (const std::string& user_data_dir)
+        {m_user_data_dir = user_data_dir;}
 
     virtual bool onConfigChanged (const COptionEvent& event);
     
@@ -130,6 +102,7 @@ protected:
     bool                 m_bEnableFullPunct;
     CGetFullPunctOp      m_getFullPunctOp;
     std::string          m_data_dir;
+    std::string          m_user_data_dir;
 };
 
 typedef SingletonHolder<CSimplifiedChinesePolicy> ASimplifiedChinesePolicy;
@@ -154,14 +127,14 @@ public:
         MAX_AUTOCORRECTION_PINYINS = 32
     };
 
-    void setFuzzyPinyinPairs (const char* const* pairs, unsigned num)
-        {m_getFuzzySyllablesOp.initFuzzyMap (pairs, num);}
+    void setFuzzyPinyinPairs (const string_pairs& pairs)
+        {m_getFuzzySyllablesOp.initFuzzyMap (pairs);}
 
     void setAutoCorrecting (bool v=true)
         {m_getCorrectionPairOp.setEnable (v);}
 
-    void setAutoCorrectionPairs (const char* const* pairs, unsigned num) 
-        {m_getCorrectionPairOp.setCorrectionPairs (pairs, num);}
+    void setAutoCorrectionPairs (const string_pairs& pairs) 
+        {m_getCorrectionPairOp.setCorrectionPairs (pairs);}
 
     virtual bool onConfigChanged(const COptionEvent& event);
     

@@ -54,12 +54,17 @@ public:
 
     virtual ~CICHistory();
 
-    virtual bool seenBefore(unsigned int wid);
+    virtual bool seenBefore(unsigned int wid) = 0;
 
     /**
     * memorize the context stream pointed by [its_wid, ite_wid)
     */
-    virtual bool memorize(unsigned int* its_wid, unsigned int* ite_wid);
+    virtual bool memorize(unsigned int* its_wid, unsigned int* ite_wid) = 0;
+
+    /**
+    * remove a word id from history cache
+    */
+    virtual void forget(unsigned wid) = 0;
 
     /**
     * @param its_wid is the first word pointer of the context stream
@@ -67,7 +72,7 @@ public:
     * @return pr(*(ite_wid-1) | *its_wid, ..., *(ite_wid-2))
     * The return value could be zero, i.e. no need to smooth the probabilities
     */
-    virtual double pr(unsigned int* its_wid, unsigned int* ite_wid);
+    virtual double pr(unsigned int* its_wid, unsigned int* ite_wid) = 0;
 
     /**
     * @param its_wid is the first word pointer of the history stream
@@ -75,7 +80,7 @@ public:
     * @return pr(*wid | *its_wid, ..., *(ite_wid-1))
     * The return value could be zero, i.e. no need to smooth the probabilities
     */
-    virtual double pr(unsigned int* its_wid, unsigned int* ite_wid, unsigned int wid);
+    virtual double pr(unsigned int* its_wid, unsigned int* ite_wid, unsigned int wid) = 0;
 
     /**
     * allocate a buffer, and put the context memory's contect into it
@@ -85,7 +90,7 @@ public:
     * Note: the buf_ptr should be used free(*buf_ptr) to free after usage
     */
     virtual bool
-    bufferize(void** buf_ptr, size_t* sz);
+    bufferize(void** buf_ptr, size_t* sz) = 0;
 
     /**
     * Load context memory according to the buf
@@ -95,7 +100,7 @@ public:
     * call with buf_ptr with NULL value would clear the context memory
     */
     virtual bool
-    loadFromBuffer(void* buf_ptr, size_t sz);
+    loadFromBuffer(void* buf_ptr, size_t sz) = 0;
 };
 
 class CBigramHistory : public CICHistory {
@@ -109,6 +114,8 @@ public:
     virtual bool seenBefore(unsigned int wid);
 
     virtual bool memorize(unsigned int* its_wid, unsigned int* ite_wid);
+
+    virtual void forget(unsigned wid);
 
     /**
     * @param its_wid is the first word pointer of the context stream
@@ -134,7 +141,7 @@ public:
     loadFromFile (const char *fname);
 
     bool
-    saveToFile (const char *fname);
+    saveToFile (const char *fname = NULL);
 
 protected:
     typedef unsigned                              TWordId;
@@ -150,6 +157,7 @@ protected:
     TUnigramPool            m_unifreq;
     TBigramPool             m_bifreq;
 
+    std::string             m_history_path;
     static std::set<unsigned int>                  s_stopWords;
 
 protected:

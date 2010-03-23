@@ -42,6 +42,14 @@
 #import "SunPinyinApplicationDelegate.h"
 #import <Sparkle/Sparkle.h>
 
+using namespace std;
+
+void updateFactorySettings(NSUserDefaults* pref);
+void updateQuanpinSettings(NSUserDefaults* pref);
+void updateShuangpinSettings(NSUserDefaults* pref);
+void updateSimplifiedChineseSettings(NSUserDefaults* pref);
+void updateKeyProfileSettings(NSUserDefaults* pref);
+
 @implementation SunPinyinApplicationDelegate
 
 //this method is added so that our controllers can access the shared NSMenu.
@@ -55,16 +63,9 @@
     return _candiWin;
 }
 
--(void)loadPreferences
+-(void)updateUISettings
 {
     NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
-    
-    //setting full/half puncts and symbols
-    _inputChinesePuncts = [pref boolForKey:@"inputChinesePuncts"];
-    _inputFullSymbols   = [pref boolForKey:@"inputFullSymbols"];
-    _switchingPolicy    = (SwitchingPolicies) [pref integerForKey:@"switchingPolicy"];
-    _commitPolicy       = (CommitPolicies) [pref integerForKey:@"commitPolicy"];
-    _usingUSKbLayout    = [pref boolForKey:@"usingUSKbLayout"];
     
     //setting background color
     NSData *data = [pref dataForKey:@"bgColor"];
@@ -76,6 +77,9 @@
     [_ftTxtField setBackgroundColor:color];
     [_candiWin setBgColor:bgColor];
     
+    float radius = [pref floatForKey:@"radius"];
+    [_candiWin setRadius:radius];
+
     data = [pref dataForKey:@"fgColor"];
     color = data? (NSColor*) [NSUnarchiver unarchiveObjectWithData:data]:
     [NSColor whiteColor];
@@ -95,16 +99,30 @@
     [_ftTxtField setFont:font];
     [_ftTxtField setStringValue:text];
     [_candiWin setFont:font];
-	
-    [self postConfigurationEvents];
 }
 
--(void)preferencesChanged:(NSNotification *)notification
+-(void)updateIMESettings
 {
-    if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
-        return;
+    NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
     
-    [self loadPreferences];
+    //setting full/half puncts and symbols
+    _inputChinesePuncts = [pref boolForKey:@"inputChinesePuncts"];
+    _inputFullSymbols   = [pref boolForKey:@"inputFullSymbols"];
+    _switchingPolicy    = (SwitchingPolicies) [pref integerForKey:@"switchingPolicy"];
+    _commitPolicy       = (CommitPolicies) [pref integerForKey:@"commitPolicy"];
+    _usingUSKbLayout    = [pref boolForKey:@"usingUSKbLayout"];
+    
+    updateFactorySettings(pref);
+    updateQuanpinSettings(pref);
+    updateShuangpinSettings(pref);
+    updateSimplifiedChineseSettings(pref);
+    updateKeyProfileSettings(pref);
+}
+
+-(void)loadPreferences
+{
+    [self updateUISettings];
+    [self updateIMESettings];
 }
 
 //add an awakeFromNib item so that we can set the action method.  Note that 
@@ -121,6 +139,25 @@
             object:nil];
 
     [GrowlApplicationBridge setGrowlDelegate: self];
+    
+    string res_path = [[[NSBundle mainBundle] resourcePath] UTF8String];
+    AOptionEventBus::instance().publishEvent(COptionEvent(SYSTEM_DATA_DIR, res_path));
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    if ([paths count]) 
+    {
+        string user_data_dir = [[paths objectAtIndex: 0] UTF8String];
+        user_data_dir.append ("/SunPinyin");
+        AOptionEventBus::instance().publishEvent(COptionEvent(USER_DATA_DIR, user_data_dir));
+    }
+}
+
+-(void)preferencesChanged:(NSNotification *)notification
+{
+    if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
+        return;
+    
+    [self loadPreferences];
 }
 
 //though we specified the showPrefPanel: in SunPinyinApplicationDelegate as the
@@ -238,70 +275,109 @@
                             clickContext: nil];
 }
 
--(void)postConfigurationEvents
+@end //SunPinyinApplicationDelegate
+
+void updateFactorySettings(NSUserDefaults* pref)
 {
-    NSUserDefaults* pref = [NSUserDefaults standardUserDefaults];
-
-    COptionEventBus& event_bus = AOptionEventBus::instance();
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
-
-    CSimplifiedChinesePolicy& lang_policy = ASimplifiedChinesePolicy::instance();
-    lang_policy.enableFullSymbol (_inputFullSymbols);
-    lang_policy.enableFullPunct (_inputChinesePuncts);
-
-    std::string res_path = [[[NSBundle mainBundle] resourcePath] UTF8String];
-    event_bus.publishEvent(COptionEvent(SYSTEM_DATA_DIR, res_path));
+    COptionEventBus& event_bus = AOptionEventBus::instance();
     
     int  pinyin_scheme = [pref integerForKey: @"pinyinMode"];
     factory.setPinyinScheme((CSunpinyinSessionFactory::EPyScheme)pinyin_scheme);
-    event_bus.publishEvent(COptionEvent(PINYIN_SCHEME, pinyin_scheme));
-
-    int  shuangpin_type = [pref integerForKey: @"Shuangpin.Scheme"];
-    event_bus.publishEvent(COptionEvent(SHUANGPIN_TYPE, shuangpin_type));
-
-    bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
-    event_bus.publishEvent(COptionEvent(QUANPIN_FUZZY_ENABLED, quanpin_fuzzy_enabled));
-    
-    std::vector<std::string> fuzzy_pairs;
-    if ([pref boolForKey: @"Quanpin.Fuzzy.ZhiZi"])   fuzzy_pairs.push_back("zh:z");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.ChiCi"])   fuzzy_pairs.push_back("ch:c");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.ShiSi"])   fuzzy_pairs.push_back("sh:s");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.AnAng"])   fuzzy_pairs.push_back("an:ang");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.OnOng"])   fuzzy_pairs.push_back("on:ong");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.EnEng"])   fuzzy_pairs.push_back("en:eng");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.InIng"])   fuzzy_pairs.push_back("in:ing");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.EngOng"])  fuzzy_pairs.push_back("eng:ong");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.IanIang"]) fuzzy_pairs.push_back("ian:iang");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.UanUang"]) fuzzy_pairs.push_back("uan:uang");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.NeLe"])    fuzzy_pairs.push_back("n:l");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.FoHe"])    fuzzy_pairs.push_back("f:h");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.LeRi"])    fuzzy_pairs.push_back("l:r");
-    if ([pref boolForKey: @"Quanpin.Fuzzy.KeGe"])    fuzzy_pairs.push_back("k:g");
-    event_bus.publishEvent (COptionEvent(QUANPIN_FUZZY_PINYINS, fuzzy_pairs));
-
-    bool quanpin_autocorrecting_enabled = [pref boolForKey: @"Quanpin.AutoCorrecting.Enabled"];
-    event_bus.publishEvent(COptionEvent(QUANPIN_AUTOCORRECTION_ENABLED, quanpin_autocorrecting_enabled));
-    
-    std::vector<std::string> correcting_pairs;
-    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IgnIng"]) correcting_pairs.push_back("ign:ing");
-    if ([pref boolForKey: @"Quanpin.AutoCorrecting.UenUn"])  correcting_pairs.push_back("uen:un");
-    if ([pref boolForKey: @"Quanpin.AutoCorrecting.ImgIng"]) correcting_pairs.push_back("img:ing");
-    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IouIu"])  correcting_pairs.push_back("iou:iu");
-    if ([pref boolForKey: @"Quanpin.AutoCorrecting.UeiUi"])  correcting_pairs.push_back("uei:ui");
-    event_bus.publishEvent (COptionEvent(QUANPIN_AUTOCORRECTION_PINYINS, correcting_pairs));
+    /* pinyin mode is not a shared configuration item, need to broadcast to session wrapper */
+    event_bus.publishEvent(COptionEvent(PINYIN_SCHEME, pinyin_scheme));      
     
     int candi_number = [pref integerForKey:@"candiNumbers"];
     factory.setCandiWindowSize(candi_number);
-    event_bus.publishEvent(COptionEvent(CONFIG_GENERAL_PAGE_SIZE, candi_number));
+    /* candiWindowSize is not a shared configuration item */
+    event_bus.publishEvent(COptionEvent(CONFIG_GENERAL_PAGE_SIZE, candi_number));    
+}
 
+void updateQuanpinSettings(NSUserDefaults* pref)
+{    
+    CQuanpinSchemePolicy& quanpin_policy = AQuanpinSchemePolicy::instance();
+    
+    bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
+    quanpin_policy.setFuzzyForwarding(quanpin_fuzzy_enabled);
+    
+    string_pairs fuzzy_pairs;
+    
+    if ([pref boolForKey: @"Quanpin.Fuzzy.ZhiZi"])   fuzzy_pairs.push_back(make_pair("zh",  "z"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.ChiCi"])   fuzzy_pairs.push_back(make_pair("ch",  "c"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.ShiSi"])   fuzzy_pairs.push_back(make_pair("sh",  "s"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.AnAng"])   fuzzy_pairs.push_back(make_pair("an",  "ang"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.OnOng"])   fuzzy_pairs.push_back(make_pair("on",  "ong"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.EnEng"])   fuzzy_pairs.push_back(make_pair("en",  "eng"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.InIng"])   fuzzy_pairs.push_back(make_pair("in",  "ing"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.EngOng"])  fuzzy_pairs.push_back(make_pair("eng", "ong"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.IanIang"]) fuzzy_pairs.push_back(make_pair("ian", "iang"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.UanUang"]) fuzzy_pairs.push_back(make_pair("uan", "uang"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.NeLe"])    fuzzy_pairs.push_back(make_pair("n",   "l"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.FoHe"])    fuzzy_pairs.push_back(make_pair("f",   "h"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.LeRi"])    fuzzy_pairs.push_back(make_pair("l",   "r"));
+    if ([pref boolForKey: @"Quanpin.Fuzzy.KeGe"])    fuzzy_pairs.push_back(make_pair("k",   "g"));
+    
+    quanpin_policy.setFuzzyPinyinPairs(fuzzy_pairs);
+        
+    bool quanpin_autocorrecting_enabled = [pref boolForKey: @"Quanpin.AutoCorrecting.Enabled"];
+    quanpin_policy.setAutoCorrecting (quanpin_autocorrecting_enabled);
+    
+    string_pairs correcting_pairs;
+    
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IgnIng"]) correcting_pairs.push_back(make_pair("ign", "ing"));
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.UenUn"])  correcting_pairs.push_back(make_pair("uen", "un"));
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.ImgIng"]) correcting_pairs.push_back(make_pair("img", "ing"));
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IouIu"])  correcting_pairs.push_back(make_pair("iou", "iu"));
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.UeiUi"])  correcting_pairs.push_back(make_pair("uei", "ui"));
+    
+    quanpin_policy.setAutoCorrectionPairs (correcting_pairs);
+}
+
+void updateShuangpinSettings(NSUserDefaults* pref)
+{
+    /* Shuangpin type is not a shared configuration item */
+    COptionEventBus& event_bus = AOptionEventBus::instance();    
+    int  shuangpin_type = [pref integerForKey: @"Shuangpin.Scheme"];
+    event_bus.publishEvent(COptionEvent(SHUANGPIN_TYPE, shuangpin_type));    
+}
+
+void updateSimplifiedChineseSettings(NSUserDefaults* pref)
+{    
+    CSimplifiedChinesePolicy& lang_policy = ASimplifiedChinesePolicy::instance();
+    
+    lang_policy.enableFullSymbol ([pref boolForKey:@"inputFullSymbols"]);
+    lang_policy.enableFullPunct ([pref boolForKey:@"inputChinesePuncts"]);
+        
     NSString *charset = [pref stringForKey:@"charset"];
     int charset_level = [charset isEqualToString:@"GB18030"]? 2: 
                             [charset isEqualToString:@"GBK"]? 1: 0;
-    event_bus.publishEvent (COptionEvent(CONFIG_GENERAL_CHARSET_LEVEL, charset_level));
+    
+    /* charset is not a shared configuration item */
+    AOptionEventBus::instance().publishEvent (COptionEvent(CONFIG_GENERAL_CHARSET_LEVEL, charset_level));    
+    
+    string_pairs punct_pairs;
+    NSArray* punct_mappings = [pref arrayForKey: @"punctationMappings"];
+    for (int i=0; i<[punct_mappings count]; ++i)
+    {
+        NSDictionary *tmp = [punct_mappings objectAtIndex:i];
+        NSNumber *enabled = [tmp objectForKey:@"enabled"];
+        NSString *ascii = [tmp objectForKey:@"ASCII"];
+        NSString *mapped_string = [tmp objectForKey:@"mappedString"];
+        
+        if ([enabled boolValue] && [mapped_string UTF8String])
+            punct_pairs.push_back (make_pair([ascii UTF8String], [mapped_string UTF8String]));
+    }
+    lang_policy.setPunctMapping(punct_pairs);    
+}
+
+void updateKeyProfileSettings(NSUserDefaults* pref)
+{
+    /* hotkey profile settings are not shared configuration items */
+    COptionEventBus& event_bus = AOptionEventBus::instance(); 
     
     bool paging_by_minus_equals = [pref boolForKey:@"pagingByMinusAndEqual"];
     event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_MINUS, paging_by_minus_equals));
-
+    
     bool paging_by_brackets = [pref boolForKey:@"pagingByBrackets"];
     event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_BRACKET, paging_by_brackets));
     
@@ -311,7 +387,7 @@
     // store the session specific configurations
     CSessionConfigStore::instance().m_paging_by_minus_equals = paging_by_minus_equals;
     CSessionConfigStore::instance().m_paging_by_brackets     = paging_by_brackets;        
-    CSessionConfigStore::instance().m_paging_by_comma_period = paging_by_comma_period;    
+    CSessionConfigStore::instance().m_paging_by_comma_period = paging_by_comma_period;        
 }
 
-@end //SunPinyinApplicationDelegate
+

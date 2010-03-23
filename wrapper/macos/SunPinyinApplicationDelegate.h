@@ -82,8 +82,6 @@ typedef enum {
 -(IBAction)toggleFullSymbols:(id)sender;
 -(bool)inputFullSymbols;
 
--(void)postConfigurationEvents;
-
 -(SwitchingPolicies)switchingPolicy;
 -(CommitPolicies)commitPolicy;
 -(bool)usingUSKbLayout;

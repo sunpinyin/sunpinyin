@@ -109,7 +109,9 @@ void CUserDict::removeWord (unsigned wid)
     
     if (wid > INI_USRDEF_WID) {
         sprintf(sql, "%s%d;", sql, (wid - INI_USRDEF_WID));
-        sqlite3_exec(m_db, sql, NULL, NULL, &zErr);	
+        sqlite3_exec(m_db, sql, NULL, NULL, &zErr);
+
+        m_dict.erase (m_dict.find(wid - INI_USRDEF_WID));
     }
 }
 

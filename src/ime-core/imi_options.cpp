@@ -68,17 +68,23 @@ CSimplifiedChinesePolicy::loadResources()
 
     suc &= m_coreData.loadResource (lm_path.c_str(), dict_path.c_str());
 
-    char path[256];
-    const char *home = getenv ("HOME");
-    snprintf (path, sizeof(path), "%s/%s", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-    suc &= createDirectory(path);
+    if (!m_user_data_dir.size()) {
+        char path[256];
+        const char *home = getenv ("HOME");
+        snprintf (path, sizeof(path), "%s/%s", home, SUNPINYIN_USERDATA_DIR_PREFIX);
+        m_user_data_dir = path;
+    }
+
+    char * tmp = strdup (m_user_data_dir.c_str());
+    suc &= createDirectory (tmp);
+    free (tmp);
     
     CBigramHistory::initClass();
-    snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-    suc &= m_historyCache.loadFromFile (path);
+    std::string history_path = m_user_data_dir + "/history";
+    suc &= m_historyCache.loadFromFile (history_path.c_str());
     
-    snprintf (path, sizeof(path), "%s/%s/userdict", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-    suc &= m_userDict.load (path);
+    std::string user_dict_path = m_user_data_dir + "/userdict";
+    suc &= m_userDict.load (user_dict_path.c_str());
     
     m_bTried = true;
     return m_bLoaded = suc;
@@ -115,11 +121,8 @@ CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 {
     if (event.name == SYSTEM_DATA_DIR) {
         setDataDir(event.get_string());
-    } else if (event.name == PINYIN_PUNCTMAPPING_MAPPINGS) {
-        CPairParser parser;
-        unsigned num_pairs = parser.parse(event);
-        setPunctMapping(parser.get_pairs());
-        return true;
+    } else if (event.name == USER_DATA_DIR) {
+        setUserDataDir(event.get_string());
     } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
         m_csLevel = event.get_int() & 3;
     }
@@ -130,10 +133,7 @@ CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 bool
 CSimplifiedChinesePolicy::saveUserHistory ()
 {
-    char path[256];
-    const char *home = getenv ("HOME");
-    snprintf (path, sizeof(path), "%s/%s/history", home, SUNPINYIN_USERDATA_DIR_PREFIX);
-    return m_historyCache.saveToFile(path);
+    return m_historyCache.saveToFile();
 }
 
 bool
@@ -161,17 +161,13 @@ CQuanpinSchemePolicy::onConfigChanged(const COptionEvent& event)
         setFuzzyForwarding(event.get_bool());
         return true;
     } else if (event.name == QUANPIN_FUZZY_PINYINS) {
-        CPairParser parser;
-        size_t num = parser.parse(event);
-        setFuzzyPinyinPairs(parser.get_pairs(), num);
+        setFuzzyPinyinPairs(event.get_string_pair_list());
         return true;
     } else if (event.name == QUANPIN_AUTOCORRECTION_ENABLED) {
         setAutoCorrecting(event.get_bool());
         return true;
     } else if (event.name == QUANPIN_AUTOCORRECTION_PINYINS) {
-        CPairParser parser;
-        size_t num = parser.parse(event);
-        setAutoCorrectionPairs(parser.get_pairs(), num);
+        setAutoCorrectionPairs(event.get_string_pair_list());
         return true;
     }
 
@@ -186,74 +182,4 @@ CShuangpinSchemePolicy::onConfigChanged(const COptionEvent& event)
         return true;
     }
     return false;
-}
-
-size_t
-CPairParser::parse(const COptionEvent& event)
-{
-    return parse(event.get_string_list());
-}
-
-size_t 
-CPairParser::parse(const std::vector<std::string> pairs)
-{
-    assert(m_free == m_buf);
-
-    size_t npairs = std::min( (size_t)MAX_PAIRS, pairs.size());
-    int i = 0;
-    for (;i < npairs; ++i) {
-        const std::string& pair = pairs[i];
-        std::string::size_type found = pair.find(':');
-        if (found == pair.npos || pair.length() < 3)
-            continue;
-        else if (found == 0 && pair[1] == ':')
-            found = 1;
-        
-        const std::string key = pair.substr(0, found);
-        const std::string val = pair.substr(found+1);
-        char *skey = strdup(key);
-        char *sval = strdup(val);
-        if (skey && sval) {
-            m_pairs[2*i] = skey;
-            m_pairs[2*i+1] = sval;
-        } else {
-            // running out of memory
-            break;
-        }
-    }
-    m_pairs[2*i] = NULL;
-
-    // reclaim the used memory
-    m_free = m_buf;
-    return i;
-}
-
-const char* const*
-CPairParser::get_pairs() const 
-{
-    return m_pairs;
-}
-
-char*
-CPairParser::strdup(const std::string& s)
-{
-    size_t len = s.length() + 1;
-    char* str = alloc(len);
-    if (str) {
-        strncpy(str, s.c_str(), s.length());
-        str[s.length()] = '\0';
-    }
-    return str;
-}
-
-char*
-CPairParser::alloc(size_t size)
-{
-    char *result = NULL;
-    char *new_free = m_free + size;
-    if (m_end > new_free) {
-        result = m_free;
-        m_free = new_free;
-    }
-    return result;
 }

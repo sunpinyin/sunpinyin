@@ -238,6 +238,7 @@ public:
     void getCandidates (unsigned frIdx, CCandidates& result);
     unsigned cancelSelection (unsigned frIdx, bool doSearch=true);
     void makeSelection (CCandidate &candi, bool doSearch=true);
+    void deleteCandidate (CCandidate &candi);
 
     void memorize ();
     void printLattice ();
@@ -286,6 +287,8 @@ protected:
 
     unsigned                    m_candiStarts;
     unsigned                    m_candiEnds;
+
+    IPySegmentor::TSegmentVec&  m_latestSegments;
 }; // CIMIContext
 
 #endif

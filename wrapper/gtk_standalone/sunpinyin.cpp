@@ -52,6 +52,8 @@
 #include "imi_options.h"
 #include "imi_gtkwin.h"
 
+using namespace std;
+
 int main(int argc, char* argv[])
 {
     #ifdef DEBUG
@@ -72,13 +74,13 @@ int main(int argc, char* argv[])
     int opt;
     char py_scheme = 's';
     bool do_auto_correction = false;
-    const char *auto_correction_pairs [] = {
-        "ign", "ing",
-        "img", "ing",
-        "uei", "ui",
-        "uen", "un",
-        "iou", "iu",
-    };
+
+    string_pairs auto_correction_pairs;
+    auto_correction_pairs.push_back(make_pair("ign", "ing"));
+    auto_correction_pairs.push_back(make_pair("img", "ing"));
+    auto_correction_pairs.push_back(make_pair("uei", "ui"));
+    auto_correction_pairs.push_back(make_pair("uen", "un"));
+    auto_correction_pairs.push_back(make_pair("iou", "iu"));
 
     while ((opt = getopt(argc, argv, "p:c")) != -1) {
         switch (opt) {
@@ -106,8 +108,7 @@ int main(int argc, char* argv[])
     }
     if (py_scheme == 'q' && do_auto_correction) {
         AQuanpinSchemePolicy::instance().setAutoCorrecting(true);
-        AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs,
-                                                                sizeof(auto_correction_pairs)/sizeof(auto_correction_pairs[0])/2);
+        AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs);
     }
     //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
     CIMIView *pv = factory.createSession ();

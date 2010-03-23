@@ -40,13 +40,17 @@
 #include "pinyin_seg.h"
 #include "quanpin_trie.h"
 
-void CGetFuzzySyllablesOp::initFuzzyMap (const char * const* fuzzyPairs, unsigned num)
+void CGetFuzzySyllablesOp::initFuzzyMap (const string_pairs& fuzzyPairs)
 {
     m_fuzzyMap.clear();
 
-    for (int c=0; c<num; ++c) {
-        const char * i = fuzzyPairs [c*2];
-        const char * j = fuzzyPairs [c*2+1];
+    string_pairs::const_iterator it =  fuzzyPairs.begin();
+    string_pairs::const_iterator ite = fuzzyPairs.end();
+
+    for (; it != ite; ++it)
+    {
+        const std::string i = it->first;
+        const std::string j = it->second;
 
         m_fuzzyMap.insert (std::pair<const std::string, std::string> (i, j));
         m_fuzzyMap.insert (std::pair<const std::string, std::string> (j, i));
@@ -58,11 +62,13 @@ CSyllables CGetFuzzySyllablesOp::operator () (TSyllable s)
     CSyllables ret;
     static char buf[128];
 
+    /*
     if (m_fuzzyMap.empty()) {
         unsigned num;
         const char ** sys_fuzzy_pairs = CPinyinData::getFuzzyPairs (num);
         initFuzzyMap (sys_fuzzy_pairs, num);
     }
+     */
 
     const char *i, *f;
     CPinyinData::decodeSyllable (s, &i, &f);

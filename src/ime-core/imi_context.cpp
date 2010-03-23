@@ -102,11 +102,13 @@ void CIMIContext::printLattice ()
     }
 }
 
+// FIXME: a dirty way to save a reference of latest segments
+IPySegmentor::TSegmentVec g_dummy_segs;
 CIMIContext::CIMIContext () 
     : m_tailIdx(1), m_pModel(NULL), m_pPinyinTrie(NULL), m_pUserDict(NULL), m_pHistory(NULL), 
       m_historyPower(3), m_bFullSymbolForwarding(false), m_pGetFullSymbolOp(NULL),
       m_bFullPunctForwarding(true), m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
-      m_candiStarts(0), m_candiEnds(0), m_csLevel(0), m_bNonCompleteSyllable(true)
+      m_candiStarts(0), m_candiEnds(0), m_csLevel(0), m_bNonCompleteSyllable(true), m_latestSegments(g_dummy_segs)
 {
     m_lattice.resize (MAX_LATTICE_LENGTH);
     m_lattice[0].m_latticeStates.push_back (TLatticeState (-1.0, 0));
@@ -133,6 +135,8 @@ void CIMIContext::_clearFrom (unsigned idx)
 
 bool CIMIContext::buildLattice (IPySegmentor::TSegmentVec &segments, unsigned rebuildFrom, bool doSearch)
 {
+    m_latestSegments = segments;
+
     _clearFrom (rebuildFrom);
 
     IPySegmentor::TSegmentVec::iterator it  = segments.begin ();
@@ -532,6 +536,8 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
 
                 cp.m_candi.m_wordId = words[i].m_id;
                 cp.m_candi.m_cwstr = _getWstr (cp.m_candi.m_wordId);
+                if (!cp.m_candi.m_cwstr)
+                    continue;
 
                 //sorting according to the order in PinYinTire
                 cp.m_Rank = TCandiRank(false, false, len, false, i);
@@ -554,6 +560,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
 
                 cp.m_candi.m_wordId = ltst.m_backTraceWordId;
                 cp.m_candi.m_cwstr = _getWstr (cp.m_candi.m_wordId);
+                if (!cp.m_candi.m_cwstr)
+                    continue;
+
                 cp.m_Rank = TCandiRank(false, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
                 it_map = map.find(cp.m_candi.m_wordId);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
@@ -672,3 +681,13 @@ void CIMIContext::_saveHistoryCache ()
 
 }
 
+void CIMIContext::deleteCandidate (CCandidate &candi)
+{
+    unsigned wid = candi.m_wordId;
+
+    if (wid > INI_USRDEF_WID) {
+        m_pHistory->forget (wid);
+        m_pUserDict->removeWord (wid);
+        buildLattice (m_latestSegments, candi.m_start+1);
+    }
+}

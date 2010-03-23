@@ -490,6 +490,22 @@ SunPinyinEngine::update_page_key(const char* conf_key, bool default_val,
     }
 }
 
+string_pairs parse_pairs(const vector<string>& strings)
+{
+    string_pairs pairs;
+    for (vector<string>::const_iterator pair = strings.begin();
+         pair != strings.end(); ++pair) {
+        std::string::size_type found = pair->find(':');
+        if (found == pair->npos || pair->length() < 3)
+            continue;
+        if (found == 0 && (*pair)[0] == ':')
+            found = 1;
+        pairs.push_back(make_pair(pair->substr(0, found),
+                                  pair->substr(found+1)));
+    }
+    return pairs;
+}
+
 void
 SunPinyinEngine::update_punct_mappings()
 {
@@ -497,9 +513,7 @@ SunPinyinEngine::update_punct_mappings()
         return;
     vector<string> mappings;
     mappings = m_config.get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
-    CPairParser parser;
-    parser.parse(mappings);
-    ASimplifiedChinesePolicy::instance().setPunctMapping(parser.get_pairs());
+    ASimplifiedChinesePolicy::instance().setPunctMapping(parse_pairs(mappings));
 }
 
 void
@@ -511,9 +525,7 @@ SunPinyinEngine::update_fuzzy_pinyins()
         return;
     vector<string> fuzzy_pinyins;
     fuzzy_pinyins = m_config.get(QUANPIN_FUZZY_PINYINS, fuzzy_pinyins);
-    CPairParser parser;
-    unsigned num_pairs = parser.parse(fuzzy_pinyins);
-    AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(parser.get_pairs(), num_pairs);
+    AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(parse_pairs(fuzzy_pinyins));
 }
 
 void
@@ -525,9 +537,7 @@ SunPinyinEngine::update_correction_pinyins()
         return;
     vector<string> correction_pinyins;
     correction_pinyins = m_config.get(QUANPIN_AUTOCORRECTION_PINYINS, correction_pinyins);
-    CPairParser parser;
-    unsigned num_pairs = parser.parse(correction_pinyins);
-    AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(parser.get_pairs(), num_pairs);
+    AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(parse_pairs(correction_pinyins));
 }
 
 void

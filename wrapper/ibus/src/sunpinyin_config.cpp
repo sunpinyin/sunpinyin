@@ -243,16 +243,6 @@ SunPinyinConfig::get_scheme(const std::string& name)
     return val;
 }
 
-static unsigned
-get_event_type_by_name(const std::string& name)
-{
-    // pick out those options involves switching policies
-    if (name == PINYIN_SCHEME)
-        return COptionEvent::TYPE_GLOBAL;
-    else
-        return COptionEvent::TYPE_SHARED|COptionEvent::TYPE_GLOBAL;
-}
-
 vector<string>
 get_strings_from_gvalue(GValue *value)
 {
@@ -278,20 +268,18 @@ g_value_to_event(const gchar *section, const gchar *name, GValue *value)
         event_name = string(section) + "/" + string(name);
     }
     
-    unsigned type = get_event_type_by_name(event_name);
-    
     switch (G_VALUE_TYPE(value)) {
     case G_TYPE_INT:
-        return COptionEvent(event_name, g_value_get_int(value), type);
+        return COptionEvent(event_name, g_value_get_int(value));
     case G_TYPE_STRING:
-        return COptionEvent(event_name, g_value_get_string(value), type);
+        return COptionEvent(event_name, g_value_get_string(value));
     case G_TYPE_BOOLEAN:
         return COptionEvent(event_name,
-                            g_value_get_boolean(value)?true:false, type);
+                            g_value_get_boolean(value)?true:false);
     default:
         // G_TYPE_VALUE_ARRAY() not a constant
         if (G_TYPE_VALUE_ARRAY == G_VALUE_TYPE(value))
-            return COptionEvent(event_name, get_strings_from_gvalue(value), type);
+            return COptionEvent(event_name, get_strings_from_gvalue(value));
         assert(false && "unknown gvalue");
         return COptionEvent(event_name, 0);
     }   

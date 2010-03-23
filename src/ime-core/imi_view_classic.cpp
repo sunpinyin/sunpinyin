@@ -46,7 +46,7 @@
 
 CIMIClassicView::CIMIClassicView()
     :CIMIView(), m_cursorFrIdx(0), m_candiFrIdx(0),
-     m_candiPageFirst(0)
+     m_candiPageFirst(0), m_numeric_mode(false)
     { }
 
 CIMIClassicView::~CIMIClassicView()
@@ -64,6 +64,8 @@ CIMIClassicView::clearIC(void)
 {
     if (!m_pIC->isEmpty()) {
         m_cursorFrIdx = m_candiFrIdx = m_candiPageFirst = 0;
+        m_numeric_mode = false;
+
         m_pIC->clear ();
         m_pPySegmentor->clear ();
         m_candiList.clear ();
@@ -120,33 +122,28 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             changeMasks |= CANDIDATE_MASK | PREEDIT_MASK;
             clearIC ();
         }
-        m_pHotkeyProfile->rememberLastKey(key);
         
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isPunctSwitchKey(key)) {
         // On CTRL+. switch Full/Half punc
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, (!m_bFullPunct)?1:0);
-        m_pHotkeyProfile->rememberLastKey(key);
         
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isSymbolSwitchKey(key)) {
         // On SHIFT+SPACE switch Full/Half symbol
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, (!m_bFullSymbol)?1:0);
-        m_pHotkeyProfile->rememberLastKey(key);
         
     } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_LEFT)  { // move left
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             _moveLeft (changeMasks);
         }
-        m_pHotkeyProfile->rememberLastKey(key);
         
     } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_RIGHT) { // move right
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             _moveRight (changeMasks);
         }
-        m_pHotkeyProfile->rememberLastKey(key);
     } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
                  (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) &&
                 !m_pIC->isEmpty() ) {
@@ -157,7 +154,6 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             if (m_candiPageFirst < 0) m_candiPageFirst = 0;
             changeMasks |= CANDIDATE_MASK;
         }
-        m_pHotkeyProfile->rememberLastKey(key);
     } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
                  (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) &&
                 !m_pIC->isEmpty() ) {
@@ -167,19 +163,41 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             m_candiPageFirst += m_candiWindowSize;
             changeMasks |= CANDIDATE_MASK;
         }
-        m_pHotkeyProfile->rememberLastKey(key);
-    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {
-        if (islower(keyvalue)) {
-            changeMasks |= KEYEVENT_USED;
-            _insert (keyvalue, changeMasks);
+    }
+    else if (modifiers == IM_CTRL_MASK && 
+             (keyvalue >= '0' && keyvalue <= '9') &&
+             (m_candiWindowSize >= 10 || keyvalue < ('1' + m_candiWindowSize)) &&
+             !m_pIC->isEmpty ()) {
+        changeMasks |= KEYEVENT_USED;
+        unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');        
+        _deleteCandidate (sel, changeMasks);
+        goto PROCESSED;
 
-        } else if ((keyvalue >= '0' && keyvalue <= '9') &&
+    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {
+        if ((keyvalue >= '0' && keyvalue <= '9') &&
                    (m_candiWindowSize >= 10 || keyvalue < ('1' + m_candiWindowSize))) { // try to make selection
             if (!m_pIC->isEmpty ()) {
                 changeMasks |= KEYEVENT_USED;
                 unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');
                 _makeSelection (sel, changeMasks);
+            } else {
+                m_numeric_mode = true;
             }
+
+            goto PROCESSED;
+        } 
+        
+        if (keyvalue == '.' && m_numeric_mode) {
+            m_numeric_mode = false;
+            goto PROCESSED;
+
+        }
+        
+        m_numeric_mode = false;
+
+        if (islower(keyvalue)) {
+            changeMasks |= KEYEVENT_USED;
+            _insert (keyvalue, changeMasks);
 
         } else if (keyvalue > 0x20 && keyvalue < 0x7f) {
             changeMasks |= KEYEVENT_USED;
@@ -240,8 +258,15 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 _moveEnd (changeMasks);
             }
         }
-        m_pHotkeyProfile->rememberLastKey(key);
+    } else {
+        goto RETURN;
+
     } 
+
+PROCESSED:;
+    m_pHotkeyProfile->rememberLastKey(key);
+
+RETURN:;
 
 #ifdef DEBUG
     printf("   |-->(Mask=0x%x)\n", changeMasks);
@@ -605,4 +630,21 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
         _doCommit();
         clearIC();
     }
+}
+    
+void
+CIMIClassicView::_deleteCandidate (int candiIdx, unsigned& mask)
+{
+    candiIdx += m_candiPageFirst;
+    if (!m_tailSentence.empty ()) --candiIdx;
+
+    // try to remove candidate 0 which is a calculated sentence
+    if (candiIdx < 0) {
+        return;
+    }
+
+    CCandidate& candi = m_candiList [candiIdx];
+    m_pIC->deleteCandidate(candi);
+    _getCandidates ();
+    mask |= PREEDIT_MASK | CANDIDATE_MASK;
 }

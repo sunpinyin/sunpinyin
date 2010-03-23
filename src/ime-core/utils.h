@@ -38,6 +38,11 @@
 #ifndef SUNPY_UTILS_H
 #define SUNPY_UTILS_H
 
+#include <vector>
+
+typedef std::pair<std::string, std::string> string_pair;
+typedef std::vector<string_pair> string_pairs;
+
 class CNonCopyable
 {
 protected:

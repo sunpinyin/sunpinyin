@@ -60,6 +60,7 @@
 #define CONFIG_QUANPIN_FUZZY_KeGe        "QuanPin/Fuzzy/KeGe"
 
 #define CONFIG_QUANPIN_CORRECTION_IgnIng "QuanPin/AutoCorrecting/IgnIng"
+#define CONFIG_QUANPIN_CORRECTION_OgnOng "QuanPin/AutoCorrecting/OgnOng"
 #define CONFIG_QUANPIN_CORRECTION_UenUn  "QuanPin/AutoCorrecting/UenUn"
 #define CONFIG_QUANPIN_CORRECTION_ImgIng "QuanPin/AutoCorrecting/ImgIng"
 #define CONFIG_QUANPIN_CORRECTION_IouIu  "QuanPin/AutoCorrecting/IouIu"

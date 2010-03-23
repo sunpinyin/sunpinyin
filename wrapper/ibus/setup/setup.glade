@@ -1309,8 +1309,8 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/UenUn">
-                <property name="label">uen -&gt; un</property>
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/IouIu">
+                <property name="label">iou -&gt; iu</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1320,11 +1320,13 @@ PinYinJiaJia</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/IouIu">
-                <property name="label">iou -&gt; iu</property>
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/UenUn">
+                <property name="label">uen -&gt; un</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1339,7 +1341,18 @@ PinYinJiaJia</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkCheckButton" id="QuanPin/AutoCorrection/OgnOng">
+                <property name="label">ogn -&gt; ong</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
             </child>
           </widget>
           <packing>

@@ -357,6 +357,7 @@ class FuzzySetupDialog (MultiCheckDialog):
 class CorrectionSetupDialog (MultiCheckDialog):
     def __init__(self):
         mappings = [MappingInfo('QuanPin/AutoCorrection/IgnIng', ('ign','ing')),
+                    MappingInfo('QuanPin/AutoCorrection/OgnOng', ('ogn','ong')),
                     MappingInfo('QuanPin/AutoCorrection/UenUn', ('uen','un')),
                     MappingInfo('QuanPin/AutoCorrection/ImgIng', ('img','ing')),
                     MappingInfo('QuanPin/AutoCorrection/IouIu', ('iou','iu')),

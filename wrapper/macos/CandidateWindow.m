@@ -93,6 +93,7 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height + 1)/2;
 
     [_string drawAtPoint:stringOrigin];
+    [[self window] invalidateShadow];
 }
 
 - (void) dealloc 
@@ -212,7 +213,7 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     NSSize strSize = [string size];
 
     tuningFrameForScreen (&winRect, strSize, cursorRect);
-    [_window setFrame:winRect display:YES animate:NO];    
+    [_window setFrame:winRect display:NO];
     
     [(CandidateView*)_view setAttributedString:string];
     [string release];

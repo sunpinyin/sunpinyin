@@ -41,7 +41,7 @@ SUNPINYIN_SRC_DIR = $(top_srcdir)/src/ime-core
 SLM_SRC_DIR = $(top_srcdir)/src/slm
 LEXICON_SRC_DIR = $(top_srcdir)/src/lexicon
 PINYIN_SRC_DIR = $(top_srcdir)/src/pinyin
-IBUS_SUNPINYIN_DATADIR = $(pkgdatadir)/data
+IBUS_SUNPINYIN_DATADIR = $(pkglibdir)/data
 IBUS_SUNPINYIN_ICONDIR = $(pkgdatadir)/icons
 SUNPINYIN_USERDATA_DIR_PREFIX = .ibus/sunpinyin
 

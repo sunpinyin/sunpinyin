@@ -73,49 +73,7 @@ const wstring& CGetFullSymbolOp::operator () (unsigned ch)
 }
 
 CGetFullPunctOp::CGetFullPunctOp()
-{
-    static const char* punc_map [] = { 
-        ",",    "，",
-        ";",    "；",
-        "!",    "！",
-        "?",    "？",
-        ".",    "。",
-        ":",    "：",
-        "^",    "……",
-        "\\",   "、",
-        "\"",   "“",
-        "\"",   "”",
-        "'",    "‘",
-        "'",    "’",
-        "_",    "——",
-        "<",    "《",
-        ">",    "》",
-        "(",    "（",
-        ")",    "）",
-        "[",    "【",
-        "]",    "】",
-        "{",    "『",
-        "}",    "』",
-        "$",    "￥",
-        "*",    "×",
-        "+",    "＋",
-        "|",    "｜",
-        "=",    "＝",
-        "-",    "－",
-        NULL,
-    };
-
-    string_pairs default_punc_map;
-
-    const char *const *p = punc_map;
-    while (*p) {
-        const char *k = *p++;
-        const char *v = *p++;
-        default_punc_map.push_back (std::make_pair(k, v));
-    }
-
-    initPunctMap (default_punc_map);
-}
+{}
 
 void CGetFullPunctOp::initPunctMap (const string_pairs& punc_map)
 {

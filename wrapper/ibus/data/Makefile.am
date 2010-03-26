@@ -1,4 +1,4 @@
-IBUS_SUNPINYIN_DATADIR = $(pkgdatadir)/data
+IBUS_SUNPINYIN_DATADIR = $(pkglibdir)/data
 IBUS_SUNPINYIN_ICONDIR = $(pkgdatadir)/icons
 
 ibus_sunpinyin_datadir   = $(IBUS_SUNPINYIN_DATADIR)

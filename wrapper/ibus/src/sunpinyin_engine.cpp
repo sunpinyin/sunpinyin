@@ -47,6 +47,7 @@
 #include "imi_ibus_win.h"
 #include "ibus_portable.h"
 #include "sunpinyin_engine.h"
+#include <sstream>
 
 using namespace std;
 
@@ -72,7 +73,9 @@ SunPinyinEngine::SunPinyinEngine(IBusEngine *engine)
     } else {
         update_shuangpin_type();
     }
-
+    update_user_data_dir();
+    update_punct_mappings();
+    
     factory.setCandiWindowSize(m_config.get(CONFIG_GENERAL_PAGE_SIZE, 10));
     
     m_pv = factory.createSession();
@@ -88,13 +91,8 @@ SunPinyinEngine::SunPinyinEngine(IBusEngine *engine)
     m_prop_list = ibus_prop_list_new();
     
     ibus_prop_list_append(m_prop_list, m_status_prop);
-
-    
     ibus_prop_list_append(m_prop_list, m_letter_prop);
-
-    
     ibus_prop_list_append(m_prop_list, m_punct_prop);
-
     ibus_prop_list_append(m_prop_list, m_setup_prop);
     
     update_config();
@@ -138,7 +136,12 @@ SunPinyinEngine::process_key_event (guint key_val,
             m_hotkey_profile->rememberLastKey(key);
             return FALSE;
         }
+    } else if ( m_hotkey_profile->isModeSwitchKey(key) ) {
+        m_pv->onKeyEvent(CKeyEvent(IM_VK_ENTER, 0, 0));
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, false);
+        return TRUE;
     }
+    
     return m_pv->onKeyEvent(key);
 }
 
@@ -506,14 +509,45 @@ string_pairs parse_pairs(const vector<string>& strings)
     return pairs;
 }
 
+string_pairs merge_pairs(const string_pairs& pairs1,
+                         const string_pairs& pairs2)
+{
+    typedef std::map<string, string> Pairs;
+    Pairs pairs;
+    for (string_pairs::const_iterator it = pairs1.begin();
+         it != pairs1.end(); ++it) {
+        pairs[it->first] = it->second;
+    }
+    for (string_pairs::const_iterator it = pairs2.begin();
+         it != pairs2.end(); ++it) {
+        pairs[it->first] = it->second;
+    }
+    string_pairs result;
+    copy(pairs.begin(), pairs.end(), back_inserter(result));
+    return result;
+}
+
 void
 SunPinyinEngine::update_punct_mappings()
 {
-    if (!m_config.get(PINYIN_PUNCTMAPPING_ENABLED, false))
-        return;
-    vector<string> mappings;
-    mappings = m_config.get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
-    ASimplifiedChinesePolicy::instance().setPunctMapping(parse_pairs(mappings));
+    CSimplifiedChinesePolicy& policy = ASimplifiedChinesePolicy::instance();
+    if (m_config.get(PINYIN_PUNCTMAPPING_ENABLED, false)) {
+        vector<string> mappings;
+        mappings = m_config.get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
+        string_pairs pairs(merge_pairs(parse_pairs(mappings),
+                                       policy.getDefaultPunctMapping()));
+        policy.setPunctMapping(pairs);
+    }
+}
+
+void
+SunPinyinEngine::update_user_data_dir()
+{
+    stringstream user_data_dir;
+    user_data_dir << g_get_user_cache_dir()
+                  << G_DIR_SEPARATOR_S << "ibus"
+                  << G_DIR_SEPARATOR_S << "sunpinyin";
+    ASimplifiedChinesePolicy::instance().setUserDataDir(user_data_dir.str());
 }
 
 void

@@ -99,6 +99,7 @@ private:
     void update_page_key(const char* conf_key, bool default_val, 
                          unsigned page_up, unsigned page_down);
     void update_charset_level();
+    void update_user_data_dir();
     void update_punct_mappings();
     void update_fuzzy_pinyins();
     void update_correction_pinyins();

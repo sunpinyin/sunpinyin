@@ -44,6 +44,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <cassert>
+#include <errno.h>
 
 #include "imi_option_keys.h"
 #include "imi_keys.h"
@@ -53,7 +54,9 @@
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
       m_bEnableFullSymbol(false), m_bEnableFullPunct(true)
-{}
+{
+    m_getFullPunctOp.initPunctMap(getDefaultPunctMapping());
+}
 
 bool
 CSimplifiedChinesePolicy::loadResources()
@@ -116,6 +119,51 @@ CSimplifiedChinesePolicy::destroyContext (CIMIContext *context)
     delete context;
 }
 
+string_pairs
+CSimplifiedChinesePolicy::getDefaultPunctMapping() const
+{
+    static const char* punc_map [] = { 
+        ",",    "，",
+        ";",    "；",
+        "!",    "！",
+        "?",    "？",
+        ".",    "。",
+        ":",    "：",
+        "^",    "……",
+        "\\",   "、",
+        "\"",   "“",
+        "\"",   "”",
+        "'",    "‘",
+        "'",    "’",
+        "_",    "——",
+        "<",    "《",
+        ">",    "》",
+        "(",    "（",
+        ")",    "）",
+        "[",    "【",
+        "]",    "】",
+        "{",    "『",
+        "}",    "』",
+        "$",    "￥",
+        "*",    "×",
+        "+",    "＋",
+        "|",    "｜",
+        "=",    "＝",
+        "-",    "－",
+        NULL,
+    };
+
+    string_pairs default_punc_map;
+
+    const char *const *p = punc_map;
+    while (*p) {
+        const char *k = *p++;
+        const char *v = *p++;
+        default_punc_map.push_back (std::make_pair(k, v));
+    }
+    return default_punc_map;
+}
+
 bool
 CSimplifiedChinesePolicy::onConfigChanged (const COptionEvent& event)
 {
@@ -142,7 +190,7 @@ CSimplifiedChinesePolicy::createDirectory(char *path) {
     while (p = strchr(p+1, '/')) {
         *p = 0;
         if (access(path, F_OK) != 0 && mkdir(path, S_IRWXU) != 0) {
-            perror("unabled to mkdir() for user history");
+            fprintf(stderr, "mkdir %s: %s\n", path, strerror(errno));
             return false;
         }
         *p = '/';

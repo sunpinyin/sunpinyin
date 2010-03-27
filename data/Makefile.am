@@ -108,4 +108,4 @@ lm_sc.t3g.be: tslmendian lm_sc.t3g
 
 
 noinst_DATA = $(LM_SC_BIN) pydict_sc.bin 
-CLEANFILES = $(LM_SC_BIN) $(PYTRIE_LOG) pydict_sc.bin tslmpack genpyt
+CLEANFILES = $(LM_SC_BIN) $(LM_FILES) $(PYTRIE_LOG) pydict_sc.bin tslmpack genpyt

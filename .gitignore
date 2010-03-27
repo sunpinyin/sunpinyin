@@ -45,6 +45,8 @@ wrapper/macos/packaging/sunpinyin_appcast.xml
 build/*
 swap/*
 
+debian/control
+
 *.o
 *.lo
 *.loT

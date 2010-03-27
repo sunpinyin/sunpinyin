@@ -44,6 +44,7 @@
 #define CONFIG_KEYBOARD_PAGE_COMMA       "Keyboard/Page/CommaPeriod"
 #define CONFIG_KEYBOARD_PAGE_MINUS       "Keyboard/Page/MinusEquals"
 #define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
+#define CONFIG_KEYBOARD_PAGE_ARROWS      "Keyboard/Page/Arrows"
 
 typedef enum {
     COMMIT_PINYIN_STRING        = 0,
@@ -56,6 +57,7 @@ struct CSessionConfigStore : private CNonCopyable
     bool        m_paging_by_comma_period;
     bool        m_paging_by_minus_equals;
     bool        m_paging_by_brackets;
+    bool        m_paging_by_arrows;
 
     static CSessionConfigStore& instance () 
     {
@@ -95,6 +97,7 @@ private:
     void update_page_key_minus(bool);
     void update_page_key_comma(bool);
     void update_page_key_bracket(bool);
+    void update_page_key_arrows(bool);
     void update_page_key(unsigned, unsigned, bool);
     
 private:

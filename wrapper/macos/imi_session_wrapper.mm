@@ -92,6 +92,8 @@ bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
         update_page_key_minus(event.get_bool());
     } else if (event.name == CONFIG_KEYBOARD_PAGE_BRACKET) {
         update_page_key_bracket(event.get_bool());
+    } else if (event.name == CONFIG_KEYBOARD_PAGE_ARROWS) {
+        update_page_key_arrows(event.get_bool());
     }
     
     return false;
@@ -125,6 +127,11 @@ void CSunpinyinSessionWrapper::update_page_key_comma(bool enable)
 void CSunpinyinSessionWrapper::update_page_key_bracket(bool enable)
 {
     update_page_key(IM_VK_OPEN_BRACKET, IM_VK_CLOSE_BRACKET, enable);
+}
+
+void CSunpinyinSessionWrapper::update_page_key_arrows(bool enable)
+{
+    update_page_key(IM_VK_UP, IM_VK_DOWN, enable);
 }
 
 void CSunpinyinSessionWrapper::update_page_key(unsigned page_up, unsigned page_down, bool enable)

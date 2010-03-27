@@ -324,7 +324,7 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     
     string_pairs correcting_pairs;
     
-    if ([pref boolForKey: @"Quanpin.AutoCorrecting.IgnIng"]) correcting_pairs.push_back(make_pair("ign", "ing"));
+    if ([pref boolForKey: @"Quanpin.AutoCorrecting.GnNg"]) correcting_pairs.push_back(make_pair("gn", "ng"));
     if ([pref boolForKey: @"Quanpin.AutoCorrecting.UenUn"])  correcting_pairs.push_back(make_pair("uen", "un"));
     if ([pref boolForKey: @"Quanpin.AutoCorrecting.ImgIng"]) correcting_pairs.push_back(make_pair("img", "ing"));
     if ([pref boolForKey: @"Quanpin.AutoCorrecting.IouIu"])  correcting_pairs.push_back(make_pair("iou", "iu"));
@@ -383,11 +383,15 @@ void updateKeyProfileSettings(NSUserDefaults* pref)
     
     bool paging_by_comma_period = [pref boolForKey:@"pagingByCommaAndDot"];
     event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_COMMA, paging_by_comma_period));
+
+    bool paging_by_arrows = [pref boolForKey:@"pagingByArrowUpAndDown"];
+    event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_ARROWS, paging_by_arrows));
     
     // store the session specific configurations
     CSessionConfigStore::instance().m_paging_by_minus_equals = paging_by_minus_equals;
     CSessionConfigStore::instance().m_paging_by_brackets     = paging_by_brackets;        
     CSessionConfigStore::instance().m_paging_by_comma_period = paging_by_comma_period;        
+    CSessionConfigStore::instance().m_paging_by_arrows = paging_by_arrows;
 }
 
 

@@ -1,4 +1,4 @@
 debian/tmp/usr/bin/xsunpinyin
 debian/tmp/usr/bin/xsunpinyin-preferences
-debian/tmp/usr/share/sunpinyin/icon/xim/*
+debian/tmp/usr/share/sunpinyin/xim/*
 wrapper/xim/im-switch/xsunpinyin /etc/X11/xinit/xinput.d/

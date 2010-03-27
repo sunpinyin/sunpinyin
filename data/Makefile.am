@@ -43,7 +43,7 @@ ICON_FILES = sunpinyin_logo.xpm \
 
 EXTRA_DIST = $(ICON_FILES)
 
-SUNPINYIN_DATA_DIR = $(pkgdatadir)/data
+SUNPINYIN_DATA_DIR = $(pkglibdir)/data
 
 if BUILD_ALL_LM_FILES
 lm_DATA = $(LM_FILES)

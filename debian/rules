@@ -49,12 +49,12 @@ DEB_DH_GENCONTROL_ARGS := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
 
 binary-fixup/sunpinyin-data-le::
 	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
-	    mv $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/data/$$f.le \
-	       $(CURDIR)/debian/sunpinyin-data-le/usr/share/sunpinyin/data/$$f;   \
+	    mv $(CURDIR)/debian/sunpinyin-data-le/usr/lib/sunpinyin/data/$$f.le \
+	       $(CURDIR)/debian/sunpinyin-data-le/usr/lib/sunpinyin/data/$$f;   \
 	done
 
 binary-fixup/sunpinyin-data-ge::
 	for f in pydict_sc.bin lm_sc.t3g ; do	                             \
-	    mv $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/data/$$f.be \
-	       $(CURDIR)/debian/sunpinyin-data-ge/usr/share/sunpinyin/data/$$f;   \
+	    mv $(CURDIR)/debian/sunpinyin-data-ge/usr/lib/sunpinyin/data/$$f.be \
+	       $(CURDIR)/debian/sunpinyin-data-ge/usr/lib/sunpinyin/data/$$f;   \
 	done

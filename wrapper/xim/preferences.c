@@ -12,7 +12,7 @@
 #include "settings.h"
 #include "xmisc.h"
 
-#define UI_FILE SUNPINYIN_XIM_DATA_DIR"/settings_ui.xml"
+#define UI_FILE SUNPINYIN_XIM_SETTING_DIR"/settings_ui.xml"
 
 static GtkWidget* main_wnd = NULL;
 static GtkToggleButton* trigger_ctrl_check = NULL;

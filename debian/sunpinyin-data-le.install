@@ -1,2 +1,2 @@
-debian/tmp/usr/share/sunpinyin/data/lm_sc.t3g.le usr/share/sunpinyin/data/
-debian/tmp/usr/share/sunpinyin/data/pydict_sc.bin.le usr/share/sunpinyin/data/
+debian/tmp/usr/lib/sunpinyin/data/lm_sc.t3g.le usr/lib/sunpinyin/data/
+debian/tmp/usr/lib/sunpinyin/data/pydict_sc.bin.le usr/lib/sunpinyin/data/

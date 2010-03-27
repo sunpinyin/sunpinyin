@@ -44,12 +44,12 @@ static GtkWidget* icbar_status_btn;
 static GtkStatusIcon* icbar_tray;
 static GtkWidget* popup_menu;
 
-#define LOGO_FILE SUNPINYIN_XIM_DATA_DIR"/sunpinyin-logo.png"
-#define LOGO_FILE_BIG SUNPINYIN_XIM_DATA_DIR"/sunpinyin-logo-big.png"
-#define ENG_ICON SUNPINYIN_XIM_DATA_DIR"/eng.svg"
-#define HAN_ICON SUNPINYIN_XIM_DATA_DIR"/han.svg"
-#define ENG_ICON_PNG SUNPINYIN_XIM_DATA_DIR"/eng.png"
-#define HAN_ICON_PNG SUNPINYIN_XIM_DATA_DIR"/han.png"
+#define LOGO_FILE SUNPINYIN_XIM_ICON_DIR"/sunpinyin-logo.png"
+#define LOGO_FILE_BIG SUNPINYIN_XIM_ICON_DIR"/sunpinyin-logo-big.png"
+#define ENG_ICON SUNPINYIN_XIM_ICON_DIR"/eng.svg"
+#define HAN_ICON SUNPINYIN_XIM_ICON_DIR"/han.svg"
+#define ENG_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/eng.png"
+#define HAN_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/han.png"
 
 static void
 set_english_mode(gboolean mode)

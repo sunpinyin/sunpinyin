@@ -282,7 +282,7 @@ settings_destroy()
 }
 
 #define SETTING_FILE ".sunpinyin/xim_config"
-#define DEFAULT_SETTING_FILE SUNPINYIN_XIM_DATA_DIR"/xim_config_default"
+#define DEFAULT_SETTING_FILE SUNPINYIN_XIM_SETTING_DIR"/xim_config_default"
 
 void
 settings_load()

@@ -39,8 +39,9 @@ SLM_SRC_DIR = $(top_srcdir)/src/slm
 LEXICON_SRC_DIR = $(top_srcdir)/src/lexicon
 PINYIN_SRC_DIR = $(top_srcdir)/src/pinyin
 
-SUNPINYIN_DATA_DIR = $(pkgdatadir)/data
-SUNPINYIN_XIM_DATA_DIR = $(pkgdatadir)/icon/xim
+SUNPINYIN_DATA_DIR = $(pkglibdir)/data
+SUNPINYIN_XIM_ICON_DIR = $(pkgdatadir)/xim/icon
+SUNPINYIN_XIM_SETTING_DIR = $(pkgdatadir)/xim/settings
 
 # libtool option to control which symbols are exported
 # right now, symbols starting with _ are not exported
@@ -139,10 +140,12 @@ xsunpinyin_SOURCES = \
 	xmisc.c
 
 xsunpinyin_CFLAGS = \
-	-DSUNPINYIN_XIM_DATA_DIR=\"$(SUNPINYIN_XIM_DATA_DIR)\" \
+	-DSUNPINYIN_XIM_ICON_DIR=\"$(SUNPINYIN_XIM_DATA_DIR)\" \
+	-DSUNPINYIN_XIM_SETTING_DIR=\"$(SUNPINYIN_XIM_SETTING_DIR)\" \
 	-DSUNPINYIN_DATA_DIR=\"$(SUNPINYIN_DATA_DIR)\" \
 	@GTK_CFLAGS@ @X11_CFLAGS@ -IIMdkit -I$(SRC_DIR) -I$(SUNPINYIN_SRC_DIR) \
 	-I$(SLM_SRC_DIR) -I$(LEXICON_SRC_DIR) -I$(PINYIN_SRC_DIR)
+
 
 
 xsunpinyin_CXXFLAGS = $(xsunpinyin_CFLAGS)
@@ -156,8 +159,8 @@ xsunpinyin_preferences_SOURCES = \
 	xmisc.c
 
 xsunpinyin_preferences_CFLAGS = \
-	-DSUNPINYIN_XIM_DATA_DIR=\"$(SUNPINYIN_XIM_DATA_DIR)\" \
 	-DSUNPINYIN_DATA_DIR=\"$(SUNPINYIN_DATA_DIR)\" \
+	-DSUNPINYIN_XIM_SETTING_DIR=\"$(SUNPINYIN_XIM_SETTING_DIR)\" \
 	-export-dynamic @GTK_CFLAGS@ @X11_CFLAGS@
 
 xsunpinyin_preferences_CXXFLAGS = $(xsunpinyin-preferences_CFLAGS)
@@ -172,13 +175,16 @@ xsunpinyin_datadir   = $(SUNPINYIN_DATA_DIR)
 xsunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
 	$(top_builddir)/data/pydict_sc.bin
 
-icondir   = $(SUNPINYIN_XIM_DATA_DIR)
+icondir   = $(SUNPINYIN_XIM_ICON_DIR)
 icon_DATA = \
 	data/sunpinyin-logo.png \
 	data/sunpinyin-logo-big.png \
 	data/han.png \
 	data/eng.png \
 	data/han.svg \
-	data/eng.svg \
+	data/eng.svg
+
+settingsdir = $(SUNPINYIN_XIM_SETTING_DIR)
+settings_DATA = \
 	data/xim_config_default \
 	data/settings_ui.xml

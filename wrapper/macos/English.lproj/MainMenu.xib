@@ -13,7 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="268"/>
-			<integer value="279"/>
+			<integer value="545"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -116,7 +116,7 @@
 								<object class="NSTabViewItem" id="844599924">
 									<string key="NSIdentifier">1</string>
 									<object class="NSView" key="NSView" id="556411416">
-										<reference key="NSNextResponder" ref="920744728"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -655,7 +655,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {386, 287}}</string>
-										<reference key="NSSuperview" ref="920744728"/>
 									</object>
 									<string key="NSLabel">General</string>
 									<reference key="NSColor" ref="126660839"/>
@@ -664,7 +663,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<object class="NSTabViewItem" id="79480864">
 									<string key="NSIdentifier">Item 2</string>
 									<object class="NSView" key="NSView" id="734104716">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="920744728"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1132,6 +1131,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {386, 287}}</string>
+										<reference key="NSSuperview" ref="920744728"/>
 									</object>
 									<string key="NSLabel">Quan Pin</string>
 									<reference key="NSColor" ref="126660839"/>
@@ -1874,14 +1874,14 @@ ICBBbnRob255IExlZSA8ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4KA</string>
 									<reference key="NSTabView" ref="920744728"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="844599924"/>
+							<reference key="NSSelectedTabViewItem" ref="79480864"/>
 							<reference key="NSFont" ref="197917625"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="556411416"/>
+								<reference ref="734104716"/>
 							</object>
 						</object>
 					</object>
@@ -1892,6 +1892,10 @@ ICBBbnRob255IExlZSA8ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4KA</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="333442631">
+				<object class="NSMutableArray" key="NSDeclaredKeys">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>Quanpin.AutoCorrecting.GnNg</string>
+				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="850400115">
@@ -2462,22 +2466,6 @@ ICBBbnRob255IExlZSA8ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4KA</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.Quanpin.AutoCorrecting.IgnIng</string>
-						<reference key="source" ref="380966888"/>
-						<reference key="destination" ref="333442631"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="380966888"/>
-							<reference key="NSDestination" ref="333442631"/>
-							<string key="NSLabel">value: values.Quanpin.AutoCorrecting.IgnIng</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.Quanpin.AutoCorrecting.IgnIng</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">611</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: values.Quanpin.AutoCorrecting.ImgIng</string>
 						<reference key="source" ref="630653599"/>
 						<reference key="destination" ref="333442631"/>
@@ -3035,6 +3023,22 @@ ICBBbnRob255IExlZSA8ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4KA</string>
 						</object>
 					</object>
 					<int key="connectionID">738</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.Quanpin.AutoCorrecting.GnNg</string>
+						<reference key="source" ref="380966888"/>
+						<reference key="destination" ref="333442631"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="380966888"/>
+							<reference key="NSDestination" ref="333442631"/>
+							<string key="NSLabel">value: values.Quanpin.AutoCorrecting.GnNg</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.Quanpin.AutoCorrecting.GnNg</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">744</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -4622,7 +4626,7 @@ ICBBbnRob255IExlZSA8ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4KA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">743</int>
+			<int key="maxID">744</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

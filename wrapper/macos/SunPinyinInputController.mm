@@ -172,6 +172,11 @@ Here are the three approaches:
 -(void)deactivateServer:(id)sender
 {
     [[[NSApp delegate] candiWin] hideCandidates];
+
+    NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (string && [string length])
+        [self commitString:string];
+    _session->clear();
 }
 
 /*!

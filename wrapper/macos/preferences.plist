@@ -77,7 +77,7 @@
 	<key>Quanpin.AutoCorrecting.UenUn</key>
 	<false/>
 	<key>Quanpin.AutoCorrecting.ImgIng</key>
-	<true/>
+	<false/>
 	<key>Quanpin.AutoCorrecting.IouIu</key>
 	<false/>
 	<key>Quanpin.AutoCorrecting.UeiUi</key>

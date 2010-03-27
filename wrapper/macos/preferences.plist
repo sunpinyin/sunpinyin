@@ -24,6 +24,8 @@
 	<false/>
 	<key>pagingByCommaAndDot</key>
 	<false/>
+	<key>pagingByArrowUpAndDown</key>
+	<false/>
 	<key>candiNumbers</key>
 	<integer>9</integer>
 	<key>fontName</key>
@@ -70,12 +72,12 @@
 	<false/>
 	<key>Quanpin.AutoCorrecting.Enabled</key>
 	<false/>
-	<key>Quanpin.AutoCorrecting.IgnIng</key>
+	<key>Quanpin.AutoCorrecting.GnNg</key>
 	<false/>
 	<key>Quanpin.AutoCorrecting.UenUn</key>
 	<false/>
 	<key>Quanpin.AutoCorrecting.ImgIng</key>
-	<false/>
+	<true/>
 	<key>Quanpin.AutoCorrecting.IouIu</key>
 	<false/>
 	<key>Quanpin.AutoCorrecting.UeiUi</key>

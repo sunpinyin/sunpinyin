@@ -82,7 +82,7 @@ PINYIN_NMP_TEXTFILE = ${SWAP_DIR}/dict_nmp.utf8
 PYTRIE_FILE = ${RESULT_DIR}/pydict_sc.bin
 PYTRIE_PRINTOUT = ${SWAP_DIR}/pydict_sc.log.utf8
 
-#noinst_PROGRAMS = testvc slmseg mmseg ids2ngram idngram_merge slmbuild slmprune slminfo slmthread tslminfo tslmpack tslmendian getWordFreq genpyt
+noinst_PROGRAMS = testvc slmseg mmseg ids2ngram idngram_merge slmbuild slmprune slminfo slmthread tslminfo tslmpack tslmendian getWordFreq genpyt
 
 genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian
 

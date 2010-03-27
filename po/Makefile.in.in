@@ -149,13 +149,13 @@ check: all $(GETTEXT_PACKAGE).pot
 	fi
 
 mostlyclean:
-	rm -f *.pox *.old.po cat-id-tbl.tmp
+	rm -f *.pox $(GETTEXT_PACKAGE).pot *.old.po cat-id-tbl.tmp
 	rm -f .intltool-merge-cache
 
 clean: mostlyclean
 
 distclean: clean
-	rm -f Makefile Makefile.in stamp-it
+	rm -f Makefile Makefile.in POTFILES stamp-it
 	rm -f *.mo *.msg *.cat *.cat.m *.gmo
 
 maintainer-clean: distclean

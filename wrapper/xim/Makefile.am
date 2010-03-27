@@ -106,15 +106,18 @@ libsunpinyin_la_LDFLAGS = \
 libsunpinyin_la_LIBADD = -lm
 
 libimdkit_la_SOURCES = \
-	IMdkit/FrameMgr.c \
+	IMdkit/IMdkit.h \
+	IMdkit/FrameMgr.c IMdkit/FrameMgr.h \
 	IMdkit/i18nAttr.c \
 	IMdkit/i18nClbk.c \
 	IMdkit/i18nIc.c \
-	IMdkit/i18nIMProto.c \
+	IMdkit/XimFunc.h \
+	IMdkit/i18nIMProto.c IMdkit/XimProto.h \
 	IMdkit/i18nMethod.c \
 	IMdkit/i18nPtHdr.c \
 	IMdkit/i18nUtil.c \
-	IMdkit/i18nX.c \
+	IMdkit/Xi18n.h \
+	IMdkit/i18nX.c IMdkit/Xi18nX.h \
 	IMdkit/IMConn.c \
 	IMdkit/IMMethod.c \
 	IMdkit/IMValues.c 
@@ -175,8 +178,7 @@ xsunpinyin_datadir   = $(SUNPINYIN_DATA_DIR)
 xsunpinyin_data_DATA = $(top_builddir)/data/lm_sc.t3g \
 	$(top_builddir)/data/pydict_sc.bin
 
-icondir   = $(SUNPINYIN_XIM_ICON_DIR)
-icon_DATA = \
+ICON_FILES = \
 	data/sunpinyin-logo.png \
 	data/sunpinyin-logo-big.png \
 	data/han.png \
@@ -184,7 +186,15 @@ icon_DATA = \
 	data/han.svg \
 	data/eng.svg
 
-settingsdir = $(SUNPINYIN_XIM_SETTING_DIR)
-settings_DATA = \
+SETTING_FILES = \
 	data/xim_config_default \
 	data/settings_ui.xml
+
+icondir   = $(SUNPINYIN_XIM_ICON_DIR)
+icon_DATA = $(ICON_FILES)
+
+settingsdir = $(SUNPINYIN_XIM_SETTING_DIR)
+settings_DATA = $(SETTING_FILES)
+
+EXTRA_DIST = $(ICON_FILES) $(SETTING_FILES) im-switch/xsunpinyin
+

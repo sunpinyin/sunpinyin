@@ -12,10 +12,10 @@ Todo:
 In process:
 
     * Python binding for SunPinyin's SLM [80%]
-    * porting to Mac OS X [30%]
 
 Done:
 
     * fix the multi-phonetic bug in pytrie
     * porting to SCIM platform
+    * porting to Mac OS X
 

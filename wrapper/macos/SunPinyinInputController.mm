@@ -103,6 +103,10 @@ Here are the three approaches:
 
     switch ([event type]) {
         case NSFlagsChanged:
+            // FIXME: a dirty workaround for chrome sending duplicated NSFlagsChanged event
+            if (_lastEventTypes[1] == NSFlagsChanged && _lastModifiers[1] == modifiers)
+                return YES;
+
             if (SWITCH_BY_SHIFT == switchPolicy && modifiers == 0 && 
                 _lastEventTypes[1] == NSFlagsChanged && _lastModifiers[1] == NSShiftKeyMask &&
                 !(_lastModifiers[0] & NSShiftKeyMask))
@@ -168,6 +172,11 @@ Here are the three approaches:
 -(void)deactivateServer:(id)sender
 {
     [[[NSApp delegate] candiWin] hideCandidates];
+
+    NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (string && [string length])
+        [self commitString:string];
+    _session->clear();
 }
 
 /*!
@@ -183,10 +192,13 @@ Here are the three approaches:
 
 -(void)commitComposition:(id)sender 
 {
-    NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if (string && [string length])
-        [self commitString:string];
-    _session->clear();
+    /* FIXME: chrome's address bar issues this callback when showing suggestions. 
+     *
+     * NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
+     * if (string && [string length])
+     *     [self commitString:string];
+     * _session->clear();
+     */
 }
 
 -(NSMenu*)menu

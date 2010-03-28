@@ -14,6 +14,9 @@
 /* Class = "NSTabViewItem"; label = "General"; ObjectID = "281"; */
 "281.label" = "通用";
 
+/* Class = "NSMatrix"; gToolTip = "This setting would only affect the next activated input session!"; ObjectID = "289"; */
+"289.gToolTip" = "此设置将在下次激活输入法时生效！";
+
 /* Class = "NSButtonCell"; title = "Shuang Pin"; ObjectID = "291"; */
 "291.title" = "双拼";
 
@@ -122,9 +125,6 @@
 /* Class = "NSMenuItem"; title = "With Shift (⇧)"; ObjectID = "486"; */
 "486.title" = "使用 Shift (⇧)";
 
-/* Class = "NSButtonCell"; title = "Check for Updates..."; ObjectID = "492"; */
-"492.title" = "检查更新 ...";
-
 /* Class = "NSTabViewItem"; label = "Quan Pin"; ObjectID = "494"; */
 "494.label" = "全拼";
 
@@ -177,7 +177,7 @@
 "544.title" = "自动纠错";
 
 /* Class = "NSButtonCell"; title = "ign -> ing"; ObjectID = "546"; */
-"546.title" = "ign -> ing";
+"546.title" = "gn -> ng";
 
 /* Class = "NSButtonCell"; title = "img -> ing"; ObjectID = "548"; */
 "548.title" = "img -> ing";
@@ -221,9 +221,6 @@
 /* Class = "NSMenuItem"; title = "Commit Pinyin String"; ObjectID = "680"; */
 "680.title" = "提交拼音字符串";
 
-/* Class = "NSButtonCell"; title = "Check automatically"; ObjectID = "691"; */
-"691.title" = "自动检查更新";
-
 /* Class = "NSTabViewItem"; label = "Punctations"; ObjectID = "694"; */
 "694.label" = "自定义标点";
 
@@ -241,3 +238,18 @@
 
 /* Class = "NSTextFieldCell"; title = "Radius:"; ObjectID = "722"; */
 "722.title" = "园角：";
+
+/* Class = "NSButtonCell"; title = "Use ↑/↓ to page up/down"; ObjectID = "728"; */
+"728.title" = "使用 '↑'/'↓' 翻页";
+
+/* Class = "NSTabViewItem"; label = "About"; ObjectID = "731"; */
+"731.label" = "关于";
+
+/* Class = "NSButtonCell"; title = "Check automatically"; ObjectID = "735"; */
+"735.title" = "自动检查更新";
+
+/* Class = "NSButtonCell"; title = "Check for Updates..."; ObjectID = "736"; */
+"736.title" = "检查更新 ...";
+
+/* Class = "NSTextFieldCell"; title = "Credits:\n\n    Sun Microsystems, Inc. All Rights Reserved.\n    Lei Zhang <phill.zhang@gmail.com>\n    Yong Sun <mail@yongsun.me>\n    Kefu Chai <tchaikov@gmail.com>\n    Wei Xue <breadson.xue@gmail.com>\n    Leo Zheng <zym361@gmail.com>\n    Mike <mikeandmore@gmail.com>\n    chumsdock <vorbei@gmail.com>\n    Anthony Lee <don.anthony.lee@gmail.com>\n"; ObjectID = "743"; */
+"743.title" = "感谢：\n\n    Sun Microsystems, Inc. All Rights Reserved.\n    Lei Zhang <phill.zhang@gmail.com>\n    Yong Sun <mail@yongsun.me>\n    Kefu Chai <tchaikov@gmail.com>\n    Wei Xue <breadson.xue@gmail.com>\n    Leo Zheng <zym361@gmail.com>\n    Mike <mikeandmore@gmail.com>\n    chumsdock <vorbei@gmail.com>\n    Anthony Lee <don.anthony.lee@gmail.com>\n";

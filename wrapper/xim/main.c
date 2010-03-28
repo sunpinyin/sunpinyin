@@ -98,7 +98,7 @@ main(int argc, char* argv[])
 
     /* check if the codeset is utf-8 */
     if (strcmp(nl_langinfo(CODESET), "UTF-8") != 0) {
-        printf("Can't use xim server with codeset %s.\n",
+        fprintf(stderr, "Can't use xim server with codeset %s.\n",
                nl_langinfo(CODESET));
         return -1;
     }
@@ -108,11 +108,12 @@ main(int argc, char* argv[])
     if (locale == NULL) {
         locale = getenv("LANG");
         if (locale == NULL) {
-            printf("Can't guess locale.\n");
+            fprintf(stderr, "Can't guess locale.\n");
             return -1;
         }
     }
-    
+
+    printf("Starting xim server on locale %s\n", lcoale);
     XIMHandle* hdl = create_xim_server(XIM_NAME, locale);
     preedit_set_handle(hdl);
     preedit_reload();

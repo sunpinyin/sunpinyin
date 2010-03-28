@@ -323,6 +323,10 @@ _open_imdkit(const char* _server_name, const char* _locale)
                  IMFilterEventMask, KeyPressMask | KeyReleaseMask,
                  IMOnKeysList, &keys,
                  NULL);
+    if (handle == NULL) {
+        fprintf(stderr, "Startup xim server failed.\n");
+        fprintf(stderr, "Your locale is %s, please file a bug.", _locale);
+    }
     return handle;
 }
 

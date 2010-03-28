@@ -113,7 +113,7 @@ main(int argc, char* argv[])
         }
     }
 
-    printf("Starting xim server on locale %s\n", lcoale);
+    printf("Starting xim server on locale %s\n", locale);
     XIMHandle* hdl = create_xim_server(XIM_NAME, locale);
     preedit_set_handle(hdl);
     preedit_reload();

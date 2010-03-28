@@ -129,7 +129,7 @@ install-data-yes: all
 	done
 
 # Empty stubs to satisfy archaic automake needs
-dvi info tags TAGS ID:
+dvi info ctags tags CTAGS TAGS ID:
 
 # Define this as empty until I found a useful application.
 install-exec installcheck:

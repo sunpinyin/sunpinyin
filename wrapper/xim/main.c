@@ -78,6 +78,8 @@ _xerror_handler (Display *dpy, XErrorEvent *e)
     return 1;
 }
 
+#define ALL_LOCALES_STRING "ca,cs,en,es,et,eu,fr,zh,zu"
+
 int 
 main(int argc, char* argv[])
 {
@@ -112,9 +114,10 @@ main(int argc, char* argv[])
             return -1;
         }
     }
+    char final_locale[256];
+    snprintf(final_locale, 256, "%s,%s", ALL_LOCALES_STRING, locale);
 
-    printf("Starting xim server on locale %s\n", locale);
-    XIMHandle* hdl = create_xim_server(XIM_NAME, locale);
+    XIMHandle* hdl = create_xim_server(XIM_NAME, final_locale);
     preedit_set_handle(hdl);
     preedit_reload();
 

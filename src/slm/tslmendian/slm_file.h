@@ -36,22 +36,12 @@
 /*
  * convert the threaded lm binary file from big-endian to small-endian or vice versa
  */
-#ifndef SLM_ENDIAN_H
-#define SLM_ENDIAN_H
+#ifndef SLM_FILE_H
+#define SLM_FILE_H
 
 #include <stdint.h>
 
 #include "../slm.h"
-
-#ifndef LITTLE_ENDIAN
-enum {
-    BIG_ENDIAN = 4321,
-    LITTLE_ENDIAN = 1234,
-    UNKNOWN_ENDIAN = 0x0000
-};
-#else
-#define UNKNOWN_ENDIAN (0x0000)
-#endif
 
 // TODO: may need consolidate this class with CThreadSlm
 class CThreadSlmFile
@@ -98,4 +88,4 @@ private:
     CThreadSlm::TLeaf* m_leafs;
 };
 
-#endif//SLM_ENDIAN_H
+#endif //SLM_FILE_H

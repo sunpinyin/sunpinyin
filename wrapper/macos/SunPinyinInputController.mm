@@ -192,13 +192,14 @@ Here are the three approaches:
 
 -(void)commitComposition:(id)sender 
 {
-    /* FIXME: chrome's address bar issues this callback when showing suggestions. 
-     *
-     * NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
-     * if (string && [string length])
-     *     [self commitString:string];
-     * _session->clear();
-     */
+    // FIXME: chrome's address bar issues this callback when showing suggestions. 
+    if ([[sender bundleIdentifier] isEqualToString:@"com.google.Chrome"])
+        return;
+
+    NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (string && [string length])
+        [self commitString:string];
+    _session->clear();
 }
 
 -(NSMenu*)menu

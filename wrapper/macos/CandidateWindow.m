@@ -83,6 +83,9 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     if (!_string)
         return;
 
+    [[NSColor clearColor] set];
+    NSRectFill([self bounds]);
+
     NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:rect xRadius:_radius yRadius:_radius];
     [_bgColor set];
     [path fill];
@@ -93,7 +96,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height + 1)/2;
 
     [_string drawAtPoint:stringOrigin];
-    [[self window] invalidateShadow];
 }
 
 - (void) dealloc 
@@ -123,10 +125,9 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
                                 defer:NO];
 
     [_window setAlphaValue:1.0];
-    [_window setLevel:NSScreenSaverWindowLevel];
+    [_window setLevel:NSScreenSaverWindowLevel+1];
     [_window setHasShadow:YES];    
     [_window setOpaque:NO];
-    [_window setBackgroundColor:[NSColor clearColor]];
 
     _view = [[CandidateView alloc] initWithFrame:[[_window contentView] frame]];
     [_window setContentView:_view];
@@ -213,11 +214,11 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     NSSize strSize = [string size];
 
     tuningFrameForScreen (&winRect, strSize, cursorRect);
-    [_window setFrame:winRect display:NO];
     
     [(CandidateView*)_view setAttributedString:string];
     [string release];
-    
+
+    [_window setFrame:winRect display:YES animate:NO];
     [_window orderFront:nil];
 }
 

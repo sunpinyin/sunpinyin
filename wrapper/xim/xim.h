@@ -70,6 +70,8 @@ void      preedit_on_key(XIMHandle* handle, unsigned int keycode,
 bool      preedit_status(void);
 void      preedit_pause(void);
 void      preedit_go_on(void);
+void      preedit_set_full(bool full);
+void      preedit_set_chinese_punc(bool chn_punc);
 
 __END_DECLS
 

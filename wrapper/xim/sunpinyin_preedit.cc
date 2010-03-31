@@ -198,3 +198,15 @@ preedit_status(void)
     return instance->status();
 }
 
+__EXPORT_API void
+preedit_set_full(bool full)
+{
+    view->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, full);
+}
+
+__EXPORT_API void
+preedit_set_chinese_punc(bool chn_punc)
+{
+    view->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, chn_punc);
+}
+

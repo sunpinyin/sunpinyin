@@ -119,7 +119,7 @@ _xim_destroy_ic(XIMHandle* handle, IMChangeICStruct* proto)
 {
     LOG("XIM_DESTROY_IC %d", proto->icid);
     icmgr_destroy_ic(proto->icid);
-    icmgr_refresh_ui();
+    icmgr_refresh();
     return 1;
 }
 
@@ -160,8 +160,9 @@ _xim_set_ic_values(XIMHandle* handle, IMChangeICStruct* proto)
     /* if we change the current ic position, we might wanna
      * move it along the way
      */
-    if (cur_ic == NULL || ic->icid == cur_ic->icid)
+    if (cur_ic != NULL && ic->icid == cur_ic->icid) {
         __move_preedit(ic);
+    }
     return 1;
 }
 
@@ -193,7 +194,7 @@ _xim_trigger_notify(XIMHandle* handle, IMTriggerNotifyStruct* proto)
     icmgr_set_current(proto->icid);
     ic->is_enabled = true;
     xim_start_preedit(handle);
-    icmgr_refresh_ui();
+    icmgr_refresh();
     return 1;
 }
 
@@ -205,8 +206,9 @@ _xim_set_ic_focus(XIMHandle* handle, IMChangeFocusStruct* proto)
     /* if use didn't finish typing, we won't focus to new context */
     if (preedit_status() == false) {
         icmgr_set_current(proto->icid);
-        icmgr_refresh_ui();
     }
+    icmgr_refresh();
+
     return 1;
 }
 
@@ -216,9 +218,9 @@ _xim_unset_ic_focus(XIMHandle* handle, IMChangeFocusStruct* proto)
     LOG("unset focus on ic %d", proto->icid);
 
     IC* ic = icmgr_get_current();
-    if (ic != NULL && ic->icid == proto->icid) {
+    if (ic != NULL && ic->icid == proto->icid && preedit_status() == false) {
         icmgr_clear_current();
-        icmgr_refresh_ui();
+        icmgr_refresh();
     }
     return 1;
 }

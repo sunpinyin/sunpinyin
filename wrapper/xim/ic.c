@@ -139,6 +139,15 @@ __scan_all_ic()
 extern void icmgr_init_ui(void);
 extern void icmgr_refresh_ui(void);
 
+static void
+__reset_ic(IC* ic)
+{
+    int id = ic->icid;
+    memset(ic, 0, sizeof(IC));
+    ic->icid = id;
+    ic->is_chn_punc = true;
+}
+
 void
 icmgr_init(void)
 {
@@ -146,8 +155,8 @@ icmgr_init(void)
     int i;
     for (i = 0; i < MAX_IC_NUM; i++) {
         ics[i].icid = i + 1;
-        ics[i].is_chn_punc = true;
-
+        __reset_ic(&ics[i]);
+        
         free_stack[free_stack_sz] = &ics[i];
         free_stack_sz++;
     }
@@ -162,6 +171,7 @@ icmgr_finalize(void)
     memset(icmaps, 0, sizeof(IC*) * MAX_IC_NUM);
     current_ic = NULL;
 }
+
 
 IC*
 icmgr_create_ic(int connect_id)
@@ -183,6 +193,8 @@ icmgr_create_ic(int connect_id)
     IC* ic = free_stack[free_stack_sz];
     
     icmaps[ic->icid] = ic;
+    __reset_ic(ic);
+    
     /* icmgr_set_current(ic->icid); */
     
     ic->connect_id = connect_id;

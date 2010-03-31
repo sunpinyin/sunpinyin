@@ -50,12 +50,13 @@ __BEGIN_DECLS
 #define MAX_IC_NUM 0x7fff
 #define GC_THRESHOLD 4096
 
-
 /* input context */
 typedef struct _IC {
     Window client_window;
     bool   is_enabled;
     bool   is_english;
+    bool   is_full;
+    bool   is_chn_punc;
     int    icid;
     int    connect_id;
     int    offset_x;
@@ -74,7 +75,7 @@ IC*  icmgr_get        (int icid);
 
 IC*  icmgr_get_current  (void);
 void icmgr_clear_current(void);
-void icmgr_refresh_ui   (void);
+void icmgr_refresh      (void);
 
 __END_DECLS
 

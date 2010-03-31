@@ -133,7 +133,7 @@ libimdkit_la_LIBADD = @X11_LIBS@
 bin_PROGRAMS = xsunpinyin xsunpinyin-preferences
 
 xsunpinyin_SOURCES = \
-	ic.cc \
+	ic.c \
 	ic_gtk.c \
 	main.c \
 	settings.c \
@@ -183,6 +183,10 @@ ICON_FILES = \
 	data/sunpinyin-logo-big.png \
 	data/han.png \
 	data/eng.png \
+	data/full.png \
+	data/half.png \
+	data/chnpunc.png \
+	data/engpunc.png \
 	data/han.svg \
 	data/eng.svg
 

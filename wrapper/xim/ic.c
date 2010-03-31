@@ -33,10 +33,6 @@
  * to such option by the copyright holder. 
  */
 
-#include <map>
-#include <stack>
-#include <cstdlib>
-#include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -50,12 +46,14 @@
 #include "common.h"
 #include "ic.h"
 #include "xmisc.h"
+#include "xim.h"
 
-
-static std::map<int, IC*> icmaps;
-static std::map<Window, IC*> windowmaps;
+static IC* icmaps[MAX_IC_NUM];
 static IC ics[MAX_IC_NUM];
-static std::stack<IC*> free_stack;
+
+static size_t free_stack_sz = 0;
+static IC* free_stack[MAX_IC_NUM];
+
 static IC* current_ic;
 
 // check if this ic is available
@@ -125,122 +123,140 @@ __ic_available(IC* ic)
 static void
 __scan_all_ic()
 {
-    std::map<int, IC*>::iterator it = icmaps.begin();
-    int garbage_ids[MAX_IC_NUM];
-    int garbage_num = 0;
-    
-    for (; it != icmaps.end(); ++it) {
-        IC* ic = it->second;
+    int i = 0;
+    for (i = 0; i < MAX_IC_NUM; i++) {
+        IC* ic = icmaps[i];
+        if (ic == NULL)
+            continue;
+        
         if (__ic_available(ic) == false) {
             LOG("GC detected garbage %d", ic->icid);
-            garbage_ids[garbage_num++] = ic->icid;
+            icmgr_destroy_ic(i);
         }
-    }
-    
-    for (int i = 0; i < garbage_num; i++) {
-        icmgr_destroy_ic(garbage_ids[i]);
     }
 }
 
-__EXPORT_API void icmgr_init_ui(void);
+extern void icmgr_init_ui(void);
+extern void icmgr_refresh_ui(void);
 
-__EXPORT_API void
+void
 icmgr_init(void)
 {
     memset(ics, 0, sizeof(IC) * MAX_IC_NUM);
-    for (int i = 0; i < MAX_IC_NUM; i++) {
+    int i;
+    for (i = 0; i < MAX_IC_NUM; i++) {
         ics[i].icid = i + 1;
-        free_stack.push(&ics[i]);
+        ics[i].is_chn_punc = true;
+
+        free_stack[free_stack_sz] = &ics[i];
+        free_stack_sz++;
     }
     current_ic = NULL;
 
     icmgr_init_ui();
 }
 
-__EXPORT_API void
+void
 icmgr_finalize(void)
 {
-    icmaps.clear();
+    memset(icmaps, 0, sizeof(IC*) * MAX_IC_NUM);
     current_ic = NULL;
 }
 
-__EXPORT_API IC*
+IC*
 icmgr_create_ic(int connect_id)
 {
     static int created_cnt = 0;
     
     created_cnt++;
-    if (created_cnt == GC_THRESHOLD || free_stack.size() < MAX_IC_NUM / 3) {
+    if (created_cnt == GC_THRESHOLD || free_stack_sz < MAX_IC_NUM / 3) {
         __scan_all_ic();
         created_cnt = 0;
     }
     
-    if (free_stack.empty()) {
+    if (free_stack_sz == 0) {
         LOG("Error free stack empty!!");
         return NULL;
     }
-    IC* ic = free_stack.top();
-    free_stack.pop();
+    
+    free_stack_sz--;
+    IC* ic = free_stack[free_stack_sz];
     
     icmaps[ic->icid] = ic;
-    icmgr_set_current(ic->icid);
+    /* icmgr_set_current(ic->icid); */
     
     ic->connect_id = connect_id;
 
-    current_ic = ic;
+    /* current_ic = ic; */
     return ic;
 }
 
-__EXPORT_API void
+void
 icmgr_destroy_ic(int icid)
 {
-    std::map<int, IC*>::iterator it = icmaps.find(icid);
-    if (it == icmaps.end()) {
+    IC* ic = icmaps[icid];
+    if (ic == NULL)
         return;
-    }
-    IC* ic = it->second;
-    
-    Window w = ic->client_window;
 
     memset(ic, 0, sizeof(IC));
     ic->icid = icid;
     
-    icmaps.erase(icid);
-    windowmaps.erase(w);
+    icmaps[icid] = NULL;
     
     // return to free stack
-    free_stack.push(ic);
+    free_stack[free_stack_sz] = ic;
+    free_stack_sz++;
+    
     current_ic = NULL;
 }
 
-__EXPORT_API bool
+bool
 icmgr_set_current(int icid)
 {
-    std::map<int, IC*>::iterator it = icmaps.find(icid);
-    if (it == icmaps.end())
+    IC* ic = icmaps[icid];
+    if (ic == NULL)
         return false;
-    current_ic = it->second;
+    current_ic = ic;
     return true;
 }
 
-__EXPORT_API IC*
+IC*
 icmgr_get_current(void)
 {
     return current_ic;
 }
 
-__EXPORT_API IC*
+IC*
 icmgr_get(int icid)
 {
-    std::map<int, IC*>::iterator it = icmaps.find(icid);
-    if (it == icmaps.end())
-        return NULL;
-    return it->second;
+    return icmaps[icid];
 }
 
-__EXPORT_API void
+void
 icmgr_clear_current(void)
 {
     current_ic = NULL;
 }
 
+void
+icmgr_refresh()
+{
+    if (current_ic == NULL) {
+        icmgr_refresh_ui();
+        return;
+    }
+    
+    /* refresh preedit */
+    if (current_ic->is_enabled) {
+        if (current_ic->is_english && preedit_status())
+            preedit_pause();
+        else
+            preedit_go_on();
+        
+        preedit_set_full(current_ic->is_full);
+        preedit_set_chinese_punc(current_ic->is_chn_punc);
+    } else {
+        preedit_pause();
+    }
+    icmgr_refresh_ui();
+}

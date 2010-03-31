@@ -63,7 +63,7 @@ __filter_forward_triger_key(XIMHandle* handle, IC* ic, XKeyEvent* evt)
         if (evt->type == KeyRelease) return true;
         ic->is_enabled = !ic->is_enabled;
         __toggle_preedit_status(handle, ic->is_enabled);
-        icmgr_refresh_ui();
+        icmgr_refresh();
         return true;
     }
 
@@ -76,11 +76,7 @@ __filter_forward_triger_key(XIMHandle* handle, IC* ic, XKeyEvent* evt)
             last_shift_available = false;
             if (ic->is_enabled) {
                 ic->is_english = !ic->is_english;
-                icmgr_refresh_ui();
-                if (ic->is_english)
-                    preedit_pause();
-                else
-                    preedit_go_on();
+                icmgr_refresh();
             }
         }
         return true;
@@ -129,7 +125,7 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
     if (ic->icid != proto->icid || preedit_status() == false) {
         icmgr_set_current(proto->icid);
         ic = icmgr_get_current();
-        icmgr_refresh_ui();
+        icmgr_refresh();
     }
     
     if (!__filter_forward_triger_key(handle, ic, evt)) {

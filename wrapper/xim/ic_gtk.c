@@ -40,6 +40,8 @@
 
 static GtkWidget* icbar_window;
 static GtkWidget* icbar_status_btn;
+static GtkWidget* icbar_full_btn;
+static GtkWidget* icbar_chn_punc_btn;
 
 static GtkStatusIcon* icbar_tray;
 static GtkWidget* popup_menu;
@@ -50,19 +52,22 @@ static GtkWidget* popup_menu;
 #define HAN_ICON SUNPINYIN_XIM_ICON_DIR"/han.svg"
 #define ENG_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/eng.png"
 #define HAN_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/han.png"
+#define FULL_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/full.png"
+#define HALF_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/half.png"
+#define CHN_PUNC_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/chnpunc.png"
+#define ENG_PUNC_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/engpunc.png"
 
 static void
-set_english_mode(gboolean mode)
+__toggle_mode(gboolean mode, GtkWidget* btn,
+              const char* img_path1, const char* img_path2)
 {
     GtkWidget* img_wid = gtk_tool_button_get_icon_widget(
-        GTK_TOOL_BUTTON(icbar_status_btn));
+        GTK_TOOL_BUTTON(btn));
     
     if (mode) {
-        gtk_image_set_from_file(GTK_IMAGE(img_wid), ENG_ICON_PNG);
-        gtk_status_icon_set_from_file(icbar_tray, ENG_ICON);
+        gtk_image_set_from_file(GTK_IMAGE(img_wid), img_path1);
     } else {
-        gtk_image_set_from_file(GTK_IMAGE(img_wid), HAN_ICON_PNG);
-        gtk_status_icon_set_from_file(icbar_tray, HAN_ICON);
+        gtk_image_set_from_file(GTK_IMAGE(img_wid), img_path2);
     }
     gtk_image_set_pixel_size(GTK_IMAGE(img_wid), 20);
 }
@@ -74,7 +79,34 @@ toggle_english(GtkToggleButton* btn, gpointer userdata)
     if (ic == NULL)
         return;
     ic->is_english = !ic->is_english;
-    set_english_mode(ic->is_english);
+    
+    if (ic->is_english) {
+        gtk_status_icon_set_from_file(icbar_tray, ENG_ICON);
+    } else {
+        gtk_status_icon_set_from_file(icbar_tray, HAN_ICON);
+    }
+    icmgr_refresh();
+}
+
+static void
+toggle_full(GtkToggleButton* btn, gpointer userdata)
+{
+    IC* ic = icmgr_get_current();
+    if (ic == NULL)
+        return;
+    ic->is_full = !ic->is_full;
+    icmgr_refresh();
+}
+
+static void
+toggle_chn_punc(GtkToggleButton* btn, gpointer userdata)
+{
+    IC* ic = icmgr_get_current();
+    if (ic == NULL)
+        return;
+    ic->is_chn_punc = !ic->is_chn_punc;
+
+    icmgr_refresh();
 }
 
 static bool begin_drag = false;
@@ -167,6 +199,21 @@ __init_tray(void)
                      G_CALLBACK(status_icon_popup_menu), NULL);
 }
 
+static GtkWidget*
+__create_btn(bool stock, const char* img_path, GCallback cb)
+{
+    GtkWidget* img_wid;
+    if (stock) {
+        img_wid = gtk_image_new_from_icon_name(img_path, GTK_ICON_SIZE_MENU);
+    } else {
+        img_wid = gtk_image_new_from_file(ENG_ICON_PNG);
+    }
+    gtk_image_set_pixel_size(GTK_IMAGE(img_wid), 20);
+    GtkWidget* res = GTK_WIDGET(gtk_tool_button_new(img_wid, ""));
+    g_signal_connect(res, "clicked", cb, NULL);
+    return res;
+}
+
 static void
 __init_icbar(void)
 {
@@ -189,20 +236,15 @@ __init_icbar(void)
     g_signal_connect(icbar_window, "button-release-event",
                      G_CALLBACK(icbar_on_button_release), NULL);
 
-    GtkWidget* img_wid =
-        gtk_image_new_from_icon_name("gtk-about",
-                                     GTK_ICON_SIZE_MENU);
-    gtk_image_set_pixel_size(GTK_IMAGE(img_wid), 20);
-    GtkWidget* about_btn = GTK_WIDGET(gtk_tool_button_new(img_wid, ""));
+    GtkWidget* about_btn = __create_btn(true, "gtk-about",
+                                        G_CALLBACK(show_ui_about));
+    icbar_status_btn = __create_btn(false, ENG_ICON_PNG,
+                                    G_CALLBACK(toggle_english));
+    icbar_full_btn = __create_btn(false, FULL_ICON_PNG,
+                                  G_CALLBACK(toggle_full));
+    icbar_chn_punc_btn = __create_btn(false, CHN_PUNC_ICON_PNG,
+                                      G_CALLBACK(toggle_chn_punc));
     
-    g_signal_connect(about_btn, "clicked",
-                     G_CALLBACK(show_ui_about), NULL);
-
-    img_wid = gtk_image_new_from_file(ENG_ICON_PNG);
-    gtk_image_set_pixel_size(GTK_IMAGE(img_wid), 20);
-    icbar_status_btn = GTK_WIDGET(gtk_tool_button_new(img_wid, ""));
-    g_signal_connect(icbar_status_btn, "clicked",
-                     G_CALLBACK(toggle_english), NULL);
     GtkWidget* logo = gtk_image_new_from_file(LOGO_FILE);
     gtk_widget_add_events(logo,
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
@@ -211,6 +253,8 @@ __init_icbar(void)
 
     gtk_box_pack_start(GTK_BOX(box), logo, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), icbar_status_btn, false, false, 1);
+    gtk_box_pack_start(GTK_BOX(box), icbar_full_btn, false, false, 1);
+    gtk_box_pack_start(GTK_BOX(box), icbar_chn_punc_btn, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), about_btn, false, false, 1);
     
     gtk_container_add(GTK_CONTAINER(icbar_window), box);
@@ -234,7 +278,12 @@ icmgr_refresh_ui(void)
         gtk_widget_hide(icbar_window);
         return;
     }
-    set_english_mode(ic->is_english);
+    __toggle_mode(ic->is_english, icbar_status_btn,
+                  ENG_ICON_PNG, HAN_ICON_PNG);
+    __toggle_mode(ic->is_full, icbar_full_btn,
+                  FULL_ICON_PNG, HALF_ICON_PNG);
+    __toggle_mode(ic->is_chn_punc, icbar_chn_punc_btn,
+                  CHN_PUNC_ICON_PNG, ENG_PUNC_ICON_PNG);    
     
     position_t pos;
     settings_get(ICBAR_POS, &pos);

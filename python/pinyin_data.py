@@ -539,4 +539,5 @@ def gen_suffix_trie (fname):
     pytrie.construct_from_trie (trie)
     pytrie.output_static_c_arrays (fname)
 
-gen_suffix_trie ("../src/pinyin/quanpin_trie.h")
+if __name__ == "__main__":
+    gen_suffix_trie ("../src/pinyin/quanpin_trie.h")

@@ -216,6 +216,18 @@ class DATrie (object):
 
         f.close()
 
+def search (trie, word):
+    curr_node = trie.root
+
+    for ch in word:
+        curr_node, val = trie.walk (curr_node, ch)
+        if not curr_node: 
+            break
+    else:
+        return val
+
+    return 0
+
 def match_longest (trie, word):
     l = ret_l = ret_v = 0
     curr_node = trie.root

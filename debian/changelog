@@ -1,3 +1,20 @@
+sunpinyin (2.0.1-1) unstable; urgency=low
+
+  * first upload to official Debian archives (Closes: 478811)
+  * new upstream version
+
+ -- Kov Chai <tchaikov@gmail.com>  Mon, 05 Apr 2010 18:40:48 +0800
+
+sunpinyin (2.0-4) unstable; urgency=low
+
+  * debian/copyright
+    - add CC-BY-SA license
+    - specify the version of GPL
+  * use debian 3.0 (quilt) format
+  * correct the xsunpinyin's overrides file
+
+ -- Kov Chai <tchaikov@gmail.com>  Sun, 04 Apr 2010 19:41:02 +0800
+
 sunpinyin (2.0-3) unstable; urgency=low
 
   * update debian/copyright
@@ -22,7 +39,7 @@ sunpinyin (2.0-1) unstable; urgency=low
 
 sunpinyin (2.0~hg20091111-1) unstable; urgency=low
 
-  * Initial release (Closes: 478811)
+  * Initial release
   * release language model as plain text format
 
  -- Kov Chai <tchaikov@gmail.com>  Fri, 13 Nov 2009 00:10:46 +0800

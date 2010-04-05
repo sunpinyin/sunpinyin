@@ -35,10 +35,15 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
     db.executescript (sqlstring)
 
     for (pystr, utf8str) in records:
-        syllables = [valid_syllables[s] for s in pystr.split("'")]
+        try:
+            syllables = [valid_syllables[s] for s in pystr.split("'")]
+        except:
+            print "[%s] has un-recognized syllables, ignoring this record!" % pystr
+            continue
+
         if len (syllables) < 2 or len (syllables) > 6:
             #print "[%s] is too long or too short for sunpinyin userdict" % utf8str
-            continue;
+            continue
 
         if sysdict and trie.search (sysdict, utf8str):
             #print "[%s] is already in sunpinyin's sysdict" % utf8str

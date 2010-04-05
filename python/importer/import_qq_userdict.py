@@ -6,7 +6,7 @@ from importer import import_to_sunpinyin_user_dict
 
 homedir = os.environ.get("HOME")
 
-def load_ziguang_user_dict (fname):
+def load_qq_user_dict (fname):
     result = []
     f = codecs.open (fname, "r", "UTF16")
     for l in f:
@@ -14,7 +14,7 @@ def load_ziguang_user_dict (fname):
             continue
 
         try:
-            utf8str, pystr, _ = l.strip().split("\t")
+            pystr, utf8str, _ = l.strip().split(",")[0].split(" ")
             result.append ((pystr[1:], utf8str))
         except:
             pass
@@ -23,11 +23,11 @@ def load_ziguang_user_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the ZiGuang PinYin exported user dict file!"
+        print "Please specify the QQ PinYin exported user dict file!"
         exit (1)
 
-    ziguang_user_dict = load_ziguang_user_dict(sys.argv[1])
-    import_to_sunpinyin_user_dict (ziguang_user_dict)
+    qq_user_dict = load_qq_user_dict(sys.argv[1])
+    import_to_sunpinyin_user_dict (qq_user_dict)
 
 if __name__ == "__main__":
     main()

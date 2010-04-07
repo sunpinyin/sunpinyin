@@ -13,6 +13,9 @@ def get_userdict_path ():
     # FIXME: not sure how to get the ibus version or wrapper type (xim or ibus)
     if os.path.exists (homedir+"/.cache/ibus/sunpinyin"):
         return homedir+"/.cache/ibus/sunpinyin/userdict"
+        
+    if os.path.exists (homedir+"/.ibus/sunpinyin"):
+        return homedir+"/.ibus/sunpinyin/userdict"
     
     if os.path.exists (homedir+"/.sunpinyin"):
         return homedir+"/.sunpinyin/userdict"

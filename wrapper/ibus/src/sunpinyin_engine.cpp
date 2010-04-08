@@ -523,7 +523,15 @@ string_pairs merge_pairs(const string_pairs& pairs1,
         pairs[it->first] = it->second;
     }
     string_pairs result;
+
+#ifdef _RW_STD_STL
+    // the deferenced type of Pair::iterator is pair<const string, string>
+    for (Pairs::iterator it = pairs.begin(); it != pairs.end(); ++it)
+        result.push_back (std::make_pair(it->first, it->second));
+#else
     copy(pairs.begin(), pairs.end(), back_inserter(result));
+#endif
+
     return result;
 }
 

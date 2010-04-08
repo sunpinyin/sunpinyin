@@ -157,8 +157,8 @@ CSimplifiedChinesePolicy::getDefaultPunctMapping() const
 
     const char *const *p = punc_map;
     while (*p) {
-        const char *k = *p++;
-        const char *v = *p++;
+        std::string k = *p++;
+        std::string v = *p++;
         default_punc_map.push_back (std::make_pair(k, v));
     }
     return default_punc_map;

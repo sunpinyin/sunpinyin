@@ -4,8 +4,6 @@ import os, sys
 import codecs
 from importer import import_to_sunpinyin_user_dict
 
-homedir = os.environ.get("HOME")
-
 def load_google_user_dict (fname):
     result = []
     f = codecs.open (fname, "r", "GB18030")

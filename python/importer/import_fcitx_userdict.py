@@ -17,10 +17,14 @@ def load_fcitx_user_dict (fname):
     return result
 
 def main ():
-    os.system ("/usr/bin/mb2org ~/.fcitx/pyusrphrase.mb > /tmp/fcitx_userdict_gb.txt")
-    fcitx_user_dict = load_fcitx_user_dict("/tmp/fcitx_userdict_gb.txt")
+    if len (sys.argv) != 2:
+        os.system ("/usr/bin/mb2org ~/.fcitx/pyusrphrase.mb > /tmp/fcitx_userdict_gb.txt")
+        fcitx_user_dict = load_fcitx_user_dict("/tmp/fcitx_userdict_gb.txt")
+        os.system ("rm -rf /tmp/fcitx_userdict_gb.txt")
+    else:
+        fcitx_user_dict = load_fcitx_user_dict(sys.argv[1])
+
     import_to_sunpinyin_user_dict (fcitx_user_dict)
-    os.system ("rm -rf /tmp/fcitx_userdict_gb.txt")
 
 if __name__ == "__main__":
     main()

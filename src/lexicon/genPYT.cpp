@@ -95,7 +95,7 @@ ShowUsage(const char* progname)
 {
     fprintf(stderr,
             "Usage:\n"
-            "    %s -i lexicon_file -o result_file -l log_file -s slm_file [-e le|ge]\n",
+            "    %s -i lexicon_file -o result_file -l log_file -s slm_file [-e le|be]\n",
             progname);
     fprintf(stderr,
             "Description:\n"

@@ -80,7 +80,7 @@ genpyt_SOURCES = \
 	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \
 	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h \
 	${SLM_SRC_DIR}/tslmendian/writer.cpp ${SLM_SRC_DIR}/tslmendian/writer.h \
-	${LEXICON_SRC_DIR}/trie_writer.h \
+	${LEXICON_SRC_DIR}/trie_writer.cpp ${LEXICON_SRC_DIR}/trie_writer.h \
 	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h \
 	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h \
 	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \

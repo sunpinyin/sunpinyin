@@ -38,6 +38,37 @@ public:
     }
 };
 
+template<>
+class OtherEndian<TSyllable>
+{
+    struct TSyllable_BE {
+        unsigned other    : 12;
+        unsigned initial  : 8;
+        unsigned final    : 8;
+        unsigned tone     : 4;
+    };
+    
+    struct TSyllable_LE {
+        unsigned tone     : 4;
+        unsigned final    : 8;
+        unsigned initial  : 8;
+        unsigned other    : 12;
+    };
+
+public:
+    DEFINE_OTHER_TYPE(TSyllable);
+
+    static TargetType create(const TSyllable& from)
+    {
+        TargetType to;
+        to.other = from.other;
+        to.initial = from.initial;
+        to.final = from.final;
+        to.tone = from.tone;
+        return to;
+    }
+};
+
 template <>
 class OtherEndian<CPinyinTrie::TWordIdInfo>
 {
@@ -71,5 +102,8 @@ public:
         return to;
     }
 };
+
+template <>
+bool revert_write<CPinyinTrie::TTransUnit> (const CPinyinTrie::TTransUnit& t, FILE *fp);
 
 #endif //__SUNPINYIN_PYTRIE_WRITER_H__

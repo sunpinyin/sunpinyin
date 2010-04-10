@@ -43,7 +43,7 @@ LEXICON_SRC_DIR = $(top_srcdir)/src/lexicon
 PINYIN_SRC_DIR = $(top_srcdir)/src/pinyin
 IBUS_SUNPINYIN_DATADIR = $(pkglibdir)/data
 IBUS_SUNPINYIN_ICONDIR = $(pkgdatadir)/icons
-SUNPINYIN_USERDATA_DIR_PREFIX = .ibus/sunpinyin
+SUNPINYIN_USERDATA_DIR_PREFIX = .sunpinyin
 
 noinst_LTLIBRARIES = libsunpinyin.la
 

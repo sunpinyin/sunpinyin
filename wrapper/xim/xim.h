@@ -49,7 +49,7 @@
 
 __BEGIN_DECLS
 
-#define STATE_MASK 0x05
+#define STATE_MASK 0x0D
 
 typedef struct _XIMS XIMHandle;
 

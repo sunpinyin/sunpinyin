@@ -49,6 +49,8 @@
 
 __BEGIN_DECLS
 
+#define STATE_MASK 0x05
+
 typedef struct _XIMS XIMHandle;
 
 XIMHandle* create_xim_server(const char* server_name, const char* locale);

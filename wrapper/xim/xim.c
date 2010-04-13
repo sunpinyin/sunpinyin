@@ -288,7 +288,7 @@ _open_imdkit(const char* _server_name, const char* _locale)
     XIMTriggerKey trigger = {
         .keysym = hk.keysym,
         .modifier = hk.modifiers,
-        .modifier_mask = 0xff,
+        .modifier_mask = STATE_MASK
     };
 
     XIMTriggerKeys keys;
@@ -346,10 +346,8 @@ xim_start_preedit(XIMHandle* handle)
     IC* ic = icmgr_get_current();
     if (ic == NULL)
         return;
-    
+
     IMPreeditStateStruct ps;
-    ps.major_code = 0;
-    ps.minor_code = 0;
     ps.icid = ic->icid;
     ps.connect_id = ic->connect_id;
     IMPreeditStart(handle, (XPointer) &ps);
@@ -361,10 +359,8 @@ xim_cancel_preedit(XIMHandle* handle)
     IC* ic = icmgr_get_current();
     if (ic == NULL)
         return;
-    
+
     IMPreeditStateStruct ps;
-    ps.major_code = 0;
-    ps.minor_code = 0;
     ps.icid = ic->icid;
     ps.connect_id = ic->connect_id;
     IMPreeditEnd(handle, (XPointer) &ps);

@@ -59,7 +59,10 @@ __filter_forward_triger_key(XIMHandle* handle, IC* ic, XKeyEvent* evt)
 
     settings_get(TRIGGER_KEY, &hk);
     XLookupString(evt, NULL, 0, &sym, NULL);
-    if (evt->state == hk.modifiers && sym == hk.keysym) {
+
+    unsigned int masked_state = (evt->state & STATE_MASK);
+
+    if (masked_state == hk.modifiers && sym == hk.keysym) {
         if (evt->type == KeyRelease) return true;
         ic->is_enabled = !ic->is_enabled;
         __toggle_preedit_status(handle, ic->is_enabled);
@@ -68,7 +71,7 @@ __filter_forward_triger_key(XIMHandle* handle, IC* ic, XKeyEvent* evt)
     }
 
     settings_get(ENG_KEY, &hk);
-    if ((evt->state & hk.modifiers) == hk.modifiers && sym == hk.keysym) {
+    if ((masked_state & hk.modifiers) == hk.modifiers && sym == hk.keysym) {
         if (evt->type == KeyPress) {
             last_shift_available = true;
             return true;
@@ -109,7 +112,7 @@ extern void __move_preedit(IC* ic);
 int
 _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
 {
-    DEBUG("%d", proto->icid);
+    LOG("%d", proto->icid);
     XKeyEvent* evt = (XKeyEvent*) &(proto->event);
     IC* ic = icmgr_get_current();
     if (ic == NULL) {
@@ -130,7 +133,8 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
     
     if (!__filter_forward_triger_key(handle, ic, evt)) {
 
-        if (evt->state != ShiftMask && evt->state != 0)
+        int masked_state = evt->state & STATE_MASK;
+        if (masked_state != ShiftMask && masked_state != 0)
             __do_forward_event(handle, proto);
         else if (!ic->is_enabled || ic->is_english)
             __do_forward_event(handle, proto);

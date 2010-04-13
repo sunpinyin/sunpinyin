@@ -137,9 +137,8 @@ init(void)
     do {                                                                \
         GdkColor color;                                                 \
         gtk_color_button_get_color((widget_name), &color);              \
-        snprintf(colorstr, sizeof(varchar), "#%.2X%.2X%.2X",               \
-                 (guint8) color.red, (guint8) color.green,              \
-                 (guint8) color.blue);                                  \
+        snprintf(colorstr, sizeof(varchar), "#%.2X%.2X%.2X",            \
+                 color.red >> 8, color.green >> 8, color.blue >> 8);    \
     } while(0)
 
 void

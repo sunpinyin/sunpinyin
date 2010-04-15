@@ -278,6 +278,8 @@ icmgr_refresh_ui(void)
         gtk_widget_hide(icbar_window);
         return;
     }
+
+    gtk_status_icon_set_from_file(icbar_tray, HAN_ICON);
     __toggle_mode(ic->is_english, icbar_status_btn,
                   ENG_ICON_PNG, HAN_ICON_PNG);
     __toggle_mode(ic->is_full, icbar_full_btn,

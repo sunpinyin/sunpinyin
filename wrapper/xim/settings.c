@@ -295,9 +295,7 @@ settings_load()
         char config_dir[256];
         snprintf(config_dir, 256, "%s/.sunpinyin", getenv("HOME"));
         mkdir(config_dir, 0600);
-        char cmd[256];
-        snprintf(cmd, 256, "cp %s %s", DEFAULT_SETTING_FILE, path);
-        system(cmd);
+        settings_save();
         if ((fp = fopen(path, "r")) == NULL)
             return;
     }

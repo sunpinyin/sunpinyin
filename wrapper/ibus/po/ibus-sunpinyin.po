@@ -1,0 +1,192 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-09 21:02+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/main.cpp:107
+msgid "Simplified Chinese Input Method developed by SUN"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:62
+msgid "Switch to Chinese input mode"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:65
+msgid "Switch to English input mode"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:77
+msgid "Switch to full-width letter input mode"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:80
+msgid "Switch to half-width letter input mode"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:91
+msgid "Switch to Chinese punctuation"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:94
+msgid "Switch to English punctuation"
+msgstr ""
+
+#: ../src/sunpinyin_property.cpp:167
+msgid "Preference"
+msgstr ""
+
+#: ../setup/setup.glade:7
+msgid "SunPinyin Setup"
+msgstr ""
+
+#: ../setup/setup.glade:44
+msgid "Quan Pin"
+msgstr ""
+
+#: ../setup/setup.glade:57
+msgid "Shuang Pin"
+msgstr ""
+
+#: ../setup/setup.glade:78
+msgid ""
+"MS2003\n"
+"ZiRanMa\n"
+"ZiGuang\n"
+"ABC\n"
+"PinYinJiaJia"
+msgstr ""
+
+#: ../setup/setup.glade:102
+msgid "<b>Pinyin Mode</b>"
+msgstr ""
+
+#: ../setup/setup.glade:143
+msgid "Chinese"
+msgstr ""
+
+#: ../setup/setup.glade:156
+msgid "English"
+msgstr ""
+
+#: ../setup/setup.glade:174
+msgid "Chinese punctuation"
+msgstr ""
+
+#: ../setup/setup.glade:189
+msgid "English punctuation"
+msgstr ""
+
+#: ../setup/setup.glade:206
+msgid "Full-width Letter"
+msgstr ""
+
+#: ../setup/setup.glade:221
+msgid "Half-width Letter"
+msgstr ""
+
+#: ../setup/setup.glade:243
+msgid "<b>Initial Status</b>"
+msgstr ""
+
+#: ../setup/setup.glade:283
+msgid "Fuzzy Pinyin"
+msgstr ""
+
+#: ../setup/setup.glade:297
+msgid "Auto Correct"
+msgstr ""
+
+#: ../setup/setup.glade:312 ../setup/setup.glade:958
+msgid "Fuzzy Pinyin Setup"
+msgstr ""
+
+#: ../setup/setup.glade:327 ../setup/setup.glade:1256
+msgid "Auto Correct Setup"
+msgstr ""
+
+#: ../setup/setup.glade:348
+msgid "<b>QuanPin Setup</b>"
+msgstr ""
+
+#: ../setup/setup.glade:365
+msgid "Pinyin Mode"
+msgstr ""
+
+#: ../setup/setup.glade:424
+msgid "<b>Ch/En Switch key</b>"
+msgstr ""
+
+#: ../setup/setup.glade:488 ../setup/setup.glade:1202
+#: ../setup/setup.glade:1382 ../setup/setup.glade:2254
+msgid "None"
+msgstr ""
+
+#: ../setup/setup.glade:508
+msgid "<b>Full/Half-width Punct Switch</b>"
+msgstr ""
+
+#: ../setup/setup.glade:588
+msgid "<b>Page Flip</b>"
+msgstr ""
+
+#: ../setup/setup.glade:608
+msgid "Keyboard"
+msgstr ""
+
+#: ../setup/setup.glade:681
+msgid "<b>Character Set</b>"
+msgstr ""
+
+#: ../setup/setup.glade:723
+msgid "Candidate Num"
+msgstr ""
+
+#: ../setup/setup.glade:734
+msgid "Memory Strength"
+msgstr ""
+
+#: ../setup/setup.glade:809
+msgid "Punct mapping"
+msgstr ""
+
+#: ../setup/setup.glade:822
+msgid "Mapping Setup"
+msgstr ""
+
+#: ../setup/setup.glade:841
+msgid "<b>Symbol Mapping</b>"
+msgstr ""
+
+#: ../setup/setup.glade:861
+msgid "General"
+msgstr ""
+
+#: ../setup/setup.glade:872
+msgid "copyright (c) 2009"
+msgstr ""
+
+#: ../setup/setup.glade:881
+msgid "About"
+msgstr ""
+
+#: ../setup/setup.glade:1187 ../setup/setup.glade:1368
+#: ../setup/setup.glade:2240
+msgid "All"
+msgstr ""
+
+#: ../setup/setup.glade:1436
+msgid "Punct Mapping"
+msgstr ""

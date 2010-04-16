@@ -1,0 +1,109 @@
+sources = ['ic.c',
+           'ic_gtk.c',
+           'main.c',
+           'settings.c',
+           'sunpinyin_preedit.cc',
+           'xim.c',
+           'xim_trigger.c',
+           'xmisc.c']
+
+preferences_sources = ['preferences.c',
+                       'settings.c',
+                       'xmisc.c']
+
+imdkit_sources = ['IMdkit/FrameMgr.c',
+                  'IMdkit/i18nAttr.c',
+                  'IMdkit/i18nClbk.c',
+                  'IMdkit/i18nIc.c',
+                  'IMdkit/i18nIMProto.c',
+                  'IMdkit/i18nMethod.c',
+                  'IMdkit/i18nPtHdr.c',
+                  'IMdkit/i18nUtil.c',
+                  'IMdkit/i18nX.c',
+                  'IMdkit/IMConn.c',
+                  'IMdkit/IMMethod.c',
+                  'IMdkit/IMValues.c']
+
+
+prefix='/usr/local'
+cflags='-g'
+AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
+          metavar='DIR', help='installation prefix')
+
+if GetOption('prefix') is not None:
+    prefix = GetOption('prefix')
+
+bin_dir = prefix + '/bin'
+data_dir = '%s/share/xsunpinyin/' % prefix
+icon_dir = data_dir + 'icons/'
+
+cflags += ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
+cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
+
+env = Environment(CFLAGS=cflags, CXXFLAGS=cflags,
+                  CPPPATH=['.', 'IMdkit'], PREFIX=prefix)
+#
+#==============================configure================================
+#
+def CheckPKGConfig(context, version='0.12.0'):
+    context.Message( 'Checking for pkg-config... ' )
+    ret = context.TryAction('pkg-config --atleast-pkgconfig-version=%s' % version)[0]
+    context.Result(ret)
+    return ret
+
+def CheckPKG(context, name):
+    context.Message( 'Checking for %s... ' % name )
+    ret = context.TryAction('pkg-config --exists \'%s\'' % name)[0]
+    context.Result(ret)
+    return ret
+
+conf = Configure(env, custom_tests={'CheckPKGConfig' : CheckPKGConfig,
+                                    'CheckPKG' : CheckPKG })
+def DoConfigure():
+    if GetOption('clean'):
+        return
+
+    if not conf.CheckPKGConfig():
+        Exit(1)
+
+    if not conf.CheckPKG('gtk+-2.0'):
+        Exit(1)
+
+    if not conf.CheckPKG('x11'):
+        Exit(1)
+
+    if not conf.CheckPKG('sunpinyin-2.0'):
+        Exit(1)
+
+    env = conf.Finish()
+    env.ParseConfig('pkg-config gtk+-2.0 x11 sunpinyin-2.0 --libs --cflags')
+    
+DoConfigure()
+
+env.Append(LIBS=env.Library('IMdkit', source=imdkit_sources))
+env.Program('xsunpinyin', source=sources)
+env.Program('xsunpinyin-preferences', source=preferences_sources)
+
+
+def DoInstall():
+    bin_target = env.Install(bin_dir,
+                             ['xsunpinyin', 'xsunpinyin-preferences'])
+    icon_target = env.Install(icon_dir,
+                              ['data/chnpunc.png',
+                               'data/han.png',
+                               'data/eng.png',
+                               'data/han.svg',
+                               'data/eng.svg',
+                               'data/engpunc.png',
+                               'data/full.png',
+                               'data/half.png',
+                               'data/sunpinyin-logo-big.png',
+                               'data/sunpinyin-logo.png'])
+    data_target = env.Install(data_dir, ['data/settings_ui.xml'])
+    env.Alias('install-bin', bin_target)
+    env.Alias('install-data', [icon_target, data_target])
+
+DoInstall()
+env.Alias('install', ['install-bin', 'install-data'])
+
+

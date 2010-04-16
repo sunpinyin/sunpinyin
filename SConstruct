@@ -31,11 +31,7 @@ slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
             'src/lexicon/trie_writer.cpp',
             'src/lexicon/genPYT.cpp',
             'src/lexicon/pytrie_gen.cpp',
-            'src/lexicon/pytrie.cpp',
-            'src/pinyin/pinyin_data.cpp',
-            'src/pinyin/shuangpin_data.cpp',
-            'src/pinyin/shuangpin_seg.cpp',
-            'src/pinyin/pinyin_seg.cpp']
+            'src/lexicon/pytrie.cpp']
 
 imesource=['src/portability.cpp',
            'src/slm/slm.cpp',
@@ -217,8 +213,30 @@ def DoConfigure():
     AddConfigItem('PACKAGE_TARNAME', '"sunpinyin"')
     AddConfigItem('PACKAGE_VERSION', '"2.0"')
     AddConfigItem('VRESION', '"2.0"')
+
+    # generate config.h
     f = file('config.h', 'w')
     f.write(config_h_content)
+    f.close()
+
+    # generate sunpinyin.pc
+    f = file('sunpinyin-2.0.pc', 'w')
+    content = (
+        'prefix='+prefix,
+        'exec_prefix=${prefix}',
+        'libdir=${exec_prefix}/lib',
+        'includedir=${exec_prefix}/include',
+        '',
+        'Name: libsunpinyin',
+        'Description: IME library based on Statistical Language Model',
+        'Version: 2.0.1',
+        'Requires: sqlite3',
+        'Libs: -L${libdir} -lsunpinyin',
+        'Cflags: ' + reduce(lambda a, b: a + ' ' + b,
+                            map(lambda x: '-I${includedir}' + x[3:],
+                                allinc()))
+        )
+    f.write(reduce(lambda a, b: a + '\n' + b, content))
     f.close()
     env = conf.Finish()
     env.ParseConfig('pkg-config sqlite3 --libs --cflags')
@@ -226,6 +244,9 @@ def DoConfigure():
 
 DoConfigure()
 
+#
+#==============================compile==============================
+#
 env.Object(slmsource)
 
 SConscript(['build/SConscript'], exports='env')
@@ -241,6 +262,8 @@ if GetOption('clean'):
 
 def DoInstall():
     lib_target = env.Install(libdir, ['libsunpinyin.so'])
+    lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',
+                                       ['sunpinyin-2.0.pc'])
     libdata_target = env.Install(libdatadir,
                                  ['data/lm_sc.t3g',
                                   'data/lm_sc.t3g.le',
@@ -252,7 +275,7 @@ def DoInstall():
     for header in headers:
         header_targets.append(env.InstallAs(headersdir + header[3:], header))
     env.Alias('install-headers', header_targets)
-    env.Alias('install-lib', lib_target)
+    env.Alias('install-lib', [lib_target, lib_pkgconfig_target])
     env.Alias('install-libdata', libdata_target)
 
 DoInstall()

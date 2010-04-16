@@ -1,0 +1,54 @@
+import os
+
+Import('env')
+
+def program(name, objlist):
+    src = ['../src/' + obj for obj in objlist]
+    return env.Program(name, source=src,
+                       CPPPATH=['..'] + env['CPPPATH'])
+
+program('genpyt', ['portability.o', 'slm/slm.o', 'slm/tslmendian/writer.o',
+                   'lexicon/trie_writer.o', 'lexicon/genPYT.o',
+                   'lexicon/pytrie.o', 'lexicon/pytrie_gen.o',
+                   'pinyin/pinyin_data.o'])
+        
+program('slmthread', ['portability.o', 'slm/sim_slm.o',
+                      'slm/thread/ValueCompress.o', 'slm/thread/slmthread.o'])
+
+program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
+
+program('tslminfo', ['portability.o', 'slm/slm.o', 'slm/tslminfo/tslminfo.o'])
+
+program('tslmpack', ['portability.o', 'slm/slm.o',
+                     'slm/thread/ValueCompress.o', 'slm/tslmpack/slmpack.o',
+                     'slm/tslmpack/arpa_conv.o', 'slm/tslmpack/arpa_slm.o'])
+
+program('tslmendian', ['slm/tslmendian/slm_file.o',
+                       'slm/tslmendian/slm_endian.o',
+                       'slm/tslmendian/writer.o'])
+
+program('slminfo', ['portability.o', 'slm/slminfo/slminfo.o'])
+
+program('slmprune', ['portability.o', 'slm/sim_slm.o',
+                     'slm/slmprune/slmprune.o'])
+
+program('getWordFreq', ['portability.o', 'slm/slm.o',
+                        'slm/getWordFreq/getWordFreq.o'])
+
+program('slmbuild', ['portability.o', 'slm/sim_slmbuilder.o',
+                     'slm/slmbuild/slmbuild.o'])
+
+program('mmseg', ['portability.o', 'slm/sim_dict.o', 'slm/sim_sen.o',
+                  'slm/mmseg/mmseg.o'])
+
+program('slmseg', ['portability.o', 'slm/sim_dict.o', 'slm/sim_sen.o',
+                   'slm/slm.o', 'slm/slmseg/slmseg.o'])
+
+program('ids2ngram', ['portability.o', 'slm/ids2ngram/ids2ngram.o'])
+
+program('idngram_merge', ['portability.o', 'slm/ids2ngram/idngram_merge.o'])
+
+Command("../data/tslmpack", "tslmpack", Copy("$TARGET", "$SOURCE"))
+Command("../data/tslmendian", "tslmendian", Copy("$TARGET", "$SOURCE"))
+Command("../data/genpyt", "genpyt", Copy("$TARGET", "$SOURCE"))
+

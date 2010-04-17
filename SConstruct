@@ -164,6 +164,8 @@ def LinkOSHeader():
         header = 'linux.h'
     elif osstring == 'SunOS':
         header = 'solaris.h'
+    elif osstring == 'Darwin':
+        header = 'mac.h'
 
     os.system('ln -sf ./config/%s ./src/host_os.h' % (header,));
 

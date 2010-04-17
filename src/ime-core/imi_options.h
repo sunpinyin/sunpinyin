@@ -117,11 +117,6 @@ public:
     void setFuzzyForwarding (bool v=true)
         {m_getFuzzySyllablesOp.setEnable (v);}
 
-    enum {
-        MAX_FUZZY_PINYINS = 32,
-        MAX_AUTOCORRECTION_PINYINS = 32
-    };
-
     void setFuzzyPinyinPairs (const string_pairs& pairs)
         {m_getFuzzySyllablesOp.initFuzzyMap (pairs);}
 
@@ -152,16 +147,26 @@ public:
     IPySegmentor* createPySegmentor () 
     {
         CShuangpinSegmentor *pseg = new CShuangpinSegmentor (m_shuangpinType);
+        pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
         return pseg;
     }
 
     void setShuangpinType (EShuangpinType t) {m_shuangpinType = t;}
+
+    void setFuzzyForwarding (bool v=true)
+        {m_getFuzzySyllablesOp.setEnable (v);}
+
+    void setFuzzyPinyinPairs (const string_pairs& pairs)
+        {m_getFuzzySyllablesOp.initFuzzyMap (pairs);}
+
     virtual bool onConfigChanged(const COptionEvent& event);
     
     template<class> friend class SingletonHolder;
 protected:
     ~CShuangpinSchemePolicy () {}
-    EShuangpinType m_shuangpinType;
+
+    EShuangpinType       m_shuangpinType;
+    CGetFuzzySyllablesOp m_getFuzzySyllablesOp;
 };
 
 typedef SingletonHolder<CShuangpinSchemePolicy> AShuangpinSchemePolicy;

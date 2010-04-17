@@ -228,6 +228,13 @@ CShuangpinSchemePolicy::onConfigChanged(const COptionEvent& event)
     if (event.name == SHUANGPIN_TYPE) {
         setShuangpinType( (EShuangpinType) event.get_int());
         return true;
+    } else if (event.name == QUANPIN_FUZZY_ENABLED) {
+        setFuzzyForwarding(event.get_bool());
+        return true;
+    } else if (event.name == QUANPIN_FUZZY_PINYINS) {
+        setFuzzyPinyinPairs(event.get_string_pair_list());
+        return true;
     }
+
     return false;
 }

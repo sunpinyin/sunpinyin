@@ -35,6 +35,7 @@
  * to such option by the copyright holder. 
  */
 
+#include <cassert>
 #include <climits>
 #include "shuangpin_seg.h"
 
@@ -52,7 +53,7 @@ unsigned CShuangpinSegmentor::push (unsigned ch)
 {
     m_inputBuf.push_back (ch);
 
-    return m_updatedFrom = _segmentor (ch);
+    return m_updatedFrom = _push (ch);
 }
 
 unsigned CShuangpinSegmentor::pop ()
@@ -87,7 +88,7 @@ unsigned CShuangpinSegmentor::pop ()
     m_updatedFrom = UINT_MAX;
     std::string::const_iterator it = new_pystr.begin();
     for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _segmentor ((*it) & 0x7f);
+        unsigned tmp = _push ((*it) & 0x7f);
         if (tmp < m_updatedFrom) m_updatedFrom = tmp;
     }
 
@@ -128,7 +129,7 @@ unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
     m_updatedFrom = UINT_MAX;
     std::string::const_iterator it = new_pystr.begin();
     for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _segmentor ((*it) & 0x7f);
+        unsigned tmp = _push ((*it) & 0x7f);
         if (tmp < m_updatedFrom) m_updatedFrom = tmp;
     }
 
@@ -162,7 +163,7 @@ unsigned CShuangpinSegmentor::deleteAt (unsigned idx, bool backward)
     m_updatedFrom = UINT_MAX;
     std::string::const_iterator it = new_pystr.begin();
     for (; it!= new_pystr.end(); ++it) {
-        unsigned tmp = _segmentor ((*it) & 0x7f);
+        unsigned tmp = _push ((*it) & 0x7f);
         if (tmp < m_updatedFrom) m_updatedFrom = tmp;
     }
 
@@ -194,7 +195,7 @@ unsigned CShuangpinSegmentor::_clear (unsigned from)
     
     for (std::string::const_iterator it = new_pystr.begin();
          it!= new_pystr.end(); ++it) {
-        unsigned tmp = _segmentor ((*it) & 0x7f);
+        unsigned tmp = _push ((*it) & 0x7f);
         if (tmp < m_updatedFrom) m_updatedFrom = tmp;
     }
 
@@ -269,21 +270,23 @@ int CShuangpinSegmentor::_encode(const char* buf, char ch, bool isComplete)
     }
 }
 
-unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
+unsigned CShuangpinSegmentor::_push (unsigned ch)
 {
     int startFrom = 0;
+    bool isInputPy;
+    EShuangpinType shpType;
 
     m_pystr.push_back (ch);
     const int len = m_pystr.size();
     if (m_hasInvalid) {
         startFrom = len - 1;
         m_segs.push_back (TSegment (ch, startFrom, 1, IPySegmentor::INVALID));
-        return startFrom;
+        goto RETURN;
     }
 
-    EShuangpinType shpType = s_shpData.getShuangpinType();
-    bool isInputPy = ( islower(ch) ||
-                       (ch == ';' && (shpType == MS2003 || shpType == ZIGUANG)) );
+    shpType = s_shpData.getShuangpinType();
+    isInputPy = ( islower(ch) ||
+                   (ch == ';' && (shpType == MS2003 || shpType == ZIGUANG)) );
     
     if (!isInputPy) { 
         startFrom = len - 1;
@@ -311,5 +314,27 @@ unsigned CShuangpinSegmentor::_segmentor (unsigned ch)
             m_segs.push_back (TSegment (ch, startFrom, 1, IPySegmentor::INVALID));
         }
     }
+
+RETURN:;
+
+    if (m_pGetFuzzySyllablesOp && m_pGetFuzzySyllablesOp->isEnabled())
+        if ( m_segs.back().m_type == SYLLABLE)
+            _addFuzzySyllables (m_segs.back ());
+
     return startFrom;
 }
+
+void CShuangpinSegmentor::_addFuzzySyllables (TSegment& seg)
+{
+    assert (seg.m_type == SYLLABLE);
+
+    seg.m_syllables.resize (1);
+
+    CSyllables fuzzy_set = (*m_pGetFuzzySyllablesOp) (seg.m_syllables.front());
+    CSyllables::const_iterator it  = fuzzy_set.begin ();
+    CSyllables::const_iterator ite = fuzzy_set.end ();
+    
+    for (; it != ite; ++it)
+        seg.m_syllables.push_back (*it);
+}
+

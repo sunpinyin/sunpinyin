@@ -62,12 +62,15 @@ public:
     virtual unsigned updatedFrom () {return m_updatedFrom;}
     virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
 
-
+    void setGetFuzzySyllablesOp (CGetFuzzySyllablesOp *op) {m_pGetFuzzySyllablesOp = op;}
+    
 private:
-    unsigned _segmentor  (unsigned ch);
+    unsigned _push (unsigned ch);
     unsigned _clear (unsigned from);
     int _getNumberOfNonAlpha() const;
     int _encode(const char* buf, char ch, bool isComplete);
+
+    inline void _addFuzzySyllables (TSegment &seg);
     
     static CShuangpinData   s_shpData;
     std::string             m_pystr;
@@ -77,6 +80,8 @@ private:
     int                     m_nAlpha;     /* number of non-py chars in m_pystr*/
     bool                    m_hasInvalid; /* true if there is invalid py in m_pystr */
     unsigned                m_nLastValidPos;
+
+    CGetFuzzySyllablesOp   *m_pGetFuzzySyllablesOp;
 };
 
 #endif /* SUNPY_SHUANGPIN_SEG_H */

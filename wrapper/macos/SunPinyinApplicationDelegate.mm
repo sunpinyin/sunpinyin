@@ -296,9 +296,11 @@ void updateFactorySettings(NSUserDefaults* pref)
 void updateQuanpinSettings(NSUserDefaults* pref)
 {    
     CQuanpinSchemePolicy& quanpin_policy = AQuanpinSchemePolicy::instance();
+    CShuangpinSchemePolicy& shuangpin_policy = AShuangpinSchemePolicy::instance();
     
     bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
     quanpin_policy.setFuzzyForwarding(quanpin_fuzzy_enabled);
+    shuangpin_policy.setFuzzyForwarding(quanpin_fuzzy_enabled);
     
     string_pairs fuzzy_pairs;
     
@@ -318,6 +320,7 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     if ([pref boolForKey: @"Quanpin.Fuzzy.KeGe"])    fuzzy_pairs.push_back(make_pair("k",   "g"));
     
     quanpin_policy.setFuzzyPinyinPairs(fuzzy_pairs);
+    shuangpin_policy.setFuzzyPinyinPairs(fuzzy_pairs);
         
     bool quanpin_autocorrecting_enabled = [pref boolForKey: @"Quanpin.AutoCorrecting.Enabled"];
     quanpin_policy.setAutoCorrecting (quanpin_autocorrecting_enabled);

@@ -125,8 +125,8 @@
 /* Class = "NSMenuItem"; title = "With Shift (⇧)"; ObjectID = "486"; */
 "486.title" = "使用 Shift (⇧)";
 
-/* Class = "NSTabViewItem"; label = "Quan Pin"; ObjectID = "494"; */
-"494.label" = "全拼";
+/* Class = "NSTabViewItem"; label = "Pinyin"; ObjectID = "494"; */
+"494.label" = "拼音设置";
 
 /* Class = "NSButtonCell"; title = "z - zh"; ObjectID = "502"; */
 "502.title" = "z - zh";
@@ -173,8 +173,8 @@
 /* Class = "NSButtonCell"; title = "Fuzzy Pinyin"; ObjectID = "542"; */
 "542.title" = "模糊音";
 
-/* Class = "NSButtonCell"; title = "Auto Correct"; ObjectID = "544"; */
-"544.title" = "自动纠错";
+/* Class = "NSButtonCell"; title = "Auto Correct (only applicable for QuanPin)"; ObjectID = "544"; */
+"544.title" = "自动纠错（仅适用于全拼）";
 
 /* Class = "NSButtonCell"; title = "ign -> ing"; ObjectID = "546"; */
 "546.title" = "gn -> ng";
@@ -251,5 +251,5 @@
 /* Class = "NSButtonCell"; title = "Check for Updates..."; ObjectID = "736"; */
 "736.title" = "检查更新 ...";
 
-/* Class = "NSTextFieldCell"; title = "Credits:\n\n    Sun Microsystems, Inc. All Rights Reserved.\n    Lei Zhang <phill.zhang@gmail.com>\n    Yong Sun <mail@yongsun.me>\n    Kefu Chai <tchaikov@gmail.com>\n    Wei Xue <breadson.xue@gmail.com>\n    Leo Zheng <zym361@gmail.com>\n    Mike <mikeandmore@gmail.com>\n    chumsdock <vorbei@gmail.com>\n    Anthony Lee <don.anthony.lee@gmail.com>\n"; ObjectID = "743"; */
-"743.title" = "感谢：\n\n    Sun Microsystems, Inc. All Rights Reserved.\n    Lei Zhang <phill.zhang@gmail.com>\n    Yong Sun <mail@yongsun.me>\n    Kefu Chai <tchaikov@gmail.com>\n    Wei Xue <breadson.xue@gmail.com>\n    Leo Zheng <zym361@gmail.com>\n    Mike <mikeandmore@gmail.com>\n    chumsdock <vorbei@gmail.com>\n    Anthony Lee <don.anthony.lee@gmail.com>\n";
+/* Class = "NSTextFieldCell"; title = "Version 2.0.2\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>"; ObjectID = "746"; */
+"746.title" = "版本 2.0.2\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>";

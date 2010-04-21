@@ -328,13 +328,16 @@ void CShuangpinSegmentor::_addFuzzySyllables (TSegment& seg)
 {
     assert (seg.m_type == SYLLABLE);
 
-    seg.m_syllables.resize (1);
-
-    CSyllables fuzzy_set = (*m_pGetFuzzySyllablesOp) (seg.m_syllables.front());
-    CSyllables::const_iterator it  = fuzzy_set.begin ();
-    CSyllables::const_iterator ite = fuzzy_set.end ();
-    
+    std::vector<unsigned>::iterator it  = seg.m_syllables.begin();
+    std::vector<unsigned>::iterator ite = seg.m_syllables.end();
     for (; it != ite; ++it)
-        seg.m_syllables.push_back (*it);
+    {
+        CSyllables fuzzy_set = (*m_pGetFuzzySyllablesOp) (*it);
+
+        CSyllables::const_iterator _it  = fuzzy_set.begin ();
+        CSyllables::const_iterator _ite = fuzzy_set.end ();
+        for (; _it != _ite; ++_it)
+            seg.m_syllables.push_back (*_it);
+    }
 }
 

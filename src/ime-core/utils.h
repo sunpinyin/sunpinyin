@@ -38,6 +38,8 @@
 #ifndef SUNPY_UTILS_H
 #define SUNPY_UTILS_H
 
+#include <string>
+#include <utility>
 #include <vector>
 
 typedef std::pair<std::string, std::string> string_pair;

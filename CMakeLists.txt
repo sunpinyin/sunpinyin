@@ -67,17 +67,20 @@ set(LMTARGET        "lm_sc")
 set(SLM_SRC_DIR     "${SOURCE_DIR}/slm")
 set(LEXICON_SRC_DIR "${SOURCE_DIR}/lexicon")
 set(PINYIN_SRC_DIR  "${SOURCE_DIR}/pinyin")
+set(TSLMENDIAN_DIR  "${SLM_SRC_DIR}/tslmendian")
 
 add_definitions(-DHAVE_CONFIG_H)
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${PINYIN_SRC_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR} ${PINYIN_SRC_DIR} ${TSLMENDIAN_DIR})
 
 set(GENPYT_SOURCES 
     ${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h host_os.h
-	${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h
-	${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h
-	${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h
-	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h
-	${PINYIN_SRC_DIR}/syllable.h)
+    ${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h
+    ${TSLMENDIAN_DIR}/writer.cpp ${TSLMENDIAN_DIR}/writer.h
+    ${LEXICON_SRC_DIR}/trie_writer.cpp ${LEXICON_SRC_DIR}/trie_writer.h
+    ${LEXICON_SRC_DIR}/genPYT.cpp ${LEXICON_SRC_DIR}/pytrie.cpp ${LEXICON_SRC_DIR}/pytrie.h
+    ${LEXICON_SRC_DIR}/pytrie_gen.cpp ${LEXICON_SRC_DIR}/pytrie_gen.h
+    ${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h
+    ${PINYIN_SRC_DIR}/syllable.h)
 
 find_library(iconv iconv)
 add_executable(genpyt ${GENPYT_SOURCES})
@@ -87,6 +90,19 @@ set(PINYIN_TEXTFILE "${CORPUS_DIR}/dict.utf8")
 set(PYTRIE_FILE     "${RESULT_DIR}/pydict_sc.bin")
 set(PYTRIE_PRINTOUT "${SWAP_DIR}/pydict_sc.log.utf8")
 set(TSLM_FILE3      "${RESULT_DIR}/${LMTARGET}.t3g")
+set(LM_SC_ARPA      "${CORPUS_DIR}/lm_sc.t3g.arpa")
 
-add_custom_target(lexicon ${CMAKE_CURRENT_BINARY_DIR}/genpyt ${PINYIN_TEXTFILE} ${PYTRIE_FILE} ${PYTRIE_PRINTOUT} ${TSLM_FILE3})
+set(TSLMPACK_SOURCES
+    ${SOURCE_DIR}/portability.h host_os.h
+    ${SLM_SRC_DIR}/slm.cpp ${SLM_SRC_DIR}/slm.h
+    ${SLM_SRC_DIR}/thread/ValueCompress.cpp ${SLM_SRC_DIR}/thread/ValueCompress.h
+    ${SLM_SRC_DIR}/tslmpack/slmpack.cpp ${SLM_SRC_DIR}/tslmpack/common.h
+    ${SLM_SRC_DIR}/tslmpack/arpa_conv.cpp ${SLM_SRC_DIR}/tslmpack/arpa_conv.h
+    ${SLM_SRC_DIR}/tslmpack/arpa_slm.cpp ${SLM_SRC_DIR}/tslmpack/arpa_slm.h)
+
+add_executable(tslmpack ${TSLMPACK_SOURCES})
+
+add_custom_target(tslmfile ${CMAKE_CURRENT_BINARY_DIR}/tslmpack ${LM_SC_ARPA} ${PINYIN_TEXTFILE} ${TSLM_FILE3} DEPENDS tslmpack)
+
+add_custom_target(lexicon ${CMAKE_CURRENT_BINARY_DIR}/genpyt -i ${PINYIN_TEXTFILE} -o ${PYTRIE_FILE} -l ${PYTRIE_PRINTOUT} -s ${TSLM_FILE3} DEPENDS genpyt)
 

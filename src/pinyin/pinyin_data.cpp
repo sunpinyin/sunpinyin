@@ -37,9 +37,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <algorithm>
-#include "syllable.h"
 #include "pinyin_data.h"
 
 static const char *initials[] = {"", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w", };
@@ -50,6 +47,182 @@ static const unsigned num_finals = sizeof(finals)/sizeof(*finals);
 
 static const char *fuzzy_finals[] = {"iao", "ian", "iang", "uai", "uan", "uang"};
 static const unsigned num_fuzzy_finals = sizeof(fuzzy_finals)/sizeof(*fuzzy_finals);
+
+static const unsigned fuzzy_finals_map[] = {
+    0x10,        0x60,        2,           /* iao  -> ao   len 2 */
+    0x12,        0x80,        2,           /* ian  -> an   len 2 */
+    0x14,        0xa0,        3,           /* iang -> ang  len 3 */
+    0x19,        0x40,        2,           /* uai  -> ai   len 2 */
+    0x1b,        0x80,        2,           /* uan  -> an   len 2 */
+    0x1d,        0xa0,        3,           /* uang -> ang  len 3 */
+};
+
+static const unsigned fuzzy_pre_syllables [] = {
+    0x0d0e0,     'n',         0x0d120,     /* qian */
+    0x09080,     'g',         0x090a0,     /* gang */
+    0x080e0,     'n',         0x08120,     /* lian */
+    0x15090,     'g',         0x150b0,     /* seng */
+    0x04010,     'n',         0x04080,     /* fan */
+    0x10030,     'n',         0x10090,     /* chen */
+    0x050e0,     'n',         0x05120,     /* dian */
+    0x15160,     'n',         0x151c0,     /* sun */
+    0x07080,     'g',         0x070a0,     /* nang */
+    0x0a160,     'n',         0x0a1c0,     /* kun */
+    0x05030,     'n',         0x05090,     /* den */
+    0x07090,     'g',         0x070b0,     /* neng */
+    0x03030,     'n',         0x03090,     /* men */
+    0x09090,     'g',         0x090b0,     /* geng */
+    0x10080,     'g',         0x100a0,     /* chang */
+    0x0f010,     'n',         0x0f080,     /* zhan */
+    0x14010,     'n',         0x14080,     /* can */
+    0x07130,     'g',         0x07150,     /* ning */
+    0x17080,     'g',         0x170a0,     /* wang */
+    0x01090,     'g',         0x010b0,     /* beng */
+    0x0f1b0,     'g',         0x0f1d0,     /* zhuang */
+    0x06010,     'n',         0x06080,     /* tan */
+    0x00090,     'g',         0x000b0,     /* eng */
+    0x0f080,     'g',         0x0f0a0,     /* zhang */
+    0x02130,     'g',         0x02150,     /* ping */
+    0x08010,     'n',         0x08080,     /* lan */
+    0x0e160,     'n',         0x0e1c0,     /* xun */
+    0x03010,     'n',         0x03080,     /* man */
+    0x0c120,     'g',         0x0c140,     /* jiang */
+    0x0a1b0,     'g',         0x0a1d0,     /* kuang */
+    0x01130,     'g',         0x01150,     /* bing */
+    0x13010,     'n',         0x13080,     /* zan */
+    0x13030,     'n',         0x13090,     /* zen */
+    0x02080,     'g',         0x020a0,     /* pang */
+    0x0c0d0,     'n',         0x0c130,     /* jin */
+    0x14030,     'n',         0x14090,     /* cen */
+    0x05010,     'n',         0x05080,     /* dan */
+    0x0f030,     'n',         0x0f090,     /* zhen */
+    0x01080,     'g',         0x010a0,     /* bang */
+    0x17090,     'g',         0x170b0,     /* weng */
+    0x00030,     'n',         0x00090,     /* en */
+    0x0a080,     'g',         0x0a0a0,     /* kang */
+    0x09160,     'n',         0x091c0,     /* gun */
+    0x00030,     'r',         0x000c0,     /* er */
+    0x0a090,     'g',         0x0a0b0,     /* keng */
+    0x15080,     'g',         0x150a0,     /* sang */
+    0x12030,     'n',         0x12090,     /* ren */
+    0x11160,     'n',         0x111c0,     /* shun */
+    0x0d160,     'n',         0x0d1c0,     /* qun */
+    0x16160,     'n',         0x161c0,     /* yun */
+    0x0e120,     'g',         0x0e140,     /* xiang */
+    0x12080,     'g',         0x120a0,     /* rang */
+    0x09170,     'n',         0x091b0,     /* guan */
+    0x16130,     'g',         0x16150,     /* ying */
+    0x0a170,     'n',         0x0a1b0,     /* kuan */
+    0x10010,     'n',         0x10080,     /* chan */
+    0x160d0,     'n',         0x16130,     /* yin */
+    0x0e0d0,     'n',         0x0e130,     /* xin */
+    0x07120,     'g',         0x07140,     /* niang */
+    0x0b160,     'n',         0x0b1c0,     /* hun */
+    0x11170,     'n',         0x111b0,     /* shuan */
+    0x05080,     'g',         0x050a0,     /* dang */
+    0x00080,     'g',         0x000a0,     /* ang */
+    0x15010,     'n',         0x15080,     /* san */
+    0x12090,     'g',         0x120b0,     /* reng */
+    0x03130,     'g',         0x03150,     /* ming */
+    0x030d0,     'n',         0x03130,     /* min */
+    0x07030,     'n',         0x07090,     /* nen */
+    0x0a010,     'n',         0x0a080,     /* kan */
+    0x16080,     'g',         0x160a0,     /* yang */
+    0x05090,     'g',         0x050b0,     /* deng */
+    0x101b0,     'g',         0x101d0,     /* chuang */
+    0x04090,     'g',         0x040b0,     /* feng */
+    0x03090,     'g',         0x030b0,     /* meng */
+    0x10090,     'g',         0x100b0,     /* cheng */
+    0x09030,     'n',         0x09090,     /* gen */
+    0x01010,     'n',         0x01080,     /* ban */
+    0x07160,     'n',         0x071c0,     /* nun */
+    0x15030,     'n',         0x15090,     /* sen */
+    0x04080,     'g',         0x040a0,     /* fang */
+    0x08160,     'n',         0x081c0,     /* lun */
+    0x0a030,     'n',         0x0a090,     /* ken */
+    0x0b1b0,     'g',         0x0b1d0,     /* huang */
+    0x03080,     'g',         0x030a0,     /* mang */
+    0x06160,     'n',         0x061c0,     /* tun */
+    0x0d0d0,     'n',         0x0d130,     /* qin */
+    0x02090,     'g',         0x020b0,     /* peng */
+    0x05160,     'n',         0x051c0,     /* dun */
+    0x10160,     'n',         0x101c0,     /* chun */
+    0x09010,     'n',         0x09080,     /* gan */
+    0x13090,     'g',         0x130b0,     /* zeng */
+    0x06080,     'g',         0x060a0,     /* tang */
+    0x14080,     'g',         0x140a0,     /* cang */
+    0x0b090,     'g',         0x0b0b0,     /* heng */
+    0x0e0e0,     'n',         0x0e120,     /* xian */
+    0x0f160,     'n',         0x0f1c0,     /* zhun */
+    0x111b0,     'g',         0x111d0,     /* shuang */
+    0x11010,     'n',         0x11080,     /* shan */
+    0x02010,     'n',         0x02080,     /* pan */
+    0x070d0,     'n',         0x07130,     /* nin */
+    0x0b080,     'g',         0x0b0a0,     /* hang */
+    0x0f170,     'n',         0x0f1b0,     /* zhuan */
+    0x080d0,     'n',         0x08130,     /* lin */
+    0x091b0,     'g',         0x091d0,     /* guang */
+    0x0b010,     'n',         0x0b080,     /* han */
+    0x14160,     'n',         0x141c0,     /* cun */
+    0x010d0,     'n',         0x01130,     /* bin */
+    0x11030,     'n',         0x11090,     /* shen */
+    0x0e130,     'g',         0x0e150,     /* xing */
+    0x0d120,     'g',         0x0d140,     /* qiang */
+    0x12160,     'n',         0x121c0,     /* run */
+    0x11090,     'g',         0x110b0,     /* sheng */
+    0x10170,     'n',         0x101b0,     /* chuan */
+    0x0d130,     'g',         0x0d150,     /* qing */
+    0x0c0e0,     'n',         0x0c120,     /* jian */
+    0x17010,     'n',         0x17080,     /* wan */
+    0x0c130,     'g',         0x0c150,     /* jing */
+    0x16010,     'n',         0x16080,     /* yan */
+    0x08120,     'g',         0x08140,     /* liang */
+    0x0b170,     'n',         0x0b1b0,     /* huan */
+    0x0b030,     'n',         0x0b090,     /* hen */
+    0x11080,     'g',         0x110a0,     /* shang */
+    0x0c160,     'n',         0x0c1c0,     /* jun */
+    0x08130,     'g',         0x08150,     /* ling */
+    0x14090,     'g',         0x140b0,     /* ceng */
+    0x020d0,     'n',         0x02130,     /* pin */
+    0x00010,     'n',         0x00080,     /* an */
+    0x13080,     'g',         0x130a0,     /* zang */
+    0x07010,     'n',         0x07080,     /* nan */
+    0x0f090,     'g',         0x0f0b0,     /* zheng */
+    0x13160,     'n',         0x131c0,     /* zun */
+    0x08080,     'g',         0x080a0,     /* lang */
+    0x0,
+};
+
+static const unsigned fuzzy_pro_syllables [] = {
+    0x09030,     'g',         0x00030,     /* ge */
+    0x090a0,     'g',         0x000a0,     /* gang */
+    0x09010,     'g',         0x00010,     /* ga */
+    0x12070,     'r',         0x00070,     /* rou */
+    0x07050,     'n',         0x00050,     /* nei */
+    0x070a0,     'n',         0x000a0,     /* nang */
+    0x070b0,     'n',         0x000b0,     /* neng */
+    0x090b0,     'g',         0x000b0,     /* geng */
+    0x07070,     'n',         0x00070,     /* nou */
+    0x12030,     'r',         0x00030,     /* re */
+    0x12090,     'r',         0x00090,     /* ren */
+    0x09070,     'g',         0x00070,     /* gou */
+    0x120a0,     'r',         0x000a0,     /* rang */
+    0x120b0,     'r',         0x000b0,     /* reng */
+    0x12080,     'r',         0x00080,     /* ran */
+    0x12060,     'r',         0x00060,     /* rao */
+    0x07090,     'n',         0x00090,     /* nen */
+    0x09050,     'g',         0x00050,     /* gei */
+    0x09090,     'g',         0x00090,     /* gen */
+    0x09060,     'g',         0x00060,     /* gao */
+    0x09080,     'g',         0x00080,     /* gan */
+    0x09040,     'g',         0x00040,     /* gai */
+    0x07060,     'n',         0x00060,     /* nao */
+    0x07010,     'n',         0x00010,     /* na */
+    0x07040,     'n',         0x00040,     /* nai */
+    0x07080,     'n',         0x00080,     /* nan */
+    0x07030,     'n',         0x00030,     /* ne */
+    0x0,
+};
 
 static const char * fuzzy_pairs[] = {
     "z",       "zh", 
@@ -591,4 +764,18 @@ CPinyinData::getPinyinTable(unsigned &num)
 {
     num = sizeof(pinyin_table) / sizeof(TPyTabEntry);
     return pinyin_table;
+}
+
+const unsigned *
+CPinyinData::getInnerFuzzyFinalMap (unsigned &num)
+{
+    num = num_fuzzy_finals;
+    return fuzzy_finals_map;
+}
+
+void
+CPinyinData::getFuzzyPreProSyllables (const unsigned **pre_syls, const unsigned **pro_syls)
+{
+    *pre_syls = fuzzy_pre_syllables;
+    *pro_syls = fuzzy_pro_syllables;
 }

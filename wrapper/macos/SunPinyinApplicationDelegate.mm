@@ -334,6 +334,8 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     if ([pref boolForKey: @"Quanpin.AutoCorrecting.UeiUi"])  correcting_pairs.push_back(make_pair("uei", "ui"));
     
     quanpin_policy.setAutoCorrectionPairs (correcting_pairs);
+
+    quanpin_policy.setFuzzySegments (true);
 }
 
 void updateShuangpinSettings(NSUserDefaults* pref)

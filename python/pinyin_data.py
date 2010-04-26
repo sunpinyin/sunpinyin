@@ -539,5 +539,34 @@ def gen_suffix_trie (fname):
     pytrie.construct_from_trie (trie)
     pytrie.output_static_c_arrays (fname)
 
+def gen_fuzzy_syllable_pairs_tables ():
+    fuzzy_pro_syllables = [s for s in valid_syllables if s[1:] in valid_syllables and s[0] in initials and s not in initials]
+    fuzzy_pre_syllables = [s for s in valid_syllables if s[:-1] in valid_syllables and s[-1] in initials and s not in initials]
+
+    initial_sets = set([s[0] for s in fuzzy_pro_syllables]) & set([s[-1] for s in fuzzy_pre_syllables])
+
+    fuzzy_pro_syllables  = [s for s in fuzzy_pro_syllables if s[0] in initial_sets]
+    fuzzy_pre_syllables  = [s for s in fuzzy_pre_syllables if s[-1] in initial_sets]
+
+    print "static const unsigned fuzzy_pre_syllables [] = {"
+    for s in fuzzy_pre_syllables:
+        print "    %-12s %-12s %-12s /* %s */" % ("0x%05x," % valid_syllables[s[:-1]], "'%s'," % s[-1], "0x%05x," % valid_syllables[s], s)
+    print "    0x0,"
+    print "};\n"
+
+    print "static const unsigned fuzzy_pro_syllables [] = {"
+    for s in fuzzy_pro_syllables:
+        print "    %-12s %-12s %-12s /* %s */" % ("0x%05x," % valid_syllables[s], "'%s'," % s[0], "0x%05x," % valid_syllables[s[1:]], s)
+    print "    0x0,"
+    print "};\n"
+
+def gen_inner_fuzzy_syllable_tables ():
+    print "static const unsigned fuzzy_finals_map[] = {"
+    for s in inner_fuzzy_finals:
+        print "    %-12s %-12s %-12s /* %-4s -> %-4s len %d */" % ("0x%02x," % finals.index(s), "0x%02x," % valid_syllables[s[1:]], "%d," % (len(s)-1,),  s, s[1:], len(s)-1)
+    print "};\n"
+
 if __name__ == "__main__":
     gen_suffix_trie ("../src/pinyin/quanpin_trie.h")
+    gen_inner_fuzzy_syllable_tables ()
+    gen_fuzzy_syllable_pairs_tables ()

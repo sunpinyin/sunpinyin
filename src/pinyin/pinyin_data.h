@@ -50,6 +50,9 @@ public:
 
     static const char **getInitials (unsigned &num);
     static const char **getFinals (unsigned &num);
+    static const unsigned *getInnerFuzzyFinalMap (unsigned &num);
+    static void getFuzzyPreProSyllables (const unsigned **pre_syls, const unsigned **pro_syls);
+
     static const TPyTabEntry* getPinyinTable (unsigned &num);
 
     static const char **getAutoCorrectionPairs (unsigned &num);

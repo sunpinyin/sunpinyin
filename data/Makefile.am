@@ -86,7 +86,7 @@ genpyt_SOURCES = \
 	${PINYIN_SRC_DIR}/pinyin_data.cpp ${PINYIN_SRC_DIR}/pinyin_data.h \
 	${PINYIN_SRC_DIR}/syllable.h
 
-genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian
+genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian -I${SOURCE_DIR}/ime-core
 
 $(LM_SC_BIN): tslmpack $(LM_SC_ARPA) $(DICTFILE)
 	./tslmpack $(LM_SC_ARPA) $(DICTFILE) $@

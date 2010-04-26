@@ -122,11 +122,12 @@ public:
 
 public:
     /** Give out the constructor for convinience */
-    CCandidate(unsigned start=0, unsigned end=0, const TWCHAR* s = NULL, unsigned int wid=0)
-        : m_start(start), m_end(end), m_cwstr(s), m_wordId(wid) {}
+    CCandidate(unsigned start=0, unsigned end=0, TLexiconState* pLxst = NULL, const TWCHAR* s = NULL, unsigned int wid=0)
+        : m_start(start), m_end(end), m_pLexiconState(pLxst), m_cwstr(s), m_wordId(wid) {}
 
 protected:
     unsigned int        m_wordId;
+    TLexiconState*      m_pLexiconState;
 }; // of CCandidate
 
 class CLatticeFrame {
@@ -227,12 +228,13 @@ public:
     bool getDynaCandiOrder () {return m_bDynaCandiOrder;}
 
     CLattice& getLattice () {return m_lattice;}
-    bool buildLattice (IPySegmentor::TSegmentVec &segments, unsigned rebuildFrom=1, bool doSearch=true);
+    bool buildLattice (IPySegmentor *segmentor, bool doSearch=true);
     bool isEmpty () {return m_tailIdx <= 1;}
     unsigned getLastFrIdx () {return m_tailIdx-1;}
 
     bool searchFrom (unsigned from=1);
     std::vector<unsigned>& getBestPath () {return m_bestPath;}
+    std::vector<unsigned>& getBestSegPath () {return m_bestSegPath;}
     unsigned getBestSentence (wstring& result, unsigned start=0, unsigned end=UINT_MAX);
 
     void getCandidates (unsigned frIdx, CCandidates& result);
@@ -246,17 +248,18 @@ public:
 protected:
     void _clearFrom (unsigned from);
 
-    inline void _forwardSyllables (unsigned i, unsigned j, std::vector<unsigned>& syllables);
-    inline void _forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable, bool isFuzzy=false);
+    inline bool _buildLattice (IPySegmentor::TSegmentVec &segments, unsigned rebuildFrom=1, bool doSearch=true);
+    inline void _forwardSyllables (unsigned i, unsigned j, const IPySegmentor::TSegment& seg);
+    inline void _forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable, const IPySegmentor::TSegment& seg, bool isFuzzy=false);
     inline void _forwardSyllableSep (unsigned i, unsigned j);
-    inline void _forwardString (unsigned i, unsigned j, std::vector<unsigned>& strbuf);
+    inline void _forwardString (unsigned i, unsigned j, const std::vector<unsigned>& strbuf);
     inline void _forwardPunctChar (unsigned i, unsigned j, unsigned ch);
     inline void _forwardOrdinaryChar (unsigned i, unsigned j, unsigned ch);
     inline void _forwardTail (unsigned i, unsigned j);
 
-    inline void _transferBetween (unsigned start, unsigned end, unsigned wid, double ic=1.0);
-    inline void _backTraceBestPath ();
-    inline void _clearBestPath ();
+    inline void _transferBetween (unsigned start, unsigned end, TLexiconState* plxst, unsigned wid, double ic=1.0);
+    inline void _backTraceBestPaths ();
+    inline void _clearBestPaths ();
 
     inline const TWCHAR *_getWstr (unsigned wid);
 
@@ -267,6 +270,7 @@ protected:
     CLattice                    m_lattice;
     unsigned                    m_tailIdx;
     std::vector<unsigned>       m_bestPath;
+    std::vector<unsigned>       m_bestSegPath;
 
     CThreadSlm                 *m_pModel;
     CPinyinTrie                *m_pPinyinTrie;
@@ -281,6 +285,8 @@ protected:
 
     bool                        m_bFullPunctForwarding;
     CGetFullPunctOp            *m_pGetFullPunctOp;
+
+    IPySegmentor               *m_pPySegmentor;
     
     bool                        m_bNonCompleteSyllable;
     bool                        m_bDynaCandiOrder;
@@ -288,7 +294,6 @@ protected:
     unsigned                    m_candiStarts;
     unsigned                    m_candiEnds;
 
-    IPySegmentor::TSegmentVec&  m_latestSegments;
 }; // CIMIContext
 
 #endif

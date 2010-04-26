@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 
     setlocale(LC_ALL, "zh_CN.UTF-8");
     int opt;
-    char py_scheme = 's';
+    char py_scheme = 'q';
     bool do_auto_correction = false;
 
     string_pairs auto_correction_pairs;
@@ -110,6 +110,9 @@ int main(int argc, char* argv[])
         AQuanpinSchemePolicy::instance().setAutoCorrecting(true);
         AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs);
     }
+
+    AQuanpinSchemePolicy::instance().setFuzzySegments(true);
+
     //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
     CIMIView *pv = factory.createSession ();
 

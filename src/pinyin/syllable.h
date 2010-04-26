@@ -39,6 +39,9 @@
 #define __SUNPINYIN_SYLLABLE_H__
 
 #include <vector>
+#include <string>
+#include <map>
+#include "utils.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -81,11 +84,80 @@ struct TSyllable {
     }
 };
 
-typedef std::vector<TSyllable> CSyllables;
-
 typedef struct _TPyTabEntry {
     const char *pystr;
     unsigned    id;
 } TPyTabEntry;
+
+typedef std::vector<TSyllable> CSyllables;
+
+template <class PinyinDataPolicy>
+class CGetFuzzySyllablesOp : private CNonCopyable
+{
+public: 
+    typedef std::multimap<const std::string, std::string> CFuzzyMap;
+
+    CGetFuzzySyllablesOp () : m_bEnabled(false) {}
+
+    void setEnable (bool value=true) {m_bEnabled = value;}
+    bool isEnabled () {return m_bEnabled;}
+
+    void initFuzzyMap (const string_pairs& fuzzyPairs)
+        {
+            m_fuzzyMap.clear();
+
+            string_pairs::const_iterator it =  fuzzyPairs.begin();
+            string_pairs::const_iterator ite = fuzzyPairs.end();
+
+            for (; it != ite; ++it)
+            {
+                const std::string i = it->first;
+                const std::string j = it->second;
+
+                m_fuzzyMap.insert (std::pair<const std::string, std::string> (i, j));
+                m_fuzzyMap.insert (std::pair<const std::string, std::string> (j, i));
+            }
+        }
+
+
+    CSyllables operator () (TSyllable s)
+        {
+            CSyllables ret;
+            static char buf[128];
+
+            const char *i, *f;
+            PinyinDataPolicy::decodeSyllable (s, &i, &f);
+
+            std::vector<const char *> iset;
+            std::vector<const char *> fset;
+
+            iset.push_back (i);
+            fset.push_back (f);
+
+            CFuzzyMap::const_iterator it;
+            for (it = m_fuzzyMap.lower_bound(i); it != m_fuzzyMap.upper_bound(i); ++it) 
+                iset.push_back ((it->second).c_str());
+
+            for (it = m_fuzzyMap.lower_bound(f); it != m_fuzzyMap.upper_bound(f); ++it)
+                fset.push_back ((it->second).c_str());
+
+            std::vector<const char *>::const_iterator iset_it = iset.begin();
+            for (; iset_it != iset.end(); ++iset_it) {
+                std::vector<const char *>::const_iterator fset_it = fset.begin();
+                for (; fset_it != fset.end(); ++ fset_it) {
+                    snprintf (buf, sizeof(buf), "%s%s", *iset_it, *fset_it);
+                    TSyllable ts = PinyinDataPolicy::encodeSyllable (buf);
+                    if (ts && ts != s)
+                        ret.push_back (ts);
+                }
+            }
+
+            return ret;
+        }
+
+private:
+    CFuzzyMap   m_fuzzyMap;
+    bool        m_bEnabled;
+};
 
 #endif

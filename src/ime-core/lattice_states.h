@@ -42,6 +42,7 @@
 #include <map>
 #include "portability.h"
 #include "imi_data.h"
+#include "pinyin_seg.h"
 
 typedef TLongExpFloat TSentenceScore;
 
@@ -75,15 +76,16 @@ struct TLexiconState {
     unsigned                    m_start;
     const CPinyinTrie::TNode   *m_pPYNode;
     TWordIdInfoVec              m_words;
-    CSyllables                  m_syls;
+    CSyllables                  m_syls;         // accumulated syllables, may contain fuzzy syllables
+    std::vector<unsigned>       m_seg_path;     // accumulated segments,  may contain fuzzy segments
     bool                        m_bPinyin;
     bool                        m_bFuzzy;
 
-    TLexiconState (unsigned start, const CPinyinTrie::TNode *pnode, CSyllables& syl, bool isFuzzy=false):
-        m_start(start), m_pPYNode(pnode), m_syls(syl), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
+    TLexiconState (unsigned start, const CPinyinTrie::TNode *pnode, CSyllables& syls, std::vector<unsigned>& seg_path, bool isFuzzy=false):
+        m_start(start), m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
 
-    TLexiconState (unsigned start, CSyllables &syl, TWordIdInfoVec &words, bool isFuzzy=false):
-        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syl), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
+    TLexiconState (unsigned start, CSyllables &syls, std::vector<unsigned>& seg_path, TWordIdInfoVec &words, bool isFuzzy=false):
+        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
 
     TLexiconState (unsigned start, unsigned wid):
         m_start(start), m_pPYNode(NULL), m_bPinyin(false) {m_words.push_back(wid);}
@@ -106,17 +108,19 @@ typedef std::vector<TLexiconState>    CLexiconStates;
 struct TLatticeState {
     TSentenceScore      m_score;
     unsigned            m_frIdx;
+    TLexiconState      *m_pLexiconState;
     TLatticeState      *m_pBackTraceNode;
     CSlmState           m_slmState;
     CWordId             m_backTraceWordId;
     
     TLatticeState(double score = -1.0,
                   unsigned frIdx=0,
+                  TLexiconState* lxstPtr = NULL,
                   TLatticeState* btNodePtr = NULL,
                   CSlmState sk= CSlmState(),
                   CWordId wk = CWordId())
         : m_score(score), m_frIdx(frIdx), m_pBackTraceNode(btNodePtr),
-          m_slmState(sk), m_backTraceWordId(wk) {}
+          m_pLexiconState(lxstPtr), m_slmState(sk), m_backTraceWordId(wk) {}
 
     /** for debug printing... */
     void

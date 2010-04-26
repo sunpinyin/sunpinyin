@@ -35,53 +35,60 @@
  * to such option by the copyright holder. 
  */
 
-#ifndef SUNPY_SHUANGPIN_SEG_H
-#define SUNPY_SHUANGPIN_SEG_H
+#ifndef SUNPY_SEGMENTOR_H
+#define SUNPY_SEGMENTOR_H
 
 #include "portability.h"
-#include "shuangpin_data.h"
-#include "segmentor.h"
-#include "pinyin_data.h"
+#include "syllable.h"
 #include <vector>
 
-class CShuangpinSegmentor : public IPySegmentor
+struct IPySegmentor
 {
-public:
-    CShuangpinSegmentor (EShuangpinType  shpType);
+    enum ESegmentType 
+        {SYLLABLE, SYLLABLE_SEP, INVALID, STRING};
 
-    virtual TSegmentVec& getSegments () {return m_segs;}
-    virtual const wstring& getInputBuffer () {return m_inputBuf;}
-    virtual const char* getSylSeps () {return "'";}
+    struct TSegment {
+        TSegment (ESegmentType type=SYLLABLE) : m_type(type) {}
+        TSegment (unsigned syllable, unsigned start, unsigned length, ESegmentType type=SYLLABLE) 
+            : m_start(start), m_len(length), m_type(type)
+            {m_syllables.push_back (syllable);}
 
-    virtual unsigned push (unsigned ch);
-    virtual unsigned pop ();
-    virtual unsigned insertAt (unsigned idx, unsigned ch);
-    virtual unsigned deleteAt (unsigned idx, bool backward=true);
-    virtual unsigned clear (unsigned from=0);
+        bool operator < (const TSegment& other) const
+        {
+            if (m_start < other.m_start)
+                return true;
 
-    virtual unsigned updatedFrom () {return m_updatedFrom;}
-    virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
+            if (m_start == other.m_start)
+                return m_len < m_len;
 
-    void setGetFuzzySyllablesOp (CGetFuzzySyllablesOp<CPinyinData> *op) {m_pGetFuzzySyllablesOp = op;}
-    
-private:
-    unsigned _push (unsigned ch);
-    unsigned _clear (unsigned from);
-    int _getNumberOfNonAlpha() const;
-    int _encode(const char* buf, char ch, bool isComplete);
+            return false;
+        }
 
-    inline void _addFuzzySyllables (TSegment &seg);
-    
-    static CShuangpinData               s_shpData;
-    std::string                         m_pystr;
-    wstring                             m_inputBuf;
-    TSegmentVec                         m_segs;
-    unsigned                            m_updatedFrom;
-    int                                 m_nAlpha;     /* number of non-py chars in m_pystr*/
-    bool                                m_hasInvalid; /* true if there is invalid py in m_pystr */
-    unsigned                            m_nLastValidPos;
+        // if segment is a STRING type, m_syllables may contain the string buffer without the '\0'
+        // for multiple syllables in one seg, the non-0th elements are treated as fuzzy syllables
+        std::vector<unsigned>   m_syllables;
+        unsigned                m_start        : 16;
+        unsigned                m_len          : 8;
+        ESegmentType            m_type         : 8;
+    };
 
-    CGetFuzzySyllablesOp<CPinyinData>  *m_pGetFuzzySyllablesOp;
+    // it requires the segments are sorted by its m_start field
+    typedef std::vector<TSegment>  TSegmentVec;
+
+    virtual ~IPySegmentor () {}
+    virtual TSegmentVec& getSegments () = 0;
+    virtual const wstring& getInputBuffer () = 0;
+    virtual const char* getSylSeps () = 0;
+
+    virtual unsigned push (unsigned ch) = 0;
+    virtual unsigned pop () = 0;
+    virtual unsigned insertAt (unsigned idx, unsigned ch) = 0;
+    virtual unsigned deleteAt (unsigned idx, bool backward=true) = 0;
+    virtual unsigned clear (unsigned from=0) = 0;
+    virtual void     notify_best_segpath (std::vector<unsigned>& seg_path) {}
+
+    virtual unsigned updatedFrom () = 0;
+    virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx) = 0;
 };
 
-#endif /* SUNPY_SHUANGPIN_SEG_H */
+#endif

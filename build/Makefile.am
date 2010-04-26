@@ -84,7 +84,7 @@ PYTRIE_PRINTOUT = ${SWAP_DIR}/pydict_sc.log.utf8
 
 noinst_PROGRAMS = testvc slmseg mmseg ids2ngram idngram_merge slmbuild slmprune slminfo slmthread tslminfo tslmpack tslmendian getWordFreq genpyt
 
-genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian
+genpyt_CXXFLAGS = ${DEFAULT_INCLUDES} -I${PINYIN_SRC_DIR} -I${SLM_SRC_DIR}/tslmendian -I${SOURCE_DIR}/ime-core
 
 genpyt_SOURCES = \
 	${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h ${SOURCE_DIR}/host_os.h \

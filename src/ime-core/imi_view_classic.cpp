@@ -345,16 +345,20 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
         charTypes.push_back (IPreeditString::HANZI_CHAR | IPreeditString::USER_CHOICE);
 
     const wstring& pystr = m_pPySegmentor->getInputBuffer ();
-    IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
-    IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
-    IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();
-    
+    std::vector<unsigned>& seg_path = m_pIC->getBestSegPath();
+
+    if (seg_path.empty())
+        return;
+
+    std::vector<unsigned>::iterator it  = seg_path.begin() + 1;
+    std::vector<unsigned>::iterator ite = seg_path.end();
+
     CLattice& lattice = m_pIC->getLattice ();
     unsigned i = 0, l = 0;
-    for (; it != ite; ++it, i+=l) {
-        l = it->m_len;
+    for (; it != ite; i=*(it++)) {
+        l = *it - i;
 
-        if (i+l <= m_candiFrIdx)
+        if (*it <= m_candiFrIdx)
             continue;
 
         if (i < m_cursorFrIdx && m_cursorFrIdx <= i+l)
@@ -381,7 +385,7 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
             }
         }
     }
-    
+
     ps.setCaret (caret);
 }
 
@@ -425,9 +429,8 @@ CIMIClassicView::_insert (unsigned keyvalue, unsigned &changeMasks)
         m_pPySegmentor->insertAt (m_cursorFrIdx, keyvalue);
 
     m_cursorFrIdx ++;
-    IPySegmentor::TSegmentVec &segs = m_pPySegmentor->getSegments ();
 
-    if (m_pIC->buildLattice (segs, m_pPySegmentor->updatedFrom()+1))
+    if (m_pIC->buildLattice (m_pPySegmentor))
         _getCandidates ();
 
     changeMasks |= PREEDIT_MASK | CANDIDATE_MASK;
@@ -451,9 +454,7 @@ CIMIClassicView::_erase (bool backward, unsigned &changeMasks)
             return;
     }
     
-    IPySegmentor::TSegmentVec &segs = m_pPySegmentor->getSegments ();
-
-    if (m_pIC->buildLattice (segs, m_pPySegmentor->updatedFrom()+1))
+    if (m_pIC->buildLattice (m_pPySegmentor))
         _getCandidates ();
 
     changeMasks |= PREEDIT_MASK | CANDIDATE_MASK | KEYEVENT_USED;

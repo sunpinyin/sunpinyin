@@ -111,6 +111,7 @@ public:
         CQuanpinSegmentor *pseg = new CQuanpinSegmentor ();
         pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
         pseg->setGetCorrectionPairOp (&m_getCorrectionPairOp);
+        pseg->setGetFuzzySegmentsOp  (&m_getFuzzySegmentsOp);
         return pseg;
     }
 
@@ -126,6 +127,9 @@ public:
     void setAutoCorrectionPairs (const string_pairs& pairs) 
         {m_getCorrectionPairOp.setCorrectionPairs (pairs);}
 
+    void setFuzzySegments (bool v=true)
+        {m_getFuzzySegmentsOp.setEnable (v);}
+
     virtual bool onConfigChanged(const COptionEvent& event);
     
     template<class> friend class SingletonHolder;
@@ -133,8 +137,9 @@ public:
 protected:
     ~CQuanpinSchemePolicy () {}
 
-    CGetFuzzySyllablesOp m_getFuzzySyllablesOp;
-    CGetCorrectionPairOp m_getCorrectionPairOp;
+    CGetFuzzySyllablesOp<CPinyinData>   m_getFuzzySyllablesOp;
+    CGetCorrectionPairOp                m_getCorrectionPairOp;
+    CGetFuzzySegmentsOp                 m_getFuzzySegmentsOp;
 };
 
 typedef SingletonHolder<CQuanpinSchemePolicy> AQuanpinSchemePolicy;
@@ -165,8 +170,8 @@ public:
 protected:
     ~CShuangpinSchemePolicy () {}
 
-    EShuangpinType       m_shuangpinType;
-    CGetFuzzySyllablesOp m_getFuzzySyllablesOp;
+    EShuangpinType                      m_shuangpinType;
+    CGetFuzzySyllablesOp<CPinyinData>   m_getFuzzySyllablesOp;
 };
 
 typedef SingletonHolder<CShuangpinSchemePolicy> AShuangpinSchemePolicy;

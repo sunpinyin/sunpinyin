@@ -36,69 +36,10 @@
  */
 
 #include <cassert>
+#include <functional>
 #include <algorithm>
 #include "pinyin_seg.h"
 #include "quanpin_trie.h"
-
-void CGetFuzzySyllablesOp::initFuzzyMap (const string_pairs& fuzzyPairs)
-{
-    m_fuzzyMap.clear();
-
-    string_pairs::const_iterator it =  fuzzyPairs.begin();
-    string_pairs::const_iterator ite = fuzzyPairs.end();
-
-    for (; it != ite; ++it)
-    {
-        const std::string i = it->first;
-        const std::string j = it->second;
-
-        m_fuzzyMap.insert (std::pair<const std::string, std::string> (i, j));
-        m_fuzzyMap.insert (std::pair<const std::string, std::string> (j, i));
-    }
-}
-
-CSyllables CGetFuzzySyllablesOp::operator () (TSyllable s) 
-{
-    CSyllables ret;
-    static char buf[128];
-
-    /*
-    if (m_fuzzyMap.empty()) {
-        unsigned num;
-        const char ** sys_fuzzy_pairs = CPinyinData::getFuzzyPairs (num);
-        initFuzzyMap (sys_fuzzy_pairs, num);
-    }
-     */
-
-    const char *i, *f;
-    CPinyinData::decodeSyllable (s, &i, &f);
-
-    std::vector<const char *> iset;
-    std::vector<const char *> fset;
-
-    iset.push_back (i);
-    fset.push_back (f);
-
-    CFuzzyMap::const_iterator it;
-    for (it = m_fuzzyMap.lower_bound(i); it != m_fuzzyMap.upper_bound(i); ++it) 
-        iset.push_back ((it->second).c_str());
-
-    for (it = m_fuzzyMap.lower_bound(f); it != m_fuzzyMap.upper_bound(f); ++it)
-        fset.push_back ((it->second).c_str());
-
-    std::vector<const char *>::const_iterator iset_it = iset.begin();
-    for (; iset_it != iset.end(); ++iset_it) {
-        std::vector<const char *>::const_iterator fset_it = fset.begin();
-        for (; fset_it != fset.end(); ++ fset_it) {
-            snprintf (buf, sizeof(buf), "%s%s", *iset_it, *fset_it);
-            TSyllable ts = CPinyinData::encodeSyllable (buf);
-            if (ts && ts != s)
-                ret.push_back (ts);
-        }
-    }
-
-    return ret;
-}
 
 const char * CGetCorrectionPairOp::operator () (std::string& pystr, unsigned& matched_len)
 {
@@ -119,8 +60,140 @@ const char * CGetCorrectionPairOp::operator () (std::string& pystr, unsigned& ma
     return NULL;
 }
 
+void CGetFuzzySegmentsOp::_initMaps ()
+{
+    unsigned num_of_fuzzy_finals;
+    const unsigned * fuzzy_final_map = CPinyinData::getInnerFuzzyFinalMap (num_of_fuzzy_finals);
+    
+    for (int i = 0; i < num_of_fuzzy_finals; ++i)
+    {
+        unsigned  f = *(fuzzy_final_map++);
+        unsigned _f = *(fuzzy_final_map++);
+        unsigned  l = *(fuzzy_final_map++);
+    
+        m_fuzzyFinalMap.insert (std::make_pair(f, std::make_pair(_f, l)));
+    }
+
+    const unsigned *fuzzy_pre_syls, *fuzzy_pro_syls;
+    CPinyinData::getFuzzyPreProSyllables (&fuzzy_pre_syls, &fuzzy_pro_syls);
+
+    while (*fuzzy_pre_syls) {
+        unsigned  s = *(fuzzy_pre_syls++);
+        unsigned  c = *(fuzzy_pre_syls++);
+        unsigned _s = *(fuzzy_pre_syls++);
+        m_fuzzyPreMap.insert (std::make_pair(s, std::make_pair(c, _s)));
+    }
+
+    while (*fuzzy_pro_syls) {
+        unsigned  s = *(fuzzy_pro_syls++);
+        unsigned  c = *(fuzzy_pro_syls++);
+        unsigned _s = *(fuzzy_pro_syls++);
+        m_fuzzyProMap.insert (std::make_pair(s, std::make_pair(c, _s)));
+    }
+}
+
+unsigned CGetFuzzySegmentsOp::_invalidateSegments (IPySegmentor::TSegmentVec& fuzzy_segs, IPySegmentor::TSegment& seg)
+{
+    unsigned invalidatedFrom = UINT_MAX;
+
+    IPySegmentor::TSegmentVec::reverse_iterator it  = fuzzy_segs.rbegin();
+    IPySegmentor::TSegmentVec::reverse_iterator ite = fuzzy_segs.rend();
+
+    for (; it != ite; it+=2)
+    {
+        IPySegmentor::TSegment& seg1 = *(it+1);
+        IPySegmentor::TSegment& seg2 = *it;
+
+        unsigned r = seg2.m_start+seg2.m_len;
+        if (r <= seg.m_start)
+            break;
+
+        invalidatedFrom = seg1.m_start;
+    }
+
+    fuzzy_segs.erase (it.base(), fuzzy_segs.end());
+
+    return invalidatedFrom;
+}
+
+unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPySegmentor::TSegmentVec& fuzzy_segs, std::string& input)
+{
+    IPySegmentor::TSegment&  seg = segs.back();
+    unsigned invalidatedFrom = _invalidateSegments (fuzzy_segs, seg);
+
+    unsigned updatedFrom = UINT_MAX;
+    TSyllable syl = (TSyllable) seg.m_syllables[0];
+
+    { // xian -> xian, xi'an
+        CInnerFuzzyFinalMap::iterator it = m_fuzzyFinalMap.find (syl.final);
+
+        if (it != m_fuzzyFinalMap.end())
+        {
+            unsigned    an_syl = it->second.first;
+            unsigned    an_len = it->second.second;
+
+            unsigned    xi_len = seg.m_len - an_len;
+            std::string xi_str = input.substr (seg.m_start, xi_len);
+            unsigned    xi_syl = CPinyinData::encodeSyllable (xi_str.c_str());
+
+            if (0 == xi_syl)
+                goto RETURN;
+            
+            IPySegmentor::TSegment xi = segs.back();
+            xi.m_len = xi_len;
+            xi.m_syllables[0] = xi_syl;
+
+            IPySegmentor::TSegment an = segs.back();
+            an.m_len    = an_len;
+            an.m_start += xi_len;
+            an.m_syllables[0] = an_syl;
+
+            fuzzy_segs.push_back (xi);
+            fuzzy_segs.push_back (an);
+
+            updatedFrom = xi.m_start;
+            goto RETURN;
+        }
+    }
+
+    if (segs.size() >= 2) { // fangan -> fang'an, fan'gan
+        IPySegmentor::TSegment pre_seg = *(segs.end() - 2);
+
+        CFuzzySyllableMap::iterator pre_it = m_fuzzyPreMap.find (pre_seg.m_syllables[0]);
+        CFuzzySyllableMap::iterator     it = m_fuzzyProMap.find (syl);
+
+        if (pre_it != m_fuzzyPreMap.end() && it != m_fuzzyProMap.end() &&
+            pre_it->second.first == it->second.first)
+        {
+            IPySegmentor::TSegment fang = segs[segs.size()-2];
+            fang.m_len ++;
+            fang.m_syllables[0] = pre_it->second.second;
+
+            IPySegmentor::TSegment an = segs.back();
+            an.m_start ++;
+            an.m_len --;
+            an.m_syllables[0] = it->second.second;
+
+            fuzzy_segs.push_back (fang);
+            fuzzy_segs.push_back (an);
+
+            updatedFrom = fang.m_start;
+            goto RETURN;
+        }
+    }
+
+
+RETURN:;
+
+    return std::min (updatedFrom, invalidatedFrom);
+}
+
+
 CQuanpinSegmentor::CQuanpinSegmentor () 
-    : m_updatedFrom(0), m_pGetFuzzySyllablesOp(NULL), m_pGetCorrectionPairOp(NULL),
+    : m_updatedFrom(0),
+      m_pGetFuzzySyllablesOp(NULL),
+      m_pGetCorrectionPairOp(NULL),
+      m_pGetFuzzySegmentsOp(NULL),
       m_pytrie(base, check, value, sizeof(base)/sizeof(*base))
 {
     m_segs.reserve (32);
@@ -356,9 +429,20 @@ unsigned CQuanpinSegmentor::_push (unsigned ch)
 
 RETURN:;
 
-    if (m_pGetFuzzySyllablesOp && m_pGetFuzzySyllablesOp->isEnabled())
-        if ( m_segs.back().m_type == SYLLABLE)
+    if (m_pGetFuzzySegmentsOp && m_pGetFuzzySegmentsOp->isEnabled())
+        ret = std::min (ret, (*m_pGetFuzzySegmentsOp) (m_segs, m_fuzzy_segs, m_inputBuf));
+
+    if (m_pGetFuzzySyllablesOp && m_pGetFuzzySyllablesOp->isEnabled()) {
+
+        if (m_segs.back().m_type == SYLLABLE)
             _addFuzzySyllables (m_segs.back ());
+
+        if (m_fuzzy_segs.size()) {
+            _addFuzzySyllables (*(m_fuzzy_segs.end()-1));
+            _addFuzzySyllables (*(m_fuzzy_segs.end()-2));
+        }
+
+    }
 
     return ret;
 }

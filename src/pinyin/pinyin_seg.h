@@ -39,68 +39,12 @@
 #define SUNPY_PINYIN_SEG_H
 
 #include "portability.h"
-#include "syllable.h"
+#include "segmentor.h"
 #include "pinyin_data.h"
 #include "datrie.h"
 #include "utils.h"
 
 #include <climits>
-#include <vector>
-
-struct IPySegmentor
-{
-    enum ESegmentType 
-        {SYLLABLE, SYLLABLE_SEP, INVALID, STRING};
-
-    struct TSegment {
-        TSegment (ESegmentType type=SYLLABLE) : m_type(type) {}
-        TSegment (unsigned syllable, unsigned start, unsigned length, ESegmentType type=SYLLABLE) 
-            : m_start(start), m_len(length), m_type(type)
-            {m_syllables.push_back (syllable);}
-
-        // if segment is a STRING type, m_syllables may contain the string buffer without the '\0'
-        // for multiple syllables in one seg, the non-0th elements are treated as fuzzy syllables
-        std::vector<unsigned>   m_syllables;
-        unsigned                m_start        : 16;
-        unsigned                m_len          : 8;
-        ESegmentType            m_type         : 8;
-    };
-
-    // it requires the segments are sorted by its m_start field
-    typedef std::vector<TSegment>  TSegmentVec;
-
-    virtual ~IPySegmentor () {}
-    virtual TSegmentVec& getSegments () = 0;
-    virtual const wstring& getInputBuffer () const = 0;
-    virtual const char* getSylSeps () = 0;
-
-    virtual unsigned push (unsigned ch) = 0;
-    virtual unsigned pop () = 0;
-    virtual unsigned insertAt (unsigned idx, unsigned ch) = 0;
-    virtual unsigned deleteAt (unsigned idx, bool backward=true) = 0;
-    virtual unsigned clear (unsigned from=0) = 0;
-
-    virtual unsigned updatedFrom () = 0;
-    virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx) = 0;
-};
-
-class CGetFuzzySyllablesOp : private CNonCopyable
-{
-public: 
-    typedef std::multimap<const std::string, std::string> CFuzzyMap;
-
-    CGetFuzzySyllablesOp () : m_bEnabled(false) {}
-    void initFuzzyMap (const string_pairs& fuzzyPairs);
-
-    void setEnable (bool value=true) {m_bEnabled = value;}
-    bool isEnabled () {return m_bEnabled;}
-
-    CSyllables operator () (TSyllable s);
-
-private:
-    CFuzzyMap   m_fuzzyMap;
-    bool        m_bEnabled;
-};
 
 class CGetCorrectionPairOp : private CNonCopyable
 {
@@ -123,13 +67,51 @@ private:
     bool                m_bEnabled;
 };
 
+class CGetFuzzySegmentsOp : private CNonCopyable
+{
+public:
+    typedef std::map<unsigned, std::pair<unsigned, unsigned> > CInnerFuzzyFinalMap;
+    typedef std::map<unsigned, std::pair<char, unsigned> > CFuzzySyllableMap;
+
+    CGetFuzzySegmentsOp () : m_bEnabled(false) {_initMaps();}
+    unsigned operator () (IPySegmentor::TSegmentVec&, IPySegmentor::TSegmentVec&, std::string&);
+
+    void setEnable (bool value=true) {m_bEnabled = value;}
+    bool isEnabled () {return m_bEnabled;}
+
+private:
+    void        _initMaps ();
+    unsigned    _invalidateSegments (IPySegmentor::TSegmentVec&, IPySegmentor::TSegment&);
+
+    bool                      m_bEnabled;
+    CInnerFuzzyFinalMap       m_fuzzyFinalMap;
+    CFuzzySyllableMap         m_fuzzyPreMap;
+    CFuzzySyllableMap         m_fuzzyProMap;
+};
+
 class CQuanpinSegmentor : public IPySegmentor
 {
 public:
     CQuanpinSegmentor ();
 
-    virtual TSegmentVec& getSegments () {return m_segs;}
-    virtual const wstring& getInputBuffer () const {return m_inputBuf;}
+    virtual TSegmentVec& getSegments () 
+    {
+        if (m_pGetFuzzySegmentsOp && m_pGetFuzzySegmentsOp->isEnabled()) {
+            m_merged_segs = m_segs;
+            std::copy (m_fuzzy_segs.begin(), m_fuzzy_segs.end(), back_inserter(m_merged_segs));
+            std::sort (m_merged_segs.begin(), m_merged_segs.end());
+            return m_merged_segs;
+        }
+
+        return m_segs;
+    }
+
+    virtual const wstring& getInputBuffer ()
+    {
+        m_wideInputBuf.assign(m_inputBuf.begin(), m_inputBuf.end());
+        return m_wideInputBuf;
+    }
+
     virtual const char* getSylSeps () {return "'";}
 
     virtual unsigned push (unsigned ch);
@@ -143,8 +125,9 @@ public:
 
     bool load(const char * pyTrieFileName);
     
-    void setGetFuzzySyllablesOp (CGetFuzzySyllablesOp *op) {m_pGetFuzzySyllablesOp = op;}
+    void setGetFuzzySyllablesOp (CGetFuzzySyllablesOp<CPinyinData> *op) {m_pGetFuzzySyllablesOp = op;}
     void setGetCorrectionPairOp (CGetCorrectionPairOp *op) {m_pGetCorrectionPairOp = op;}
+    void setGetFuzzySegmentsOp  (CGetFuzzySegmentsOp  *op) {m_pGetFuzzySegmentsOp  = op;}
 
 private:
     inline unsigned _push  (unsigned ch);
@@ -152,15 +135,19 @@ private:
     inline void _addFuzzySyllables (TSegment &seg);
     inline unsigned _updateWith (const std::string& new_pystr, unsigned from = UINT_MAX);
     
-    CGetFuzzySyllablesOp       *m_pGetFuzzySyllablesOp;
-    CGetCorrectionPairOp       *m_pGetCorrectionPairOp;
+    CGetFuzzySyllablesOp<CPinyinData>  *m_pGetFuzzySyllablesOp;
+    CGetCorrectionPairOp               *m_pGetCorrectionPairOp;
+    CGetFuzzySegmentsOp                *m_pGetFuzzySegmentsOp;
 
-    CDATrie<short>              m_pytrie;
-    std::string                 m_pystr;
-    wstring                     m_inputBuf;
-    TSegmentVec                 m_segs;
+    CDATrie<short>                      m_pytrie;
+    std::string                         m_pystr;
+    std::string                         m_inputBuf;
+    wstring                             m_wideInputBuf;
+    TSegmentVec                         m_segs;
+    TSegmentVec                         m_fuzzy_segs;
+    TSegmentVec                         m_merged_segs;
 
-    unsigned                    m_updatedFrom;
+    unsigned                            m_updatedFrom;
 };
 
 #endif /* SUNPY_PINYIN_SEG_H */

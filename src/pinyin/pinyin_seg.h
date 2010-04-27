@@ -44,6 +44,7 @@
 #include "datrie.h"
 #include "utils.h"
 
+#include <algorithm>
 #include <climits>
 
 class CGetCorrectionPairOp : private CNonCopyable

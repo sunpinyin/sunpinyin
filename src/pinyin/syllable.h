@@ -41,6 +41,8 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <cstdio>
+
 #include "utils.h"
 
 #ifdef HAVE_CONFIG_H

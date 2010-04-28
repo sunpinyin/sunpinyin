@@ -127,7 +127,7 @@ public:
     void setAutoCorrectionPairs (const string_pairs& pairs) 
         {m_getCorrectionPairOp.setCorrectionPairs (pairs);}
 
-    void setFuzzySegments (bool v=true)
+    void setFuzzySegmentation (bool v=true)
         {m_getFuzzySegmentsOp.setEnable (v);}
 
     virtual bool onConfigChanged(const COptionEvent& event);

@@ -253,3 +253,6 @@
 
 /* Class = "NSTextFieldCell"; title = "Version 2.0.2\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>"; ObjectID = "746"; */
 "746.title" = "版本 2.0.2\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>";
+
+/* Class = "NSButtonCell"; title = "Smarter Segmentation (only applicable for QuanPin)"; ObjectID = "748"; */
+"748.title" = "智能切分（仅适用于全拼）";

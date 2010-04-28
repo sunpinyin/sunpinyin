@@ -466,7 +466,6 @@ void CIMIContext::_backTraceBestPaths ()
     printf ("best lattice path: ");
     for (it = m_bestPath.begin(); it != m_bestPath.end(); ++it)
         printf ("%d ", *it);
-    printf ("\n");
 
     printf ("best segments path: ");
     for (it = m_bestSegPath.begin(); it != m_bestSegPath.end(); ++it)

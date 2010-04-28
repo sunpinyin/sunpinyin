@@ -88,7 +88,12 @@ struct TLexiconState {
         m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(isFuzzy) {}
 
     TLexiconState (unsigned start, unsigned wid):
-        m_start(start), m_pPYNode(NULL), m_bPinyin(false) {m_words.push_back(wid);}
+        m_start(start), m_pPYNode(NULL), m_bPinyin(false)
+        {
+            m_words.push_back(wid);
+            m_seg_path.push_back (start);
+            m_seg_path.push_back (start+1);
+        }
 
     const CPinyinTrie::TWordIdInfo *getWords (unsigned &num);
     void print (std::string prefix) const;

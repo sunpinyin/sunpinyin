@@ -75,7 +75,7 @@ public:
     typedef std::map<unsigned, std::pair<char, unsigned> > CFuzzySyllableMap;
 
     CGetFuzzySegmentsOp () : m_bEnabled(false) {_initMaps();}
-    unsigned operator () (IPySegmentor::TSegmentVec&, IPySegmentor::TSegmentVec&, std::string&);
+    unsigned operator () (IPySegmentor::TSegmentVec&, IPySegmentor::TSegmentVec&, wstring&);
 
     void setEnable (bool value=true) {m_bEnabled = value;}
     bool isEnabled () {return m_bEnabled;}
@@ -107,11 +107,7 @@ public:
         return m_segs;
     }
 
-    virtual const wstring& getInputBuffer ()
-    {
-        m_wideInputBuf.assign(m_inputBuf.begin(), m_inputBuf.end());
-        return m_wideInputBuf;
-    }
+    virtual const wstring& getInputBuffer () {return m_inputBuf;}
 
     virtual const char* getSylSeps () {return "'";}
 
@@ -142,8 +138,7 @@ private:
 
     CDATrie<short>                      m_pytrie;
     std::string                         m_pystr;
-    std::string                         m_inputBuf;
-    wstring                             m_wideInputBuf;
+    wstring                             m_inputBuf;
     TSegmentVec                         m_segs;
     TSegmentVec                         m_fuzzy_segs;
     TSegmentVec                         m_merged_segs;

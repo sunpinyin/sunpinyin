@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
         AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs);
     }
 
-    AQuanpinSchemePolicy::instance().setFuzzySegments(true);
+    AQuanpinSchemePolicy::instance().setFuzzySegmentation(true);
 
     //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
     CIMIView *pv = factory.createSession ();

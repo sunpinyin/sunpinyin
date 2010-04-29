@@ -79,14 +79,14 @@ void CGetFuzzySegmentsOp::_initMaps ()
 
     while (*fuzzy_pre_syls) {
         unsigned  s = *(fuzzy_pre_syls++);
-        unsigned  c = *(fuzzy_pre_syls++);
+        char      c = *(fuzzy_pre_syls++);
         unsigned _s = *(fuzzy_pre_syls++);
         m_fuzzyPreMap.insert (std::make_pair(s, std::make_pair(c, _s)));
     }
 
     while (*fuzzy_pro_syls) {
         unsigned  s = *(fuzzy_pro_syls++);
-        unsigned  c = *(fuzzy_pro_syls++);
+        char      c = *(fuzzy_pro_syls++);
         unsigned _s = *(fuzzy_pro_syls++);
         m_fuzzyProMap.insert (std::make_pair(s, std::make_pair(c, _s)));
     }
@@ -116,7 +116,7 @@ unsigned CGetFuzzySegmentsOp::_invalidateSegments (IPySegmentor::TSegmentVec& fu
     return invalidatedFrom;
 }
 
-unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPySegmentor::TSegmentVec& fuzzy_segs, std::string& input)
+unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPySegmentor::TSegmentVec& fuzzy_segs, wstring& input)
 {
     IPySegmentor::TSegment&  seg = segs.back();
     unsigned invalidatedFrom = _invalidateSegments (fuzzy_segs, seg);
@@ -133,7 +133,16 @@ unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPyS
             unsigned    an_len = it->second.second;
 
             unsigned    xi_len = seg.m_len - an_len;
-            std::string xi_str = input.substr (seg.m_start, xi_len);
+            wstring     wstr   = input.substr (seg.m_start, xi_len);
+
+#ifndef _RW_STD_STL
+            std::string xi_str (wstr.begin(), wstr.end());
+#else
+            std::string xi_str;
+            for (wstring::iterator it = wstr.begin(); it != wstr.end(); ++it)
+                xi_str.push_back (*it);
+#endif
+
             unsigned    xi_syl = CPinyinData::encodeSyllable (xi_str.c_str());
 
             if (0 == xi_syl)

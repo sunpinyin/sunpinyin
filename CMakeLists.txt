@@ -66,11 +66,12 @@ set(LMTARGET        "lm_sc")
 
 set(SLM_SRC_DIR     "${SOURCE_DIR}/slm")
 set(LEXICON_SRC_DIR "${SOURCE_DIR}/lexicon")
+set(IMECORE_DIR     "${SOURCE_DIR}/ime-core")
 set(PINYIN_SRC_DIR  "${SOURCE_DIR}/pinyin")
 set(TSLMENDIAN_DIR  "${SLM_SRC_DIR}/tslmendian")
 
 add_definitions(-DHAVE_CONFIG_H)
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${PINYIN_SRC_DIR} ${TSLMENDIAN_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR} ${PINYIN_SRC_DIR} ${IMECORE_DIR} ${TSLMENDIAN_DIR})
 
 set(GENPYT_SOURCES 
     ${SOURCE_DIR}/portability.cpp ${SOURCE_DIR}/portability.h host_os.h

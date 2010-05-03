@@ -106,7 +106,7 @@ if GetOption('prefix') is not None:
 cflags += ('-DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
 libdir = prefix+'/lib'
 libdatadir = libdir+'/sunpinyin/data'
-headersdir = prefix+'/include/sunpinyin2.0'
+headersdir = prefix+'/include/sunpinyin-2.0'
 
 #
 #==============================environment==============================
@@ -227,7 +227,7 @@ def DoConfigure():
         'prefix='+prefix,
         'exec_prefix=${prefix}',
         'libdir=${exec_prefix}/lib',
-        'includedir=${exec_prefix}/include',
+        'includedir=${exec_prefix}/include/sunpinyin-2.0',
         '',
         'Name: libsunpinyin',
         'Description: IME library based on Statistical Language Model',

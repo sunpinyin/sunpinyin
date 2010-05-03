@@ -45,6 +45,7 @@ wrapper/macos/packaging/sunpinyin_appcast.xml
 build/*
 swap/*
 !build/SConscript
+!build/Makefile.new
 
 debian/control
 

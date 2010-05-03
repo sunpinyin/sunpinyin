@@ -70,6 +70,7 @@ SunPinyinEngine::SunPinyinEngine(IBusEngine *engine)
     if (pinyin_scheme == CSunpinyinSessionFactory::QUANPIN) {
         update_fuzzy_pinyins();
         update_correction_pinyins();
+        update_fuzzy_segs();
     } else {
         update_shuangpin_type();
     }
@@ -256,6 +257,8 @@ SunPinyinEngine::onConfigChanged(const COptionEvent& event)
         update_page_key_minus();
     } else if (event.name == CONFIG_KEYBOARD_PAGE_BRACKET) {
         update_page_key_bracket();
+    } else if (event.name == CONFIG_QUANPIN_FUZZYSEGS_ENABLED) {
+        update_fuzzy_segs();
     }
     
     return false;
@@ -579,6 +582,13 @@ SunPinyinEngine::update_correction_pinyins()
     vector<string> correction_pinyins;
     correction_pinyins = m_config.get(QUANPIN_AUTOCORRECTION_PINYINS, correction_pinyins);
     AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(parse_pairs(correction_pinyins));
+}
+
+void
+SunPinyinEngine::update_fuzzy_segs()
+{
+    bool enabled = m_config.get(CONFIG_QUANPIN_FUZZYSEGS_ENABLED, false);
+    AQuanpinSchemePolicy::instance().setFuzzySegmentation(enabled);
 }
 
 void

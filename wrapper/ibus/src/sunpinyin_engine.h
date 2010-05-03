@@ -103,6 +103,7 @@ private:
     void update_punct_mappings();
     void update_fuzzy_pinyins();
     void update_correction_pinyins();
+    void update_fuzzy_segs();
     void update_shuangpin_type();
 
     void update_lookup_table();

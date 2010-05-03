@@ -276,7 +276,7 @@ PinYinJiaJia</property>
                           <widget class="GtkTable" id="table5">
                             <property name="visible">True</property>
                             <property name="border_width">10</property>
-                            <property name="n_rows">2</property>
+                            <property name="n_rows">3</property>
                             <property name="n_columns">2</property>
                             <child>
                               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/Enabled">
@@ -335,6 +335,24 @@ PinYinJiaJia</property>
                                 <property name="right_attach">2</property>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
+                                <property name="y_options">GTK_EXPAND</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <widget class="GtkCheckButton" id="QuanPin/FuzzySegs/Enabled">
+                                <property name="label" translatable="yes">Smart Segmentation</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="active">True</property>
+                                <property name="draw_indicator">True</property>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
                                 <property name="y_options">GTK_EXPAND</property>
                               </packing>
                             </child>

@@ -507,6 +507,8 @@ class MainWindow ():
                                                               'ZiGuang'], self.__xml),
             CheckBoxOption("QuanPin/Fuzzy/Enabled", False, self.__xml),
             CheckBoxOption("QuanPin/AutoCorrection/Enabled", False, self.__xml),
+            CheckBoxOption("QuanPin/FuzzySegs/Enabled", False, self.__xml),
+            
             self.__fuzzy_setup,
             self.__correction_setup,
             self.__punctmapping_setup,

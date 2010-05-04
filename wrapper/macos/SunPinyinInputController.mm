@@ -123,9 +123,6 @@ Here are the three approaches:
             NSString* string = [event characters];
             unsigned char keyChar = [string UTF8String][0];
 
-            if (modifiers & NSCommandKeyMask)
-                break;
-
             if (_englishMode) {
                 if (SWITCH_BY_CAPS == switchPolicy && isprint(keyChar)) {
                     string = (modifiers & NSShiftKeyMask)? string: [string lowercaseString];

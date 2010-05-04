@@ -45,6 +45,7 @@
 #define OSX_SHIFT_MASK        1 << 17
 #define OSX_CTRL_MASK         1 << 18
 #define OSX_ALT_MASK          1 << 19
+#define OSX_COMMAND_MASK      1 << 20
 
 #define OSX_VK_SPACE          0x31
 #define OSX_VK_MINUS          0x1B

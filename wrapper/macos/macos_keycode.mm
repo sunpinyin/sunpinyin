@@ -47,6 +47,8 @@ static unsigned osx_modifiers_to_ime_modifiers (unsigned modifiers)
         ret |= IM_CTRL_MASK;
     if (modifiers & OSX_ALT_MASK)
         ret |= IM_ALT_MASK;
+    if (modifiers & OSX_COMMAND_MASK)
+        ret |= IM_SUPER_MASK;
 
     return ret;
 }

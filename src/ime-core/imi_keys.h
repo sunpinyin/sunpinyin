@@ -43,6 +43,7 @@
 #define IM_SHIFT_MASK        (1 << 0)
 #define IM_CTRL_MASK         (1 << 2)
 #define IM_ALT_MASK          (1 << 3)
+#define IM_SUPER_MASK        (1 << 26)
 #define IM_RELEASE_MASK      (1 << 30)
 
 #define IM_VK_SPACE          ' '
@@ -85,7 +86,7 @@ struct CKeyEvent
         : code(kc), value(kv), modifiers(m)
     {
         // clear other mask bit we do not care
-        modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK);
+        modifiers &= (IM_SHIFT_MASK | IM_CTRL_MASK | IM_ALT_MASK | IM_SUPER_MASK | IM_RELEASE_MASK);
     }
     
     bool operator < (const CKeyEvent& b) const

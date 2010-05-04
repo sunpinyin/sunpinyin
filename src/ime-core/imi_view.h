@@ -134,6 +134,18 @@ public:
     {
         m_prevKey = key;
     }
+
+    void setCandiDeleteKey (const CKeyEvent& key)
+    {
+        m_candiDeleteKey = key;
+    }
+
+    bool isCandiDeleteKey (const CKeyEvent& key, unsigned candiWndSize)
+    {
+        return (key.modifiers == m_candiDeleteKey.modifiers) &&
+               (key.value >= '0' && key.value <= '9') && 
+               (candiWndSize >= 10 || key.value < ('1' + candiWndSize));
+    }
     
 private:
     bool matches(const CKeyEvent& lhs, const CKeyEvent& rhs) const
@@ -150,6 +162,7 @@ protected:
     std::set<CKeyEvent> m_modeSwitchKeys;
     CKeyEvent           m_punctSwitchKey;
     CKeyEvent           m_symbolSwitchKey;
+    CKeyEvent           m_candiDeleteKey;
     CKeyEvent           m_prevKey;
 };
 

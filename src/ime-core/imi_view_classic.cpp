@@ -164,16 +164,14 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             changeMasks |= CANDIDATE_MASK;
         }
     }
-    else if (modifiers == IM_CTRL_MASK && 
-             (keyvalue >= '0' && keyvalue <= '9') &&
-             (m_candiWindowSize >= 10 || keyvalue < ('1' + m_candiWindowSize)) &&
+    else if (m_pHotkeyProfile && m_pHotkeyProfile->isCandiDeleteKey(key, m_candiWindowSize) &&
              !m_pIC->isEmpty ()) {
         changeMasks |= KEYEVENT_USED;
         unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');        
         _deleteCandidate (sel, changeMasks);
         goto PROCESSED;
 
-    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_RELEASE_MASK)) == 0) {
+    } else if ((modifiers & (IM_CTRL_MASK | IM_ALT_MASK | IM_SUPER_MASK | IM_RELEASE_MASK)) == 0) {
         if ((keyvalue >= '0' && keyvalue <= '9') &&
                    (m_candiWindowSize >= 10 || keyvalue < ('1' + m_candiWindowSize))) { // try to make selection
             if (!m_pIC->isEmpty ()) {

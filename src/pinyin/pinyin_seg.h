@@ -98,9 +98,10 @@ public:
     virtual TSegmentVec& getSegments () 
     {
         if (m_pGetFuzzySegmentsOp && m_pGetFuzzySegmentsOp->isEnabled()) {
-            m_merged_segs = m_segs;
-            std::copy (m_fuzzy_segs.begin(), m_fuzzy_segs.end(), back_inserter(m_merged_segs));
-            std::sort (m_merged_segs.begin(), m_merged_segs.end());
+            m_merged_segs.clear();
+            std::merge (m_segs.begin(),         m_segs.end(),
+                        m_fuzzy_segs.begin(),   m_fuzzy_segs.end(),
+                        back_inserter(m_merged_segs));
             return m_merged_segs;
         }
 

@@ -254,6 +254,12 @@ void CIMIContext::_forwardSyllableSep (unsigned i, unsigned j)
     CLatticeFrame &fr = m_lattice[j];
     fr.m_type = CLatticeFrame::SYLLABLE | CLatticeFrame::SYLLABLE_SEP;
     fr.m_lexiconStates = m_lattice[i].m_lexiconStates;
+
+    CLexiconStates::iterator it  = fr.m_lexiconStates.begin();
+    CLexiconStates::iterator ite = fr.m_lexiconStates.end();
+    for (; it != ite; ++it) {
+        it->m_seg_path.back() = j;
+    }
 }
 
 void CIMIContext::_forwardPunctChar (unsigned i, unsigned j, unsigned ch)

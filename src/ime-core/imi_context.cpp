@@ -175,9 +175,8 @@ void CIMIContext::_forwardSyllables (unsigned i, unsigned j, const IPySegmentor:
     std::vector<unsigned>::const_iterator it  = seg.m_syllables.begin ();
     std::vector<unsigned>::const_iterator ite = seg.m_syllables.end ();
 
-    _forwardSingleSyllable (i, j, *it, seg, false);
-    for (++it; it != ite; ++it)
-        _forwardSingleSyllable (i, j, *it, seg, true);
+    for (; it != ite; ++it)
+        _forwardSingleSyllable (i, j, *it, seg);
 }
 
 
@@ -193,7 +192,7 @@ void CIMIContext::_forwardString (unsigned i, unsigned j, const std::vector<unsi
     }
 }
 
-void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable, const IPySegmentor::TSegment& seg, bool isFuzzy)
+void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable, const IPySegmentor::TSegment& seg)
 {
     const CPinyinTrie::TNode * pn = NULL;
 
@@ -212,7 +211,7 @@ void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syll
             pn = m_pPinyinTrie->transfer (lxst.m_pPYNode, syllable);
             if (pn) {
                 added_from_sysdict = true;
-                TLexiconState new_lxst = TLexiconState (lxst.m_start, pn, lxst.m_syls, lxst.m_seg_path, isFuzzy);
+                TLexiconState new_lxst = TLexiconState (lxst.m_start, pn, lxst.m_syls, lxst.m_seg_path);
                 new_lxst.m_syls.push_back (syllable);
                 new_lxst.m_seg_path.push_back (seg.m_start+seg.m_len);
                 fr.m_lexiconStates.push_back (new_lxst);
@@ -228,7 +227,7 @@ void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syll
             if (!words.empty() || !added_from_sysdict) {
                 // even if the words is empty we'll add a fake lexicon
                 // here. This helps _saveUserDict detect new words.
-                TLexiconState new_lxst = TLexiconState (lxst.m_start, lxst.m_syls, lxst.m_seg_path, words, isFuzzy);
+                TLexiconState new_lxst = TLexiconState (lxst.m_start, lxst.m_syls, lxst.m_seg_path, words);
                 new_lxst.m_syls.push_back (syllable);
                 new_lxst.m_seg_path.push_back (seg.m_start+seg.m_len);
                 fr.m_lexiconStates.push_back (new_lxst);
@@ -244,7 +243,7 @@ void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syll
         std::vector<unsigned> seg_path;
         seg_path.push_back (seg.m_start);
         seg_path.push_back (seg.m_start+seg.m_len);
-        TLexiconState new_lxst = TLexiconState (i, pn, syls, seg_path, isFuzzy);
+        TLexiconState new_lxst = TLexiconState (i, pn, syls, seg_path);
         fr.m_lexiconStates.push_back (new_lxst);
     }
 }
@@ -351,13 +350,12 @@ bool CIMIContext::searchFrom (unsigned idx)
                 affectCandidates = true;
 
             /* only selected the word with higher unigram probablities */
-            int maxsz = it->m_bFuzzy? MAX_LEXICON_TRIES>1: MAX_LEXICON_TRIES;
+            int maxsz = MAX_LEXICON_TRIES;
             int sz = word_num<maxsz? word_num: maxsz;
             int i = 0, count = 0;
-            double ic = it->m_bFuzzy? 0.5: 1.0;
             for (i = 0; count < sz && i < sz && (words[i].m_bSeen || count < 2); ++i) {
                 if (m_csLevel >= words[i].m_csLevel) {
-                    _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id, ic);
+                    _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id);
                     ++ count;
                 }
             }
@@ -366,7 +364,7 @@ bool CIMIContext::searchFrom (unsigned idx)
             if (m_pHistory) {
                 for (; i < word_num; ++i) {
                     if (m_csLevel >= words[i].m_csLevel && m_pHistory->seenBefore (words[i].m_id))
-                        _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id, ic);
+                        _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id);
                 }
             }
         }
@@ -694,7 +692,7 @@ void CIMIContext::_saveUserDict ()
         CLexiconStates::iterator lxit  = m_lattice[*it].m_lexiconStates.begin();
         CLexiconStates::iterator lxite = m_lattice[*it].m_lexiconStates.end();
         for (; lxit != lxite; ++lxit) {
-            if (lxit->m_start == 0 && !lxit->m_bFuzzy && lxit->m_seg_path == m_bestSegPath) { //FIXME: need better solution later
+            if (lxit->m_start == 0 && lxit->m_seg_path == m_bestSegPath) { //FIXME: need better solution later
                 syls = lxit->m_syls;
                 break;
             }

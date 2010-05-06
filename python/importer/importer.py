@@ -2,7 +2,7 @@
 import os, sys
 import sqlite3 as sqlite
 import imdict, trie
-from pinyin_data import valid_syllables, decode_syllable
+from pinyin_data import valid_syllables, decode_syllable, initials, finals
 
 def get_userdict_path ():
     homedir = os.environ.get("HOME")
@@ -78,3 +78,22 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
                 pass
 
     db.close()
+
+def export_sunpinyin_user_dict (userdict_path=''):
+    userdict_path = userdict_path if userdict_path else get_userdict_path()
+    db = sqlite.connect (userdict_path)
+
+    sqlstring = "SELECT * FROM dict"
+    result = list (db.execute (sqlstring).fetchall ())
+
+    for record in result:
+        id   = record[0]
+        l    = record[1]
+        i    = record[2:8]
+        f    = record[8:14]
+        str  = record[-1]
+        syls = [initials[i[x]] + finals[f[x]] for x in range(l)]
+        print str.encode ('UTF-8'), id, "'".join(syls) 
+        
+if __name__ == "__main__":
+    export_sunpinyin_user_dict ('/Users/yongsun/.sunpinyin/userdict')

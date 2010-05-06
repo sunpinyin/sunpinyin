@@ -118,8 +118,8 @@ public:
     void setFuzzyForwarding (bool v=true)
         {m_getFuzzySyllablesOp.setEnable (v);}
 
-    void setFuzzyPinyinPairs (const string_pairs& pairs)
-        {m_getFuzzySyllablesOp.initFuzzyMap (pairs);}
+    void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
+        {m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}
 
     void setAutoCorrecting (bool v=true)
         {m_getCorrectionPairOp.setEnable (v);}
@@ -161,8 +161,8 @@ public:
     void setFuzzyForwarding (bool v=true)
         {m_getFuzzySyllablesOp.setEnable (v);}
 
-    void setFuzzyPinyinPairs (const string_pairs& pairs)
-        {m_getFuzzySyllablesOp.initFuzzyMap (pairs);}
+    void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
+        {m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}
 
     virtual bool onConfigChanged(const COptionEvent& event);
     

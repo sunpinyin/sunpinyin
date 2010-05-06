@@ -676,33 +676,24 @@ void CIMIContext::_saveUserDict ()
     if (m_bestPath.empty())
         return;
     
+    CSyllables syls;
+    unsigned s = 0;
     bool has_user_selected = false;
     std::vector<unsigned>::iterator it  = m_bestPath.begin();
     std::vector<unsigned>::iterator ite = m_bestPath.end() - 1;
-    unsigned s = 0;
     for (; it != ite; ++it, ++s) {
-        has_user_selected |= (m_lattice[*it].m_bwType & CLatticeFrame::USER_SELECTED);
-        if (!m_lattice[*it].isSyllableFrame ())
+        CLatticeFrame &fr = m_lattice[*it];
+        if (!fr.isSyllableFrame ())
             break;
+        has_user_selected |= (fr.m_bwType & CLatticeFrame::USER_SELECTED);
+        CSyllables &tmp = fr.m_bestWord.m_pLexiconState->m_syls;
+        std::copy (tmp.begin(), tmp.end(), back_inserter(syls));
     }
 
-    if (has_user_selected && s >= 2) {
-        CSyllables syls;
-        -- it;
-        CLexiconStates::iterator lxit  = m_lattice[*it].m_lexiconStates.begin();
-        CLexiconStates::iterator lxite = m_lattice[*it].m_lexiconStates.end();
-        for (; lxit != lxite; ++lxit) {
-            if (lxit->m_start == 0 && lxit->m_seg_path == m_bestSegPath) { //FIXME: need better solution later
-                syls = lxit->m_syls;
-                break;
-            }
-        }
-
-        if (!syls.empty()) {
-            wstring phrase;
-            getBestSentence (phrase, 0, *it);
-            m_pUserDict->addWord (syls, phrase);
-        }
+    if (s >= 2 && has_user_selected && !syls.empty()) {
+        wstring phrase;
+        getBestSentence (phrase, 0, *it);
+        m_pUserDict->addWord (syls, phrase);
     }
 }
 

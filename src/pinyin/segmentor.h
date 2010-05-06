@@ -65,7 +65,6 @@ struct IPySegmentor
         }
 
         // if segment is a STRING type, m_syllables may contain the string buffer without the '\0'
-        // for multiple syllables in one seg, the non-0th elements are treated as fuzzy syllables
         std::vector<unsigned>   m_syllables;
         unsigned                m_start        : 16;
         unsigned                m_len          : 8;

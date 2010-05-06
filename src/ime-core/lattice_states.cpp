@@ -63,7 +63,7 @@ TLexiconState::print (std::string prefix) const
     printf ("from frame[%d] ", m_start);
 
     if (m_bPinyin) {
-        printf ("%sdict %s ", m_pPYNode?"sys":"usr", m_bFuzzy?"fuzzy":"");
+        printf ("%sdict %s ", m_pPYNode?"sys":"usr");
         if (!m_syls.empty()) {
             printf ("pinyin: ");
             CSyllables::const_iterator it  = m_syls.begin();

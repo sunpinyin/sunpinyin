@@ -104,23 +104,22 @@ public:
     void setEnable (bool value=true) {m_bEnabled = value;}
     bool isEnabled () {return m_bEnabled;}
 
-    void initFuzzyMap (const string_pairs& fuzzyPairs)
+    void initFuzzyMap (const string_pairs& fuzzyPairs, bool duplex = true)
         {
-            m_fuzzyMap.clear();
-
             string_pairs::const_iterator it =  fuzzyPairs.begin();
             string_pairs::const_iterator ite = fuzzyPairs.end();
 
-            for (; it != ite; ++it)
-            {
+            for (; it != ite; ++it) {
                 const std::string i = it->first;
                 const std::string j = it->second;
+               
+                if (m_fuzzyMap.find(i) == m_fuzzyMap.end())
+                    m_fuzzyMap.insert (std::pair<const std::string, std::string> (i, j));
 
-                m_fuzzyMap.insert (std::pair<const std::string, std::string> (i, j));
-                m_fuzzyMap.insert (std::pair<const std::string, std::string> (j, i));
+                if (duplex && m_fuzzyMap.find(j) == m_fuzzyMap.end())
+                    m_fuzzyMap.insert (std::pair<const std::string, std::string> (j, i));
             }
         }
-
 
     CSyllables operator () (TSyllable s)
         {

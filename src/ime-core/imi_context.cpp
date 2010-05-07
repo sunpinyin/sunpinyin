@@ -536,21 +536,26 @@ const TWCHAR *CIMIContext::_getWstr (unsigned wid)
 void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
 {
     TCandiPair cp;
-    static std::map<unsigned, TCandiPair> map;
-    std::map<unsigned, TCandiPair>::iterator it_map;
+    static std::map<wstring, TCandiPair> map;
+    std::map<wstring, TCandiPair>::iterator it_map;
 
     map.clear();
     result.clear();
 
+    /* FIXME: need better solution later */
+    wstring tail_sentence;
+    unsigned word_num = getBestSentence (tail_sentence, frIdx);
+    if (word_num <= 1)
+        tail_sentence.clear();
+        
     int len = 1;
     cp.m_candi.m_start = m_candiStarts = frIdx++;
 
-    wstring best_sentence;
-    if (m_bestPath.size() > 2) // FIXME: need better solution later
-        getBestSentence(best_sentence);
-
     for (;frIdx < m_tailIdx; ++frIdx, ++len)  {
         CLatticeFrame &fr = m_lattice[frIdx];
+
+        if (!fr.isSyllableFrame ())
+            continue;
 
         cp.m_candi.m_end = frIdx;
         if (fr.m_bwType != CLatticeFrame::NO_BESTWORD && fr.m_bestWord.m_start == m_candiStarts) {
@@ -558,11 +563,8 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
             cp.m_Rank = TCandiRank(fr.m_bwType & CLatticeFrame::USER_SELECTED,
                                    fr.m_bwType & CLatticeFrame::BESTWORD,
                                    0, false, 0);
-            map [cp.m_candi.m_wordId] = cp;
+            map [cp.m_candi.m_cwstr] = cp;
         }
-
-        if (!fr.isSyllableFrame ())
-            continue;
 
         bool found = false;
         CLexiconStates::iterator it  = fr.m_lexiconStates.begin();
@@ -584,14 +586,14 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 cp.m_candi.m_wordId = words[i].m_id;
                 cp.m_candi.m_cwstr = _getWstr (cp.m_candi.m_wordId);
                 cp.m_candi.m_pLexiconState = &lxst;
-                if (!cp.m_candi.m_cwstr || !best_sentence.compare(cp.m_candi.m_cwstr)) // FIXME: may need better solution later
+                if (!cp.m_candi.m_cwstr || (!tail_sentence.compare(cp.m_candi.m_cwstr) && cp.m_candi.m_wordId <= INI_USRDEF_WID))
                     continue;
 
                 //sorting according to the order in PinYinTire
                 cp.m_Rank = TCandiRank(false, false, len, false, i);
-                it_map = map.find(cp.m_candi.m_wordId);
+                it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
-                    map[cp.m_candi.m_wordId] = cp;
+                    map [cp.m_candi.m_cwstr] = cp;
             }
         }
 
@@ -609,13 +611,13 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 cp.m_candi.m_wordId = ltst.m_backTraceWordId;
                 cp.m_candi.m_cwstr = _getWstr (cp.m_candi.m_wordId);
                 cp.m_candi.m_pLexiconState = ltst.m_pLexiconState;
-                if (!cp.m_candi.m_cwstr || !best_sentence.compare(cp.m_candi.m_cwstr)) // FIXME: may need better solution later
+                if (!cp.m_candi.m_cwstr || (!tail_sentence.compare(cp.m_candi.m_cwstr) && cp.m_candi.m_wordId <= INI_USRDEF_WID))
                     continue;
 
                 cp.m_Rank = TCandiRank(false, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
-                it_map = map.find(cp.m_candi.m_wordId);
+                it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
-                    map[cp.m_candi.m_wordId] = cp;
+                    map[cp.m_candi.m_cwstr] = cp;
             }
         }
 
@@ -625,7 +627,7 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
     std::vector<TCandiPairPtr> vec;
 
     vec.reserve(map.size());
-    std::map<unsigned, TCandiPair>::iterator it_mapE = map.end();
+    std::map<wstring, TCandiPair>::iterator it_mapE = map.end();
     for (it_map = map.begin(); it_map != it_mapE; ++it_map)
         vec.push_back(TCandiPairPtr(&(it_map->second)));
     std::make_heap(vec.begin(), vec.end());

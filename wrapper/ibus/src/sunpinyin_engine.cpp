@@ -35,6 +35,8 @@
 
 #include <cassert>
 #include <algorithm>
+#include <sstream>
+
 #include <imi_view.h>
 #include <imi_options.h>
 #include <imi_keys.h>
@@ -47,7 +49,6 @@
 #include "imi_ibus_win.h"
 #include "ibus_portable.h"
 #include "sunpinyin_engine.h"
-#include <sstream>
 
 using namespace std;
 
@@ -501,17 +502,20 @@ string_pairs parse_pairs(const vector<string>& strings)
     string_pairs pairs;
     for (vector<string>::const_iterator pair = strings.begin();
          pair != strings.end(); ++pair) {
+        
         std::string::size_type found = pair->find(':');
         if (found == pair->npos || pair->length() < 3)
             continue;
         if (found == 0 && (*pair)[0] == ':')
             found = 1;
+        
         pairs.push_back(make_pair(pair->substr(0, found),
                                   pair->substr(found+1)));
     }
     return pairs;
 }
 
+// the mappings in pairs2 will override the ones in pairs1
 string_pairs merge_pairs(const string_pairs& pairs1,
                          const string_pairs& pairs2)
 {
@@ -545,8 +549,8 @@ SunPinyinEngine::update_punct_mappings()
     if (m_config.get(PINYIN_PUNCTMAPPING_ENABLED, false)) {
         vector<string> mappings;
         mappings = m_config.get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
-        string_pairs pairs(merge_pairs(parse_pairs(mappings),
-                                       policy.getDefaultPunctMapping()));
+        string_pairs pairs(merge_pairs(policy.getDefaultPunctMapping(),
+                                       parse_pairs(mappings)));
         policy.setPunctMapping(pairs);
     }
 }

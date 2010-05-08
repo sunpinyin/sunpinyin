@@ -542,12 +542,6 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
     map.clear();
     result.clear();
 
-    /* FIXME: need better solution later */
-    wstring tail_sentence;
-    unsigned word_num = getBestSentence (tail_sentence, frIdx);
-    if (word_num <= 1)
-        tail_sentence.clear();
-        
     int len = 1;
     cp.m_candi.m_start = m_candiStarts = frIdx++;
 
@@ -586,11 +580,12 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 cp.m_candi.m_wordId = words[i].m_id;
                 cp.m_candi.m_cwstr = _getWstr (cp.m_candi.m_wordId);
                 cp.m_candi.m_pLexiconState = &lxst;
-                if (!cp.m_candi.m_cwstr || (!tail_sentence.compare(cp.m_candi.m_cwstr) && cp.m_candi.m_wordId <= INI_USRDEF_WID))
+                if (!cp.m_candi.m_cwstr)
                     continue;
 
                 //sorting according to the order in PinYinTire
-                cp.m_Rank = TCandiRank(false, false, len, false, i);
+                bool is_user_word = cp.m_candi.m_wordId > INI_USRDEF_WID;
+                cp.m_Rank = TCandiRank(is_user_word, false, len, false, i);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
                     map [cp.m_candi.m_cwstr] = cp;
@@ -611,10 +606,11 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 cp.m_candi.m_wordId = ltst.m_backTraceWordId;
                 cp.m_candi.m_cwstr = _getWstr (cp.m_candi.m_wordId);
                 cp.m_candi.m_pLexiconState = ltst.m_pLexiconState;
-                if (!cp.m_candi.m_cwstr || (!tail_sentence.compare(cp.m_candi.m_cwstr) && cp.m_candi.m_wordId <= INI_USRDEF_WID))
+                if (!cp.m_candi.m_cwstr)
                     continue;
 
-                cp.m_Rank = TCandiRank(false, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
+                bool is_user_word = cp.m_candi.m_wordId > INI_USRDEF_WID;
+                cp.m_Rank = TCandiRank(is_user_word, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
                     map[cp.m_candi.m_cwstr] = cp;

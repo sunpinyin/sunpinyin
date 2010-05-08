@@ -520,7 +520,6 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt, bool revert_endian)
             wi.m_id = itv->m_id.anony.m_id;
             assert (wi.m_id < nWord);
             wi.m_csLevel = itv->m_id.anony.m_csLevel;
-            wi.m_len = m_Lexicon[itv->m_id.anony.m_id].size();
             wi.m_bSeen = ((itv->m_bSeen)?(1):(0));
             wi.m_cost = itv->m_id.anony.m_cost;
             suc = f.write(wi);

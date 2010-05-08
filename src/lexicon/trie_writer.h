@@ -75,7 +75,6 @@ class OtherEndian<CPinyinTrie::TWordIdInfo>
     struct TWordIdInfo_BE {
         unsigned        m_bSeen    : 1;
         unsigned        m_cost     : 5;
-        unsigned        m_len      : 6;
         unsigned        m_csLevel  : 2;
         unsigned        m_id       : WORD_ID_WIDTH;
     };
@@ -83,7 +82,6 @@ class OtherEndian<CPinyinTrie::TWordIdInfo>
     struct TWordIdInfo_LE {
         unsigned        m_id       : WORD_ID_WIDTH;
         unsigned        m_csLevel  : 2;
-        unsigned        m_len      : 6;
         unsigned        m_cost     : 5;
         unsigned        m_bSeen    : 1;
     };
@@ -96,7 +94,6 @@ public:
         TargetType to;
         to.m_id = from.m_id;
         to.m_csLevel = from.m_csLevel;
-        to.m_len = from.m_len;
         to.m_bSeen = from.m_bSeen;
         to.m_cost = from.m_cost;
         return to;

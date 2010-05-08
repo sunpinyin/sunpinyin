@@ -175,7 +175,6 @@ void CUserDict::getWords (CSyllables &syllables,
         MBSTOWCS(cwstr, (const char*)utf8str, MAX_USRDEF_WORD_LEN);
 
         word.m_id = id + INI_USRDEF_WID;
-        word.m_len = length;
         word.m_bSeen = 1;
         result.push_back (word);
 

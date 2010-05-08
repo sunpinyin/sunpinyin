@@ -8,8 +8,15 @@ def load_google_user_dict (fname):
     result = []
     f = codecs.open (fname, "r", "GB18030")
     for l in f:
-        utf8str, _, pystr = l.strip().split("\t")
-        pystr = '\''.join (pystr.split(' '))
+        v = l.strip().split()
+        utf8str = v[0]
+
+        try:
+            freq = int(v[1])
+            pystr = '\''.join (v[2:])
+        except:
+            pystr = '\''.join (v[1:])
+
         result.append ((pystr, utf8str))
 
     return result

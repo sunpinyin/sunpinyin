@@ -509,7 +509,6 @@ CIMIClassicView::_moveLeftSyllable (unsigned& mask, bool searchAgain)
     if (m_cursorFrIdx == 0)
         return 0;
 
-    unsigned i, j;
     mask |= PREEDIT_MASK;
 
     if (m_cursorFrIdx == m_candiFrIdx) {
@@ -518,8 +517,9 @@ CIMIClassicView::_moveLeftSyllable (unsigned& mask, bool searchAgain)
         _getCandidates ();
     }
 
-    m_pPySegmentor->locateSegment (m_cursorFrIdx-1, i, j);
-    return m_cursorFrIdx = i;
+    std::vector<unsigned>& seg_path = m_pIC->getBestSegPath();
+    std::vector<unsigned>::iterator it = std::upper_bound (seg_path.begin(), seg_path.end(), m_cursorFrIdx-1);
+    return m_cursorFrIdx = *(--it);
 }
 
 unsigned
@@ -567,11 +567,11 @@ unsigned
 CIMIClassicView::_moveRightSyllable (unsigned& mask)
 {
     if (m_cursorFrIdx < m_pIC->getLastFrIdx ()) {
-        unsigned i=0, j=0;
         mask |= PREEDIT_MASK;
 
-        m_pPySegmentor->locateSegment (m_cursorFrIdx, i, j);
-        m_cursorFrIdx = i + m_pPySegmentor->getSegments()[j].m_len;
+        std::vector<unsigned>& seg_path = m_pIC->getBestSegPath();
+        std::vector<unsigned>::iterator it = std::upper_bound (seg_path.begin(), seg_path.end(), m_cursorFrIdx);
+        m_cursorFrIdx = *it;
     }
 
     return m_cursorFrIdx;

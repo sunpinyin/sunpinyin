@@ -584,10 +584,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                     continue;
 
                 //sorting according to the order in PinYinTire
-                bool is_user_word = cp.m_candi.m_wordId > INI_USRDEF_WID;
-                cp.m_Rank = TCandiRank(is_user_word, false, len, false, i);
+                cp.m_Rank = TCandiRank(false, false, len, false, i);
                 it_map = map.find(cp.m_candi.m_cwstr);
-                if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
+                if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
                     map [cp.m_candi.m_cwstr] = cp;
             }
         }
@@ -609,10 +608,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 if (!cp.m_candi.m_cwstr)
                     continue;
 
-                bool is_user_word = cp.m_candi.m_wordId > INI_USRDEF_WID;
-                cp.m_Rank = TCandiRank(is_user_word, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
+                cp.m_Rank = TCandiRank(false, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
                 it_map = map.find(cp.m_candi.m_cwstr);
-                if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank)
+                if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
                     map[cp.m_candi.m_cwstr] = cp;
             }
         }

@@ -82,6 +82,9 @@ int main(int argc, char* argv[])
     auto_correction_pairs.push_back(make_pair("uen", "un"));
     auto_correction_pairs.push_back(make_pair("iou", "iu"));
 
+    string_pairs fuzzy_pairs;
+    fuzzy_pairs.push_back(make_pair("s", "sh"));
+
     while ((opt = getopt(argc, argv, "p:c")) != -1) {
         switch (opt) {
         case 'p':
@@ -111,6 +114,8 @@ int main(int argc, char* argv[])
         AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs);
     }
 
+    AQuanpinSchemePolicy::instance().setFuzzyForwarding(true);
+    AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(fuzzy_pairs, false);
     AQuanpinSchemePolicy::instance().setFuzzySegmentation(true);
 
     //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);

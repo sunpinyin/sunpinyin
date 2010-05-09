@@ -234,7 +234,23 @@ public:
 
     bool searchFrom (unsigned from=1);
     std::vector<unsigned>& getBestPath () {return m_bestPath;}
-    std::vector<unsigned>& getBestSegPath () {return m_bestSegPath;}
+    std::vector<unsigned>& getBestSegPath () 
+        {
+            // CIMIContext would fail to backTrace the bestPathes when there are no latticeStates
+            // on frame e.g., 'yiden' in Quanpin mode, in this case, return the original segs
+            if (m_bestSegPath.empty()) 
+            {
+                IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
+                IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
+                IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();
+                m_bestSegPath.push_back (0);
+                for (; it != ite; ++it)
+                    m_bestSegPath.push_back (it->m_start + it->m_len);
+            }
+                
+            return m_bestSegPath;
+        }
+
     unsigned getBestSentence (wstring& result, unsigned start=0, unsigned end=UINT_MAX);
 
     void getCandidates (unsigned frIdx, CCandidates& result);

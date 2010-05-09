@@ -348,81 +348,38 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
     if (pystr.empty())
         return;
 
-    /* FIXME:
-     * CIMIContext would fail to backTrace the bestPathes when there are no latticeStates
-     * on frame e.g., 'yiden' in Quanpin mode, need a better solution later!
-     */
-    if (seg_path.empty()) { 
-        IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
-        IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
-        IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();
+    std::vector<unsigned>::iterator it  = seg_path.begin() + 1;
+    std::vector<unsigned>::iterator ite = seg_path.end();
 
-        CLattice& lattice = m_pIC->getLattice ();
-        unsigned i = 0, l = 0;
-        for (; it != ite; ++it, i+=l) {
-            l = it->m_len;
+    CLattice& lattice = m_pIC->getLattice ();
+    unsigned i = 0, l = 0;
+    for (; it != ite; i=*(it++)) {
+        l = *it - i;
 
-            if (i+l <= m_candiFrIdx)
-                continue;
+        if (*it <= m_candiFrIdx)
+            continue;
 
-            if (i < m_cursorFrIdx && m_cursorFrIdx <= i+l)
-                caret = wstr.size() +  (m_cursorFrIdx-i);
+        if (i < m_cursorFrIdx && m_cursorFrIdx <= i+l)
+            caret = wstr.size() +  (m_cursorFrIdx-i);
 
-            CLatticeFrame &fr = lattice [i+l];
-            int ct = IPreeditString::PINYIN_CHAR;
-            if (fr.isSyllableSepFrame()) {
-                ct = IPreeditString::BOUNDARY | IPreeditString::USER_CHOICE;
-            } else if (fr.m_type == CLatticeFrame::ASCII) {
-                ct = IPreeditString::ASCII_CHAR;
-            } else if (fr.m_type == CLatticeFrame::SYMBOL) {
-                ct = IPreeditString::SYMBOL_CHAR;
-            }
-
-            wstr.insert (wstr.end(), pystr.begin()+i, pystr.begin()+i+l);
-            for (int c=0; c<l; ++c)
-                charTypes.push_back (ct);
-
-            if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
-                if ( it != ite -1 && !lattice[i+l+1].isSyllableSepFrame ()) {
-                    wstr.push_back (' ');
-                    charTypes.push_back (IPreeditString::BOUNDARY);
-                }
-            }
+        CLatticeFrame &fr = lattice [i+l];
+        int ct = IPreeditString::PINYIN_CHAR;
+        if (fr.isSyllableSepFrame()) {
+            ct = IPreeditString::BOUNDARY | IPreeditString::USER_CHOICE;
+        } else if (fr.m_type == CLatticeFrame::ASCII) {
+            ct = IPreeditString::ASCII_CHAR;
+        } else if (fr.m_type == CLatticeFrame::SYMBOL) {
+            ct = IPreeditString::SYMBOL_CHAR;
         }
-    } else {
-        std::vector<unsigned>::iterator it  = seg_path.begin() + 1;
-        std::vector<unsigned>::iterator ite = seg_path.end();
 
-        CLattice& lattice = m_pIC->getLattice ();
-        unsigned i = 0, l = 0;
-        for (; it != ite; i=*(it++)) {
-            l = *it - i;
+        wstr.insert (wstr.end(), pystr.begin()+i, pystr.begin()+i+l);
+        for (int c=0; c<l; ++c)
+            charTypes.push_back (ct);
 
-            if (*it <= m_candiFrIdx)
-                continue;
-
-            if (i < m_cursorFrIdx && m_cursorFrIdx <= i+l)
-                caret = wstr.size() +  (m_cursorFrIdx-i);
-
-            CLatticeFrame &fr = lattice [i+l];
-            int ct = IPreeditString::PINYIN_CHAR;
-            if (fr.isSyllableSepFrame()) {
-                ct = IPreeditString::BOUNDARY | IPreeditString::USER_CHOICE;
-            } else if (fr.m_type == CLatticeFrame::ASCII) {
-                ct = IPreeditString::ASCII_CHAR;
-            } else if (fr.m_type == CLatticeFrame::SYMBOL) {
-                ct = IPreeditString::SYMBOL_CHAR;
-            }
-
-            wstr.insert (wstr.end(), pystr.begin()+i, pystr.begin()+i+l);
-            for (int c=0; c<l; ++c)
-                charTypes.push_back (ct);
-
-            if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
-                if ( it != ite -1 && !lattice[i+l+1].isSyllableSepFrame ()) { 
-                    wstr.push_back (' ');
-                    charTypes.push_back (IPreeditString::BOUNDARY);
-                }
+        if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
+            if ( it != ite -1 && !lattice[i+l+1].isSyllableSepFrame ()) { 
+                wstr.push_back (' ');
+                charTypes.push_back (IPreeditString::BOUNDARY);
             }
         }
     }

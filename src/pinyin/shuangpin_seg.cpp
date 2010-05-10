@@ -98,7 +98,7 @@ unsigned CShuangpinSegmentor::pop ()
 unsigned CShuangpinSegmentor::insertAt (unsigned idx, unsigned ch)
 {
     unsigned pyIdx, segIdx;
-    locateSegment (idx, pyIdx, segIdx);
+    _locateSegment (idx, pyIdx, segIdx);
 
     m_inputBuf.insert (idx, 1, ch);
     m_pystr.insert (idx, 1, ch);
@@ -140,7 +140,7 @@ unsigned CShuangpinSegmentor::deleteAt (unsigned idx, bool backward)
 {
     unsigned pyIdx, segIdx;
     if (!backward) idx += 1;
-    locateSegment (idx, pyIdx, segIdx);
+    _locateSegment (idx, pyIdx, segIdx);
 
     m_inputBuf.erase (idx, 1);
     m_pystr.erase (idx, 1);
@@ -179,7 +179,7 @@ unsigned CShuangpinSegmentor::clear (unsigned from)
 unsigned CShuangpinSegmentor::_clear (unsigned from)
 {
     unsigned i, j;
-    locateSegment (from, i, j);
+    _locateSegment (from, i, j);
 
     std::string new_pystr = m_pystr.substr (i, from-i);
     m_pystr.resize (i);
@@ -212,7 +212,7 @@ int CShuangpinSegmentor::_getNumberOfNonAlpha() const
     return nNonAlpha;
 }
 
-void CShuangpinSegmentor::locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx)
+void CShuangpinSegmentor::_locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx)
 {
     strIdx = segIdx = 0;
 

@@ -87,7 +87,6 @@ struct IPySegmentor
     virtual void     notify_best_segpath (std::vector<unsigned>& seg_path) {}
 
     virtual unsigned updatedFrom () = 0;
-    virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx) = 0;
 };
 
 #endif

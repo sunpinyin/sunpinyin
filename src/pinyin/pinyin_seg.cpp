@@ -287,7 +287,7 @@ unsigned CQuanpinSegmentor::pop ()
 unsigned CQuanpinSegmentor::insertAt (unsigned idx, unsigned ch)
 {
     unsigned i, j;
-    locateSegment (idx, i, j);
+    _locateSegment (idx, i, j);
 
     m_inputBuf.insert (idx, 1, ch);
     m_pystr.insert (idx, 1, ch);
@@ -305,7 +305,7 @@ unsigned CQuanpinSegmentor::deleteAt (unsigned idx, bool backward)
 {
     unsigned i, j;
     if (!backward) idx += 1;
-    locateSegment (idx, i, j);
+    _locateSegment (idx, i, j);
 
     m_inputBuf.erase (idx, 1);
     m_pystr.erase (idx, 1);
@@ -328,7 +328,7 @@ unsigned CQuanpinSegmentor::clear (unsigned from)
 unsigned CQuanpinSegmentor::_clear (unsigned from)
 {
     unsigned i, j;
-    locateSegment (from, i, j);
+    _locateSegment (from, i, j);
 
 
     std::string new_pystr = m_pystr.substr (i, from-i);
@@ -340,7 +340,7 @@ unsigned CQuanpinSegmentor::_clear (unsigned from)
     return m_updatedFrom;
 }
 
-void CQuanpinSegmentor::locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx)
+void CQuanpinSegmentor::_locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx)
 {
     strIdx = segIdx = 0;
 

@@ -60,7 +60,6 @@ public:
     virtual unsigned clear (unsigned from=0);
 
     virtual unsigned updatedFrom () {return m_updatedFrom;}
-    virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
 
     void setGetFuzzySyllablesOp (CGetFuzzySyllablesOp<CPinyinData> *op) {m_pGetFuzzySyllablesOp = op;}
     
@@ -69,6 +68,7 @@ private:
     unsigned _clear (unsigned from);
     int _getNumberOfNonAlpha() const;
     int _encode(const char* buf, char ch, bool isComplete);
+    void _locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
 
     inline void _addFuzzySyllables (TSegment &seg);
     

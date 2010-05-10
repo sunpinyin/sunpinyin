@@ -119,7 +119,6 @@ public:
     virtual unsigned clear (unsigned from=0);
 
     virtual unsigned updatedFrom () {return m_updatedFrom;}
-    virtual void locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
 
     bool load(const char * pyTrieFileName);
     
@@ -132,6 +131,7 @@ private:
     inline unsigned _clear (unsigned from);
     inline void _addFuzzySyllables (TSegment &seg);
     inline unsigned _updateWith (const std::string& new_pystr, unsigned from = UINT_MAX);
+    inline void _locateSegment (unsigned idx, unsigned &strIdx, unsigned &segIdx);
     
     CGetFuzzySyllablesOp<CPinyinData>  *m_pGetFuzzySyllablesOp;
     CGetCorrectionPairOp               *m_pGetCorrectionPairOp;

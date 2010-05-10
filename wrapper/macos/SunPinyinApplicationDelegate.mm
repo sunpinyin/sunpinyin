@@ -298,29 +298,46 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     CQuanpinSchemePolicy& quanpin_policy = AQuanpinSchemePolicy::instance();
     CShuangpinSchemePolicy& shuangpin_policy = AShuangpinSchemePolicy::instance();
     
+    bool fuzzy_simpler_initials = [pref boolForKey:@"Quanpin.Fuzzy.SimplerInitials"];    
     bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
-    quanpin_policy.setFuzzyForwarding(quanpin_fuzzy_enabled);
-    shuangpin_policy.setFuzzyForwarding(quanpin_fuzzy_enabled);
+        
+    quanpin_policy.setFuzzyForwarding   (fuzzy_simpler_initials || quanpin_fuzzy_enabled);
+    shuangpin_policy.setFuzzyForwarding (fuzzy_simpler_initials || quanpin_fuzzy_enabled);    
     
-    string_pairs fuzzy_pairs;
+    if (fuzzy_simpler_initials)
+    {
+        string_pairs fuzzy_pairs;
+        
+        fuzzy_pairs.push_back(make_pair("z",  "zh"));
+        fuzzy_pairs.push_back(make_pair("c",  "ch"));
+        fuzzy_pairs.push_back(make_pair("s",  "sh"));
+        
+        quanpin_policy.setFuzzyPinyinPairs   (fuzzy_pairs, false);
+        shuangpin_policy.setFuzzyPinyinPairs (fuzzy_pairs, false);        
+    }
     
-    if ([pref boolForKey: @"Quanpin.Fuzzy.ZhiZi"])   fuzzy_pairs.push_back(make_pair("zh",  "z"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.ChiCi"])   fuzzy_pairs.push_back(make_pair("ch",  "c"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.ShiSi"])   fuzzy_pairs.push_back(make_pair("sh",  "s"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.AnAng"])   fuzzy_pairs.push_back(make_pair("an",  "ang"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.OnOng"])   fuzzy_pairs.push_back(make_pair("on",  "ong"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.EnEng"])   fuzzy_pairs.push_back(make_pair("en",  "eng"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.InIng"])   fuzzy_pairs.push_back(make_pair("in",  "ing"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.EngOng"])  fuzzy_pairs.push_back(make_pair("eng", "ong"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.IanIang"]) fuzzy_pairs.push_back(make_pair("ian", "iang"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.UanUang"]) fuzzy_pairs.push_back(make_pair("uan", "uang"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.NeLe"])    fuzzy_pairs.push_back(make_pair("n",   "l"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.FoHe"])    fuzzy_pairs.push_back(make_pair("f",   "h"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.LeRi"])    fuzzy_pairs.push_back(make_pair("l",   "r"));
-    if ([pref boolForKey: @"Quanpin.Fuzzy.KeGe"])    fuzzy_pairs.push_back(make_pair("k",   "g"));
-    
-    quanpin_policy.setFuzzyPinyinPairs(fuzzy_pairs);
-    shuangpin_policy.setFuzzyPinyinPairs(fuzzy_pairs);
+    if (quanpin_fuzzy_enabled)
+    {
+        string_pairs fuzzy_pairs;
+        
+        if ([pref boolForKey: @"Quanpin.Fuzzy.ZhiZi"])   fuzzy_pairs.push_back(make_pair("zh",  "z"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.ChiCi"])   fuzzy_pairs.push_back(make_pair("ch",  "c"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.ShiSi"])   fuzzy_pairs.push_back(make_pair("sh",  "s"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.AnAng"])   fuzzy_pairs.push_back(make_pair("an",  "ang"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.OnOng"])   fuzzy_pairs.push_back(make_pair("on",  "ong"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.EnEng"])   fuzzy_pairs.push_back(make_pair("en",  "eng"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.InIng"])   fuzzy_pairs.push_back(make_pair("in",  "ing"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.EngOng"])  fuzzy_pairs.push_back(make_pair("eng", "ong"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.IanIang"]) fuzzy_pairs.push_back(make_pair("ian", "iang"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.UanUang"]) fuzzy_pairs.push_back(make_pair("uan", "uang"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.NeLe"])    fuzzy_pairs.push_back(make_pair("n",   "l"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.FoHe"])    fuzzy_pairs.push_back(make_pair("f",   "h"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.LeRi"])    fuzzy_pairs.push_back(make_pair("l",   "r"));
+        if ([pref boolForKey: @"Quanpin.Fuzzy.KeGe"])    fuzzy_pairs.push_back(make_pair("k",   "g"));
+        
+        quanpin_policy.setFuzzyPinyinPairs   (fuzzy_pairs);
+        shuangpin_policy.setFuzzyPinyinPairs (fuzzy_pairs);
+    }
         
     bool quanpin_autocorrecting_enabled = [pref boolForKey: @"Quanpin.AutoCorrecting.Enabled"];
     quanpin_policy.setAutoCorrecting (quanpin_autocorrecting_enabled);

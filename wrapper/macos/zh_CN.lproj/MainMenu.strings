@@ -256,3 +256,6 @@
 
 /* Class = "NSButtonCell"; title = "Smarter Segmentation (only applicable for QuanPin)"; ObjectID = "748"; */
 "748.title" = "智能切分（仅适用于全拼）";
+
+/* Class = "NSButtonCell"; title = "Simpler Initials (z/c/s -> zh/ch/sh)"; ObjectID = "752"; */
+"752.title" = "声母简写（z/c/s -> zh/ch/sh）";

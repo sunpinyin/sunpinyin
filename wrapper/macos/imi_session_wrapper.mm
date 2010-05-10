@@ -108,6 +108,7 @@ void CSunpinyinSessionWrapper::apply_configuration()
     update_page_key_minus  (CSessionConfigStore::instance().m_paging_by_minus_equals);
     update_page_key_comma  (CSessionConfigStore::instance().m_paging_by_comma_period);
     update_page_key_bracket(CSessionConfigStore::instance().m_paging_by_brackets);
+    update_page_key_arrows (CSessionConfigStore::instance().m_paging_by_arrows);
 }
 
 void CSunpinyinSessionWrapper::update_cand_window_size(unsigned size)

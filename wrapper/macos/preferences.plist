@@ -44,6 +44,8 @@
 	<true/>
 	<key>Quanpin.Fuzzy.Enabled</key>
 	<false/>
+	<key>Quanpin.Fuzzy.SimplerInitials</key>
+	<true/>
 	<key>Quanpin.Fuzzy.ZhiZi</key>
 	<false/>
 	<key>Quanpin.Fuzzy.ChiCi</key>

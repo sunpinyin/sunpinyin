@@ -29,7 +29,6 @@ public:
         unsigned int                        m_all;
         struct TAnony {			    //Some compiler do not support anonymous defaultly
         #ifdef WORDS_BIGENDIAN
-//            unsigned    m_other    : 6;
             unsigned    m_bHide    : 1;
             unsigned    m_cost     : 5;
             unsigned    m_csLevel  : 2;
@@ -39,7 +38,6 @@ public:
             unsigned    m_csLevel  : 2;
             unsigned    m_cost     : 5;
             unsigned    m_bHide    : 1;
-  //          unsigned    m_other    : 6;
         #endif
         } anony;
 
@@ -52,7 +50,6 @@ public:
                 anony.m_cost=cost;
                 anony.m_bHide= (hide)?1:0;
                 anony.m_csLevel=cslvl;
-  //              anony.m_other=0;
             }
 
         bool operator< (const TWordId& b) const 

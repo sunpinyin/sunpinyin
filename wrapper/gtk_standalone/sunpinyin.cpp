@@ -84,6 +84,8 @@ int main(int argc, char* argv[])
 
     string_pairs fuzzy_pairs;
     fuzzy_pairs.push_back(make_pair("s", "sh"));
+    fuzzy_pairs.push_back(make_pair("z", "zh"));
+    fuzzy_pairs.push_back(make_pair("c", "ch"));
 
     while ((opt = getopt(argc, argv, "p:c")) != -1) {
         switch (opt) {
@@ -114,7 +116,7 @@ int main(int argc, char* argv[])
         AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(auto_correction_pairs);
     }
 
-    AQuanpinSchemePolicy::instance().setFuzzyForwarding(true);
+    AQuanpinSchemePolicy::instance().setFuzzyForwarding(false, true);
     AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(fuzzy_pairs, false);
     AQuanpinSchemePolicy::instance().setFuzzySegmentation(true);
 

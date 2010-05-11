@@ -115,8 +115,11 @@ public:
         return pseg;
     }
 
-    void setFuzzyForwarding (bool v=true)
-        {m_getFuzzySyllablesOp.setEnable (v);}
+    void setFuzzyForwarding (bool enable_fuzzies=true, bool enable_simpler_initials=true)
+    {
+        m_getFuzzySyllablesOp.setEnableFuzzies (enable_fuzzies);
+        m_getFuzzySyllablesOp.setEnableSimplerInitials (enable_simpler_initials);
+    }
 
     void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
         {m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}
@@ -158,8 +161,11 @@ public:
 
     void setShuangpinType (EShuangpinType t) {m_shuangpinType = t;}
 
-    void setFuzzyForwarding (bool v=true)
-        {m_getFuzzySyllablesOp.setEnable (v);}
+    void setFuzzyForwarding (bool enable_fuzzies=true, bool enable_simpler_initials=true)
+    {
+        m_getFuzzySyllablesOp.setEnableFuzzies (enable_fuzzies);
+        m_getFuzzySyllablesOp.setEnableSimplerInitials (enable_simpler_initials);
+    }
 
     void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
         {m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}

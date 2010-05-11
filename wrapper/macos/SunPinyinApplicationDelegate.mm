@@ -298,13 +298,13 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     CQuanpinSchemePolicy& quanpin_policy = AQuanpinSchemePolicy::instance();
     CShuangpinSchemePolicy& shuangpin_policy = AShuangpinSchemePolicy::instance();
     
-    bool fuzzy_simpler_initials = [pref boolForKey:@"Quanpin.Fuzzy.SimplerInitials"];    
+    bool simpler_initials_enabled = [pref boolForKey:@"Quanpin.Fuzzy.SimplerInitials"];    
     bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
         
-    quanpin_policy.setFuzzyForwarding   (fuzzy_simpler_initials || quanpin_fuzzy_enabled);
-    shuangpin_policy.setFuzzyForwarding (fuzzy_simpler_initials || quanpin_fuzzy_enabled);    
+    quanpin_policy.setFuzzyForwarding   (quanpin_fuzzy_enabled, simpler_initials_enabled);
+    shuangpin_policy.setFuzzyForwarding (quanpin_fuzzy_enabled, simpler_initials_enabled);
     
-    if (fuzzy_simpler_initials)
+    if (simpler_initials_enabled)
     {
         string_pairs fuzzy_pairs;
         

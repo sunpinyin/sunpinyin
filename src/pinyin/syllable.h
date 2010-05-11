@@ -99,10 +99,11 @@ class CGetFuzzySyllablesOp : private CNonCopyable
 public: 
     typedef std::multimap<const std::string, std::string> CFuzzyMap;
 
-    CGetFuzzySyllablesOp () : m_bEnabled(false) {}
+    CGetFuzzySyllablesOp () : m_bEnableFuzzies(false) {}
 
-    void setEnable (bool value=true) {m_bEnabled = value;}
-    bool isEnabled () {return m_bEnabled;}
+    void setEnableFuzzies         (bool value=true) {m_bEnableFuzzies = value;}
+    void setEnableSimplerInitials (bool value=true) {m_bEnableSimplerInitials = value;}
+    bool isEnabled () {return m_bEnableFuzzies || m_bEnableSimplerInitials;}
 
     void initFuzzyMap (const string_pairs& fuzzyPairs, bool duplex = true)
         {
@@ -128,6 +129,9 @@ public:
 
             const char *i, *f;
             PinyinDataPolicy::decodeSyllable (s, &i, &f);
+
+            if (m_bEnableSimplerInitials && !m_bEnableFuzzies && *f != '\0')
+                return ret;
 
             std::vector<const char *> iset;
             std::vector<const char *> fset;
@@ -158,7 +162,8 @@ public:
 
 private:
     CFuzzyMap   m_fuzzyMap;
-    bool        m_bEnabled;
+    bool        m_bEnableFuzzies;
+    bool        m_bEnableSimplerInitials;
 };
 
 #endif

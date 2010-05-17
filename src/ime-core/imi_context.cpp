@@ -213,6 +213,7 @@ void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syll
                 added_from_sysdict = true;
                 TLexiconState new_lxst = TLexiconState (lxst.m_start, pn, lxst.m_syls, lxst.m_seg_path);
                 new_lxst.m_syls.push_back (syllable);
+                new_lxst.m_num_of_inner_fuzzies = lxst.m_num_of_inner_fuzzies + (seg.m_inner_fuzzy? 1: 0);
                 new_lxst.m_seg_path.push_back (seg.m_start+seg.m_len);
                 fr.m_lexiconStates.push_back (new_lxst);
             }
@@ -227,8 +228,9 @@ void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syll
             if (!words.empty() || !added_from_sysdict) {
                 // even if the words is empty we'll add a fake lexicon
                 // here. This helps _saveUserDict detect new words.
-                TLexiconState new_lxst = TLexiconState (lxst.m_start, lxst.m_syls, lxst.m_seg_path, words);
+                TLexiconState new_lxst = TLexiconState (lxst.m_start, words, lxst.m_syls, lxst.m_seg_path);
                 new_lxst.m_syls.push_back (syllable);
+                new_lxst.m_num_of_inner_fuzzies = lxst.m_num_of_inner_fuzzies + (seg.m_inner_fuzzy? 1: 0);
                 new_lxst.m_seg_path.push_back (seg.m_start+seg.m_len);
                 fr.m_lexiconStates.push_back (new_lxst);
             }
@@ -244,6 +246,7 @@ void CIMIContext::_forwardSingleSyllable (unsigned i, unsigned j, TSyllable syll
         seg_path.push_back (seg.m_start);
         seg_path.push_back (seg.m_start+seg.m_len);
         TLexiconState new_lxst = TLexiconState (i, pn, syls, seg_path);
+        new_lxst.m_num_of_inner_fuzzies = seg.m_inner_fuzzy? 1: 0;
         fr.m_lexiconStates.push_back (new_lxst);
     }
 }
@@ -542,10 +545,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
     map.clear();
     result.clear();
 
-    int len = 1;
     cp.m_candi.m_start = m_candiStarts = frIdx++;
 
-    for (;frIdx < m_tailIdx; ++frIdx, ++len)  {
+    for (;frIdx < m_tailIdx; ++frIdx)  {
         CLatticeFrame &fr = m_lattice[frIdx];
 
         if (!fr.isSyllableFrame ())
@@ -584,6 +586,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                     continue;
 
                 //sorting according to the order in PinYinTire
+                int len = cp.m_candi.m_pLexiconState->m_syls.size() -
+                          cp.m_candi.m_pLexiconState->m_num_of_inner_fuzzies;
+                if (0 == len) len = 1;
                 cp.m_Rank = TCandiRank(false, false, len, false, i);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
@@ -608,6 +613,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 if (!cp.m_candi.m_cwstr)
                     continue;
 
+                int len = cp.m_candi.m_pLexiconState->m_syls.size() -
+                          cp.m_candi.m_pLexiconState->m_num_of_inner_fuzzies;
+                if (0 == len) len = 1;
                 cp.m_Rank = TCandiRank(false, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)

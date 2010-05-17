@@ -48,9 +48,9 @@ struct IPySegmentor
         {SYLLABLE, SYLLABLE_SEP, INVALID, STRING};
 
     struct TSegment {
-        TSegment (ESegmentType type=SYLLABLE) : m_type(type) {}
+        TSegment (ESegmentType type=SYLLABLE) : m_type(type), m_inner_fuzzy(0) {}
         TSegment (unsigned syllable, unsigned start, unsigned length, ESegmentType type=SYLLABLE) 
-            : m_start(start), m_len(length), m_type(type)
+            : m_start(start), m_len(length), m_type(type), m_inner_fuzzy(0)
             {m_syllables.push_back (syllable);}
 
         bool operator < (const TSegment& other) const
@@ -68,7 +68,8 @@ struct IPySegmentor
         std::vector<unsigned>   m_syllables;
         unsigned                m_start        : 16;
         unsigned                m_len          : 8;
-        ESegmentType            m_type         : 8;
+        ESegmentType            m_type         : 7;
+        bool                    m_inner_fuzzy  : 1;
     };
 
     // it requires the segments are sorted by its m_start field

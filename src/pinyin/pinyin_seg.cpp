@@ -156,6 +156,7 @@ unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPyS
             an.m_len    = an_len;
             an.m_start += xi_len;
             an.m_syllables[0] = an_syl;
+            an.m_inner_fuzzy = true;
 
             fuzzy_segs.push_back (xi);
             fuzzy_segs.push_back (an);

@@ -491,7 +491,7 @@ unsigned
 CIMIClassicView::_moveLeft (unsigned& mask, bool searchAgain)
 {
     if (m_cursorFrIdx == 0)
-        return 0;
+        return _moveEnd (mask);
 
     mask |= PREEDIT_MASK;
     if (m_cursorFrIdx == m_candiFrIdx) {
@@ -507,7 +507,7 @@ unsigned
 CIMIClassicView::_moveLeftSyllable (unsigned& mask, bool searchAgain)
 {
     if (m_cursorFrIdx == 0)
-        return 0;
+        return _moveEnd (mask);
 
     mask |= PREEDIT_MASK;
 
@@ -558,9 +558,10 @@ CIMIClassicView::_moveRight (unsigned& mask)
     if (m_cursorFrIdx < m_pIC->getLastFrIdx ()) {
         mask |= PREEDIT_MASK;
         ++ m_cursorFrIdx;
+        return m_cursorFrIdx;
     }
 
-    return m_cursorFrIdx;
+    return _moveHome (mask);
 }
 
 unsigned
@@ -572,9 +573,10 @@ CIMIClassicView::_moveRightSyllable (unsigned& mask)
         std::vector<unsigned>& seg_path = m_pIC->getBestSegPath();
         std::vector<unsigned>::iterator it = std::upper_bound (seg_path.begin(), seg_path.end(), m_cursorFrIdx);
         m_cursorFrIdx = *it;
-    }
+        return m_cursorFrIdx;
+    } 
 
-    return m_cursorFrIdx;
+    return _moveHome (mask);
 }
 
 unsigned

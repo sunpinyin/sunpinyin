@@ -571,6 +571,12 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
             if (lxst.m_start != m_candiStarts)
                 continue;
 
+            int len = lxst.m_syls.size() - lxst.m_num_of_inner_fuzzies;
+            if (0 == len) len = 1;
+            bool on_segpath = 1 == lxst.m_syls.size() ||
+                              std::binary_search (m_bestSegPath.begin(), m_bestSegPath.end(),
+                                                  lxst.m_seg_path.back());
+
             found = true;
             unsigned word_num;
             const CPinyinTrie::TWordIdInfo *words = lxst.getWords (word_num);
@@ -586,10 +592,7 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                     continue;
 
                 //sorting according to the order in PinYinTire
-                int len = cp.m_candi.m_pLexiconState->m_syls.size() -
-                          cp.m_candi.m_pLexiconState->m_num_of_inner_fuzzies;
-                if (0 == len) len = 1;
-                cp.m_Rank = TCandiRank(false, false, len, false, i);
+                cp.m_Rank = TCandiRank(false, on_segpath, len, false, i);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
                     map [cp.m_candi.m_cwstr] = cp;
@@ -616,7 +619,10 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 int len = cp.m_candi.m_pLexiconState->m_syls.size() -
                           cp.m_candi.m_pLexiconState->m_num_of_inner_fuzzies;
                 if (0 == len) len = 1;
-                cp.m_Rank = TCandiRank(false, false, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
+                bool on_segpath = 1 == cp.m_candi.m_pLexiconState->m_syls.size() ||
+                                  std::binary_search (m_bestSegPath.begin(), m_bestSegPath.end(),
+                                                      cp.m_candi.m_pLexiconState->m_seg_path.back());
+                cp.m_Rank = TCandiRank(false, on_segpath, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
                     map[cp.m_candi.m_cwstr] = cp;

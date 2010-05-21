@@ -3,35 +3,37 @@ import os
 
 cflags='-O2 -pipe -DHAVE_CONFIG_H '
 prefix='/usr/local'
+destdir=''
 
 slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
-            'src/slm/ids2ngram/idngram_merge.cpp',
-            'src/slm/mmseg/mmseg.cpp',
-            'src/slm/tslminfo/tslminfo.cpp',
-            'src/slm/tslmpack/arpa_slm.cpp',
-            'src/slm/tslmpack/arpa_conv.cpp',
-            'src/slm/tslmpack/slmpack.cpp',
-            'src/slm/slm.cpp',
-            'src/slm/slminfo/slminfo.cpp',
-            'src/slm/sim_sen.cpp',
-            'src/slm/sim_slm.cpp',
-            'src/slm/getWordFreq/getWordFreq.cpp',
-            'src/slm/slmseg/slmseg.cpp',
-            'src/slm/thread/slmthread.cpp',
-            'src/slm/thread/test_vc.cpp',
-            'src/slm/thread/ValueCompress.cpp',
-            'src/slm/slmbuild/slmbuild.cpp',
-            'src/slm/slmprune/slmprune.cpp',
-            'src/slm/sim_slmbuilder.cpp',
-            'src/slm/tslmendian/slm_endian.cpp',
-            'src/slm/tslmendian/writer.cpp',
-            'src/slm/tslmendian/slm_file.cpp',
-            'src/slm/sim_dict.cpp',
-            'src/portability.cpp',
-            'src/lexicon/trie_writer.cpp',
-            'src/lexicon/genPYT.cpp',
-            'src/lexicon/pytrie_gen.cpp',
-            'src/lexicon/pytrie.cpp']
+           'src/slm/ids2ngram/idngram_merge.cpp',
+           'src/slm/mmseg/mmseg.cpp',
+           'src/slm/tslminfo/tslminfo.cpp',
+           'src/slm/tslmpack/arpa_slm.cpp',
+           'src/slm/tslmpack/arpa_conv.cpp',
+           'src/slm/tslmpack/slmpack.cpp',
+           'src/slm/slm.cpp',
+           'src/slm/slminfo/slminfo.cpp',
+           'src/slm/sim_sen.cpp',
+           'src/slm/sim_slm.cpp',
+           'src/slm/getWordFreq/getWordFreq.cpp',
+           'src/slm/slmseg/slmseg.cpp',
+           'src/slm/thread/slmthread.cpp',
+           'src/slm/thread/test_vc.cpp',
+           'src/slm/thread/ValueCompress.cpp',
+           'src/slm/slmbuild/slmbuild.cpp',
+           'src/slm/slmprune/slmprune.cpp',
+           'src/slm/sim_slmbuilder.cpp',
+           'src/slm/tslmendian/slm_endian.cpp',
+           'src/slm/tslmendian/writer.cpp',
+           'src/slm/tslmendian/slm_file.cpp',
+           'src/slm/sim_dict.cpp',
+           'src/portability.cpp',
+           'src/lexicon/trie_writer.cpp',
+           'src/lexicon/genPYT.cpp',
+           'src/lexicon/pytrie_gen.cpp',
+           'src/lexicon/pytrie.cpp',
+           'src/pinyin/pinyin_data.cpp']
 
 imesource=['src/portability.cpp',
            'src/slm/slm.cpp',
@@ -87,6 +89,7 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/ime-core/imi_defines.h',
          'src/ime-core/imi_view.h',
          'src/portability.h',
+         'src/pinyin/segmentor.h',
          'src/pinyin/shuangpin_seg.h',
          'src/pinyin/datrie.h',
          'src/pinyin/quanpin_trie.h',
@@ -97,16 +100,23 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/pinyin/datrie_impl.h',
          'src/host_os.h']
 
-AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
-          metavar='DIR', help='installation prefix')
+AddOption('--prefix', dest='prefix', type='string', nargs=1,
+          action='store', metavar='DIR', help='installation prefix')
+AddOption('--destdir', dest='destdir', type='string', nargs=1,
+          action='store', metavar='DIR', help='destination of installation')
 
 if GetOption('prefix') is not None:
     prefix = GetOption('prefix')
+if GetOption('destdir') is not None:
+    destdir = GetOption('destdir')
 
 cflags += ('-DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
 libdir = prefix+'/lib'
 libdatadir = libdir+'/sunpinyin/data'
 headersdir = prefix+'/include/sunpinyin-2.0'
+
+abi_major = 3
+abi_minor = 0
 
 #
 #==============================environment==============================
@@ -119,6 +129,7 @@ def allinc():
     return inc
 
 env = Environment(CFLAGS=cflags,CXXFLAGS=cflags,
+                  LINKFLAGS='-Wl,-soname=libsunpinyin.so.%d' % abi_major,
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
 
 #
@@ -253,7 +264,12 @@ env.Object(slmsource)
 
 SConscript(['build/SConscript'], exports='env')
 
-env.SharedLibrary('sunpinyin', imesource)
+libname = 'libsunpinyin.so.%d.%d' % (abi_major, abi_minor)
+libname_soname = 'libsunpinyin.so.%d' % abi_major
+libname_link = 'libsunpinyin.so'
+
+lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
+                        source=imesource)
 
 env.Command('rawlm', 'build/tslmpack', "make -C raw -f Makefile.new")
 env.Command('lm', 'rawlm', "make -C data -f Makefile.new")
@@ -262,11 +278,26 @@ if GetOption('clean'):
     os.system('make -C raw -f Makefile.new clean')
     os.system('make -C data -f Makefile.new clean')
 
+    
+env.Command(libname, lib, 'cp -f libsunpinyin-%d.%d.so %s' %
+            (abi_major, abi_minor, libname))
+
 def DoInstall():
-    lib_target = env.Install(libdir, ['libsunpinyin.so'])
-    lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',
+    if not 'install' in COMMAND_LINE_TARGETS:
+        return
+    
+    lib_target = [
+        env.Install(destdir + libdir, [libname]),
+        env.Command('', '', 'cd %s && ln -sf %s %s' % (destdir + libdir,
+                                                       libname,
+                                                       libname_soname)),
+        env.Command('', '', 'cd %s && ln -sf %s %s' % (destdir + libdir,
+                                                       libname_soname,
+                                                       libname_link))]
+
+    lib_pkgconfig_target = env.Install(destdir + libdir+'/pkgconfig',
                                        ['sunpinyin-2.0.pc'])
-    libdata_target = env.Install(libdatadir,
+    libdata_target = env.Install(destdir + libdatadir,
                                  ['data/lm_sc.t3g',
                                   'data/lm_sc.t3g.le',
                                   'data/pydict_sc.bin.be',
@@ -275,7 +306,8 @@ def DoInstall():
                                   'data/pydict_sc.bin.le'])
     header_targets = []
     for header in headers:
-        header_targets.append(env.InstallAs(headersdir + header[3:], header))
+        header_targets.append(env.InstallAs(destdir + headersdir
+                                            + header[3:], header))
     env.Alias('install-headers', header_targets)
     env.Alias('install-lib', [lib_target, lib_pkgconfig_target])
     env.Alias('install-libdata', libdata_target)

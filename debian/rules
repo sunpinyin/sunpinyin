@@ -3,21 +3,14 @@
 
 #export DH_VERBOSE=1
 
-include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/class/scons.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 
-LDFLAGS += -Wl,--as-needed
-CXXFLAGS = -W -g
-DEB_CONFIGURE_EXTRA_FLAGS := \
-			--enable-ibus \
-			--enable-xim \
-			--enable-all-arch-data \
-			--disable-scim \
-			--disable-documents \
-			--libexecdir=/usr/lib/ibus-sunpinyin
+DEB_SCONS_BUILD_OPTIONS := --prefix=/usr
+DEB_SCONS_INSTALL_OPTIONS := $(DEB_SCONS_BUILD_OPTIONS) --destdir=$(DEB_DESTDIR)
 
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
-	DEB_CONFIGURE_EXTRA_FLAGS += --enable-debug
+	CXXFLAGS += -g
 endif
 
 LITTLE_ENDIAN_ARCHS := "alpha amd64 arm hurd-i386 i386 ia64 mipsel sh3 sh4"

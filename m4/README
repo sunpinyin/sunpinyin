@@ -1,3 +1,0 @@
-Only add this directory into ACLOCAL_FLAGS when you are building
-on Mac OS X. It is for solving intltool compatiblity.
-

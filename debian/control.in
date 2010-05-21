@@ -1,35 +1,33 @@
 Source: sunpinyin
-Section: utils
+Section: libs
 Priority: optional
-Maintainer: Kov Chai <tchaikov@gmail.com>
-Build-Depends: @cdbs@, intltool, pkg-config,
+Maintainer: Mike Qin <mikeandmore@gmail.com>
+Build-Depends: @cdbs@, pkg-config,
  libgtk2.0-dev (>=2.12.0), libibus-dev (>= 1.2), 
  libsqlite3-dev (>= 3.6), sqlite3, python-support
 Standards-Version: 3.8.4
 Homepage: http://code.google.com/p/sunpinyin/
 
-Package: ibus-sunpinyin
+Package: libsunpinyin3
 Architecture: any
-Section: utils
-Depends: ${sunpinyin-data-depends}, ${python:Depends},
- ${shlibs:Depends}, ${misc:Depends}, ibus (>= 1.2)
-Description: Sunpinyin input method engine for ibus
- Sunpinyin is an input method engine for Simplified Chinese.
- It is an SLM based IM engine, and features full sentence input.
- .
- This package contains SunPinyin input method for IBus.
-
-Package: xsunpinyin
-Architecture: any
-Section: utils
+Section: libs
 Depends: ${sunpinyin-data-depends}, ${shlibs:Depends}, ${misc:Depends}
 Recommends: im-switch
-Description: Standalone XIM server for Sunpinyin.
+Description: Sunpinyin Input Method library.
+ Sunpinyin is an input method engine for Simplified Chinese.
+ It is an SLM based IM engine, and features full sentence input.
+
+Package: libsunpinyin3-dev
+Architecture: any
+Section: libs
+Depends: ${sunpinyin-data-depends}, ${shlibs:Depends}, ${misc:Depends}
+Recommends: im-switch
+Description: Sunpinyin Input Method library.
  Sunpinyin is an input method engine for Simplified Chinese.
  It is an SLM based IM engine, and features full sentence input.
  .
- This package provides a XIM server with SunPinyin input method. It 
- works much the same way as fcitx does.
+ This contains header files of sunpinyin that allows user to write their
+ own front-end for sunpinyin.
 
 Package: sunpinyin-data-le
 Architecture: all

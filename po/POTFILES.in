@@ -1,6 +1,0 @@
-wrapper/scim/sunpinyin_imengine.cpp
-wrapper/scim/sunpinyin_imengine_setup.cpp
-wrapper/ibus/src/main.cpp
-wrapper/ibus/src/sunpinyin_property.cpp
-wrapper/ibus/setup/main.py
-wrapper/ibus/setup/setup.glade

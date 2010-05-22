@@ -44,6 +44,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
+#include <iconv.h>
 
 #include "imi_winHandler.h"
 

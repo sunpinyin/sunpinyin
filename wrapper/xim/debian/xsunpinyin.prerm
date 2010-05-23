@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    remove|upgrade|deconfigure)
+        update-alternatives --remove xinput-zh_CN \
+            etc/X11/xinit/xinput.d/xsunpinyin
+        ;;
+    failed-upgrade)
+        ;;
+    *)
+        echo "prerm called with unknown argument $1"
+        exit 1
+    ;;
+esac
+
+exit 0

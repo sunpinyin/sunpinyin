@@ -1,0 +1,5 @@
+xsunpinyin (0.0.3) unstable; urgency=low
+
+  * first debian package
+
+ -- Mike Qin <mikeandmore@gmail.com>  Mon, 23 May 2010 11:20:00 +0800

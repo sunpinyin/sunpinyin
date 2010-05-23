@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        update-alternatives \
+            --install /etc/X11/xinit/xinput.d/zh_CN xinput-zh_CN \
+            /etc/X11/xinit/xinput.d/xsunpinyin 50
+        ;;
+
+    abort-upgrade | abort-remove | abort-deconfigure)
+
+        ;;
+
+    *)
+        echo "postinst called with unknown argument $1"
+        exit 1
+        ;;
+esac
+
+exit 0

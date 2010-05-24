@@ -39,7 +39,6 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <ibus.h>
-#include "config.h"
 #include "engine.h"
 #include "ibus_common.h"
 #include "sunpinyin_config.h"
@@ -106,7 +105,7 @@ init ()
                                                      "zh_CN",
                                                      "LGPL/CDDL",
                                                      "Kov Chai <tchaikov@gmail.com>",
-                                                     SUNPINYIN_ICON_DIR"/sunpinyin-logo.png",
+                                                     IBUS_SUNPINYIN_ICON_DIR"/sunpinyin-logo.png",
                                                      "en"));
     
     factory = ibus_factory_new (ibus_bus_get_connection (bus));
@@ -124,7 +123,7 @@ int main(int argc, char *argv[])
 {
 
     setlocale (LC_ALL, "");
-    bindtextdomain (GETTEXT_PACKAGE, SUNPINYIN_LOCALEDIR);
+    bindtextdomain (GETTEXT_PACKAGE, IBUS_SUNPINYIN_LOCALEDIR);
     textdomain (GETTEXT_PACKAGE);
     
     GOptionContext* context;

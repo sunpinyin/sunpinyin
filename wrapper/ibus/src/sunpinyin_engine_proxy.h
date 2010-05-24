@@ -37,7 +37,6 @@
 #define SUNPINYIN_ENGINE_PROXY_H
 
 #include <ibus.h>
-#include "config.h"
 
 void ibus_sunpinyin_engine_init(IBusEngine *engine);
 void ibus_sunpinyin_engine_destroy(IBusEngine *engine);

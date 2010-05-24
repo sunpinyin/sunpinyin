@@ -43,7 +43,7 @@ import ibus
 import gettext
 import locale
 
-GETTEXT_PACKAGE="sunpinyin"
+GETTEXT_PACKAGE="ibus-sunpinyin"
 _ = lambda msg: gettext.gettext(msg)
 
 GLADE_FILE = path.join(path.dirname(__file__), "setup.glade")

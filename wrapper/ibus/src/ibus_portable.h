@@ -36,7 +36,6 @@
 #ifndef IBUS_COMPABILITY_H
 #define  IBUS_COMPABILITY_H
 
-#include "config.h"
 
 #if defined(WITH_IBUS_1_1_0)
 

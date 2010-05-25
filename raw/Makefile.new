@@ -1,4 +1,5 @@
 LM_URL=http://open-gram.googlecode.com/files
+WGET=wget
 
 all: lm_sc.t3g.arpa dict.utf8
 	@echo done

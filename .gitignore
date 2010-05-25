@@ -30,7 +30,6 @@ po/stamp-it
 po/Makefile.in.in
 
 wrapper/ibus/setup/ibus-setup-sunpinyin
-wrapper/ibus/src/sunpinyin.xml.in
 
 wrapper/macos/SunPinyin.xcodeproj/*.mode1v3
 wrapper/macos/SunPinyin.xcodeproj/*.pbxuser

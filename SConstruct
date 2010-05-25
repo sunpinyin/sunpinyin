@@ -285,15 +285,19 @@ env.Command(libname, lib, 'cp -f libsunpinyin-%d.%d.so %s' %
 def DoInstall():
     if not 'install' in COMMAND_LINE_TARGETS:
         return
-    
+
     lib_target = [
         env.Install(destdir + libdir, [libname]),
-        env.Command('', '', 'cd %s && ln -sf %s %s' % (destdir + libdir,
-                                                       libname,
-                                                       libname_soname)),
-        env.Command('', '', 'cd %s && ln -sf %s %s' % (destdir + libdir,
-                                                       libname_soname,
-                                                       libname_link))]
+        env.Command(destdir + libdir + '/' + libname_soname, 
+                    destdir + libdir + '/' + libname,
+                    'cd %s && ln -sf %s %s' % (destdir + libdir,
+                                               libname,
+                                               libname_soname)),
+        env.Command(destdir + libdir + '/' + libname_link,
+                    destdir + libdir + '/' + libname_soname,
+                    'cd %s && ln -sf %s %s' % (destdir + libdir,
+                                               libname_soname,
+                                               libname_link))]
 
     lib_pkgconfig_target = env.Install(destdir + libdir+'/pkgconfig',
                                        ['sunpinyin-2.0.pc'])
@@ -309,7 +313,7 @@ def DoInstall():
         header_targets.append(env.InstallAs(destdir + headersdir
                                             + header[3:], header))
     env.Alias('install-headers', header_targets)
-    env.Alias('install-lib', [lib_target, lib_pkgconfig_target])
+    env.Alias('install-lib', lib_target + [lib_pkgconfig_target])
     env.Alias('install-libdata', libdata_target)
 
 DoInstall()

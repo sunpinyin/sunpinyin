@@ -508,6 +508,26 @@ unsigned CIMIContext::getBestSentence (wstring& result, unsigned start, unsigned
     return nWordConverted;
 }
 
+unsigned CIMIContext::getBestSentence (std::vector<unsigned>& result, unsigned start, unsigned end)
+{
+    result.clear();
+
+    if (UINT_MAX == end) end = m_tailIdx - 1;
+
+    while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
+        end --;
+
+    unsigned i = end, nWordConverted = 0;
+    while (i > start) {
+        CLatticeFrame &fr = m_lattice[i];
+        result.insert (result.begin(), fr.m_bestWord.m_wordId);
+        i = fr.m_bestWord.m_start;
+        nWordConverted ++;
+    }
+
+    return nWordConverted;
+}
+
 struct TCandiPair {
     CCandidate                      m_candi;
     TCandiRank                      m_Rank;
@@ -545,6 +565,9 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
     map.clear();
     result.clear();
 
+    std::vector<unsigned> st;
+    getBestSentence (st, frIdx);
+
     cp.m_candi.m_start = m_candiStarts = frIdx++;
 
     for (;frIdx < m_tailIdx; ++frIdx)  {
@@ -573,9 +596,6 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
 
             int len = lxst.m_syls.size() - lxst.m_num_of_inner_fuzzies;
             if (0 == len) len = 1;
-            bool on_segpath = 1 == lxst.m_syls.size() ||
-                              std::binary_search (m_bestSegPath.begin(), m_bestSegPath.end(),
-                                                  lxst.m_seg_path.back());
 
             found = true;
             unsigned word_num;
@@ -592,7 +612,7 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                     continue;
 
                 //sorting according to the order in PinYinTire
-                cp.m_Rank = TCandiRank(false, on_segpath, len, false, i);
+                cp.m_Rank = TCandiRank(false, st.front() == cp.m_candi.m_wordId, len, false, i);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
                     map [cp.m_candi.m_cwstr] = cp;
@@ -619,10 +639,7 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 int len = cp.m_candi.m_pLexiconState->m_syls.size() -
                           cp.m_candi.m_pLexiconState->m_num_of_inner_fuzzies;
                 if (0 == len) len = 1;
-                bool on_segpath = 1 == cp.m_candi.m_pLexiconState->m_syls.size() ||
-                                  std::binary_search (m_bestSegPath.begin(), m_bestSegPath.end(),
-                                                      cp.m_candi.m_pLexiconState->m_seg_path.back());
-                cp.m_Rank = TCandiRank(false, on_segpath, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
+                cp.m_Rank = TCandiRank(false, st.front() == cp.m_candi.m_wordId, len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
                 it_map = map.find(cp.m_candi.m_cwstr);
                 if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
                     map[cp.m_candi.m_cwstr] = cp;

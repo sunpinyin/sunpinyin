@@ -252,6 +252,7 @@ public:
         }
 
     unsigned getBestSentence (wstring& result, unsigned start=0, unsigned end=UINT_MAX);
+    unsigned getBestSentence (std::vector<unsigned>& result, unsigned start=0, unsigned end=UINT_MAX);
 
     void getCandidates (unsigned frIdx, CCandidates& result);
     unsigned cancelSelection (unsigned frIdx, bool doSearch=true);

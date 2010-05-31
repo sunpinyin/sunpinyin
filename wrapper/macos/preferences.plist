@@ -92,6 +92,14 @@
 	<array>
 		<dict>
 			<key>enabled</key>
+			<false/>
+			<key>ASCII</key>
+			<string>SPACE</string>
+			<key>mappedString</key>
+			<string>　</string>
+		</dict>
+		<dict>
+			<key>enabled</key>
 			<true/>
 			<key>ASCII</key>
 			<string>,</string>

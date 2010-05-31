@@ -79,6 +79,7 @@ private:
     inline void _deleteCandidate (int candiIdx, unsigned& mask);
 
     inline void _commitChar (TWCHAR ch);
+    inline void _commitString (const wstring& wstr);
     inline void _doCommit (bool bConvert=true);
 
     inline unsigned _moveLeft (unsigned& mask, bool searchAgain=true);

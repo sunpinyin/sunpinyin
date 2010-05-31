@@ -672,7 +672,7 @@ unsigned CIMIContext::cancelSelection (unsigned frIdx, bool doSearch)
         fr = m_lattice[frIdx];
     }
     
-    if (fr.m_bwType & CLatticeFrame::USER_SELECTED) {
+    if (fr.m_bwType & (CLatticeFrame::USER_SELECTED | CLatticeFrame::BESTWORD)) {
         ret = fr.m_bestWord.m_start;
         fr.m_bwType = CLatticeFrame::NO_BESTWORD;
         if (doSearch) searchFrom (frIdx);

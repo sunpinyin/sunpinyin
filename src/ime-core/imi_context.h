@@ -213,10 +213,12 @@ public:
     void setFullSymbolForwarding (bool value=true) {m_bFullSymbolForwarding = value;}
     bool getFullSymbolForwarding () {return m_bFullSymbolForwarding;}
     void setGetFullSymbolOp (CGetFullSymbolOp *op) {m_pGetFullSymbolOp = op;}
+    CGetFullSymbolOp& fullSymbolOp () const {return *m_pGetFullSymbolOp;}
 
     void setFullPunctForwarding (bool value=true) {m_bFullPunctForwarding = value;}
     bool getFullPunctForwarding () {return m_bFullPunctForwarding;}
     void setGetFullPunctOp (CGetFullPunctOp *op) {m_pGetFullPunctOp = op;}
+    CGetFullPunctOp& fullPuncOp () const {return *m_pGetFullPunctOp;}
 
     void setNonCompleteSyllable(bool value=true) {m_bNonCompleteSyllable = value;}
     bool getNonCompleteSyllable() {return m_bNonCompleteSyllable;}

@@ -217,6 +217,12 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             if (!m_pIC->isEmpty ()) {
                 changeMasks |= KEYEVENT_USED;
                 _makeSelection (0, changeMasks);
+            } else {
+                wstring wstr = (m_pIC->fullPuncOp()) (keyvalue);
+                if (wstr.size()) {
+                    _commitString (wstr);
+                    changeMasks |= KEYEVENT_USED;
+                }
             }
 
         } else if (keycode == IM_VK_ENTER) {
@@ -470,6 +476,12 @@ CIMIClassicView::_commitChar (TWCHAR ch)
 {
     TWCHAR wa[2] = {ch, 0};
     m_pWinHandler->commit(wa);
+}
+
+void
+CIMIClassicView::_commitString (const wstring& wstr)
+{
+    m_pWinHandler->commit(wstr.c_str());
 }
 
 void

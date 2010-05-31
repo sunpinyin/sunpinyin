@@ -385,6 +385,8 @@ void updateSimplifiedChineseSettings(NSUserDefaults* pref)
         NSDictionary *tmp = [punct_mappings objectAtIndex:i];
         NSNumber *enabled = [tmp objectForKey:@"enabled"];
         NSString *ascii = [tmp objectForKey:@"ASCII"];
+        if ([ascii isEqualToString:@"SPACE"]) ascii = @" ";
+        
         NSString *mapped_string = [tmp objectForKey:@"mappedString"];
         
         if ([enabled boolValue] && [mapped_string UTF8String])

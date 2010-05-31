@@ -123,6 +123,7 @@ string_pairs
 CSimplifiedChinesePolicy::getDefaultPunctMapping() const
 {
     static const char* punc_map [] = { 
+        " ",    "　",
         ",",    "，",
         ";",    "；",
         "!",    "！",

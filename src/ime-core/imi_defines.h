@@ -45,7 +45,7 @@
 #define SENTENCE_BREAKER_ID     10
 
 #define MAX_USRDEF_WORD_LEN     6
-#define INI_USRDEF_WID          0x00800000 /* 2^23 */
+#define INI_USRDEF_WID          0x00040000 /* 2^18     */
 #define MAX_USRDEF_WID          0x00ffffff /* 2^24 - 1 */
 
 

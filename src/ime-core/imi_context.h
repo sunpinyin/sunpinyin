@@ -240,7 +240,7 @@ public:
         {
             // CIMIContext would fail to backTrace the bestPathes when there are no latticeStates
             // on frame e.g., 'yiden' in Quanpin mode, in this case, return the original segs
-            if (m_bestSegPath.empty()) 
+            if (m_bestSegPath.empty() && m_pPySegmentor) 
             {
                 IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
                 IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();

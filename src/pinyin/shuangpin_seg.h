@@ -49,7 +49,7 @@ class CShuangpinSegmentor : public IPySegmentor
 public:
     CShuangpinSegmentor (EShuangpinType  shpType);
 
-    virtual TSegmentVec& getSegments () {return m_segs;}
+    virtual TSegmentVec& getSegments (bool) {return m_segs;}
     virtual const wstring& getInputBuffer () {return m_inputBuf;}
     virtual const char* getSylSeps () {return "'";}
 

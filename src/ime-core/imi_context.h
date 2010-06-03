@@ -242,7 +242,8 @@ public:
             // on frame e.g., 'yiden' in Quanpin mode, in this case, return the original segs
             if (m_bestSegPath.empty() && m_pPySegmentor) 
             {
-                IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments ();
+                // only require the primary segments without the auxiliary ones
+                IPySegmentor::TSegmentVec& segments = m_pPySegmentor->getSegments (false);
                 IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
                 IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();
                 m_bestSegPath.push_back (0);

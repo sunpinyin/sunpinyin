@@ -13,7 +13,7 @@ def load_ziguang_user_dict (fname):
 
         try:
             utf8str, pystr, _ = l.strip().split("\t")
-            result.append ((pystr[1:], utf8str))
+            result.append ((pystr, utf8str))
         except:
             pass
 

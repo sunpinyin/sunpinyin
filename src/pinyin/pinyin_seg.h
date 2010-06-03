@@ -95,9 +95,9 @@ class CQuanpinSegmentor : public IPySegmentor
 public:
     CQuanpinSegmentor ();
 
-    virtual TSegmentVec& getSegments () 
+    virtual TSegmentVec& getSegments (bool req_aux_segs) 
     {
-        if (m_pGetFuzzySegmentsOp && m_pGetFuzzySegmentsOp->isEnabled()) {
+        if (req_aux_segs && m_pGetFuzzySegmentsOp && m_pGetFuzzySegmentsOp->isEnabled()) {
             m_merged_segs.clear();
             std::merge (m_segs.begin(),         m_segs.end(),
                         m_fuzzy_segs.begin(),   m_fuzzy_segs.end(),

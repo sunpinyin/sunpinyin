@@ -76,7 +76,7 @@ struct IPySegmentor
     typedef std::vector<TSegment>  TSegmentVec;
 
     virtual ~IPySegmentor () {}
-    virtual TSegmentVec& getSegments () = 0;
+    virtual TSegmentVec& getSegments (bool req_aux_segs=true) = 0;
     virtual const wstring& getInputBuffer () = 0;
     virtual const char* getSylSeps () = 0;
 

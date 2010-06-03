@@ -68,12 +68,15 @@ CSunpinyinSessionWrapper::~CSunpinyinSessionWrapper()
 
 void CSunpinyinSessionWrapper::switchInputMode (bool isEnglish, ECommitPolicies policy)
 {
+    if (!isValid())
+        return;
+
     if (isEnglish) {
         // We need two spaces to commit in modern style
         if (COMMIT_PINYIN_STRING == policy)
-            onKeyEvent (CKeyEvent(IM_VK_ENTER, 0, 0));
+            m_pv->onKeyEvent (CKeyEvent(IM_VK_ENTER, 0, 0));
         else if (COMMIT_CONVERTED_SENTENCE == policy)
-            onKeyEvent (CKeyEvent(' ', ' ', 0));
+            m_pv->onCandidateSelectRequest (0);
     }
 }
 

@@ -105,6 +105,9 @@ public:
     void setEnableSimplerInitials (bool value=true) {m_bEnableSimplerInitials = value;}
     bool isEnabled () {return m_bEnableFuzzies || m_bEnableSimplerInitials;}
 
+    void clearFuzzyMap ()
+        {m_fuzzyMap.clear();}
+
     void initFuzzyMap (const string_pairs& fuzzyPairs, bool duplex = true)
         {
             string_pairs::const_iterator it =  fuzzyPairs.begin();

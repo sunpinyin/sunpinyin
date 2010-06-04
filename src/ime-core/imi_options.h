@@ -121,6 +121,9 @@ public:
         m_getFuzzySyllablesOp.setEnableSimplerInitials (enable_simpler_initials);
     }
 
+    void clearFuzzyPinyinPairs ()
+        {m_getFuzzySyllablesOp.clearFuzzyMap();}
+
     void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
         {m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}
 
@@ -166,6 +169,9 @@ public:
         m_getFuzzySyllablesOp.setEnableFuzzies (enable_fuzzies);
         m_getFuzzySyllablesOp.setEnableSimplerInitials (enable_simpler_initials);
     }
+
+    void clearFuzzyPinyinPairs ()
+        {m_getFuzzySyllablesOp.clearFuzzyMap();}
 
     void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
         {m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}

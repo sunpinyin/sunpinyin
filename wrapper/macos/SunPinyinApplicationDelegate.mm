@@ -300,10 +300,13 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     
     bool simpler_initials_enabled = [pref boolForKey:@"Quanpin.Fuzzy.SimplerInitials"];    
     bool quanpin_fuzzy_enabled = [pref boolForKey: @"Quanpin.Fuzzy.Enabled"];
-        
+     
     quanpin_policy.setFuzzyForwarding   (quanpin_fuzzy_enabled, simpler_initials_enabled);
     shuangpin_policy.setFuzzyForwarding (quanpin_fuzzy_enabled, simpler_initials_enabled);
     
+    quanpin_policy.clearFuzzyPinyinPairs();
+    shuangpin_policy.clearFuzzyPinyinPairs();
+
     if (simpler_initials_enabled)
     {
         string_pairs fuzzy_pairs;

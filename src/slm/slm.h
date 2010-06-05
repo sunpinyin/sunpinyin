@@ -38,6 +38,10 @@
 #ifndef _SUN_AGC_SLM_H
 #define _SUN_AGC_SLM_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "../portability.h"
 
 #include <stdio.h>

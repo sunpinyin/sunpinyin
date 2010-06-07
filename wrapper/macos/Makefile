@@ -28,5 +28,5 @@ clean:
 
 install:
 	rm -rf "/Library/Input Methods/SunPinyin.app"
-	cp -r build/SunPinyin.app "/Library/Input Methods"
+	cp -R build/Debug/SunPinyin.app "/Library/Input Methods"
 

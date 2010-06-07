@@ -9,7 +9,9 @@
 #ifndef SUAPPCASTITEM_H
 #define SUAPPCASTITEM_H
 
-@interface SUAppcastItem : NSObject {
+@interface SUAppcastItem : NSObject
+{
+@private
 	NSString *title;
 	NSDate *date;
 	NSString *itemDescription;
@@ -22,12 +24,15 @@
 	NSURL *fileURL;
 	NSString *versionString;
 	NSString *displayVersionString;
-	
+
+	NSDictionary *deltaUpdates;
+
 	NSDictionary *propertiesDictionary;
 }
 
 // Initializes with data from a dictionary provided by the RSS class.
 - initWithDictionary:(NSDictionary *)dict;
+- initWithDictionary:(NSDictionary *)dict failureReason:(NSString**)error;
 
 - (NSString *)title;
 - (NSString *)versionString;
@@ -38,6 +43,8 @@
 - (NSURL *)fileURL;
 - (NSString *)DSASignature;
 - (NSString *)minimumSystemVersion;
+- (NSDictionary *)deltaUpdates;
+- (BOOL)isDeltaUpdate;
 
 // Returns the dictionary provided in initWithDictionary; this might be useful later for extensions.
 - (NSDictionary *)propertiesDictionary;

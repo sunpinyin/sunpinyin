@@ -90,7 +90,7 @@ CIMIClassicView::updateWindows(unsigned mask)
     if ((mask & PREEDIT_MASK) || (mask & CANDIDATE_MASK)) {
         unsigned word_num = m_pIC->getBestSentence (m_tailSentence, m_candiFrIdx);
         if (word_num <= 1 || (!m_candiList.empty() && m_tailSentence == m_candiList[0].m_cwstr))
-            m_tailSentence.clear ();          
+            m_tailSentence.clear ();
     }
 
     if (mask & CANDIDATE_MASK) {

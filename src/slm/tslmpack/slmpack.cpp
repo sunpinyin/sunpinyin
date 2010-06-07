@@ -184,14 +184,14 @@ void group_values(bool usingLogPr,
         assert(usingLogPr || (*itt > 0.0 && *itt < 1.0));
         assert(!usingLogPr || *itt > 0.0);
     }
-    printf("%d float values ==> %d values", pr_eff.size(), pr_table.size());
+    printf("%lu float values ==> %lu values", pr_eff.size(), pr_table.size());
 
     printf("\nCompressing bow values..."); fflush(stdout);
     vc(bow_eff, bow_values, bow_map, bow_table, (1 << CThreadSlm::BITS_BOW));
     itte = bow_table.end();
     for (itt = bow_table.begin(); itt != itte; ++itt)
         *itt = OriginalBow(*itt);
-    printf("%d float values ==> %d values", bow_eff.size(), bow_table.size());
+    printf("%lu float values ==> %lu values", bow_eff.size(), bow_table.size());
 }
 
 TLexicon read_lexicon(const char* filename)

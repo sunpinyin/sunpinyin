@@ -40,7 +40,7 @@ icon_dir = data_dir + 'icons/'
 cflags += ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
 cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
-env = Environment(CFLAGS=cflags, CXXFLAGS=cflags,
+env = Environment(CFLAGS=cflags, CXXFLAGS=cflags, LINKFLAGS='-export-dynamic',
                   CPPPATH=['.', 'IMdkit'], PREFIX=prefix)
 #
 #==============================configure================================

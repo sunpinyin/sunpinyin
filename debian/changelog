@@ -1,3 +1,9 @@
+sunpinyin (2.0.2~git20100607-1) unstable; urgency=low
+
+  * bump the upstream version for later release
+
+ -- Mike <mikeandmore@gmail.com>  Mon, 07 Jun 2010 21:00:52 +0800
+
 sunpinyin (2.0.1-1) unstable; urgency=low
 
   * first upload to official Debian archives (Closes: 478811)

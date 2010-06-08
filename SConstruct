@@ -132,6 +132,14 @@ env = Environment(CFLAGS=cflags,CXXFLAGS=cflags,
                   LINKFLAGS='-Wl,-soname=libsunpinyin.so.%d' % abi_major,
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
 
+if 'CC' in os.environ:
+    print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
+    env['CC']=os.environ['CC']
+    
+if 'CXX' in os.environ:
+    print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
+    env['CXX']=os.environ['CXX']
+
 #
 #==============================configure================================
 #

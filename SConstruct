@@ -311,11 +311,7 @@ def DoInstall():
                                        ['sunpinyin-2.0.pc'])
     libdata_target = env.Install(destdir + libdatadir,
                                  ['data/lm_sc.t3g',
-                                  'data/lm_sc.t3g.le',
-                                  'data/pydict_sc.bin.be',
-                                  'data/lm_sc.t3g.be',
-                                  'data/pydict_sc.bin',
-                                  'data/pydict_sc.bin.le'])
+                                  'data/pydict_sc.bin'])
     header_targets = []
     for header in headers:
         header_targets.append(env.InstallAs(destdir + headersdir

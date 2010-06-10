@@ -84,7 +84,6 @@ sub = {'%libexecdir%': prefix + '/lib/ibus-sunpinyin/',
 env.Substfile('src/sunpinyin.xml.in', SUBST_DICT=sub)
 env.Substfile('setup/config.py.in', SUBST_DICT=sub)
 env.Substfile('setup/ibus-setup-sunpinyin.in', SUBST_DICT=sub)
-Chmod(['setup/ibus-setup-sunpinyin'], 0755)
 
 #
 #==============================install================================
@@ -92,7 +91,9 @@ Chmod(['setup/ibus-setup-sunpinyin'], 0755)
 def DoInstall():
     libexec_target = env.Install(bin_dir, ['ibus-engine-sunpinyin', 
                                            'setup/ibus-setup-sunpinyin'])
-    Chmod(bin_dir + '/ibus-setup-sunpinyin', 0755)
+    for exec_bin in libexec_target:
+        env.AddPostAction(exec_bin, Chmod(str(exec_bin), 0755))
+        
     setup_target = env.Install(data_dir + '/setup',
                                ['setup/setup.glade',
                                 'setup/main.py',

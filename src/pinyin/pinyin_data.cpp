@@ -46,7 +46,7 @@ static const unsigned num_initials = sizeof(initials)/sizeof(*initials);
 static const char *finals[] = {"", "a", "o", "e", "ai", "ei", "ao", "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ue", "iong", };
 static const unsigned num_finals = sizeof(finals)/sizeof(*finals);
 
-static const char *fuzzy_finals[] = {"iao", "ian", "iang", "uai", "uan", "uang"};
+static const char *fuzzy_finals[] = {"iao", "ian", "iang", "uai", "uan", "uang", "ue"};
 static const unsigned num_fuzzy_finals = sizeof(fuzzy_finals)/sizeof(*fuzzy_finals);
 
 static const unsigned fuzzy_finals_map[] = {
@@ -56,6 +56,7 @@ static const unsigned fuzzy_finals_map[] = {
     0x19,        0x40,        2,           /* uai  -> ai   len 2 */
     0x1b,        0x80,        2,           /* uan  -> an   len 2 */
     0x1d,        0xa0,        3,           /* uang -> ang  len 3 */
+    0x20,        0x30,        1,           /* ue   -> e    len 1 */
 };
 
 static const unsigned fuzzy_pre_syllables [] = {

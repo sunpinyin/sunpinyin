@@ -237,7 +237,7 @@
 "706.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Radius:"; ObjectID = "722"; */
-"722.title" = "园角：";
+"722.title" = "圆角：";
 
 /* Class = "NSButtonCell"; title = "Use ↑/↓ to page up/down"; ObjectID = "728"; */
 "728.title" = "使用 '↑'/'↓' 翻页";

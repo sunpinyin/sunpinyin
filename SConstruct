@@ -279,12 +279,12 @@ libname_link = 'libsunpinyin.so'
 lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
                         source=imesource)
 
-env.Command('rawlm', 'build/tslmpack', "gmake -C raw -f Makefile.new")
-env.Command('lm', 'rawlm', "gmake -C data -f Makefile.new")
+env.Command('rawlm', 'build/tslmpack', "make -C raw -f Makefile.new")
+env.Command('lm', 'rawlm', "make -C data -f Makefile.new")
 
 if GetOption('clean'):
-    os.system('gmake -C raw -f Makefile.new clean')
-    os.system('gmake -C data -f Makefile.new clean')
+    os.system('make -C raw -f Makefile.new clean')
+    os.system('make -C data -f Makefile.new clean')
 
     
 env.Command(libname, lib, 'cp -f libsunpinyin-%d.%d.so %s' %

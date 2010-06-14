@@ -129,6 +129,7 @@ def allinc():
     return inc
 
 env = Environment(CFLAGS=cflags,CXXFLAGS=cflags,
+                  TAR='tar', MAKE='make',
                   LINKFLAGS='-Wl,-soname=libsunpinyin.so.%d' % abi_major,
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
 
@@ -140,6 +141,14 @@ if 'CXX' in os.environ:
     print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
     env['CXX']=os.environ['CXX']
 
+if 'TAR' in os.environ:
+    print 'Warning: you\'ve set %s as tar' % os.environ['TAR']
+    env['TAR'] = os.environ['TAR']
+
+if 'MAKE' in os.environ:
+    print 'Warning: you\'ve set %s as make' % os.environ['MAKE']
+    env['MAKE'] = os.environ['MAKE']
+    
 #
 #==============================configure================================
 #
@@ -279,13 +288,17 @@ libname_link = 'libsunpinyin.so'
 lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
                         source=imesource)
 
-env.Command('rawlm', 'build/tslmpack', "make -C raw -f Makefile.new")
-env.Command('lm', 'rawlm', "make -C data -f Makefile.new")
+env.Command('rawlm', 'build/tslmpack',
+            '$MAKE -C raw -f Makefile.new TAR=$TAR')
+
+env.Command('lm', 'rawlm',
+            '$MAKE -C data -f Makefile.new TAR=$TAR')
 
 if GetOption('clean'):
-    os.system('make -C raw -f Makefile.new clean')
-    os.system('make -C data -f Makefile.new clean')
-
+    os.environ['TAR'] = env['TAR']
+    os.environ['MAKE'] = env['MAKE']
+    os.system('$MAKE -C raw -f Makefile.new clean TAR=$TAR')
+    os.system('$MAKE -C data -f Makefile.new clean TAR=$TAR')
     
 env.Command(libname, lib, 'cp -f libsunpinyin-%d.%d.so %s' %
             (abi_major, abi_minor, libname))

@@ -572,8 +572,10 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
     cp.m_candi.m_start = m_candiStarts = frIdx++;
 
     for (;frIdx < m_tailIdx; ++frIdx)  {
-        CLatticeFrame &fr = m_lattice[frIdx];
+        if (m_lattice[frIdx+1].isSyllableSepFrame())
+            continue;
 
+        CLatticeFrame &fr = m_lattice[frIdx];
         if (!fr.isSyllableFrame ())
             continue;
 

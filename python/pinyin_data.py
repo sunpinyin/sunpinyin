@@ -39,7 +39,7 @@ initials = ["", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q",
 
 finals = ["", "a", "o", "e", "ai", "ei", "ao", "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ue", "iong", ]
 
-inner_fuzzy_finals = ['iao', 'ian', 'iang', 'uai', 'uan', 'uang', 'ue']
+inner_fuzzy_finals = ['ia', 'iao', 'ian', 'iang', 'ie', 'ua', 'uai', 'uan', 'uang', 'ue']
 
 fuzzy_pairs = [
     ('z',       'zh'), 

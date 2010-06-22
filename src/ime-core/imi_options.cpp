@@ -188,7 +188,7 @@ CSimplifiedChinesePolicy::saveUserHistory ()
 bool
 CSimplifiedChinesePolicy::createDirectory(char *path) {
     char *p = path;
-    while (p = strchr(p+1, '/')) {
+    while ((p = strchr(p+1, '/'))) {
         *p = 0;
         if (access(path, F_OK) != 0 && mkdir(path, S_IRWXU) != 0) {
             fprintf(stderr, "mkdir %s: %s\n", path, strerror(errno));

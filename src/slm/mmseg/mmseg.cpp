@@ -278,7 +278,7 @@ main(int argc, char *argv[])
             FILE *fp = fopen(argv[i], "r");
             if (fp != NULL) {
                 processSingleFile(fp, nWords, nAmbis);
-                fprintf(stderr, "@Offset %u, %d words, %d ambiguious. Done!\n", ftell(fp), nWords, nAmbis); fflush(stderr);
+                fprintf(stderr, "@Offset %ld, %d words, %d ambiguious. Done!\n", ftell(fp), nWords, nAmbis); fflush(stderr);
             } else {
                 fprintf(stderr, "Can not Open!!!!!!!\n"); fflush(stderr);
             }

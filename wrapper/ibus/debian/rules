@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+include /usr/share/cdbs/1/class/scons.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+
+DEB_SCONS_BUILD_OPTIONS := --prefix=/usr
+DEB_SCONS_INSTALL_OPTIONS := $(DEB_SCONS_BUILD_OPTIONS) \
+	--install-sandbox=$(DEB_DESTDIR)

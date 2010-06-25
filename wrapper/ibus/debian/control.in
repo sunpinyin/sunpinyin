@@ -1,0 +1,15 @@
+Source: ibus-sunpinyin
+Section: util
+Priority: optional
+Maintainer: Mike Qin <mikeandmore@gmail.com>
+Build-Depends: @cdbs@, pkg-config, libgtk2.0-dev (>=2.12.0),
+ libsqlite3-dev (>=3.6), libsunpinyin3-dev, libibus-dev (>=1.2.0)
+Standards-Version: 3.8.4
+Homepage: http://code.google.com/p/sunpinyin/
+
+Package: ibus-sunpinyin
+Architecture: any
+Section: util
+Priority: optional
+Depends: libsunpinyin3, ${shlibs:Depends}, ${misc:Depends}
+Homepage: http://code.google.com/p/sunpinyin/

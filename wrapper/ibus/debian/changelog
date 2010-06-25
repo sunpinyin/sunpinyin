@@ -1,0 +1,5 @@
+ibus-sunpinyin (2.0.2~git20100607) unstable; urgency=low
+
+  * first debian package
+
+ -- Mike Qin <mikeandmore@gmail.com>  Mon, 23 May 2010 11:20:00 +0800

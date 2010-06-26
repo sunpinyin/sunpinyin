@@ -25,5 +25,5 @@ lm_sc.t3g.be: lm_sc.t3g
 	./tslmendian -e be -i $(LM_SC_BIN) -o $@
 
 clean:
-	@rm -f pydict_sc.bin pydict_sc.bin.le pydict_sc.bin.be lm_sc.t3g.le lm_sc.t3g.be pydict_sc.log.utf8
+	@rm -f pydict_sc.bin pydict_sc.bin.le pydict_sc.bin.be lm_sc.t3g lm_sc.t3g.le lm_sc.t3g.be pydict_sc.log.utf8
 	@echo cleaned

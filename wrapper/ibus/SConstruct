@@ -36,6 +36,14 @@ env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
                   CPPPATH=['.'], PREFIX=prefix, SUBSTFILESUFFIX='.in')
 
+if 'CC' in os.environ:
+    print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
+    env['CC']=os.environ['CC']
+    
+if 'CXX' in os.environ:
+    print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
+    env['CXX']=os.environ['CXX']
+
 #
 #==============================configure================================
 #

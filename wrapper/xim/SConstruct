@@ -1,3 +1,5 @@
+import os
+
 sources = ['ic.c',
            'ic_gtk.c',
            'main.c',
@@ -40,8 +42,18 @@ icon_dir = data_dir + 'icons/'
 cflags += ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
 cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
-env = Environment(CFLAGS=cflags, CXXFLAGS=cflags, LINKFLAGS='-export-dynamic',
+env = Environment(ENV=os.environ,
+                  CFLAGS=cflags, CXXFLAGS=cflags, LINKFLAGS='-export-dynamic',
                   CPPPATH=['.', 'IMdkit'], PREFIX=prefix)
+
+if 'CC' in os.environ:
+    print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
+    env['CC']=os.environ['CC']
+    
+if 'CXX' in os.environ:
+    print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
+    env['CXX']=os.environ['CXX']
+
 #
 #==============================configure================================
 #

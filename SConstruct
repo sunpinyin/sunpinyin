@@ -128,7 +128,7 @@ def allinc():
         inc.append(root)
     return inc
 
-env = Environment(CFLAGS=cflags,CXXFLAGS=cflags,
+env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                   TAR='tar', MAKE='make',
                   LINKFLAGS='-Wl,-soname=libsunpinyin.so.%d' % abi_major,
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)

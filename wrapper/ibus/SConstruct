@@ -32,7 +32,8 @@ cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % (icons_dir,)
 cflags += ' -DLIBEXECDIR=\'"%s"\'' % (bin_dir,)
 cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % (gettext_package,)
 
-env = Environment(CFLAGS=cflags, CXXFLAGS=cflags, 
+env = Environment(ENV=os.environ,
+                  CFLAGS=cflags, CXXFLAGS=cflags, 
                   CPPPATH=['.'], PREFIX=prefix, SUBSTFILESUFFIX='.in')
 
 #

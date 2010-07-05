@@ -136,6 +136,9 @@ public:
     void setFuzzySegmentation (bool v=true)
         {m_getFuzzySegmentsOp.setEnable (v);}
 
+    void setInnerFuzzySegmentation (bool v=true)
+        {m_getFuzzySegmentsOp.setInnerFuzzyEnable (v);}
+
     virtual bool onConfigChanged(const COptionEvent& event);
     
     template<class> friend class SingletonHolder;

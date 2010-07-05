@@ -124,6 +124,7 @@ unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPyS
     unsigned updatedFrom = UINT_MAX;
     TSyllable syl = (TSyllable) seg.m_syllables[0];
 
+    if (m_bInnerFuzzyEnabled)
     { // xian -> xian, xi'an
         CInnerFuzzyFinalMap::iterator it = m_fuzzyFinalMap.find (syl.final);
 
@@ -167,7 +168,7 @@ unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPyS
     }
 
     if (segs.size() >= 2) { // fangan -> fang'an, fan'gan
-        IPySegmentor::TSegment pre_seg = *(segs.end() - 2);
+        IPySegmentor::TSegment& pre_seg = *(segs.end() - 2);
 
         CFuzzySyllableMap::iterator pre_it = m_fuzzyPreMap.find (pre_seg.m_syllables[0]);
         CFuzzySyllableMap::iterator     it = m_fuzzyProMap.find (syl);
@@ -191,7 +192,6 @@ unsigned CGetFuzzySegmentsOp::operator () (IPySegmentor::TSegmentVec& segs, IPyS
             goto RETURN;
         }
     }
-
 
 RETURN:;
 

@@ -355,8 +355,10 @@ void updateQuanpinSettings(NSUserDefaults* pref)
     
     quanpin_policy.setAutoCorrectionPairs (correcting_pairs);
 
-    bool quanpin_fuzzy_segments_enabled = [pref boolForKey:@"Quanpin.FuzzySegs.Enabled"];
+    bool quanpin_fuzzy_segments_enabled       = [pref boolForKey:@"Quanpin.FuzzySegs.Enabled"];
+    bool quanpin_inner_fuzzy_segments_enabled = [pref boolForKey:@"Quanpin.FuzzySegs.InnerFuzzy.Enabled"];
     quanpin_policy.setFuzzySegmentation (quanpin_fuzzy_segments_enabled);
+    quanpin_policy.setInnerFuzzySegmentation (quanpin_inner_fuzzy_segments_enabled);
 }
 
 void updateShuangpinSettings(NSUserDefaults* pref)

@@ -42,6 +42,8 @@
 	<data>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARmZmZmg83MzD4BAQGG</data>
 	<key>Quanpin.FuzzySegs.Enabled</key>
 	<true/>
+	<key>Quanpin.FuzzySegs.InnerFuzzy.Enabled</key>
+	<false/>
 	<key>Quanpin.Fuzzy.Enabled</key>
 	<false/>
 	<key>Quanpin.Fuzzy.SimplerInitials</key>

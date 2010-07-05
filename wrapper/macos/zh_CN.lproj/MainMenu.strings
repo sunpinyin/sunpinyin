@@ -252,10 +252,14 @@
 "736.title" = "检查更新 ...";
 
 /* Class = "NSTextFieldCell"; title = "Version 2.0.2\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>"; ObjectID = "746"; */
-"746.title" = "版本 2.0.2\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>";
+"746.title" = "版本 2.0.2.1007\n\nCopyright © 2010 SunPinyin.ORG\nSun Microsystems, Inc.\nLei Zhang <phill.zhang@gmail.com>\nYong Sun <mail@yongsun.me>\nKefu Chai <tchaikov@gmail.com>\nWei Xue <breadson.xue@gmail.com>\nLeo Zheng <zym361@gmail.com>\nMike <mikeandmore@gmail.com>\nchumsdock <vorbei@gmail.com>\nAnthony Lee <don.anthony.lee@gmail.com>";
 
 /* Class = "NSButtonCell"; title = "Smarter Segmentation (only applicable for QuanPin)"; ObjectID = "748"; */
 "748.title" = "智能切分（仅适用于全拼）";
 
 /* Class = "NSButtonCell"; title = "Simpler Initials (z/c/s -> zh/ch/sh)"; ObjectID = "752"; */
 "752.title" = "声母简写（z/c/s -> zh/ch/sh）";
+
+/* Class = "NSButtonCell"; title = "Enable Inner Fuzzies"; ObjectID = "757"; */
+"757.title" = "支持内模糊音节（xian->xi'an）";
+

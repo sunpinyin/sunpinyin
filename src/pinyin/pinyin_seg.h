@@ -74,10 +74,11 @@ public:
     typedef std::map<unsigned, std::pair<unsigned, unsigned> > CInnerFuzzyFinalMap;
     typedef std::map<unsigned, std::pair<char, unsigned> > CFuzzySyllableMap;
 
-    CGetFuzzySegmentsOp () : m_bEnabled(false) {_initMaps();}
+    CGetFuzzySegmentsOp () : m_bEnabled(false), m_bInnerFuzzyEnabled(false) {_initMaps();}
     unsigned operator () (IPySegmentor::TSegmentVec&, IPySegmentor::TSegmentVec&, wstring&);
 
     void setEnable (bool value=true) {m_bEnabled = value;}
+    void setInnerFuzzyEnable (bool value=true) {m_bInnerFuzzyEnabled = value;}
     bool isEnabled () {return m_bEnabled;}
 
 private:
@@ -85,6 +86,7 @@ private:
     unsigned    _invalidateSegments (IPySegmentor::TSegmentVec&, IPySegmentor::TSegment&);
 
     bool                      m_bEnabled;
+    bool                      m_bInnerFuzzyEnabled;
     CInnerFuzzyFinalMap       m_fuzzyFinalMap;
     CFuzzySyllableMap         m_fuzzyPreMap;
     CFuzzySyllableMap         m_fuzzyProMap;

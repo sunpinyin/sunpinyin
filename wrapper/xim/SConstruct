@@ -29,11 +29,17 @@ imdkit_sources = ['IMdkit/FrameMgr.c',
 
 prefix='/usr/local'
 cflags='-g'
+rpath=''
+
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
           metavar='DIR', help='installation prefix')
+AddOption('--rpath', dest='rpath', type='string', nargs=1, action='store',
+          metavar='DIR', help='encode rpath in the executables')
 
 if GetOption('prefix') is not None:
     prefix = GetOption('prefix')
+if GetOption('rpath') is not None:
+    rpath = GetOption('rpath')
 
 bin_dir = prefix + '/bin'
 data_dir = '%s/share/xsunpinyin/' % prefix
@@ -43,8 +49,12 @@ cflags += ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
 cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
 env = Environment(ENV=os.environ,
-                  CFLAGS=cflags, CXXFLAGS=cflags, LINKFLAGS='-export-dynamic',
+                  CFLAGS=cflags, CXXFLAGS=cflags, 
+                  LINKFLAGS=['-export-dynamic'],
                   CPPPATH=['.', 'IMdkit'], PREFIX=prefix)
+
+if rpath != '':
+    env.Append(LINKFLAGS=['-Wl,--rpath-link=%s' % rpath])
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']

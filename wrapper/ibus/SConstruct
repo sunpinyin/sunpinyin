@@ -15,12 +15,18 @@ sources = ['src/debug.cpp',
 locales = ['zh_CN']
 
 prefix = '/usr/local'
+rpath = ''
 cflags = '-O2 -pipe'
+
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
           metavar='DIR', help='installation prefix')
+AddOption('--rpath', dest='rpath', type='string', nargs=1, action='store',
+          metavar='DIR', help='encode rpath in the executables')
 
 if GetOption('prefix') is not None:
     prefix = GetOption('prefix')
+if GetOption('rpath') is not None:
+    rpath = GetOption('rpath')
 
 data_dir = prefix + '/share/ibus-sunpinyin'
 icons_dir = prefix + '/share/ibus-sunpinyin/icons'
@@ -35,6 +41,9 @@ cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % (gettext_package,)
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
                   CPPPATH=['.'], PREFIX=prefix, SUBSTFILESUFFIX='.in')
+
+if rpath != '':
+    env.Append(LINKFLAGS=['-Wl,--rpath-link=%s' % rpath])
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']

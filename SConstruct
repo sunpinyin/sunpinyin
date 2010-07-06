@@ -4,6 +4,7 @@ import os
 cflags='-O2 -pipe -DHAVE_CONFIG_H '
 prefix='/usr/local'
 destdir=''
+rpath=''
 
 slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
            'src/slm/ids2ngram/idngram_merge.cpp',
@@ -104,11 +105,15 @@ AddOption('--prefix', dest='prefix', type='string', nargs=1,
           action='store', metavar='DIR', help='installation prefix')
 AddOption('--destdir', dest='destdir', type='string', nargs=1,
           action='store', metavar='DIR', help='destination of installation')
+AddOption('--rpath', dest='rpath', type='string', nargs=1,
+          action='store', metavar='DIR', help='encode rpath in the executables')
 
 if GetOption('prefix') is not None:
     prefix = GetOption('prefix')
 if GetOption('destdir') is not None:
     destdir = GetOption('destdir')
+if GetOption('rpath') is not None:
+    rpath = GetOption('rpath)
 
 cflags += ('-DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
 libdir = prefix+'/lib'
@@ -130,8 +135,10 @@ def allinc():
 
 env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                   TAR='tar', MAKE='make',
-                  LINKFLAGS='-Wl,-soname=libsunpinyin.so.%d' % abi_major,
+                  LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major],
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
+if rpath != '':
+    env.Append(LINKFLAGS=['-Wl,--rpath-link=%s' % rpath])
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']

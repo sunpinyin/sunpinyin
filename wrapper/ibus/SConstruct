@@ -96,10 +96,9 @@ for locale in locales:
 # bug of scons...
 # it doesn't include textfile builders by default?
 SCons.Tool.textfile.generate(env)
-sub = {'%libexecdir%': prefix + '/lib/ibus-sunpinyin/',
-       '%pkgdatadir%': data_dir,
+sub = {'@LIBEXEC_DIR@': prefix + '/lib/ibus-sunpinyin/',
        '@prefix@': prefix}
-env.Substfile('src/sunpinyin.xml.in', SUBST_DICT=sub)
+env.Substfile('data/sunpinyin.xml.in', SUBST_DICT=sub)
 env.Substfile('setup/config.py.in', SUBST_DICT=sub)
 env.Substfile('setup/ibus-setup-sunpinyin.in', SUBST_DICT=sub)
 
@@ -117,14 +116,14 @@ def DoInstall():
                                 'setup/main.py',
                                 'setup/config.py'])
     icons_target = env.Install(icons_dir,
-                               ['data/cnpunc.svg',
-                                'data/eng.svg',
-                                'data/enpunc.svg',
-                                'data/fullwidth.svg',
-                                'data/halfwidth.svg',
-                                'data/han.svg',
-                                'data/setup.svg',
-                                'data/sunpinyin-logo.png'])
+                               ['icons/cnpunc.svg',
+                                'icons/eng.svg',
+                                'icons/enpunc.svg',
+                                'icons/fullwidth.svg',
+                                'icons/halfwidth.svg',
+                                'icons/han.svg',
+                                'icons/setup.svg',
+                                'icons/sunpinyin-logo.png'])
     component_target = env.Install(prefix + '/share/ibus/component',
                                    'src/sunpinyin.xml')
     locale_targets = []

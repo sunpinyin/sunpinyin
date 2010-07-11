@@ -51,6 +51,7 @@ swap/*
 debian/control
 
 *.o
+*.os
 *.lo
 *.loT
 *.bz2

@@ -2,9 +2,9 @@
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
-IF(COMMAND cmake_policy)
+if(COMMAND cmake_policy)
   cmake_policy(SET CMP0005 NEW)
-ENDIF(COMMAND cmake_policy)
+endif(COMMAND cmake_policy)
 
 
 include(CheckIncludeFiles)

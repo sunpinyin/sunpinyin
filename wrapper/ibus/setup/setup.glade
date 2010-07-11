@@ -1923,7 +1923,7 @@ PinYinJiaJia</property>
                 </child>
                 <child>
                   <widget class="GtkToggleButton" id="togglebutton38">
-                    <property name="label">L</property>
+                    <property name="label" translatable="no">L</property>
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
@@ -1935,7 +1935,7 @@ PinYinJiaJia</property>
                 </child>
                 <child>
                   <widget class="GtkToggleButton" id="togglebutton39">
-                    <property name="label">:
+                    <property name="label" translatable="no">:
 ;</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -1947,7 +1947,7 @@ PinYinJiaJia</property>
                 </child>
                 <child>
                   <widget class="GtkToggleButton" id="togglebutton40">
-                    <property name="label">"
+                    <property name="label" translatable="no">"
 '</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>

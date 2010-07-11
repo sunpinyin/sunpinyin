@@ -99,7 +99,8 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/pinyin/syllable.h',
          'src/pinyin/shuangpin_data.h',
          'src/pinyin/datrie_impl.h',
-         'src/host_os.h']
+         'src/host_os.h',
+         'src/sunpinyin.h']
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1,
           action='store', metavar='DIR', help='installation prefix')
@@ -113,7 +114,7 @@ if GetOption('prefix') is not None:
 if GetOption('destdir') is not None:
     destdir = GetOption('destdir')
 if GetOption('rpath') is not None:
-    rpath = GetOption('rpath)
+    rpath = GetOption('rpath')
 
 cflags += ('-DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
 libdir = prefix+'/lib'

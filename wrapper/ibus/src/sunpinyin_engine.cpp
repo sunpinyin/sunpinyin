@@ -37,10 +37,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include <imi_view.h>
-#include <imi_options.h>
-#include <imi_keys.h>
-#include <imi_option_keys.h>
+#include <sunpinyin.h>
 
 #include "sunpinyin_property.h"
 #include "sunpinyin_lookup_table.h"

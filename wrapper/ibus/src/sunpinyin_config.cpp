@@ -34,7 +34,7 @@
  */
 
 #include <cassert>
-#include <imi_option_keys.h>
+#include <sunpinyin.h>
 #include "sunpinyin_config_keys.h"
 #include "sunpinyin_config.h"
 

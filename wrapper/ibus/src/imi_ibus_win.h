@@ -36,7 +36,7 @@
 #ifndef IMI_IBUS_WIN_H
 #define IMI_IBUS_WIN_H
 
-#include <imi_winHandler.h>
+#include <ime-core/imi_winHandler.h>
 
 class SunPinyinEngine;
 

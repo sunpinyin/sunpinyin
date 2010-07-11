@@ -1,4 +1,4 @@
-# CMakeLists.txt: cmake config file for SunPinyin 2 build on Mac
+# CMakeLists.txt: cmake config file for ibus-sunpinyin
 
 configure_file(sunpinyin.xml.in sunpinyin.xml)
 install(FILES sunpinyin.xml

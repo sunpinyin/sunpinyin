@@ -65,7 +65,7 @@ ELSE(XGETTEXT_EXECUTABLE)
 ENDIF(XGETTEXT_EXECUTABLE)
 
 IF(NOT DEFINED XGETTEXT_OPTIONS)
-    SET(XGETTEXT_OPTIONS --language=C --keyword=_ --keyword=N_ --keyword=C_:1c,2 --keyword=NC_:1c,2 -s)
+    SET(XGETTEXT_OPTIONS --keyword=_ --keyword=N_ --keyword=C_:1c,2 --keyword=NC_:1c,2 -s)
 ENDIF(NOT DEFINED XGETTEXT_OPTIONS)
 
 IF(XGETTEXT_FOUND)

@@ -47,7 +47,7 @@
 #include "imi_option_event.h"
 #include "userdict.h"
 #include "ic_history.h"
-#include "shuangpin_seg.h"
+#include "pinyin/shuangpin_seg.h"
 
 #ifndef SUNPINYIN_USERDATA_DIR_PREFIX
 #define SUNPINYIN_USERDATA_DIR_PREFIX ".sunpinyin"

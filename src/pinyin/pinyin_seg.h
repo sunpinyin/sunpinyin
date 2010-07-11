@@ -42,7 +42,7 @@
 #include "segmentor.h"
 #include "pinyin_data.h"
 #include "datrie.h"
-#include "utils.h"
+#include "ime-core/utils.h"
 
 #include <algorithm>
 #include <climits>

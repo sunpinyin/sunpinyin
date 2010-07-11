@@ -52,7 +52,7 @@
 #include <map>
 #include <vector>
 
-#include "pinyin_seg.h"
+#include "pinyin/pinyin_seg.h"
 #include "imi_data.h"
 #include "ic_history.h"
 #include "userdict.h"

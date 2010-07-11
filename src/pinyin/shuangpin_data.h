@@ -41,7 +41,7 @@
 #include <string>
 #include <map>
 
-#include "utils.h"
+#include "ime-core/utils.h"
 #include "syllable.h"
 
 enum EShuangpinType {

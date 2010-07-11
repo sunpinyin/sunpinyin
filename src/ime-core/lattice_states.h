@@ -42,7 +42,7 @@
 #include <map>
 #include "portability.h"
 #include "imi_data.h"
-#include "pinyin_seg.h"
+#include "pinyin/pinyin_seg.h"
 
 typedef TLongExpFloat TSentenceScore;
 

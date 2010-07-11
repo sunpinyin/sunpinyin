@@ -43,7 +43,7 @@
 #include <map>
 #include <cstdio>
 
-#include "utils.h"
+#include "ime-core/utils.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

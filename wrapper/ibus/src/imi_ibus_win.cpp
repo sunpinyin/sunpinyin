@@ -36,8 +36,7 @@
  */
 #include <string>
 #include <algorithm>
-#include <imi_winHandler.h>
-#include <imi_uiobjects.h>
+#include <ime-core/imi_uiobjects.h>
 
 #include "sunpinyin_engine.h"
 #include "imi_ibus_win.h"

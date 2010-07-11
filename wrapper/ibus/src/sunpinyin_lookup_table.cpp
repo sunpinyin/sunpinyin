@@ -33,7 +33,7 @@
  * to such option by the copyright holder. 
  */
 
-#include <imi_uiobjects.h>
+#include <sunpinyin.h>
 #include "ibus_portable.h"
 #include "sunpinyin_lookup_table.h"
 

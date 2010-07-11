@@ -38,7 +38,7 @@
 
 #include <string>
 #include <ibus.h>
-#include <imi_option_event.h>
+#include <ime-core/imi_option_event.h>
 #include "sunpinyin_config.h"
 #include "sunpinyin_property.h"
 #include "sunpinyin_lookup_table.h"

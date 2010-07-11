@@ -1,0 +1,27 @@
+<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<!-- filename: sunpinyin.xml -->
+<component>
+  <name>org.freedesktop.IBus.SunPinyin</name>
+  <description>SunPinyin Component</description>
+  <exec>@LIBEXEC_DIR@/ibus-engine-sunpinyin --ibus</exec>
+  <version>@VERSION@</version>
+  <author>Kov Chai &lt;tchaikov@gmail.com&gt;</author>
+  <license>LGPL</license>
+  <homepage>http://opensolaris.org/os/project/input-method/</homepage>
+  <textdomain>ibus-sunpinyin</textdomain>
+  
+  <!-- for static engines -->
+  <engines>
+    <engine>
+      <name>sunpinyin</name>
+      <language>zh_CN</language>
+      <license>LGPL</license>
+      <author>Kov Chai &lt;tchaikov@gmail.com&gt;</author>
+      <icon>@ICON_DIR@/sunpinyin-logo.png</icon>
+      <layout>us</layout>
+      <longname>SunPinyin</longname>
+      <description>SunPinyin Input Method</description>
+      <rank>99</rank>
+    </engine>
+  </engines>
+</component>

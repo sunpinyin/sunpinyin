@@ -40,8 +40,7 @@
 #include <vector>
 #include <string>
 #include <ibus.h>
-#include <imi_options.h>
-#include <imi_option_event.h>
+#include <sunpinyin.h>
 
 class EngineImpl;
 

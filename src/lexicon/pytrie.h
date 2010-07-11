@@ -6,7 +6,7 @@
 #endif
 
 #include "../portability.h"
-#include "syllable.h"
+#include "pinyin/syllable.h"
 #include <map>
 
 #define WORD_ID_WIDTH       24

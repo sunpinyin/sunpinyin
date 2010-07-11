@@ -40,8 +40,8 @@
 
 #include <sqlite3.h>
 #include "portability.h"
-#include "syllable.h"
-#include "pytrie.h"
+#include "pinyin/syllable.h"
+#include "lexicon/pytrie.h"
 #include "imi_defines.h"
 
 class CUserDict

@@ -42,8 +42,8 @@
 
 #include <stdarg.h>
 
-#include "slm.h"
-#include "pytrie.h"
+#include "slm/slm.h"
+#include "lexicon/pytrie.h"
 
 void print_wide(const TWCHAR* wstr);
 

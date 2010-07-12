@@ -32,16 +32,12 @@
  * Version 2 license, then the option applies only if the new code is made subject
  * to such option by the copyright holder. 
  */
+#include <locale.h>
 
-#include "imi_view.h"
-#include "imi_uiobjects.h"
-#include "imi_winHandler.h"
-#include "imi_options.h"
+#include <sunpinyin.h>
 
 #include "xim.h"
 #include "common.h"
-
-#include <locale.h>
 
 #define BUF_SIZE 4096
 
@@ -135,16 +131,13 @@ preedit_init()
     instance = new SSWindowHandler<UIProvider>();
     view->getIC()->setCharsetLevel(1);// GBK
     view->attachWinHandler(instance);
-
-    view->getHotkeyProfile()->addPageUpKey(CKeyEvent(IM_VK_MINUS));
-    view->getHotkeyProfile()->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
 }
 
 __EXPORT_API void
 preedit_finalize(void)
 {
     LOG("preedit_finalizing...");
-    CSunpinyinSessionFactory& fac = CSunpinyinSessionFactory::getFactory();    
+    CSunpinyinSessionFactory& fac = CSunpinyinSessionFactory::getFactory();
     fac.destroySession(view);
 
     if (instance)
@@ -154,9 +147,30 @@ preedit_finalize(void)
 __EXPORT_API void
 preedit_reload(void)
 {
-    int ncandi;
-    settings_get(CANDIDATES_SIZE, &ncandi);
-    view->setCandiWindowSize(ncandi);
+    // number of candidates
+    view->setCandiWindowSize(settings_get_int(CANDIDATES_SIZE));
+
+    // page up/down key
+    CHotkeyProfile* prof = view->getHotkeyProfile();
+    prof->clear();
+    if (settings_get_int(PAGE_MINUS_PLUS)) {
+        prof->addPageUpKey(CKeyEvent(IM_VK_MINUS));
+        prof->addPageDownKey(CKeyEvent(IM_VK_EQUALS));
+    }
+    if (settings_get_int(PAGE_COMMA_PERIOD)) {
+        prof->addPageUpKey(CKeyEvent(IM_VK_COMMA));
+        prof->addPageDownKey(CKeyEvent(IM_VK_PERIOD));
+    }
+    if (settings_get_int(PAGE_PAREN)) {
+        prof->addPageUpKey(CKeyEvent('['));
+        prof->addPageDownKey(CKeyEvent(']'));
+    }
+
+    // fuzzy segmentation
+    bool enabled = settings_get_int(FUZZY_SEGMENTATION);
+    AQuanpinSchemePolicy::instance().setFuzzySegmentation(enabled);
+    AQuanpinSchemePolicy::instance().setInnerFuzzySegmentation(enabled);
+
     instance->reload_ui();
 }
 

@@ -61,6 +61,10 @@ static GtkFontButton* font_btn = NULL;
 static GtkColorButton* font_color_btn = NULL;
 static GtkAdjustment* opacity_value = NULL;
 static GtkAdjustment* ncandidates = NULL;
+static GtkToggleButton* minus_plus_check = NULL;
+static GtkToggleButton* comma_period_check = NULL;
+static GtkToggleButton* paren_check = NULL;
+static GtkToggleButton* fuzzy_seg_check = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
@@ -119,13 +123,21 @@ init_settings(void)
     settings_get(PREEDIT_FONT, fontstr);
     gtk_font_button_set_font_name(font_btn, fontstr);
 
-    double scale;
-    settings_get(PREEDIT_OPACITY, &scale);
-    gtk_adjustment_set_value(opacity_value, scale);
+    
+    gtk_adjustment_set_value(opacity_value,
+                             settings_get_double(PREEDIT_OPACITY));
+    
+    gtk_adjustment_set_value(ncandidates, settings_get_int(CANDIDATES_SIZE));
 
-    int ncandi;
-    settings_get(CANDIDATES_SIZE, &ncandi);
-    gtk_adjustment_set_value(ncandidates, ncandi);
+    gtk_toggle_button_set_active(minus_plus_check,
+                                 settings_get_int(PAGE_MINUS_PLUS));
+    gtk_toggle_button_set_active(comma_period_check,
+                                 settings_get_int(PAGE_COMMA_PERIOD));
+    gtk_toggle_button_set_active(paren_check,
+                                 settings_get_int(PAGE_PAREN));
+    
+    gtk_toggle_button_set_active(fuzzy_seg_check,
+                                 settings_get_int(FUZZY_SEGMENTATION));
 }
 
 static void
@@ -146,6 +158,10 @@ init(void)
     RETRIEVE(font_color_btn, GTK_COLOR_BUTTON);
     RETRIEVE(opacity_value, GTK_ADJUSTMENT);
     RETRIEVE(ncandidates, GTK_ADJUSTMENT);
+    RETRIEVE(minus_plus_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(comma_period_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(paren_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(fuzzy_seg_check, GTK_TOGGLE_BUTTON);
 
     init_settings();
     
@@ -163,7 +179,7 @@ init(void)
         if (gtk_toggle_button_get_active(prefix##_shift_check)) {       \
             hk.modifiers |= ShiftMask;                                  \
         }                                                               \
-        int idx = gtk_combo_box_get_active(prefix##_combo);            \
+        int idx = gtk_combo_box_get_active(prefix##_combo);             \
         if (idx >= 0)                                                   \
             hk.keysym = ui_keysym_model[idx];                           \
     } while (0)
@@ -175,6 +191,15 @@ init(void)
         snprintf(colorstr, sizeof(varchar), "#%.2X%.2X%.2X",            \
                  color.red >> 8, color.green >> 8, color.blue >> 8);    \
     } while(0)
+
+static void
+send_reload()
+{
+    /* notify all running xsunpinyin with this user */
+    char cmd[256];
+    snprintf(cmd, 256, "/usr/bin/pkill -10 '^xsunpinyin$' -u %d", getuid());
+    system(cmd);
+}
 
 void
 state_changed()
@@ -197,18 +222,25 @@ state_changed()
     settings_set(PREEDIT_FONT, (void*) gtk_font_button_get_font_name(font_btn));
 
     /* font color information */
-    double scale = gtk_adjustment_get_value(opacity_value);
-    settings_set(PREEDIT_OPACITY, &scale);
+    settings_set_double(PREEDIT_OPACITY,
+                        gtk_adjustment_get_value(opacity_value));
 
-    int ncandi = gtk_adjustment_get_value(ncandidates);
-    settings_set(CANDIDATES_SIZE, &ncandi);
-    
+    settings_set_int(CANDIDATES_SIZE,
+                     gtk_adjustment_get_value(ncandidates));
+
+    /* page up and down trigger */
+    settings_set_int(PAGE_MINUS_PLUS,
+                     gtk_toggle_button_get_active(minus_plus_check));
+    settings_set_int(PAGE_COMMA_PERIOD,
+                     gtk_toggle_button_get_active(comma_period_check));
+    settings_set_int(PAGE_PAREN,
+                     gtk_toggle_button_get_active(paren_check));
+
+    settings_set_int(FUZZY_SEGMENTATION,
+                     gtk_toggle_button_get_active(fuzzy_seg_check));
+
     settings_save();
-
-    /* notify all running xsunpinyin with this user */
-    char cmd[256];
-    snprintf(cmd, 256, "/usr/bin/pkill -10 '^xsunpinyin$' -u %d", getuid());
-    system(cmd);
+    send_reload();
 }
 
 int main(int argc, char *argv[])
@@ -221,4 +253,3 @@ int main(int argc, char *argv[])
     gtk_main();
     return 0;
 }
-

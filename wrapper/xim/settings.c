@@ -55,9 +55,12 @@ static const char* setting_names[] = {
     "preedit_font",
     "preedit_font_color",
     "candidates_size",
+    "page_minus_plus",
+    "page_comma_period",
+    "page_paren",
+    "fuzzy_segmentation",
+    NULL
 };
-
-static const int nsetting = 8;
 
 static void*  setting_data[MAX_KEY];
 static size_t setting_size[MAX_KEY];
@@ -220,29 +223,27 @@ __init_default_values()
     settings_set(ENG_KEY, &hk);
 
     get_screen_size(&(pos.x), &(pos.y));
-    pos.x -= 100;
+    pos.x -= 200;
     pos.y -= 70;
 
     settings_set(ICBAR_POS, &pos);
 
     /* preedit opacity */
-    d = 1.0;
-    settings_set(PREEDIT_OPACITY, &d);
+    settings_set_double(PREEDIT_OPACITY, 1.0);
 
-    memset(str, 0, sizeof(varchar));
-    strcpy(str, "#FFFFB3");
-    settings_set(PREEDIT_COLOR, str);
+    settings_set_string(PREEDIT_COLOR, "#FFFFB3");
+    settings_set_string(PREEDIT_FONT, "Sans 10");
+    settings_set_string(PREEDIT_FONT_COLOR, "#000000");
 
-    memset(str, 0, sizeof(varchar));
-    strcpy(str, "Sans 10");
-    settings_set(PREEDIT_FONT, str);
+    settings_set_int(CANDIDATES_SIZE, 10);
 
-    memset(str, 0, sizeof(varchar));
-    strcpy(str, "#000000");
-    settings_set(PREEDIT_FONT_COLOR, str);
+    /* page up and down trigger */
+    settings_set_int(PAGE_MINUS_PLUS, 1);
+    settings_set_int(PAGE_COMMA_PERIOD, 0);
+    settings_set_int(PAGE_PAREN, 0);
 
-    i = 10;
-    settings_set(CANDIDATES_SIZE, &i);
+    /* fuzzy segmentation */
+    settings_set_int(FUZZY_SEGMENTATION, 0);
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -266,6 +267,10 @@ settings_init()
     REGISTER(PREEDIT_FONT, varchar, __varchar_enc, __varchar_dec);
     REGISTER(PREEDIT_FONT_COLOR, varchar, __varchar_enc, __varchar_dec);
     REGISTER(CANDIDATES_SIZE, int, __int_enc, __int_dec);
+    REGISTER(PAGE_MINUS_PLUS, int, __int_enc, __int_dec);
+    REGISTER(PAGE_COMMA_PERIOD, int, __int_enc, __int_dec);
+    REGISTER(PAGE_PAREN, int, __int_enc, __int_dec);
+    REGISTER(FUZZY_SEGMENTATION, int, __int_enc, __int_dec);
     
     __init_default_values();
 }
@@ -273,11 +278,11 @@ settings_init()
 void
 settings_destroy()
 {
-    int i;
-    for (i = 0; i < nsetting; i++)
-    {
+    int i = 0;
+    while (setting_names[i] != NULL) {
         if (setting_data[i] != NULL)
             free(setting_data[i]);
+        i++;
     }
 }
 
@@ -314,12 +319,13 @@ settings_load()
             continue;
 
         char* ptr = strchr(line, '=');
-        int i;
-        for (i = 0; i < nsetting; i++) {
+        int i = 0;
+        while (setting_names[i] != NULL) {
             if (strncmp(line, setting_names[i], ptr - line) == 0) {
                 serialize_func_t func = setting_dec[i];
                 func(ptr + 1, setting_data[i]);
             }
+            i++;
         }
     }
     fclose(fp);
@@ -336,19 +342,33 @@ settings_save()
         LOG("settings can't be saved");
         return;
     }
-    int i;
-    for (i = 0; i < nsetting; i++) {
+    int i = 0;
+    while (setting_names[i] != NULL) {
         memset(line, 0, sizeof(char) * 256);
-        fprintf(fp, "%s=", setting_names[i]);
         serialize_func_t func = setting_enc[i];
         func(line, setting_data[i]);
-        fprintf(fp, "%s\n", line);
+        fprintf(fp, "%s=%s\n", setting_names[i], line);
+        i++;
     }
     fclose(fp);
 }
 
+int settings_get_int(setting_key_t key)
+{
+    int ret = 0;
+    settings_get(key, &ret);
+    return ret;
+}
+
+double settings_get_double(setting_key_t key)
+{
+    double ret = 0;
+    settings_get(key, &ret);
+    return ret;
+}
+
 void
-settings_get(int key, void* data)
+settings_get(setting_key_t key, void* data)
 {
     if (setting_data[key] == NULL) {
         LOG("invalid setting key %d to get", key);
@@ -358,7 +378,27 @@ settings_get(int key, void* data)
 }
 
 void
-settings_set(int key, void* data)
+settings_set_int(setting_key_t key, int value)
+{
+    settings_set(key, &value);
+}
+
+void
+settings_set_double(setting_key_t key, double value)
+{
+    settings_set(key, &value);
+}
+
+void
+settings_set_string(setting_key_t key, const char* str)
+{
+    varchar vchar;
+    strncpy(vchar, str, sizeof(varchar));
+    settings_set(key, vchar);
+}
+
+void
+settings_set(setting_key_t key, void* data)
 {
     if (setting_data[key] == NULL) {
         LOG("invalid setting key %d to set", key);

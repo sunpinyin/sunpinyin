@@ -57,15 +57,20 @@ typedef struct {
 
 typedef char varchar[128];
 
-#define TRIGGER_KEY 0x00
-#define ENG_KEY 0x01
-
-#define ICBAR_POS 0x02
-#define PREEDIT_OPACITY 0x03
-#define PREEDIT_COLOR 0x04
-#define PREEDIT_FONT 0x05
-#define PREEDIT_FONT_COLOR 0x06
-#define CANDIDATES_SIZE 0x07
+typedef enum {
+    TRIGGER_KEY = 0,
+    ENG_KEY,
+    ICBAR_POS,
+    PREEDIT_OPACITY,
+    PREEDIT_COLOR,
+    PREEDIT_FONT,
+    PREEDIT_FONT_COLOR,
+    CANDIDATES_SIZE,
+    PAGE_MINUS_PLUS,
+    PAGE_COMMA_PERIOD,
+    PAGE_PAREN,
+    FUZZY_SEGMENTATION,
+} setting_key_t;
 
 #define MAX_KEY 0xff
 
@@ -75,8 +80,15 @@ void  settings_destroy();
 void  settings_load();
 void  settings_save();
 
-void  settings_get(int key, void* data);
-void  settings_set(int key, void* data);
+void  settings_get(setting_key_t key, void* data);
+void  settings_set(setting_key_t key, void* data);
+
+void  settings_set_int(setting_key_t key, int value);
+void  settings_set_double(setting_key_t key, double value);
+void  settings_set_string(setting_key_t key, const char* str);
+
+int    settings_get_int(setting_key_t key);
+double settings_get_double(setting_key_t key);
 
 __END_DECLS
 

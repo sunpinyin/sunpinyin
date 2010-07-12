@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# thanks for the reverse engineering efforts of following projects/peoples:
+# http://code.google.com/p/imewlconverter
+# http://code.google.com/p/ibus-cloud-pinyin
+# http://forum.ubuntu.org.cn/viewtopic.php?f=8&t=250136&start=0
+
 from importer import import_to_sunpinyin_user_dict
 import struct
 import os, sys

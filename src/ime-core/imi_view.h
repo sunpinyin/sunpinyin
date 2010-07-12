@@ -192,6 +192,10 @@ public:
     CHotkeyProfile* getHotkeyProfile() { return m_pHotkeyProfile; }
     unsigned getCandiWindowSize() { return m_candiWindowSize; }
 
+    void setCancelOnBackspace(bool backspaceCancel)
+    { m_backspaceCancel = backspaceCancel; }
+    bool getCancelOnBackspace() { return m_backspaceCancel; }
+
     virtual unsigned clearIC(void) {m_pIC->clear(); return 0;}
     virtual bool onKeyEvent(const CKeyEvent&) {return false;}
 
@@ -216,6 +220,7 @@ protected:
     bool                m_bCN;
     bool                m_bFullPunct;
     bool                m_bFullSymbol;
+    bool                m_backspaceCancel;
 };
 
 #endif

@@ -70,6 +70,7 @@ typedef enum {
     PAGE_COMMA_PERIOD,
     PAGE_PAREN,
     FUZZY_SEGMENTATION,
+    CANCEL_ON_BACKSPACE,
 } setting_key_t;
 
 #define MAX_KEY 0xff

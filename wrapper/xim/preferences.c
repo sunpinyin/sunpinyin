@@ -65,6 +65,7 @@ static GtkToggleButton* minus_plus_check = NULL;
 static GtkToggleButton* comma_period_check = NULL;
 static GtkToggleButton* paren_check = NULL;
 static GtkToggleButton* fuzzy_seg_check = NULL;
+static GtkToggleButton* cancel_on_backspace_check = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
@@ -138,6 +139,9 @@ init_settings(void)
     
     gtk_toggle_button_set_active(fuzzy_seg_check,
                                  settings_get_int(FUZZY_SEGMENTATION));
+
+    gtk_toggle_button_set_active(cancel_on_backspace_check,
+                                 settings_get_int(CANCEL_ON_BACKSPACE));
 }
 
 static void
@@ -162,6 +166,7 @@ init(void)
     RETRIEVE(comma_period_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(paren_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(fuzzy_seg_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(cancel_on_backspace_check, GTK_TOGGLE_BUTTON);
 
     init_settings();
     
@@ -236,8 +241,13 @@ state_changed()
     settings_set_int(PAGE_PAREN,
                      gtk_toggle_button_get_active(paren_check));
 
+    /* fuzzy segmentation */
     settings_set_int(FUZZY_SEGMENTATION,
                      gtk_toggle_button_get_active(fuzzy_seg_check));
+
+    /* cancel on backspace */
+    settings_set_int(CANCEL_ON_BACKSPACE,
+                     gtk_toggle_button_get_active(cancel_on_backspace_check));
 
     settings_save();
     send_reload();

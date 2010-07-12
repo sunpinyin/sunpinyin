@@ -59,6 +59,7 @@ static const char* setting_names[] = {
     "page_comma_period",
     "page_paren",
     "fuzzy_segmentation",
+    "cancel_on_backspace",
     NULL
 };
 
@@ -244,6 +245,9 @@ __init_default_values()
 
     /* fuzzy segmentation */
     settings_set_int(FUZZY_SEGMENTATION, 0);
+
+    /* cancel on backspace */
+    settings_set_int(CANCEL_ON_BACKSPACE, 1);
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -271,6 +275,7 @@ settings_init()
     REGISTER(PAGE_COMMA_PERIOD, int, __int_enc, __int_dec);
     REGISTER(PAGE_PAREN, int, __int_enc, __int_dec);
     REGISTER(FUZZY_SEGMENTATION, int, __int_enc, __int_dec);
+    REGISTER(CANCEL_ON_BACKSPACE, int, __int_enc, __int_dec);
     
     __init_default_values();
 }

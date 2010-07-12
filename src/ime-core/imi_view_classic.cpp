@@ -444,6 +444,15 @@ void
 CIMIClassicView::_erase (bool backward, unsigned &changeMasks)
 {
     if (backward) {
+        // if possible to cancel the last selection
+        if (m_backspaceCancel) {
+            if (m_candiFrIdx > 0) {
+                changeMasks |= CANDIDATE_MASK | PREEDIT_MASK | KEYEVENT_USED;
+                m_candiFrIdx = m_pIC->cancelSelection(m_candiFrIdx, true);
+                _getCandidates();
+                return;
+            }
+        }
         if (m_cursorFrIdx == m_pIC->getLastFrIdx())
             m_pPySegmentor->pop();
         else if (m_cursorFrIdx > 0)

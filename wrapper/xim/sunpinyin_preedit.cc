@@ -171,6 +171,9 @@ preedit_reload(void)
     AQuanpinSchemePolicy::instance().setFuzzySegmentation(enabled);
     AQuanpinSchemePolicy::instance().setInnerFuzzySegmentation(enabled);
 
+    // cancel last selection on backspace
+    view->setCancelOnBackspace(settings_get_int(CANCEL_ON_BACKSPACE));
+
     instance->reload_ui();
 }
 

@@ -45,11 +45,11 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
             continue
 
         if len (syllables) < 2 or len (syllables) > 6:
-            #print "[%s] is too long or too short for sunpinyin userdict" % utf8str
+            print "[%s] is too long or too short for sunpinyin userdict" % utf8str
             continue
 
         if sysdict and trie.search (sysdict, utf8str):
-            #print "[%s] is already in sunpinyin's sysdict" % utf8str
+            print "[%s] is already in sunpinyin's sysdict" % utf8str
             continue
 
         record = [0]*14

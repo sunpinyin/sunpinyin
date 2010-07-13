@@ -107,7 +107,7 @@ CIMIContext::CIMIContext ()
       m_historyPower(3), m_bFullSymbolForwarding(false), m_pGetFullSymbolOp(NULL),
       m_bFullPunctForwarding(true), m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
       m_candiStarts(0), m_candiEnds(0), m_csLevel(0), m_bNonCompleteSyllable(true),
-      m_pPySegmentor(0)
+      m_pPySegmentor(0), m_bOmitPunct(false)
 {
     m_lattice.resize (MAX_LATTICE_LENGTH);
     m_lattice[0].m_latticeStates.push_back (TLatticeState (-1.0, 0));
@@ -163,6 +163,7 @@ bool CIMIContext::_buildLattice (IPySegmentor::TSegmentVec &segments, unsigned r
             _forwardSyllableSep (i, j);
         else
             _forwardString (i, j, it->m_syllables);
+        m_bOmitPunct = false;
     }
 
     _forwardTail (j, j+1);
@@ -273,11 +274,10 @@ void CIMIContext::_forwardPunctChar (unsigned i, unsigned j, unsigned ch)
     unsigned wid = 0;
 
     if (m_pGetFullPunctOp) {
-        wstr = (*m_pGetFullPunctOp) (ch);
-        wid = m_pPinyinTrie->getSymbolId (wstr);
-
-        if (!m_bFullPunctForwarding)
-            wstr.clear ();
+        if (m_bFullPunctForwarding && !m_bOmitPunct) {
+            wstr = (*m_pGetFullPunctOp) (ch);
+            wid = m_pPinyinTrie->getSymbolId (wstr);
+        }
     }
 
     fr.m_type = CLatticeFrame::PUNC;

@@ -234,6 +234,9 @@ public:
     bool isEmpty () {return m_tailIdx <= 1;}
     unsigned getLastFrIdx () {return m_tailIdx-1;}
 
+    // omit next punctuation if the very next symbol is an punctuation
+    void omitNextPunct() { m_bOmitPunct = true; }
+
     bool searchFrom (unsigned from=1);
     std::vector<unsigned>& getBestPath () {return m_bestPath;}
     std::vector<unsigned>& getBestSegPath () 
@@ -301,6 +304,7 @@ protected:
     unsigned                    m_csLevel;
 
     bool                        m_bFullSymbolForwarding;
+    bool                        m_bOmitPunct;
     CGetFullSymbolOp           *m_pGetFullSymbolOp;
 
     bool                        m_bFullPunctForwarding;

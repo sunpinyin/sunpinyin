@@ -66,6 +66,7 @@ static GtkToggleButton* comma_period_check = NULL;
 static GtkToggleButton* paren_check = NULL;
 static GtkToggleButton* fuzzy_seg_check = NULL;
 static GtkToggleButton* cancel_on_backspace_check = NULL;
+static GtkToggleButton* smart_punct_check = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
@@ -142,6 +143,9 @@ init_settings(void)
 
     gtk_toggle_button_set_active(cancel_on_backspace_check,
                                  settings_get_int(CANCEL_ON_BACKSPACE));
+
+    gtk_toggle_button_set_active(smart_punct_check,
+                                 settings_get_int(SMART_PUNCT));
 }
 
 static void
@@ -167,6 +171,7 @@ init(void)
     RETRIEVE(paren_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(fuzzy_seg_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(cancel_on_backspace_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(smart_punct_check, GTK_TOGGLE_BUTTON);
 
     init_settings();
     
@@ -248,6 +253,10 @@ state_changed()
     /* cancel on backspace */
     settings_set_int(CANCEL_ON_BACKSPACE,
                      gtk_toggle_button_get_active(cancel_on_backspace_check));
+
+    /* smart punctuation */
+    settings_set_int(SMART_PUNCT,
+                     gtk_toggle_button_get_active(smart_punct_check));
 
     settings_save();
     send_reload();

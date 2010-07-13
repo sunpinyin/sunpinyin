@@ -227,3 +227,9 @@ preedit_set_chinese_punc(bool chn_punc)
     view->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, chn_punc);
 }
 
+__EXPORT_API void
+preedit_omit_next_punct()
+{
+    view->getIC()->omitNextPunct();
+}
+

@@ -132,20 +132,25 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
     }
     
     if (!__filter_forward_triger_key(handle, ic, evt)) {
-
         int masked_state = evt->state & STATE_MASK;
-        if (masked_state != ShiftMask && masked_state != 0)
+        if (masked_state != ShiftMask && masked_state != 0) {
             __do_forward_event(handle, proto);
-        else if (!ic->is_enabled || ic->is_english)
+        } else if (!ic->is_enabled || ic->is_english) {
             __do_forward_event(handle, proto);
-        else {
+        } else {
             KeySym sym;
             XLookupString(evt, NULL, 0, &sym, NULL);
-            if ((sym <= 0x20 || sym > 0x7E) && preedit_status() == false)
+            if ((sym <= 0x20 || sym > 0x7E) && preedit_status() == false) {
                 __do_forward_event(handle, proto);
-            else if (sym >= 0x30 && sym <= 0x39 && preedit_status() == false)
+            } else if (sym >= 0x30 && sym <= 0x39
+                       && preedit_status() == false) {
+                // digit key pressed
+                if (settings_get_int(SMART_PUNCT)) {
+                    preedit_omit_next_punct();
+                }
+                
                 __do_forward_event(handle, proto);
-            else {
+            } else {
                 if (evt->type == KeyPress) {
                     __move_preedit(ic);
                     preedit_on_key(handle, sym, evt->state);

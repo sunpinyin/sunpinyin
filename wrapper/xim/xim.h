@@ -74,6 +74,7 @@ void      preedit_pause(void);
 void      preedit_go_on(void);
 void      preedit_set_full(bool full);
 void      preedit_set_chinese_punc(bool chn_punc);
+void      preedit_omit_next_punct();
 
 __END_DECLS
 

@@ -60,6 +60,7 @@ static const char* setting_names[] = {
     "page_paren",
     "fuzzy_segmentation",
     "cancel_on_backspace",
+    "smart_punct",
     NULL
 };
 
@@ -248,6 +249,9 @@ __init_default_values()
 
     /* cancel on backspace */
     settings_set_int(CANCEL_ON_BACKSPACE, 1);
+
+    /* smart punctuation */
+    settings_set_int(SMART_PUNCT, 0);
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -276,6 +280,7 @@ settings_init()
     REGISTER(PAGE_PAREN, int, __int_enc, __int_dec);
     REGISTER(FUZZY_SEGMENTATION, int, __int_enc, __int_dec);
     REGISTER(CANCEL_ON_BACKSPACE, int, __int_enc, __int_dec);
+    REGISTER(SMART_PUNCT, int, __int_enc, __int_dec);
     
     __init_default_values();
 }

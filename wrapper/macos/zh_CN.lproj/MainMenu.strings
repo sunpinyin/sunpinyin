@@ -263,3 +263,10 @@
 /* Class = "NSButtonCell"; title = "Enable Inner Fuzzies"; ObjectID = "757"; */
 "757.title" = "支持内模糊音节（xian->xi'an）";
 
+/* Class = "NSTextFieldCell"; title = "Miscs:"; ObjectID = "763"; */
+"763.title" = "杂项：";
+
+/* Class = "NSButtonCell"; title = "Use ⌫ to cancel selections"; ObjectID = "765"; */
+"765.title" = "使用 ⌫ 取消候选选择";
+
+

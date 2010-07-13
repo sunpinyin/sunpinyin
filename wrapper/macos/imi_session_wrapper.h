@@ -46,6 +46,8 @@
 #define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
 #define CONFIG_KEYBOARD_PAGE_ARROWS      "Keyboard/Page/Arrows"
 
+#define CONFIG_KEYBOARD_MISC_CANCELONBSP "Keyboard/Misc/CancelOnBackspace"
+
 typedef enum {
     COMMIT_PINYIN_STRING        = 0,
     COMMIT_CONVERTED_SENTENCE   = 1,
@@ -58,6 +60,7 @@ struct CSessionConfigStore : private CNonCopyable
     bool        m_paging_by_minus_equals;
     bool        m_paging_by_brackets;
     bool        m_paging_by_arrows;
+    bool        m_cancel_on_backspace;
 
     static CSessionConfigStore& instance () 
     {

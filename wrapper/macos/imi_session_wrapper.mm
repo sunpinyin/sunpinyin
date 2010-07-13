@@ -97,6 +97,8 @@ bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
         update_page_key_bracket(event.get_bool());
     } else if (event.name == CONFIG_KEYBOARD_PAGE_ARROWS) {
         update_page_key_arrows(event.get_bool());
+    } else if (event.name == CONFIG_KEYBOARD_MISC_CANCELONBSP) {
+        m_pv->setCancelOnBackspace(CSessionConfigStore::instance().m_cancel_on_backspace);
     }
     
     return false;
@@ -112,6 +114,8 @@ void CSunpinyinSessionWrapper::apply_configuration()
     update_page_key_comma  (CSessionConfigStore::instance().m_paging_by_comma_period);
     update_page_key_bracket(CSessionConfigStore::instance().m_paging_by_brackets);
     update_page_key_arrows (CSessionConfigStore::instance().m_paging_by_arrows);
+    
+    m_pv->setCancelOnBackspace(CSessionConfigStore::instance().m_cancel_on_backspace);
 }
 
 void CSunpinyinSessionWrapper::update_cand_window_size(unsigned size)

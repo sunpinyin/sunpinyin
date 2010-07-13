@@ -282,7 +282,7 @@ void updateFactorySettings(NSUserDefaults* pref)
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
     COptionEventBus& event_bus = AOptionEventBus::instance();
     
-    int  pinyin_scheme = [pref integerForKey: @"pinyinMode"];
+    int pinyin_scheme = [pref integerForKey: @"pinyinMode"];
     factory.setPinyinScheme((CSunpinyinSessionFactory::EPyScheme)pinyin_scheme);
     /* pinyin mode is not a shared configuration item, need to broadcast to session wrapper */
     event_bus.publishEvent(COptionEvent(PINYIN_SCHEME, pinyin_scheme));      
@@ -290,7 +290,7 @@ void updateFactorySettings(NSUserDefaults* pref)
     int candi_number = [pref integerForKey:@"candiNumbers"];
     factory.setCandiWindowSize(candi_number);
     /* candiWindowSize is not a shared configuration item */
-    event_bus.publishEvent(COptionEvent(CONFIG_GENERAL_PAGE_SIZE, candi_number));    
+    event_bus.publishEvent(COptionEvent(CONFIG_GENERAL_PAGE_SIZE, candi_number));
 }
 
 void updateQuanpinSettings(NSUserDefaults* pref)
@@ -416,12 +416,16 @@ void updateKeyProfileSettings(NSUserDefaults* pref)
 
     bool paging_by_arrows = [pref boolForKey:@"pagingByArrowUpAndDown"];
     event_bus.publishEvent (COptionEvent(CONFIG_KEYBOARD_PAGE_ARROWS, paging_by_arrows));
+        
+    bool cancel_on_backspace = [pref boolForKey:@"cancelSelectionOnBackspace"];
+    event_bus.publishEvent(COptionEvent(CONFIG_KEYBOARD_MISC_CANCELONBSP, cancel_on_backspace));
     
     // store the session specific configurations
     CSessionConfigStore::instance().m_paging_by_minus_equals = paging_by_minus_equals;
     CSessionConfigStore::instance().m_paging_by_brackets     = paging_by_brackets;        
     CSessionConfigStore::instance().m_paging_by_comma_period = paging_by_comma_period;        
-    CSessionConfigStore::instance().m_paging_by_arrows = paging_by_arrows;
+    CSessionConfigStore::instance().m_paging_by_arrows       = paging_by_arrows;
+    CSessionConfigStore::instance().m_cancel_on_backspace    = cancel_on_backspace;
 }
 
 

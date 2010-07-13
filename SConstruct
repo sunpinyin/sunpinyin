@@ -139,7 +139,7 @@ env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                   LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major],
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
 if rpath != '':
-    env.Append(LINKFLAGS=['-Wl,--rpath-link=%s' % rpath])
+    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % rpath)
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']

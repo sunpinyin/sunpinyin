@@ -54,7 +54,7 @@ env = Environment(ENV=os.environ,
                   CPPPATH=['.', 'IMdkit'], PREFIX=prefix)
 
 if rpath != '':
-    env.Append(LINKFLAGS=['-Wl,--rpath-link=%s' % rpath])
+    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % rpath)
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']

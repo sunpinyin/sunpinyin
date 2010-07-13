@@ -1,5 +1,6 @@
 import platform
 import os
+import sys
 
 cflags='-O2 -pipe -DHAVE_CONFIG_H '
 prefix='/usr/local'
@@ -245,6 +246,12 @@ def DoConfigure():
     AddTestHeader('sys/types.h')
     AddTestHeader('unistd.h')
     AddTestHeader('wchar.h')
+
+    # detect endianess
+    if sys.byteorder == 'big':
+        AddConfigItem('WORDS_BIGENDIAN', 1)
+
+    # add essential package requirements
     AddConfigItem('PACKAGE', '"sunpinyin"')
     AddConfigItem('PACKAGE_NAME', '"sunpinyin"')
     AddConfigItem('PACKAGE_STRING', '"sunpinyin 2.0"')

@@ -135,11 +135,17 @@ def allinc():
         inc.append(root)
     return inc
 
+def GetOS():
+    return platform.uname()[0]
+
 env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                   TAR='tar', MAKE='make',
-                  LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major],
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
-if rpath != '':
+
+if GetOS() != 'Darwin':
+    env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
+
+if rpath != '' and GetOS() != 'Darwin':
     env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % rpath)
 
 if 'CC' in os.environ:
@@ -195,7 +201,7 @@ def AddTestFunction(funcname):
         AddConfigItem(macro_name, 1)
 
 def LinkOSHeader():
-    osstring = platform.uname()[0]
+    osstring = GetOS()
     header = ''
     if osstring == 'Linux':
         header = 'linux.h'
@@ -314,26 +320,30 @@ if GetOption('clean'):
     os.environ['MAKE'] = env['MAKE']
     os.system('$MAKE -C raw -f Makefile.new clean TAR=$TAR')
     os.system('$MAKE -C data -f Makefile.new clean TAR=$TAR')
-    
-env.Command(libname, lib, 'cp -f libsunpinyin-%d.%d.so %s' %
-            (abi_major, abi_minor, libname))
+
+if GetOS() != 'Darwin':
+    env.Command(libname, lib, 'cp -f %s %s' % (lib[0], libname))
 
 def DoInstall():
     if not 'install' in COMMAND_LINE_TARGETS:
         return
 
-    lib_target = [
-        env.Install(destdir + libdir, [libname]),
-        env.Command(destdir + libdir + '/' + libname_soname, 
-                    destdir + libdir + '/' + libname,
-                    'cd %s && ln -sf %s %s' % (destdir + libdir,
-                                               libname,
-                                               libname_soname)),
-        env.Command(destdir + libdir + '/' + libname_link,
-                    destdir + libdir + '/' + libname_soname,
-                    'cd %s && ln -sf %s %s' % (destdir + libdir,
-                                               libname_soname,
-                                               libname_link))]
+    lib_target = None
+    if GetOS() != 'Darwin':
+        lib_target = [
+            env.Install(destdir + libdir, [libname]),
+            env.Command(destdir + libdir + '/' + libname_soname,
+                        destdir + libdir + '/' + libname,
+                        'cd %s && ln -sf %s %s' % (destdir + libdir,
+                                                   libname,
+                                                   libname_soname)),
+            env.Command(destdir + libdir + '/' + libname_link,
+                        destdir + libdir + '/' + libname_soname,
+                        'cd %s && ln -sf %s %s' % (destdir + libdir,
+                                                   libname_soname,
+                                                   libname_link))]
+    else:
+        lib_taraget = env.Install(destdir + libdir, lib)
 
     lib_pkgconfig_target = env.Install(destdir + libdir+'/pkgconfig',
                                        ['sunpinyin-2.0.pc'])

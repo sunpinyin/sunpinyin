@@ -138,9 +138,21 @@ def allinc():
 def GetOS():
     return platform.uname()[0]
 
-env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
-                  TAR='tar', MAKE='make', WGET='wget',
-                  CPPPATH=['.'] + allinc(), PREFIX=prefix)
+def CreateEnvironment():
+    tar = 'tar'
+    make = 'make'
+    wget = 'wget'
+    if GetOS() == 'Darwin':
+        wget = 'curl -O'
+    elif GetOS() == 'SunOS':
+        tar = 'gtar'
+        make = 'gmake'
+
+    return Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
+                       TAR=tar, MAKE=make, WGET=wget,
+                       CPPPATH=['.'] + allinc(), PREFIX=prefix)
+
+env = CreateEnvironment()
 
 if GetOS() != 'Darwin':
     env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
@@ -318,16 +330,16 @@ lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
                         source=imesource)
 
 env.Command('rawlm', 'build/tslmpack',
-            '$MAKE -C raw WGET=$WGET TAR=$TAR')
+            '$MAKE -C raw WGET="$WGET" TAR="$TAR"')
 
 env.Command('lm', 'rawlm',
-            '$MAKE -C data WGET=$WGET TAR=$TAR')
+            '$MAKE -C data WGET="$WGET" TAR="$TAR"')
 
 if GetOption('clean'):
     os.environ['TAR'] = env['TAR']
     os.environ['MAKE'] = env['MAKE']
-    os.system('$MAKE -C raw clean TAR=$TAR')
-    os.system('$MAKE -C data clean TAR=$TAR')
+    os.system('$MAKE -C raw clean WGET="$WGET" TAR="$TAR"')
+    os.system('$MAKE -C data clean WGET="$WGET" TAR="$TAR"')
 
 if GetOS() != 'Darwin':
     env.Command(libname, lib, 'cp -f %s %s' % (lib[0], libname))

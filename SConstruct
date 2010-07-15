@@ -139,7 +139,7 @@ def GetOS():
     return platform.uname()[0]
 
 env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
-                  TAR='tar', MAKE='make',
+                  TAR='tar', MAKE='make', WGET='wget',
                   CPPPATH=['.'] + allinc(), PREFIX=prefix)
 
 if GetOS() != 'Darwin':
@@ -163,6 +163,10 @@ if 'TAR' in os.environ:
 if 'MAKE' in os.environ:
     print 'Warning: you\'ve set %s as make' % os.environ['MAKE']
     env['MAKE'] = os.environ['MAKE']
+
+if 'WGET' in os.environ:
+    print 'Warning: you\'ve set %s as wget' % os.environ['WGET']
+    env['WGET'] = os.environ['WGET']
     
 #
 #==============================configure================================
@@ -314,16 +318,16 @@ lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
                         source=imesource)
 
 env.Command('rawlm', 'build/tslmpack',
-            '$MAKE -C raw -f Makefile.new TAR=$TAR')
+            '$MAKE -C raw WGET=$WGET TAR=$TAR')
 
 env.Command('lm', 'rawlm',
-            '$MAKE -C data -f Makefile.new TAR=$TAR')
+            '$MAKE -C data WGET=$WGET TAR=$TAR')
 
 if GetOption('clean'):
     os.environ['TAR'] = env['TAR']
     os.environ['MAKE'] = env['MAKE']
-    os.system('$MAKE -C raw -f Makefile.new clean TAR=$TAR')
-    os.system('$MAKE -C data -f Makefile.new clean TAR=$TAR')
+    os.system('$MAKE -C raw clean TAR=$TAR')
+    os.system('$MAKE -C data clean TAR=$TAR')
 
 if GetOS() != 'Darwin':
     env.Command(libname, lib, 'cp -f %s %s' % (lib[0], libname))

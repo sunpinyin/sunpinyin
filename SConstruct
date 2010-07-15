@@ -290,6 +290,10 @@ def DoConfigure():
     f.write(reduce(lambda a, b: a + '\n' + b, content))
     f.close()
     env = conf.Finish()
+
+    if GetOS() == 'Darwin':
+        env.Append(LINKFLAGS='-liconv')
+
     env.ParseConfig('pkg-config sqlite3 --libs --cflags')
     LinkOSHeader()
 

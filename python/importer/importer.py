@@ -104,4 +104,4 @@ def export_sunpinyin_user_dict (userdict_path=''):
         print str.encode ('UTF-8'), id, "'".join(syls) 
         
 if __name__ == "__main__":
-    export_sunpinyin_user_dict ('/Users/yongsun/.sunpinyin/userdict')
+    export_sunpinyin_user_dict ()

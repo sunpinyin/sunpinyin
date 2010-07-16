@@ -13,7 +13,7 @@ def read_utf16_str (f, offset=-1, len=2):
     if offset >= 0:
         f.seek(offset)
     str = f.read(len)
-    return str.decode('UTF-16')
+    return str.decode('UTF-16LE')
 
 def read_uint16 (f):
     return struct.unpack ('<H', f.read(2))[0]

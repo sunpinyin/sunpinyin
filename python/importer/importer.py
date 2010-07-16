@@ -37,6 +37,8 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
             """
     db.executescript (sqlstring)
 
+    batch_count = 0
+
     for (pystr, utf8str) in records:
         try:
             syllables = [valid_syllables[s] for s in pystr.split("'")]
@@ -49,7 +51,7 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
             continue
 
         if sysdict and trie.search (sysdict, utf8str):
-            print "[%s] is already in sunpinyin's sysdict" % utf8str
+            #print "[%s] is already in sunpinyin's sysdict" % utf8str
             continue
 
         record = [0]*14
@@ -71,12 +73,18 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
                     """
             try:
                 db.execute (sqlstring, record)
-                db.commit ()
-                print "[%s] is imported into sunpinyin's userdict" % utf8str
+                #print "[%s] is imported into sunpinyin's userdict" % utf8str
+
+                batch_count += 1
+                if batch_count == 100:
+                    db.commit ()
+                    batch_count = 0
+
             except:
                 #print "[%s] is already in sunpinyin's userdict" % utf8str
                 pass
 
+    db.commit()
     db.close()
 
 def export_sunpinyin_user_dict (userdict_path=''):

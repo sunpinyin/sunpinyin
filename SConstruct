@@ -195,8 +195,24 @@ def CheckPKG(context, name):
     context.Result(ret)
     return ret
 
+def CheckEndianness(context):
+    code = '''
+#include <stdio.h>
+main() { unsigned int a = 1; printf("%d\n", *((unsigned char*) &a)); }
+'''
+    context.Message('Checking whether build for big-endian...')
+    res, output = context.TryRun(code, '.c')
+    if res:
+        v = (output == '0')
+        context.Result(v)
+        return v
+    else:
+        context.Result(0);
+        return 0
+
 conf = Configure(env, custom_tests={'CheckPKGConfig' : CheckPKGConfig,
-                                    'CheckPKG' : CheckPKG })
+                                    'CheckPKG' : CheckPKG,
+                                    'CheckEndianness': CheckEndianness})
 
 config_h_content = ''
 
@@ -276,7 +292,7 @@ def DoConfigure():
     AddTestHeader('wchar.h')
 
     # detect endianess
-    if sys.byteorder == 'big':
+    if conf.CheckEndianness():
         AddConfigItem('WORDS_BIGENDIAN', 1)
 
     # add essential package requirements

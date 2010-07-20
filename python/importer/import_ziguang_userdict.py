@@ -6,7 +6,7 @@ from importer import import_to_sunpinyin_user_dict
 
 def load_ziguang_user_dict (fname):
     result = []
-    f = codecs.open (fname, "r", "UTF-16LE")
+    f = codecs.open (fname, "r", "UTF-16")
     for l in f:
         if l[0] in ('\n', '\r'):
             continue

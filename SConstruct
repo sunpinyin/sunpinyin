@@ -157,9 +157,6 @@ env = CreateEnvironment()
 if GetOS() != 'Darwin':
     env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
 
-if GetOS() == 'Darwin':
-    env.Append(LINKFLAGS='-liconv')
-
 if rpath != '' and GetOS() != 'Darwin':
     env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % rpath)
 
@@ -237,6 +234,8 @@ def DoConfigure():
 
     if GetOS() == 'Darwin':
         if not conf.CheckLibWithHeader('sqlite3', 'sqlite3.h', 'C'):
+            Exit(1)
+        if not conf.CheckLibWithHeader('iconv', 'iconv.h', 'C'):
             Exit(1)
     else:
         if not conf.CheckPKGConfig():

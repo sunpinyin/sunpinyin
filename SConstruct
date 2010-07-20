@@ -234,12 +234,16 @@ def LinkOSHeader():
 def DoConfigure():
     if GetOption('clean'):
         return
-    
-    if not conf.CheckPKGConfig():
-        Exit(1)
 
-    if not conf.CheckPKG('sqlite3'):
-        Exit(1)
+    if GetOS() == 'Darwin':
+        if not conf.CheckLibWithHeader('sqlite3', 'sqlite3.h', 'C'):
+            Exit(1)
+    else:
+        if not conf.CheckPKGConfig():
+            Exit(1)
+        if not conf.CheckPKG('sqlite3'):
+            Exit(1)
+
     AddConfigItem('ENABLE_NLS', 1)
     AddConfigItem('GETTEXT_PACKAGE', '"sunpinyin2"')
     AddTestHeader('assert.h')
@@ -349,7 +353,9 @@ def DoInstall():
         return
 
     lib_target = None
-    if GetOS() != 'Darwin':
+    if GetOS() == 'Darwin':
+        lib_taraget = env.Install(destdir + libdir, lib)
+    else:
         lib_target = [
             env.Install(destdir + libdir, [libname]),
             env.Command(destdir + libdir + '/' + libname_soname,
@@ -362,8 +368,6 @@ def DoInstall():
                         'cd %s && ln -sf %s %s' % (destdir + libdir,
                                                    libname_soname,
                                                    libname_link))]
-    else:
-        lib_taraget = env.Install(destdir + libdir, lib)
 
     lib_pkgconfig_target = env.Install(destdir + libdir+'/pkgconfig',
                                        ['sunpinyin-2.0.pc'])

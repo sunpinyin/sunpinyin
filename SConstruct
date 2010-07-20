@@ -195,24 +195,8 @@ def CheckPKG(context, name):
     context.Result(ret)
     return ret
 
-def CheckEndianness(context):
-    code = '''
-#include <stdio.h>
-main() { unsigned int a = 1; printf("%d\n", *((unsigned char*) &a)); }
-'''
-    context.Message('Checking whether build for big-endian...')
-    res, output = context.TryRun(code, '.c')
-    if res:
-        v = (output == '0')
-        context.Result(v)
-        return v
-    else:
-        context.Result(0);
-        return 0
-
 conf = Configure(env, custom_tests={'CheckPKGConfig' : CheckPKGConfig,
-                                    'CheckPKG' : CheckPKG,
-                                    'CheckEndianness': CheckEndianness})
+                                    'CheckPKG' : CheckPKG})
 
 config_h_content = ''
 
@@ -291,10 +275,6 @@ def DoConfigure():
     AddTestHeader('unistd.h')
     AddTestHeader('wchar.h')
 
-    # detect endianess
-    if conf.CheckEndianness():
-        AddConfigItem('WORDS_BIGENDIAN', 1)
-
     # add essential package requirements
     AddConfigItem('PACKAGE', '"sunpinyin"')
     AddConfigItem('PACKAGE_NAME', '"sunpinyin"')
@@ -303,6 +283,35 @@ def DoConfigure():
     AddConfigItem('PACKAGE_VERSION', '"2.0"')
     AddConfigItem('VRESION', '"2.0"')
 
+    # append endianness checking defines
+    global config_h_content
+    config_h_content += r'''
+#if defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
+# define WORDS_BIGENDIAN 1
+
+#elif defined(_LITTLE_ENDIAN) && !defined(_BIG_ENDIAN)
+# undef WORDS_BIGENDIAN
+
+#elif defined(__sparc) || defined(__sparc__) \
+  || defined(_POWER) || defined(__powerpc__) \
+  || defined(__ppc__) || defined(__hpux) || defined(__hppa) \
+  || defined(_MIPSEB) || defined(_POWER) \
+  || defined(__s390__)
+# define WORDS_BIGENDIAN 1
+
+#elif defined(__i386__) || defined(__alpha__) \
+  || defined(__ia64) || defined(__ia64__) \
+  || defined(_M_IX86) || defined(_M_IA64) \
+  || defined(_M_ALPHA) || defined(__amd64) \
+  || defined(__amd64__) || defined(_M_AMD64) \
+  || defined(__x86_64) || defined(__x86_64__) \
+  || defined(_M_X64) || defined(__bfin__)
+# undef WORDS_BIGENDIAN
+
+#else
+# error can not detect the endianness!
+#endif
+'''
     # generate config.h
     f = file('config.h', 'w')
     f.write(config_h_content)

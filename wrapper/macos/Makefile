@@ -6,15 +6,15 @@ release: release-i386 release-ppc
 	    rm -f SunPinyin-i386 SunPinyin-ppc
 	rm -f build/SunPinyin.app
 	cd build ; ln -s Release/SunPinyin.app SunPinyin.app  
-	cd ../..; ./configure
+	cd ../..; scons
 	
 release-i386: 
-	cd ../..; CC='gcc -arch i386' CXX='g++ -arch i386' ./configure
+	cd ../..; CC='gcc -arch i386' CXX='g++ -arch i386' scons
 	xcodebuild -project SunPinyin.xcodeproj -configuration Release-i386 build
 	cd build/Release/SunPinyin.app/Contents/MacOS; mv SunPinyin SunPinyin-i386
 
 release-ppc: 
-	cd ../..; CC='gcc -arch ppc' CXX='g++ -arch ppc' ./configure
+	cd ../..; CC='gcc -arch ppc' CXX='g++ -arch ppc' scons
 	xcodebuild -project SunPinyin.xcodeproj -configuration Release-ppc build
 	cd build/Release/SunPinyin.app/Contents/MacOS; mv SunPinyin SunPinyin-ppc
 

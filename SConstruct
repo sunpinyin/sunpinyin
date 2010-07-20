@@ -314,7 +314,9 @@ def DoConfigure():
     f.close()
     env = conf.Finish()
 
-    env.ParseConfig('pkg-config sqlite3 --libs --cflags')
+    if GetOS() != 'Darwin':
+        env.ParseConfig('pkg-config sqlite3 --libs --cflags')
+
     LinkOSHeader()
 
 DoConfigure()

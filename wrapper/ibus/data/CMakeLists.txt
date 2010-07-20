@@ -1,6 +1,4 @@
-# CMakeLists.txt: cmake config file for ibus-sunpinyin
-
-configure_file(sunpinyin.xml.in sunpinyin.xml)
-install(FILES sunpinyin.xml
-    DESTINATION "${DATA_DIR}/ibus/component")
-
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/sunpinyin.xml.in
+               ${CMAKE_CURRENT_BINARY_DIR}/sunpinyin.xml)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/sunpinyin.xml
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ibus/component")

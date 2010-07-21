@@ -98,6 +98,8 @@ private:
     void update_page_key_bracket();
     void update_page_key(const char* conf_key, bool default_val, 
                          unsigned page_up, unsigned page_down);
+    void update_cancel_with_backspace();
+
     void update_charset_level();
     void update_user_data_dir();
     void update_punct_mappings();

@@ -73,5 +73,6 @@
 #define CONFIG_KEYBOARD_PAGE_COMMA       "Keyboard/Page/CommaPeriod"
 #define CONFIG_KEYBOARD_PAGE_MINUS       "Keyboard/Page/MinusEquals"
 #define CONFIG_KEYBOARD_PAGE_BRACKET     "Keyboard/Page/Brackets"
+#define CONFIG_KEYBOARD_CANCEL_BACKSPACE "Keyboard/CancelBackspace"
 
 #endif // SUNPINYIN_CONFIG_KEYS_H

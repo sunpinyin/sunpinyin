@@ -74,24 +74,24 @@ void CBigramHistory::initClass()
         s_stopWords.insert(0);     //unknown world
         s_stopWords.insert(DCWID); //seperator word id used by history memory interanlly
 
-        s_stopWords.insert(67659); //的
-        s_stopWords.insert(24261); //地
-        s_stopWords.insert(37471); //得
-        s_stopWords.insert(68920); //着
-        s_stopWords.insert(5071);  //了
+        s_stopWords.insert(44751); //的
+        s_stopWords.insert(21410); //地
+        s_stopWords.insert(71373); //得
+        s_stopWords.insert(72583); //着
+        s_stopWords.insert(1701);  //了
 
-        s_stopWords.insert(8396);  //你
-        s_stopWords.insert(40646); //我
-        s_stopWords.insert(6755);  //他
-        s_stopWords.insert(28369); //她
-        s_stopWords.insert(30143); //它
-        s_stopWords.insert(8398);  //你们
-        s_stopWords.insert(40648); //我们
-        s_stopWords.insert(6759);  //他们
-        s_stopWords.insert(28370); //她们
-        s_stopWords.insert(30114); //它们
+        s_stopWords.insert(35483); //你
+        s_stopWords.insert(34834); //我
+        s_stopWords.insert(17613); //他
+        s_stopWords.insert(30394); //她
+        s_stopWords.insert(19066); //它
+        s_stopWords.insert(35484); //你们
+        s_stopWords.insert(34838); //我们
+        s_stopWords.insert(17617); //他们
+        s_stopWords.insert(30395); //她们
+        s_stopWords.insert(19069); //它们
 
-        s_stopWords.insert(7121);  //们
+        s_stopWords.insert(17345);  //们
     }
 }
 
@@ -140,6 +140,13 @@ bool CBigramHistory::memorize(unsigned* its_wid, unsigned* ite_wid)
         incBiFreq(bigram);
     }
     return true;
+}
+
+void CBigramHistory::clear()
+{
+    m_memory.clear();
+    m_unifreq.clear();
+    m_bifreq.clear();
 }
 
 double CBigramHistory::pr(unsigned* its_wid, unsigned* ite_wid)
@@ -242,9 +249,7 @@ bool CBigramHistory::saveToFile(const char *fname)
 
 bool CBigramHistory::loadFromBuffer(void* buf_ptr, size_t sz)
 {
-    m_memory.clear();
-    m_unifreq.clear();
-    m_bifreq.clear();
+    clear();
 
     sz /= sizeof(uint32_t);
     uint32_t *pw = (uint32_t *)buf_ptr;
@@ -372,5 +377,19 @@ void CBigramHistory::forget(unsigned wid)
             m_bifreq.erase (it++);
         else
             ++it;
+    }
+}
+
+void CBigramHistory::forget(unsigned *its_wid, unsigned *ite_wid)
+{
+    for (; its_wid < ite_wid; ++its_wid) {
+        TBigram bigram(*its_wid, DCWID);
+
+        if (its_wid+1 != ite_wid)
+            bigram.second = *(its_wid+1);
+
+        TBigramPool::iterator it = m_bifreq.find(bigram);
+        if (it != m_bifreq.end())
+            m_bifreq.erase(it);
     }
 }

@@ -660,13 +660,17 @@ CIMIClassicView::_deleteCandidate (int candiIdx, unsigned& mask)
     candiIdx += m_candiPageFirst;
     if (!m_tailSentence.empty ()) --candiIdx;
 
-    // try to remove candidate 0 which is a calculated sentence
     if (candiIdx < 0) {
-        return;
+        // try to remove candidate 0 which is a calculated sentence
+        std::vector<unsigned> wids;
+        m_pIC->getBestSentence (wids, m_candiFrIdx);
+        m_pIC->removeFromHistoryCache(wids);
+    } else {
+        // remove an ordinary candidate
+        CCandidate& candi = m_candiList [candiIdx];
+        m_pIC->deleteCandidate(candi);
     }
 
-    CCandidate& candi = m_candiList [candiIdx];
-    m_pIC->deleteCandidate(candi);
     _getCandidates ();
     mask |= PREEDIT_MASK | CANDIDATE_MASK;
 }

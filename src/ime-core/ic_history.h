@@ -60,11 +60,13 @@ public:
     * memorize the context stream pointed by [its_wid, ite_wid)
     */
     virtual bool memorize(unsigned int* its_wid, unsigned int* ite_wid) = 0;
+    virtual void clear() = 0;
 
     /**
     * remove a word id from history cache
     */
     virtual void forget(unsigned wid) = 0;
+    virtual void forget(unsigned int* its_wid, unsigned int* ite_wid) = 0;
 
     /**
     * @param its_wid is the first word pointer of the context stream
@@ -114,8 +116,10 @@ public:
     virtual bool seenBefore(unsigned int wid);
 
     virtual bool memorize(unsigned int* its_wid, unsigned int* ite_wid);
+    virtual void clear();
 
     virtual void forget(unsigned wid);
+    virtual void forget(unsigned int* its_wid, unsigned int* ite_wid);
 
     /**
     * @param its_wid is the first word pointer of the context stream

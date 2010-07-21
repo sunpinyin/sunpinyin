@@ -193,11 +193,11 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
         
         m_numeric_mode = false;
 
-        if (islower(keyvalue)) {
+        if (keyvalue > 0x60 && keyvalue < 0x7b) { // islower(keyvalue)
             changeMasks |= KEYEVENT_USED;
             _insert (keyvalue, changeMasks);
 
-        } else if (keyvalue > 0x20 && keyvalue < 0x7f) {
+        } else if (keyvalue > 0x20 && keyvalue < 0x7f) { //isprint(keyvalue) && !isspace(keyvalue)
             changeMasks |= KEYEVENT_USED;
             if (m_pIC->isEmpty ()) {
                 _insert (keyvalue, changeMasks);

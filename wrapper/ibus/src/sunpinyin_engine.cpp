@@ -113,7 +113,8 @@ static CKeyEvent
 translate_key(guint key_val, guint /*key_code*/, guint modifiers)
 {
     // XXX: may need to move this logic into CKeyEvent
-    if (isprint(key_val) && !isspace(key_val) && !(modifiers & IM_CTRL_MASK)) {
+    if (key_val > 0x20 && key_val < 0x7f // isprint(key_val) && !isspace(key_val)
+	&& !(modifiers & IM_CTRL_MASK)) {
         // we only care about key_val here
         return CKeyEvent(key_val, key_val, modifiers);
     } else {

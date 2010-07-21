@@ -768,3 +768,12 @@ void CIMIContext::deleteCandidate (CCandidate &candi)
         _buildLattice (m_pPySegmentor->getSegments(), candi.m_start+1);
     }
 }
+
+void CIMIContext::removeFromHistoryCache (std::vector<unsigned>& wids)
+{
+    if (!m_pHistory)
+        return;
+
+    m_pHistory->forget (&(wids[0]), &(wids[0]) + wids.size());
+    buildLattice (m_pPySegmentor);
+}

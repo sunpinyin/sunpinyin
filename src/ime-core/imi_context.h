@@ -266,6 +266,7 @@ public:
     void deleteCandidate (CCandidate &candi);
 
     void memorize ();
+    void removeFromHistoryCache (std::vector<unsigned>& wids);
     void printLattice ();
 
 protected:

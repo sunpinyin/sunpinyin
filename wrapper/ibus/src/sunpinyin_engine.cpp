@@ -258,6 +258,8 @@ SunPinyinEngine::onConfigChanged(const COptionEvent& event)
         update_page_key_bracket();
     } else if (event.name == CONFIG_QUANPIN_FUZZYSEGS_ENABLED) {
         update_fuzzy_segs();
+    } else if (event.name == CONFIG_KEYBOARD_CANCEL_BACKSPACE) {
+        update_cancel_with_backspace();
     }
     
     return false;
@@ -274,6 +276,7 @@ SunPinyinEngine::update_config()
     update_page_key_bracket();
     update_mode_key();
     update_punct_key();
+    update_cancel_with_backspace();
     update_punct_mappings();
     // update_quanpin_config();
     // update_shuangpin_config();
@@ -493,6 +496,13 @@ SunPinyinEngine::update_page_key(const char* conf_key, bool default_val,
         m_hotkey_profile->removePageUpKey(CKeyEvent(page_up, 0));
         m_hotkey_profile->removePageDownKey(CKeyEvent(page_down, 0));
     }
+}
+
+void
+SunPinyinEngine::update_cancel_with_backspace()
+{
+    bool enabled = m_config.get(CONFIG_KEYBOARD_CANCEL_BACKSPACE, true);
+    m_pv->setCancelOnBackspace(enabled);
 }
 
 string_pairs parse_pairs(const vector<string>& strings)

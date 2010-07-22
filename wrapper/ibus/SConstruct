@@ -125,7 +125,7 @@ def DoInstall():
                                 'icons/setup.svg',
                                 'icons/sunpinyin-logo.png'])
     component_target = env.Install(prefix + '/share/ibus/component',
-                                   'src/sunpinyin.xml')
+                                   'data/sunpinyin.xml')
     locale_targets = []
     for locale in locales:
         path = prefix + '/share/locale/%s/LC_MESSAGES/%s.mo' % \

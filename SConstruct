@@ -4,7 +4,6 @@ import sys
 
 cflags='-O2 -pipe -DHAVE_CONFIG_H '
 prefix='/usr/local'
-destdir=''
 rpath=''
 
 slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
@@ -105,15 +104,11 @@ headers=['src/slm/ids2ngram/idngram.h',
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1,
           action='store', metavar='DIR', help='installation prefix')
-AddOption('--destdir', dest='destdir', type='string', nargs=1,
-          action='store', metavar='DIR', help='destination of installation')
 AddOption('--rpath', dest='rpath', type='string', nargs=1,
           action='store', metavar='DIR', help='encode rpath in the executables')
 
 if GetOption('prefix') is not None:
     prefix = GetOption('prefix')
-if GetOption('destdir') is not None:
-    destdir = GetOption('destdir')
 if GetOption('rpath') is not None:
     rpath = GetOption('rpath')
 
@@ -228,6 +223,36 @@ def LinkOSHeader():
 
     os.system('ln -sf ./config/%s ./src/host_os.h' % (header,));
 
+def AppendEndianCheck():
+    global config_h_content
+    config_h_content += r'''
+#if defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
+# define WORDS_BIGENDIAN 1
+
+#elif defined(_LITTLE_ENDIAN) && !defined(_BIG_ENDIAN)
+# undef WORDS_BIGENDIAN
+
+#elif defined(__sparc) || defined(__sparc__) \
+  || defined(_POWER) || defined(__powerpc__) \
+  || defined(__ppc__) || defined(__hpux) || defined(__hppa) \
+  || defined(_MIPSEB) || defined(_POWER) \
+  || defined(__s390__)
+# define WORDS_BIGENDIAN 1
+
+#elif defined(__i386__) || defined(__alpha__) \
+  || defined(__ia64) || defined(__ia64__) \
+  || defined(_M_IX86) || defined(_M_IA64) \
+  || defined(_M_ALPHA) || defined(__amd64) \
+  || defined(__amd64__) || defined(_M_AMD64) \
+  || defined(__x86_64) || defined(__x86_64__) \
+  || defined(_M_X64) || defined(__bfin__)
+# undef WORDS_BIGENDIAN
+
+#else
+# error can not detect the endianness!
+#endif
+'''
+
 def DoConfigure():
     if GetOption('clean'):
         return
@@ -284,34 +309,8 @@ def DoConfigure():
     AddConfigItem('VRESION', '"2.0"')
 
     # append endianness checking defines
-    global config_h_content
-    config_h_content += r'''
-#if defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
-# define WORDS_BIGENDIAN 1
-
-#elif defined(_LITTLE_ENDIAN) && !defined(_BIG_ENDIAN)
-# undef WORDS_BIGENDIAN
-
-#elif defined(__sparc) || defined(__sparc__) \
-  || defined(_POWER) || defined(__powerpc__) \
-  || defined(__ppc__) || defined(__hpux) || defined(__hppa) \
-  || defined(_MIPSEB) || defined(_POWER) \
-  || defined(__s390__)
-# define WORDS_BIGENDIAN 1
-
-#elif defined(__i386__) || defined(__alpha__) \
-  || defined(__ia64) || defined(__ia64__) \
-  || defined(_M_IX86) || defined(_M_IA64) \
-  || defined(_M_ALPHA) || defined(__amd64) \
-  || defined(__amd64__) || defined(_M_AMD64) \
-  || defined(__x86_64) || defined(__x86_64__) \
-  || defined(_M_X64) || defined(__bfin__)
-# undef WORDS_BIGENDIAN
-
-#else
-# error can not detect the endianness!
-#endif
-'''
+    AppendEndianCheck()
+    
     # generate config.h
     f = file('config.h', 'w')
     f.write(config_h_content)
@@ -371,39 +370,34 @@ if GetOption('clean'):
     os.system('$MAKE -C raw clean WGET="$WGET" TAR="$TAR"')
     os.system('$MAKE -C data clean WGET="$WGET" TAR="$TAR"')
 
-if GetOS() != 'Darwin':
-    env.Command(libname, lib, 'cp -f %s %s' % (lib[0], libname))
-
 def DoInstall():
     if not 'install' in COMMAND_LINE_TARGETS:
         return
 
     lib_target = None
     if GetOS() == 'Darwin':
-        lib_taraget = env.Install(destdir + libdir, lib)
+        lib_target = env.Install(libdir, lib)
     else:
+        lib_target_bin = env.InstallAs(libdir + '/' + libname, lib)
+        install_path = os.path.dirname(str(lib_target_bin[0])) + '/'
         lib_target = [
-            env.Install(destdir + libdir, [libname]),
-            env.Command(destdir + libdir + '/' + libname_soname,
-                        destdir + libdir + '/' + libname,
-                        'cd %s && ln -sf %s %s' % (destdir + libdir,
-                                                   libname,
-                                                   libname_soname)),
-            env.Command(destdir + libdir + '/' + libname_link,
-                        destdir + libdir + '/' + libname_soname,
-                        'cd %s && ln -sf %s %s' % (destdir + libdir,
-                                                   libname_soname,
-                                                   libname_link))]
+            lib_target_bin,
+            env.Command(install_path + libname_soname, lib_target_bin,
+                        'cd %s && ln -sf %s %s' %
+                        (install_path, libname, libname_soname)),
+            env.Command(install_path + libname_link, lib_target_bin,
+                        'cd %s && ln -sf %s %s' %
+                        (install_path, libname, libname_link))
+            ]
 
-    lib_pkgconfig_target = env.Install(destdir + libdir+'/pkgconfig',
+    lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',
                                        ['sunpinyin-2.0.pc'])
-    libdata_target = env.Install(destdir + libdatadir,
+    libdata_target = env.Install(libdatadir,
                                  ['data/lm_sc.t3g',
                                   'data/pydict_sc.bin'])
     header_targets = []
     for header in headers:
-        header_targets.append(env.InstallAs(destdir + headersdir
-                                            + header[3:], header))
+        header_targets.append(env.InstallAs(headersdir + header[3:], header))
     env.Alias('install-headers', header_targets)
     env.Alias('install-lib', lib_target + [lib_pkgconfig_target])
     env.Alias('install-libdata', libdata_target)

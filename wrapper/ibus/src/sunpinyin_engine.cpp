@@ -601,8 +601,10 @@ SunPinyinEngine::update_correction_pinyins()
 void
 SunPinyinEngine::update_fuzzy_segs()
 {
-    bool enabled = m_config.get(CONFIG_QUANPIN_FUZZYSEGS_ENABLED, false);
-    AQuanpinSchemePolicy::instance().setFuzzySegmentation(enabled);
+    bool enable_fuzzy_segs = m_config.get(CONFIG_QUANPIN_FUZZYSEGS_ENABLED, false);
+    AQuanpinSchemePolicy::instance().setFuzzySegmentation(enable_fuzzy_segs);
+    bool enable_inner_fuzzy = m_config.get(CONFIG_QUANPIN_INNERFUZZY_ENABLED, false);
+    AQuanpinSchemePolicy::instance().setInnerFuzzySegmentation(CONFIG_QUANPIN_INNERFUZZY_ENABLED);
 }
 
 void

@@ -59,7 +59,8 @@
 #define CONFIG_QUANPIN_FUZZY_LeRi        "QuanPin/Fuzzy/LeRi"
 #define CONFIG_QUANPIN_FUZZY_KeGe        "QuanPin/Fuzzy/KeGe"
 
-#define CONFIG_QUANPIN_FUZZYSEGS_ENABLED "QuanPin/FuzzySegs/Enabled"
+#define CONFIG_QUANPIN_FUZZYSEGS_ENABLED  "QuanPin/FuzzySegs/Enabled"
+#define CONFIG_QUANPIN_INNERFUZZY_ENABLED "QuanPin/InnerFuzzy/Enabled"
 
 #define CONFIG_QUANPIN_CORRECTION_IgnIng "QuanPin/AutoCorrecting/IgnIng"
 #define CONFIG_QUANPIN_CORRECTION_OgnOng "QuanPin/AutoCorrecting/OgnOng"

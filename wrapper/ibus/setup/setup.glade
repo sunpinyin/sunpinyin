@@ -276,7 +276,7 @@ PinYinJiaJia</property>
                           <widget class="GtkTable" id="table5">
                             <property name="visible">True</property>
                             <property name="border_width">10</property>
-                            <property name="n_rows">3</property>
+                            <property name="n_rows">4</property>
                             <property name="n_columns">2</property>
                             <child>
                               <widget class="GtkCheckButton" id="QuanPin/Fuzzy/Enabled">
@@ -346,12 +346,33 @@ PinYinJiaJia</property>
                                 <property name="receives_default">False</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_chk_smartseg_enabled_toggled"/>
                               </widget>
                               <packing>
                                 <property name="top_attach">2</property>
                                 <property name="bottom_attach">3</property>
                                 <property name="y_options">GTK_EXPAND</property>
                               </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkCheckButton" id="QuanPin/InnerFuzzy/Enabled">
+                                <property name="label" translatable="yes">Inner Fuzzy</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="active">True</property>
+                                <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_chk_innerfuzzy_enabled_toggled"/>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="x_padding">23</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                             <child>
                               <placeholder/>
@@ -636,7 +657,7 @@ PinYinJiaJia</property>
                         <property name="left_padding">12</property>
                         <child>
                           <widget class="GtkCheckButton" id="Keyboard/CancelBackspace">
-                            <property name="label">Cancel with Backspace</property>
+                            <property name="label" translatable="yes">Cancel with Backspace</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>

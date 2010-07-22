@@ -507,6 +507,7 @@ class MainWindow ():
             CheckBoxOption("QuanPin/Fuzzy/Enabled", False, self.__xml),
             CheckBoxOption("QuanPin/AutoCorrection/Enabled", False, self.__xml),
             CheckBoxOption("QuanPin/FuzzySegs/Enabled", False, self.__xml),
+            CheckBoxOption("QuanPin/InnerFuzzy/Enabled", False, self.__xml),
             
             self.__fuzzy_setup,
             self.__correction_setup,
@@ -559,7 +560,11 @@ class MainWindow ():
     def on_chk_correction_enabled_toggled(self, button):
         self.__update_enabling_button("QuanPin/AutoCorrection/Enabled",
                                       "button_correction_setup")
-        
+
+    def on_chk_smartseg_enabled_toggled(self, button):
+        self.__update_enabling_button("QuanPin/FuzzySegs/Enabled",
+                                      "QuanPin/InnerFuzzy/Enabled")
+
     def on_button_correction_setup_clicked(self, button):
         self.__correction_setup.run()
         

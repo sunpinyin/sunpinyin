@@ -523,30 +523,37 @@ string_pairs parse_pairs(const vector<string>& strings)
     return pairs;
 }
 
-// the mappings in pairs2 will override the ones in pairs1
-string_pairs merge_pairs(const string_pairs& pairs1,
-                         const string_pairs& pairs2)
+// the mappings in default_pairs will override the ones in user_pairs
+string_pairs merge_pairs(const string_pairs& default_pairs,
+                         const string_pairs& user_pairs)
 {
-    typedef std::map<string, string> Pairs;
-    Pairs pairs;
-    for (string_pairs::const_iterator it = pairs1.begin();
-         it != pairs1.end(); ++it) {
-        pairs[it->first] = it->second;
+    typedef std::map<string, int> Indexes;
+    Indexes indexes;
+    int index = 0;
+    for (string_pairs::const_iterator it = default_pairs.begin();
+         it != default_pairs.end(); ++it, ++index) {
+        Indexes::iterator found = indexes.find(it->first);
+        if (found == indexes.end()) {
+            indexes[it->first] = index;
+        } else {
+            // it is a paired punct.
+            indexes[it->first] = -found->second;
+        }
     }
-    for (string_pairs::const_iterator it = pairs2.begin();
-         it != pairs2.end(); ++it) {
-        pairs[it->first] = it->second;
+    string_pairs result(default_pairs);
+    for (string_pairs::const_iterator it = user_pairs.begin();
+         it != user_pairs.end(); ++it) {
+        Indexes::iterator found = indexes.find(it->first);
+        if (found == indexes.end()) {
+            result.push_back(*it);
+        } else if (found->second >= 0) {
+            result[found->second] = *it;
+        } else {
+            // it is a paired punct,
+            // but we don't support this kind of mapping yet,
+            // so quietly ignore it.
+        }
     }
-    string_pairs result;
-
-#ifdef _RW_STD_STL
-    // the deferenced type of Pair::iterator is pair<const string, string>
-    for (Pairs::iterator it = pairs.begin(); it != pairs.end(); ++it)
-        result.push_back (std::make_pair(it->first, it->second));
-#else
-    copy(pairs.begin(), pairs.end(), back_inserter(result));
-#endif
-
     return result;
 }
 

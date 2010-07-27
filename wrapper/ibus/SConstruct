@@ -17,6 +17,7 @@ locales = ['zh_CN']
 prefix = '/usr/local'
 rpath = ''
 cflags = '-O2 -pipe'
+version = '2.0.2'
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
           metavar='DIR', help='installation prefix')
@@ -33,10 +34,10 @@ icons_dir = prefix + '/share/ibus-sunpinyin/icons'
 bin_dir = prefix + '/lib/ibus-sunpinyin'
 gettext_package = 'ibus-sunpinyin'
 
-cflags += ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % (prefix + '/share/locale',)
-cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % (icons_dir,)
-cflags += ' -DLIBEXECDIR=\'"%s"\'' % (bin_dir,)
-cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % (gettext_package,)
+cflags += ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % os.path.join(prefix, '/share/locale')
+cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % icons_dir
+cflags += ' -DLIBEXECDIR=\'"%s"\'' % bin_dir
+cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
@@ -97,7 +98,10 @@ for locale in locales:
 # it doesn't include textfile builders by default?
 SCons.Tool.textfile.generate(env)
 sub = {'@LIBEXEC_DIR@': prefix + '/lib/ibus-sunpinyin/',
-       '@prefix@': prefix}
+       '@DATA_DIR@' : data_dir,
+       '@ICON_DIR@': icons_dir,
+       '@VERSION@' : version,
+       '@INSTALL_PREFIX@': prefix}
 env.Substfile('data/sunpinyin.xml.in', SUBST_DICT=sub)
 env.Substfile('setup/config.py.in', SUBST_DICT=sub)
 env.Substfile('setup/ibus-setup-sunpinyin.in', SUBST_DICT=sub)

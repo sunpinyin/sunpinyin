@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix=@CMAKE_INSTALL_PREFIX@
+prefix=@INSTALL_PREFIX@
 exec_prefix=${prefix}
 export IBUS_PREFIX=${prefix}
 export IBUS_LOCALEDIR=${prefix}/share/locale

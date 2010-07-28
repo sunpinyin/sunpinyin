@@ -167,9 +167,10 @@ preedit_reload(void)
     }
 
     // fuzzy segmentation
-    bool enabled = settings_get_int(FUZZY_SEGMENTATION);
-    AQuanpinSchemePolicy::instance().setFuzzySegmentation(enabled);
-    AQuanpinSchemePolicy::instance().setInnerFuzzySegmentation(enabled);
+    bool enable_fuzzy = settings_get_int(FUZZY_SEGMENTATION);
+    bool enable_inner = settings_get_int(FUZZY_INNER_SEGMENTATION);
+    AQuanpinSchemePolicy::instance().setFuzzySegmentation(enable_fuzzy);
+    AQuanpinSchemePolicy::instance().setInnerFuzzySegmentation(enable_inner);
 
     // cancel last selection on backspace
     view->setCancelOnBackspace(settings_get_int(CANCEL_ON_BACKSPACE));

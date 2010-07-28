@@ -70,6 +70,7 @@ typedef enum {
     PAGE_COMMA_PERIOD,
     PAGE_PAREN,
     FUZZY_SEGMENTATION,
+    FUZZY_INNER_SEGMENTATION,
     CANCEL_ON_BACKSPACE,
     SMART_PUNCT,
 } setting_key_t;

@@ -65,6 +65,7 @@ static GtkToggleButton* minus_plus_check = NULL;
 static GtkToggleButton* comma_period_check = NULL;
 static GtkToggleButton* paren_check = NULL;
 static GtkToggleButton* fuzzy_seg_check = NULL;
+static GtkToggleButton* fuzzy_inner_seg_check = NULL;
 static GtkToggleButton* cancel_on_backspace_check = NULL;
 static GtkToggleButton* smart_punct_check = NULL;
 
@@ -140,6 +141,8 @@ init_settings(void)
     
     gtk_toggle_button_set_active(fuzzy_seg_check,
                                  settings_get_int(FUZZY_SEGMENTATION));
+    gtk_toggle_button_set_active(fuzzy_inner_seg_check,
+                                 settings_get_int(FUZZY_INNER_SEGMENTATION));
 
     gtk_toggle_button_set_active(cancel_on_backspace_check,
                                  settings_get_int(CANCEL_ON_BACKSPACE));
@@ -170,6 +173,7 @@ init(void)
     RETRIEVE(comma_period_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(paren_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(fuzzy_seg_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(fuzzy_inner_seg_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(cancel_on_backspace_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(smart_punct_check, GTK_TOGGLE_BUTTON);
 
@@ -249,6 +253,8 @@ state_changed()
     /* fuzzy segmentation */
     settings_set_int(FUZZY_SEGMENTATION,
                      gtk_toggle_button_get_active(fuzzy_seg_check));
+    settings_set_int(FUZZY_INNER_SEGMENTATION,
+                     gtk_toggle_button_get_active(fuzzy_inner_seg_check));
 
     /* cancel on backspace */
     settings_set_int(CANCEL_ON_BACKSPACE,

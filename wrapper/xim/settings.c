@@ -58,6 +58,7 @@ static const char* setting_names[] = {
     "page_minus_plus",
     "page_comma_period",
     "page_paren",
+    "fuzzy_inner_segmentation",
     "fuzzy_segmentation",
     "cancel_on_backspace",
     "smart_punct",
@@ -246,6 +247,7 @@ __init_default_values()
 
     /* fuzzy segmentation */
     settings_set_int(FUZZY_SEGMENTATION, 0);
+    settings_set_int(FUZZY_INNER_SEGMENTATION, 0);
 
     /* cancel on backspace */
     settings_set_int(CANCEL_ON_BACKSPACE, 1);
@@ -279,6 +281,7 @@ settings_init()
     REGISTER(PAGE_COMMA_PERIOD, int, __int_enc, __int_dec);
     REGISTER(PAGE_PAREN, int, __int_enc, __int_dec);
     REGISTER(FUZZY_SEGMENTATION, int, __int_enc, __int_dec);
+    REGISTER(FUZZY_INNER_SEGMENTATION, int, __int_enc, __int_dec);
     REGISTER(CANCEL_ON_BACKSPACE, int, __int_enc, __int_dec);
     REGISTER(SMART_PUNCT, int, __int_enc, __int_dec);
     
@@ -416,4 +419,3 @@ settings_set(setting_key_t key, void* data)
     }
     memcpy(setting_data[key], data, setting_size[key]);
 }
-

@@ -145,7 +145,7 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
             } else if (sym >= 0x30 && sym <= 0x39
                        && preedit_status() == false) {
                 // digit key pressed
-                if (settings_get_int(SMART_PUNCT)) {
+                if (settings_get_int(SMART_PUNCT) && evt->type == KeyPress) {
                     preedit_omit_next_punct();
                 }
                 

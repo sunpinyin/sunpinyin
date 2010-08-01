@@ -146,11 +146,6 @@ CSimplifiedChinesePolicy::getDefaultPunctMapping() const
         "{",    "『",
         "}",    "』",
         "$",    "￥",
-        "*",    "×",
-        "+",    "＋",
-        "|",    "｜",
-        "=",    "＝",
-        "-",    "－",
         NULL,
     };
 

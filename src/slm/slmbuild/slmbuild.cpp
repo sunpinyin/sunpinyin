@@ -107,7 +107,7 @@ Notes:\n\
       EXCLUDE-IDs could be ambiguious-ids. Concepturally, n-grams which\n\
   contain those ids are meaningless.\n\
       We can not erase ngrams according to BREAKER-IDS and EXCLUDE-IDs directly\n\
-  from IDNGRAM file, because some low-level information still usefull in it.\n\
+  from IDNGRAM file, because some low-level information still useful in it.\n\
 \n\
 Example:\n\
       Following example read 'all.id3gram' and write trigram model 'all.slm'.\n\

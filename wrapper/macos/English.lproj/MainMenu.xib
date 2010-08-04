@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="764"/>
+			<integer value="281"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -675,6 +675,16 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 																<string key="NSTitle">ZiGuang</string>
 																<string key="NSKeyEquiv"/>
 																<int key="NSKeyEquivModMask">1048576</int>
+																<int key="NSMnemonicLoc">2147483647</int>
+																<reference key="NSOnImage" ref="935239157"/>
+																<reference key="NSMixedImage" ref="560774375"/>
+																<string key="NSAction">_popUpItemAction:</string>
+																<reference key="NSTarget" ref="260441203"/>
+															</object>
+															<object class="NSMenuItem" id="219246953">
+																<reference key="NSMenu" ref="809213331"/>
+																<string key="NSTitle">XiaoHe</string>
+																<string key="NSKeyEquiv"/>
 																<int key="NSMnemonicLoc">2147483647</int>
 																<reference key="NSOnImage" ref="935239157"/>
 																<reference key="NSMixedImage" ref="560774375"/>
@@ -1953,7 +1963,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSTextFieldCell" key="NSCell" id="958503593">
 													<int key="NSCellFlags">-2080244224</int>
 													<int key="NSCellFlags2">138412032</int>
-													<string type="base64-UTF8" key="NSContents">VmVyc2lvbiAyLjAuMi4xMDA3CgpDb3B5cmlnaHQgwqkgMjAxMCBTdW5QaW55aW4uT1JHClN1biBNaWNy
+													<string type="base64-UTF8" key="NSContents">VmVyc2lvbiAyLjAuMi4xMDA4CgpDb3B5cmlnaHQgwqkgMjAxMCBTdW5QaW55aW4uT1JHClN1biBNaWNy
 b3N5c3RlbXMsIEluYy4KTGVpIFpoYW5nIDxwaGlsbC56aGFuZ0BnbWFpbC5jb20+CllvbmcgU3VuIDxt
 YWlsQHlvbmdzdW4ubWU+CktlZnUgQ2hhaSA8dGNoYWlrb3ZAZ21haWwuY29tPgpXZWkgWHVlIDxicmVh
 ZHNvbi54dWVAZ21haWwuY29tPgpMZW8gWmhlbmcgPHp5bTM2MUBnbWFpbC5jb20+Ck1pa2UgPG1pa2Vh
@@ -1996,10 +2006,6 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="333442631">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>cancelSelectionOnBackspace</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="850400115">
@@ -4103,6 +4109,7 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 							<reference ref="83198116"/>
 							<reference ref="596086471"/>
 							<reference ref="654793636"/>
+							<reference ref="219246953"/>
 						</object>
 						<reference key="parent" ref="260441203"/>
 					</object>
@@ -4465,6 +4472,11 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 						<reference key="object" ref="539388088"/>
 						<reference key="parent" ref="835054647"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">769</int>
+						<reference key="object" ref="219246953"/>
+						<reference key="parent" ref="809213331"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -4675,6 +4687,7 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 					<string>763.IBPluginDependency</string>
 					<string>764.IBPluginDependency</string>
 					<string>765.IBPluginDependency</string>
+					<string>769.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4832,7 +4845,7 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{835, 845}, {129, 103}}</string>
+					<string>{{1097, 900}, {129, 123}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4889,6 +4902,7 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -4907,7 +4921,7 @@ ZG9uLmFudGhvbnkubGVlQGdtYWlsLmNvbT4</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">768</int>
+			<int key="maxID">769</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

@@ -50,6 +50,7 @@ enum EShuangpinType {
     ZIRANMA,
     PINYINJIAJIA,
     ZIGUANG,
+    XIAOHE,
     USERDEFINE,
 };
 

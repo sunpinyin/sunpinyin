@@ -178,6 +178,30 @@ static TZeroInitial ziranma_zeroinitials[] = {
     {"ou"  , "ou"},
 };
 
+//Ziranma shuangpin plan map table
+static const char xiaohe_mapinitials[INITIAL_NUM] = {'a', 'e', 'o', 'b', 'p', 'm', 'f', 'd', 
+    't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'v', 'i', 'u', 'r', 'z', 'c', 's', 
+    'y', 'w', };
+
+static const char xiaohe_mapfinals[FINAL_NUM] = {'\0', 'a', 'o', 'e', 'd', 'w', 'c',
+    'z', 'j', 'f', 'h', 'g', '\0', 'i', 'x', 'p', 'n', 'q', 'm', 'b', 'l', 'k', 'u', 
+    'x', 'o', 'k', 'v', 'r', 'y', 'l', 's', 'v', 't', 's', };
+
+static TZeroInitial xiaohe_zeroinitials[] = {
+    {"a"   , "aa"},
+    {"ai"  , "ai"},
+    {"an"  , "an"},
+    {"ang" , "ah"},
+    {"ao"  , "ao"},
+    {"e"   , "ee"},
+    {"ei"  , "ei"},
+    {"en"  , "en"},
+    {"eng" , "eg"},
+    {"er"  , "er"},
+    {"o"   , "oo"},
+    {"ou"  , "ou"},
+};
+
 CShuangpinData::CShuangpinData (EShuangpinType shpPlan) : m_shuangpinPlan(NULL)
 {
     _genCodingMap();
@@ -315,6 +339,11 @@ CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
         m_shuangpinPlan->mapinitials = (char*)ziranma_mapinitials;
         m_shuangpinPlan->mapfinals = (char*)ziranma_mapfinals;
         m_shuangpinPlan->zeroinitals = ziranma_zeroinitials;
+        break;
+    case XIAOHE:
+        m_shuangpinPlan->mapinitials = (char*)xiaohe_mapinitials;
+        m_shuangpinPlan->mapfinals   = (char*)xiaohe_mapfinals;
+        m_shuangpinPlan->zeroinitals =        xiaohe_zeroinitials;
         break;
     default:
         break;

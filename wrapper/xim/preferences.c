@@ -68,9 +68,18 @@ static GtkToggleButton* fuzzy_seg_check = NULL;
 static GtkToggleButton* fuzzy_inner_seg_check = NULL;
 static GtkToggleButton* cancel_on_backspace_check = NULL;
 static GtkToggleButton* smart_punct_check = NULL;
+static GtkToggleButton* shuangpin_check = NULL;
+static GtkComboBox* shuangpin_combo = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
+
+static const char* ui_shuangpin_schemes[] =
+{
+    "MS2003", "ABC", "ZiRanMa", "PinYin++", "ZiGuang", "XiaoHe",
+};
+
+#define UI_SHUANGPIN_SCHEMES_NUM 6
 
 static const int ui_keysym_model[] =
 {
@@ -149,6 +158,20 @@ init_settings(void)
 
     gtk_toggle_button_set_active(smart_punct_check,
                                  settings_get_int(SMART_PUNCT));
+
+    fprintf(stderr, "%d\n", settings_get_int(SHUANGPIN));
+    gtk_toggle_button_set_active(shuangpin_check,
+                                 settings_get_int(SHUANGPIN));
+    varchar scheme;
+    int i;
+    settings_get(SHUANGPIN_SCHEME, scheme);
+    for (i = 0; i < UI_SHUANGPIN_SCHEMES_NUM; i++) {
+        if (strcmp(ui_shuangpin_schemes[i], scheme) == 0) {
+            gtk_combo_box_set_active(shuangpin_combo, i);
+            break;
+        }
+    }
+
 }
 
 static void
@@ -176,6 +199,8 @@ init(void)
     RETRIEVE(fuzzy_inner_seg_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(cancel_on_backspace_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(smart_punct_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(shuangpin_check, GTK_TOGGLE_BUTTON);
+    RETRIEVE(shuangpin_combo, GTK_COMBO_BOX);
 
     init_settings();
     
@@ -263,6 +288,11 @@ state_changed()
     /* smart punctuation */
     settings_set_int(SMART_PUNCT,
                      gtk_toggle_button_get_active(smart_punct_check));
+
+    settings_set_int(SHUANGPIN, gtk_toggle_button_get_active(shuangpin_check));
+    int sche_idx = gtk_combo_box_get_active(shuangpin_combo);
+    if (sche_idx < UI_SHUANGPIN_SCHEMES_NUM)
+        settings_set_string(SHUANGPIN_SCHEME, ui_shuangpin_schemes[sche_idx]);
 
     settings_save();
     send_reload();

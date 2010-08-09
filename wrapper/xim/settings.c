@@ -54,6 +54,8 @@ static const char* setting_names[] = {
     "preedit_color",
     "preedit_font",
     "preedit_font_color",
+    "shuangpin",
+    "shuangpin_scheme",
     "candidates_size",
     "page_minus_plus",
     "page_comma_period",
@@ -238,6 +240,9 @@ __init_default_values()
     settings_set_string(PREEDIT_FONT, "Sans 10");
     settings_set_string(PREEDIT_FONT_COLOR, "#000000");
 
+    settings_set_int(SHUANGPIN, 0);
+    settings_set_string(SHUANGPIN_SCHEME, "MS2003");
+
     settings_set_int(CANDIDATES_SIZE, 10);
 
     /* page up and down trigger */
@@ -276,6 +281,8 @@ settings_init()
     REGISTER(PREEDIT_COLOR, varchar, __varchar_enc, __varchar_dec);
     REGISTER(PREEDIT_FONT, varchar, __varchar_enc, __varchar_dec);
     REGISTER(PREEDIT_FONT_COLOR, varchar, __varchar_enc, __varchar_dec);
+    REGISTER(SHUANGPIN, int, __int_enc, __int_dec);
+    REGISTER(SHUANGPIN_SCHEME, varchar, __varchar_enc, __varchar_dec);
     REGISTER(CANDIDATES_SIZE, int, __int_enc, __int_dec);
     REGISTER(PAGE_MINUS_PLUS, int, __int_enc, __int_dec);
     REGISTER(PAGE_COMMA_PERIOD, int, __int_enc, __int_dec);

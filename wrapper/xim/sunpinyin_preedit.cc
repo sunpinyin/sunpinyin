@@ -126,6 +126,11 @@ __EXPORT_API void
 preedit_init()
 {
     CSunpinyinSessionFactory& fac = CSunpinyinSessionFactory::getFactory();
+    if (settings_get_int(SHUANGPIN)) {
+        fac.setPinyinScheme(CSunpinyinSessionFactory::SHUANGPIN);
+    } else {
+        fac.setPinyinScheme(CSunpinyinSessionFactory::QUANPIN);
+    }
     view = fac.createSession();
 
     instance = new SSWindowHandler<UIProvider>();
@@ -147,6 +152,22 @@ preedit_finalize(void)
 __EXPORT_API void
 preedit_reload(void)
 {
+    // shuangpin schemes
+    varchar scheme;
+    settings_get(SHUANGPIN_SCHEME, scheme);
+    if (strcmp(scheme, "MS2003") == 0) {
+        AShuangpinSchemePolicy::instance().setShuangpinType(MS2003);
+    } else if (strcmp(scheme, "ABC") == 0) {
+        AShuangpinSchemePolicy::instance().setShuangpinType(ABC);
+    } else if (strcmp(scheme, "ZiRanMa") == 0) {
+        AShuangpinSchemePolicy::instance().setShuangpinType(ZIRANMA);
+    } else if (strcmp(scheme, "PinYin++") == 0) {
+        AShuangpinSchemePolicy::instance().setShuangpinType(PINYINJIAJIA);
+    } else if (strcmp(scheme, "ZiGuang") == 0) {
+        AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
+    } else if (strcmp(scheme, "XiaoHe") == 0) {
+        AShuangpinSchemePolicy::instance().setShuangpinType(XIAOHE);
+    }
     // number of candidates
     view->setCandiWindowSize(settings_get_int(CANDIDATES_SIZE));
 

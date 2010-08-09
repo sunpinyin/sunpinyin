@@ -93,10 +93,11 @@ main(int argc, char* argv[])
     
     init_display(&argc, &argv);
     XSetErrorHandler (_xerror_handler);
-    preedit_init();
 
     settings_init();
     settings_load();
+    
+    preedit_init();
 
     /* check if the codeset is utf-8 */
     if (strcmp(nl_langinfo(CODESET), "UTF-8") != 0) {

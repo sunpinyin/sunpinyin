@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os, sys
+import struct
 import sqlite3 as sqlite
-import imdict, trie
 from pinyin_data import valid_syllables, decode_syllable, initials, finals
 
 def get_userdict_path ():
@@ -22,11 +22,40 @@ def get_userdict_path ():
 
     raise "Can not detect sunpinyin's userdict!"
 
+def get_sysdict_path ():
+    if sys.platform == "darwin":
+        homedir = os.environ.get("HOME")
+        sysdict_path = "/Library/Input Methods/SunPinyin.app/Contents/Resources/pydict_sc.bin"
+        if os.path.exists (homedir + sysdict_path):
+            return homedir + sysdict_path
+        else:
+            return sysdict_path
+
+    return "/usr/lib/sunpinyin/data/pydict_sc.bin"
+
+def load_system_dict ():
+    sysdict_path = get_sysdict_path ()
+    f = open (sysdict_path, "rb")
+    
+    f.seek(8)
+    word_offset = struct.unpack ('I', f.read(4))[0]
+    f.seek (word_offset)
+
+    words = set()
+    str = f.read()
+    
+    for w in str.decode('UTF-32').split('\0'):
+        if w:
+            words.add (w)
+    
+    f.close()
+    return words
+
 def import_to_sunpinyin_user_dict (records, userdict_path=''):
     userdict_path = userdict_path if userdict_path else get_userdict_path()
     db = sqlite.connect (userdict_path)
 
-    sysdict = imdict.IMDict("dict.utf8")
+    sysdict = load_system_dict()
 
     sqlstring = """
             CREATE TABLE IF NOT EXISTS dict(
@@ -50,7 +79,7 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
             print "[%s] is too long or too short for sunpinyin userdict" % utf8str
             continue
 
-        if sysdict and trie.search (sysdict, utf8str):
+        if utf8str in sysdict:
             #print "[%s] is already in sunpinyin's sysdict" % utf8str
             continue
 

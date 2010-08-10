@@ -80,7 +80,7 @@
 #define DEBUG(...)
 #endif
 
-#define XIM_VERSION "0.0.3"
+#define XIM_VERSION "0.0.4"
 #define XIM_PROGRAM_NAME "SunPinyin-XIM"
 #define XIM_WEBSITE "http://mike.struct.cn/sunpinyin-xim"
 #define XIM_COMMENTS "a XIM front-end for SunPinyin."

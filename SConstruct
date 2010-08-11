@@ -239,7 +239,7 @@ def AppendEndianCheck():
   || defined(__s390__)
 # define WORDS_BIGENDIAN 1
 
-#elif defined(__i386__) || defined(__alpha__) \
+#elif defined(__i386__) || defined(__alpha__) || defined(__i386) \
   || defined(__ia64) || defined(__ia64__) \
   || defined(_M_IX86) || defined(_M_IA64) \
   || defined(_M_ALPHA) || defined(__amd64) \

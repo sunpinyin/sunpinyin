@@ -14,7 +14,7 @@ set(GETTEXT_PACKAGE     ${PACKAGE})
 set(PACKAGE_NAME        ${PACKAGE})
 set(PACKAGE_BUGREPORT   "sunpinyin-developers@googlegroups.com")
 set(PACKAGE_TARNAME     ${PACKAGE})
-set(VERSION             "2.0")
+set(VERSION             "2.0.2")
 set(PACKAGE_VERSION     ${VERSION})
 set(PACKAGE_STRING      "${PACKAGE} ${VERSION}")
 

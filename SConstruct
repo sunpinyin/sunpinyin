@@ -163,6 +163,14 @@ if 'CXX' in os.environ:
     print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
     env['CXX']=os.environ['CXX']
 
+if 'CFLAGS' in os.environ:
+    print 'Warning: you\'ve set an external compiler flags for C.'
+    env['CFLAGS'] = os.environ['CFLAGS']
+
+if 'CXXFLAGS' in os.environ:
+    print 'Warning: you\'ve set an external compiler flags for C++.'
+    env['CXXFLAGS'] = os.environ['CXXFLAGS']
+
 if 'TAR' in os.environ:
     print 'Warning: you\'ve set %s as tar' % os.environ['TAR']
     env['TAR'] = os.environ['TAR']

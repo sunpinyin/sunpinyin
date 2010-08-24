@@ -2,7 +2,7 @@ import platform
 import os
 import sys
 
-cflags='-O2 -pipe -DHAVE_CONFIG_H '
+cflags='-O2 -pipe '
 prefix='/usr/local'
 rpath=''
 
@@ -112,7 +112,6 @@ if GetOption('prefix') is not None:
 if GetOption('rpath') is not None:
     rpath = GetOption('rpath')
 
-cflags += ('-DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
 libdir = prefix+'/lib'
 libdatadir = libdir+'/sunpinyin/data'
 headersdir = prefix+'/include/sunpinyin-2.0'
@@ -165,11 +164,11 @@ if 'CXX' in os.environ:
 
 if 'CFLAGS' in os.environ:
     print 'Warning: you\'ve set an external compiler flags for C.'
-    env['CFLAGS'] = os.environ['CFLAGS'] + ' -DHAVE_CONFIG_H'
+    env['CFLAGS'] = os.environ['CFLAGS']
 
 if 'CXXFLAGS' in os.environ:
     print 'Warning: you\'ve set an external compiler flags for C++.'
-    env['CXXFLAGS'] = os.environ['CXXFLAGS'] + ' -DHAVE_CONFIG_H'
+    env['CXXFLAGS'] = os.environ['CXXFLAGS']
 
 if 'TAR' in os.environ:
     print 'Warning: you\'ve set %s as tar' % os.environ['TAR']
@@ -182,6 +181,12 @@ if 'MAKE' in os.environ:
 if 'WGET' in os.environ:
     print 'Warning: you\'ve set %s as wget' % os.environ['WGET']
     env['WGET'] = os.environ['WGET']
+
+
+# append critical cflags
+env.Append(CFLAGS=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
+env.Append(CXXFLAGS=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
+
     
 #
 #==============================configure================================

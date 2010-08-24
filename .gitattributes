@@ -1,0 +1,5 @@
+.gitignore export-ignore
+.gitattributes export-ignore
+/debian export-ignore
+/wrapper/macos export-ignore
+/wrapper/scim export-ignore

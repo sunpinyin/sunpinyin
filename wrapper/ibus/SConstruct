@@ -16,7 +16,7 @@ locales = ['zh_CN']
 
 prefix = '/usr/local'
 rpath = ''
-cflags = '-O2 -pipe'
+cflags = '-O2 -g -pipe'
 version = '2.0.2'
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
@@ -33,11 +33,6 @@ data_dir = prefix + '/share/ibus-sunpinyin'
 icons_dir = prefix + '/share/ibus-sunpinyin/icons'
 bin_dir = prefix + '/lib/ibus-sunpinyin'
 gettext_package = 'ibus-sunpinyin'
-
-cflags += ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % os.path.join(prefix, '/share/locale')
-cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % icons_dir
-cflags += ' -DLIBEXECDIR=\'"%s"\'' % bin_dir
-cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
@@ -61,6 +56,15 @@ if 'CFLAGS' in os.environ:
 if 'CXXFLAGS' in os.environ:
     print 'Warning: you\'ve set an external compiler flags for C++.'
     env['CXXFLAGS'] = os.environ['CXXFLAGS']
+
+
+extra_cflags = ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % os.path.join(prefix, '/share/locale')
+extra_cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % icons_dir
+extra_cflags += ' -DLIBEXECDIR=\'"%s"\'' % bin_dir
+extra_cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
+
+env.Append(CFLAGS=extra_cflags)
+env.Append(CXXFLAGS=extra_cflags)
 
 #
 #==============================configure================================

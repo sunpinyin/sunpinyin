@@ -28,7 +28,7 @@ imdkit_sources = ['IMdkit/FrameMgr.c',
 
 
 prefix='/usr/local'
-cflags='-g'
+cflags='-O2 -g -pipe'
 rpath=''
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
@@ -44,9 +44,6 @@ if GetOption('rpath') is not None:
 bin_dir = prefix + '/bin'
 data_dir = '%s/share/xsunpinyin/' % prefix
 icon_dir = data_dir + 'icons/'
-
-cflags += ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
-cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
@@ -71,6 +68,13 @@ if 'CFLAGS' in os.environ:
 if 'CXXFLAGS' in os.environ:
     print 'Warning: you\'ve set an external compiler flags for C++.'
     env['CXXFLAGS'] = os.environ['CXXFLAGS']
+
+extra_cflags =  ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
+extra_cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
+
+env.Append(CFLAGS=extra_cflags)
+env.Append(CXXFLAGS=extra_cflags)
+
 
 #
 #==============================configure================================

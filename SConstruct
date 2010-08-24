@@ -2,7 +2,7 @@ import platform
 import os
 import sys
 
-cflags='-O2 -pipe '
+cflags='-O2 -g -pipe '
 prefix='/usr/local'
 rpath=''
 
@@ -184,8 +184,9 @@ if 'WGET' in os.environ:
 
 
 # append critical cflags
-env.Append(CFLAGS=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
-env.Append(CXXFLAGS=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,))
+extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,)
+env.Append(CFLAGS=extra_cflags)
+env.Append(CXXFLAGS=extra_cflags)
 
     
 #

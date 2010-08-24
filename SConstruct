@@ -2,6 +2,10 @@ import platform
 import os
 import sys
 
+version="2.0.2"
+abi_major = 3
+abi_minor = 0
+
 cflags='-O2 -g -pipe '
 prefix='/usr/local'
 rpath=''
@@ -115,9 +119,6 @@ if GetOption('rpath') is not None:
 libdir = prefix+'/lib'
 libdatadir = libdir+'/sunpinyin/data'
 headersdir = prefix+'/include/sunpinyin-2.0'
-
-abi_major = 3
-abi_minor = 0
 
 #
 #==============================environment==============================
@@ -340,7 +341,7 @@ def DoConfigure():
         '',
         'Name: libsunpinyin',
         'Description: IME library based on Statistical Language Model',
-        'Version: 2.0.1',
+        'Version: %s' % version,
         'Requires: sqlite3',
         'Libs: -L${libdir} -lsunpinyin',
         'Cflags: ' + reduce(lambda a, b: a + ' ' + b,

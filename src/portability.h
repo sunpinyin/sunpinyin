@@ -72,7 +72,7 @@
 inline double log2(double x) { return log(x) / M_LN2; }
 #endif
 
-typedef unsigned char* TIConvSrcPtr;
+typedef char* TIConvSrcPtr;
 
 union TDoubleAnatomy {
 public:

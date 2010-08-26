@@ -103,7 +103,6 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/pinyin/syllable.h',
          'src/pinyin/shuangpin_data.h',
          'src/pinyin/datrie_impl.h',
-         'src/host_os.h',
          'src/sunpinyin.h']
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1,
@@ -139,6 +138,9 @@ def CreateEnvironment():
     wget = 'wget'
     if GetOS() == 'Darwin':
         wget = 'curl -O'
+    elif GetOS() == 'FreeBSD':
+        wget = 'fetch'
+        make = 'gmake'
     elif GetOS() == 'SunOS':
         tar = 'gtar'
         make = 'gmake'
@@ -225,18 +227,6 @@ def AddTestFunction(funcname):
     macro_name = 'HAVE_' + macro_name
     if conf.CheckFunc(funcname):
         AddConfigItem(macro_name, 1)
-
-def LinkOSHeader():
-    osstring = GetOS()
-    header = ''
-    if osstring == 'Linux':
-        header = 'linux.h'
-    elif osstring == 'SunOS':
-        header = 'solaris.h'
-    elif osstring == 'Darwin':
-        header = 'mac.h'
-
-    os.system('ln -sf ./config/%s ./src/host_os.h' % (header,));
 
 def AppendEndianCheck():
     global config_h_content
@@ -354,8 +344,6 @@ def DoConfigure():
 
     if GetOS() != 'Darwin':
         env.ParseConfig('pkg-config sqlite3 --libs --cflags')
-
-    LinkOSHeader()
 
 DoConfigure()
 

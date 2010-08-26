@@ -38,8 +38,6 @@
 #ifndef ___SUN_SLM_PORTABILITY_H___
 #define ___SUN_SLM_PORTABILITY_H___
 
-#include "host_os.h"
-
 #include <stdio.h>
 #include <math.h>
 #include <string>
@@ -69,6 +67,12 @@
         #define DEBUG_print(fmt, a...)   (int(0))
     #endif
 #endif // !HOST_OS_GNUC_2
+
+#ifndef HAVE_LOG2
+inline double log2(double x) { return log(x) / M_LN2; }
+#endif
+
+typedef unsigned char* TIConvSrcPtr;
 
 union TDoubleAnatomy {
 public:
@@ -135,8 +139,7 @@ public:
         {if (buf) sprintf(buf, "%10lf*2^%d", m_base, m_exp);}
 
     double
-    log2() const
-        {return ::log2(m_base)+m_exp;}
+    log2() const { return ::log2(m_base) + m_exp; }
 
 private:
     double   m_base;

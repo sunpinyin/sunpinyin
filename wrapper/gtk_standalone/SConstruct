@@ -1,6 +1,6 @@
 import os
 
-env=Environment(ENV=os.environ, CFLAGS='-g', CXXFLAGS='-g')
+env=Environment(ENV=os.environ, CFLAGS='-g', CXXFLAGS='-g -DDEBUG')
 env.ParseConfig('pkg-config gtk+-2.0 sunpinyin-2.0 sqlite3 --cflags --libs')
 
 env.Program('sunpinyin', source=['imi_gtkwin.cpp', 'sunpinyin.cpp'])

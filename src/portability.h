@@ -72,7 +72,11 @@
 inline double log2(double x) { return log(x) / M_LN2; }
 #endif
 
+#if defined(sun) // Solaris/HP-UX 's iconv is const char**
+typedef const char* TIConvSrcPtr;
+#else
 typedef char* TIConvSrcPtr;
+#endif
 
 union TDoubleAnatomy {
 public:

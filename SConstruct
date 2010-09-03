@@ -7,8 +7,6 @@ abi_major = 3
 abi_minor = 0
 
 cflags='-O2 -g -pipe '
-prefix='/usr/local'
-rpath=''
 
 slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
            'src/slm/ids2ngram/idngram_merge.cpp',
@@ -105,19 +103,18 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/pinyin/datrie_impl.h',
          'src/sunpinyin.h']
 
+# options
 AddOption('--prefix', dest='prefix', type='string', nargs=1,
-          action='store', metavar='DIR', help='installation prefix')
+          action='store', metavar='DIR',
+          help='installation prefix')
+
 AddOption('--rpath', dest='rpath', type='string', nargs=1,
-          action='store', metavar='DIR', help='encode rpath in the executables')
+          action='store', metavar='DIR',
+          help='encode rpath in the executables')
 
-if GetOption('prefix') is not None:
-    prefix = GetOption('prefix')
-if GetOption('rpath') is not None:
-    rpath = GetOption('rpath')
-
-libdir = prefix+'/lib'
-libdatadir = libdir+'/sunpinyin/data'
-headersdir = prefix+'/include/sunpinyin-2.0'
+# save the options
+opts = Variables('configure.conf')
+opts.Add('PREFIX', default='/usr/local')
 
 #
 #==============================environment==============================
@@ -147,15 +144,26 @@ def CreateEnvironment():
 
     return Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                        TAR=tar, MAKE=make, WGET=wget,
-                       CPPPATH=['.'] + allinc(), PREFIX=prefix)
+                       CPPPATH=['.'] + allinc())
 
 env = CreateEnvironment()
+opts.Update(env)
+
+if GetOption('prefix') is not None:
+    env['PREFIX'] = GetOption('prefix')
+
+opts.Save('configure.conf', env)
+
+libprefix = '/lib'
+libdir = env['PREFIX'] + libprefix
+libdatadir = libdir + '/sunpinyin/data'
+headersdir = env['PREFIX'] + '/include/sunpinyin-2.0'
 
 if GetOS() != 'Darwin':
     env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
 
-if rpath != '' and GetOS() != 'Darwin':
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % rpath)
+if GetOption('rpath') is not None and GetOS() != 'Darwin':
+    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
@@ -187,11 +195,10 @@ if 'WGET' in os.environ:
 
 
 # append critical cflags
-extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s/lib/sunpinyin/data"\'' % (prefix,)
+extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
 
-    
 #
 #==============================configure================================
 #
@@ -207,30 +214,9 @@ def CheckPKG(context, name):
     context.Result(ret)
     return ret
 
-conf = Configure(env, custom_tests={'CheckPKGConfig' : CheckPKGConfig,
-                                    'CheckPKG' : CheckPKG})
+def AppendEndianCheck(conf):
+    conf.config_h_text += r'''
 
-config_h_content = ''
-
-def AddConfigItem(macro_name, res):
-    global config_h_content
-    config_h_content += ('#define %s %s\n\n' % (macro_name, res))
-
-def AddTestHeader(header):
-    macro_name = header.replace('.', '_').replace('-', '_').replace('/', '_').upper()
-    macro_name = 'HAVE_' + macro_name
-    if conf.CheckCHeader(header):
-        AddConfigItem(macro_name, 1)
-
-def AddTestFunction(funcname):
-    macro_name = funcname.upper()
-    macro_name = 'HAVE_' + macro_name
-    if conf.CheckFunc(funcname):
-        AddConfigItem(macro_name, 1)
-
-def AppendEndianCheck():
-    global config_h_content
-    config_h_content += r'''
 #if defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
 # define WORDS_BIGENDIAN 1
 
@@ -258,6 +244,10 @@ def AppendEndianCheck():
 #endif
 '''
 
+conf = env.Configure(clean=False, help=False, config_h='config.h',
+                     custom_tests={'CheckPKGConfig' : CheckPKGConfig,
+                                   'CheckPKG' : CheckPKG})
+
 def DoConfigure():
     if GetOption('clean'):
         return
@@ -273,60 +263,56 @@ def DoConfigure():
         if not conf.CheckPKG('sqlite3'):
             Exit(1)
 
-    AddConfigItem('ENABLE_NLS', 1)
-    AddConfigItem('GETTEXT_PACKAGE', '"sunpinyin2"')
-    AddTestHeader('assert.h')
-    AddTestFunction('bind_textdomain_codeset')
-    AddTestFunction('dcgettext')
-    AddTestHeader('dlfcn.h')
-    AddTestFunction('exp2')
-    AddTestHeader('fcntl.h')
-    AddTestHeader('getopt.h')
-    AddTestFunction('getopt_long')
-    AddTestFunction('getpagesize')
-    AddTestFunction('get_opt')
-    AddTestHeader('iconv.h')
-    AddTestHeader('inttypes.h')
-    AddTestHeader('locale.h')
-    AddTestHeader('libintl.h')
-    AddTestHeader('limits.h')
-    AddTestHeader('locale.h')
-    AddTestFunction('log2')
-    AddTestHeader('memory.h')
-    AddTestFunction('memset')
-    AddTestFunction('mmap')
-    AddTestFunction('munmap')
-    AddTestFunction('setlocale')
-    AddTestFunction('strndup')
-    AddTestHeader('sys/mman.h')
-    AddTestHeader('sys/param.h')
-    AddTestHeader('sys/stat.h')
-    AddTestHeader('sys/types.h')
-    AddTestHeader('unistd.h')
-    AddTestHeader('wchar.h')
+    conf.Define('ENABLE_NLS', 1)
+    conf.Define('GETTEXT_PACKAGE', '"sunpinyin2"')
+    conf.CheckCHeader('assert.h')
+    conf.CheckFunc('bind_textdomain_codeset')
+    conf.CheckFunc('dcgettext')
+    conf.CheckCHeader('dlfcn.h')
+    conf.CheckFunc('exp2')
+    conf.CheckCHeader('fcntl.h')
+    conf.CheckCHeader('getopt.h')
+    conf.CheckFunc('getopt_long')
+    conf.CheckFunc('getpagesize')
+    conf.CheckFunc('get_opt')
+    conf.CheckCHeader('iconv.h')
+    conf.CheckCHeader('inttypes.h')
+    conf.CheckCHeader('locale.h')
+    conf.CheckCHeader('libintl.h')
+    conf.CheckCHeader('limits.h')
+    conf.CheckCHeader('locale.h')
+    conf.CheckFunc('log2')
+    conf.CheckCHeader('memory.h')
+    conf.CheckFunc('memset')
+    conf.CheckFunc('mmap')
+    conf.CheckFunc('munmap')
+    conf.CheckFunc('setlocale')
+    conf.CheckFunc('strndup')
+    conf.CheckCHeader('sys/mman.h')
+    conf.CheckCHeader('sys/param.h')
+    conf.CheckCHeader('sys/stat.h')
+    conf.CheckCHeader('sys/types.h')
+    conf.CheckCHeader('unistd.h')
+    conf.CheckCHeader('wchar.h')
 
     # add essential package requirements
-    AddConfigItem('PACKAGE', '"sunpinyin"')
-    AddConfigItem('PACKAGE_NAME', '"sunpinyin"')
-    AddConfigItem('PACKAGE_STRING', '"sunpinyin 2.0"')
-    AddConfigItem('PACKAGE_TARNAME', '"sunpinyin"')
-    AddConfigItem('PACKAGE_VERSION', '"2.0"')
-    AddConfigItem('VRESION', '"2.0"')
+    conf.Define('PACKAGE', '"sunpinyin"')
+    conf.Define('PACKAGE_NAME', '"sunpinyin"')
+    conf.Define('PACKAGE_STRING', '"sunpinyin 2.0"')
+    conf.Define('PACKAGE_TARNAME', '"sunpinyin"')
+    conf.Define('PACKAGE_VERSION', '"2.0"')
+    conf.Define('VRESION', '"2.0"')
 
     # append endianness checking defines
-    AppendEndianCheck()
-    
-    # generate config.h
-    f = file('config.h', 'w')
-    f.write(config_h_content)
-    f.close()
+    AppendEndianCheck(conf)
 
+    env = conf.Finish()
     # generate sunpinyin.pc
     f = file('sunpinyin-2.0.pc', 'w')
     content = (
-        'prefix='+prefix,
+        'prefix='+env['PREFIX'],
         'exec_prefix=${prefix}',
-        'libdir=${exec_prefix}/lib',
+        'libdir=${exec_prefix}' + libprefix,
         'includedir=${exec_prefix}/include/sunpinyin-2.0',
         '',
         'Name: libsunpinyin',
@@ -340,7 +326,6 @@ def DoConfigure():
         )
     f.write(reduce(lambda a, b: a + '\n' + b, content))
     f.close()
-    env = conf.Finish()
 
     if GetOS() != 'Darwin':
         env.ParseConfig('pkg-config sqlite3 --libs --cflags')

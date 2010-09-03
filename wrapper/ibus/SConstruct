@@ -14,32 +14,29 @@ sources = ['src/debug.cpp',
 
 locales = ['zh_CN']
 
-prefix = '/usr/local'
-rpath = ''
 cflags = '-O2 -g -pipe'
-version = '2.0.2'
+version = '2.0.3'
 
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
           metavar='DIR', help='installation prefix')
 AddOption('--rpath', dest='rpath', type='string', nargs=1, action='store',
           metavar='DIR', help='encode rpath in the executables')
 
-if GetOption('prefix') is not None:
-    prefix = GetOption('prefix')
-if GetOption('rpath') is not None:
-    rpath = GetOption('rpath')
-
-data_dir = prefix + '/share/ibus-sunpinyin'
-icons_dir = prefix + '/share/ibus-sunpinyin/icons'
-bin_dir = prefix + '/lib/ibus-sunpinyin'
-gettext_package = 'ibus-sunpinyin'
+opts = Variables('configure.conf')
+opts.Add('PREFIX', default='/usr/local')
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
-                  CPPPATH=['.'], PREFIX=prefix, SUBSTFILESUFFIX='.in')
+                  CPPPATH=['.'], SUBSTFILESUFFIX='.in')
+opts.Update(env)
 
-if rpath != '':
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % rpath)
+if GetOption('prefix') is not None:
+    env['PREFIX'] = GetOption('prefix')
+
+opts.Save('configure.conf', env)
+
+if GetOption('rpath') is not None:
+    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
 
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
@@ -58,7 +55,12 @@ if 'CXXFLAGS' in os.environ:
     env['CXXFLAGS'] = os.environ['CXXFLAGS']
 
 
-extra_cflags = ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % os.path.join(prefix, '/share/locale')
+data_dir = env['PREFIX'] + '/share/ibus-sunpinyin'
+icons_dir = env['PREFIX'] + '/share/ibus-sunpinyin/icons'
+bin_dir = env['PREFIX'] + '/lib/ibus-sunpinyin'
+gettext_package = 'ibus-sunpinyin'
+
+extra_cflags = ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % os.path.join(env['PREFIX'], '/share/locale')
 extra_cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % icons_dir
 extra_cflags += ' -DLIBEXECDIR=\'"%s"\'' % bin_dir
 extra_cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
@@ -109,11 +111,11 @@ for locale in locales:
 # bug of scons...
 # it doesn't include textfile builders by default?
 SCons.Tool.textfile.generate(env)
-sub = {'@LIBEXEC_DIR@': prefix + '/lib/ibus-sunpinyin/',
+sub = {'@LIBEXEC_DIR@': env['PREFIX'] + '/lib/ibus-sunpinyin/',
        '@DATA_DIR@' : data_dir,
        '@ICON_DIR@': icons_dir,
        '@VERSION@' : version,
-       '@INSTALL_PREFIX@': prefix}
+       '@INSTALL_PREFIX@': env['PREFIX']}
 env.Substfile('data/sunpinyin.xml.in', SUBST_DICT=sub)
 env.Substfile('setup/config.py.in', SUBST_DICT=sub)
 env.Substfile('setup/ibus-setup-sunpinyin.in', SUBST_DICT=sub)
@@ -140,11 +142,11 @@ def DoInstall():
                                 'icons/han.svg',
                                 'icons/setup.svg',
                                 'icons/sunpinyin-logo.png'])
-    component_target = env.Install(prefix + '/share/ibus/component',
+    component_target = env.Install(env['PREFIX'] + '/share/ibus/component',
                                    'data/sunpinyin.xml')
     locale_targets = []
     for locale in locales:
-        path = prefix + '/share/locale/%s/LC_MESSAGES/%s.mo' % \
+        path = env['PREFIX'] + '/share/locale/%s/LC_MESSAGES/%s.mo' % \
             (locale, gettext_package)
         locale_targets.append(env.InstallAs(path, 'po/%s.mo' % (locale,)))
 

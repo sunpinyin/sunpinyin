@@ -104,7 +104,7 @@ void CIMIContext::printLattice ()
 
 CIMIContext::CIMIContext () 
     : m_tailIdx(1), m_pModel(NULL), m_pPinyinTrie(NULL), m_pUserDict(NULL), m_pHistory(NULL), 
-      m_historyPower(3), m_bFullSymbolForwarding(false), m_pGetFullSymbolOp(NULL),
+      m_historyPower(5), m_bFullSymbolForwarding(false), m_pGetFullSymbolOp(NULL),
       m_bFullPunctForwarding(true), m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
       m_candiStarts(0), m_candiEnds(0), m_csLevel(0), m_bNonCompleteSyllable(true),
       m_pPySegmentor(0), m_bOmitPunct(false)

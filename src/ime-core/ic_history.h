@@ -156,6 +156,7 @@ protected:
     typedef std::deque<TWordId>                   TContextMemory;
 
     static const size_t contxt_memory_size;
+    static const double focus_memory_ratio;
 
     TContextMemory          m_memory;
     TUnigramPool            m_unifreq;

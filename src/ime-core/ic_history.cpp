@@ -56,6 +56,7 @@ CICHistory::~CICHistory()
 
 static bool bBigramHistoryInited = false;
 const size_t  CBigramHistory::contxt_memory_size = 8192;
+const double  CBigramHistory::focus_memory_ratio = 0.05;
 std::set<unsigned>  CBigramHistory::s_stopWords;
 
 /**
@@ -275,10 +276,17 @@ double CBigramHistory::pr(TBigram& bigram)
     int uf0 = uniFreq(bigram.first);
     int bf = biFreq(bigram);
     int uf1 = uniFreq(bigram.second);
+
     double pr = 0.0;
     pr += 0.68*double(bf)/double(uf0+0.5);
     pr += 0.32*double(uf1)/double(m_memory.size() + (contxt_memory_size-m_memory.size())/10);
-    //if (pr != 0) printf("cache pr(%d|%d) = %lf\n", bigram.second, bigram.first, pr);
+
+#ifdef DEBUG
+    if (pr != 0)
+        fprintf(stderr, "uf0:%d bf:%d uf1:%d pr(%d|%d):%lf\n", uf0, bf, uf1,
+                bigram.second, bigram.first, pr);
+#endif
+
     return pr;
 }
 
@@ -289,6 +297,12 @@ int  CBigramHistory::uniFreq(TUnigram& ug)
         TUnigramPool::iterator it = m_unifreq.find(ug);
         if (it != m_unifreq.end()) {
             freq = it->second;
+            TContextMemory::reverse_iterator rit = m_memory.rbegin();
+            for (int i = 0; i < contxt_memory_size * focus_memory_ratio; i++) {
+                if (*rit == ug)
+                    freq += 1.0 / focus_memory_ratio;
+                *rit++;
+            }
         }
     }
     //if (freq != 0) printf("uniFreq[%d]-->%d\n", ug, freq);
@@ -301,8 +315,16 @@ int  CBigramHistory::biFreq(TBigram& bg)
     //std::set<unsigned>::const_iterator ite = s_stopWords.end();
     if (bg.first != DCWID && bg.second != DCWID) {
         TBigramPool::const_iterator it = m_bifreq.find(bg);
-        if (it != m_bifreq.end())
+        if (it != m_bifreq.end()) {
             freq =  it->second;
+            TContextMemory::reverse_iterator re = m_memory.rbegin();
+            TContextMemory::reverse_iterator rs = re + 1;
+            for (int i = 0; i < contxt_memory_size * focus_memory_ratio; i++) {
+                if (*rs == bg.first && *re == bg.second)
+                    freq += 1.0 / focus_memory_ratio;
+                ++rs; ++re;
+            }
+        }
     }
 
     //if (freq != 0) printf("biFreq[%d,%d]-->%d\n", bg.first, bg.second, freq);

@@ -227,6 +227,7 @@ def AppendEndianCheck(conf):
   || defined(_POWER) || defined(__powerpc__) \
   || defined(__ppc__) || defined(__hpux) || defined(__hppa) \
   || defined(_MIPSEB) || defined(_POWER) \
+  || defined(__arm__) || defined(__ARMEL__) \
   || defined(__s390__)
 # define WORDS_BIGENDIAN 1
 

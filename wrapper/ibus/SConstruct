@@ -17,13 +17,22 @@ locales = ['zh_CN']
 cflags = '-O2 -g -pipe'
 version = '2.0.3'
 
-AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
-          metavar='DIR', help='installation prefix')
-AddOption('--rpath', dest='rpath', type='string', nargs=1, action='store',
-          metavar='DIR', help='encode rpath in the executables')
+AddOption('--prefix', dest='prefix', metavar='DIR',
+          help='installation prefix')
+AddOption('--libdir', dest='libdir', metavar='DIR',
+          help='installation libdir')
+AddOption('--libexecdir', dest='libexecdir', metavar='DIR',
+          help='installation libexecdir')
+AddOption('--datadir', dest='datadir', metavar='DIR',
+          help='installation datadir')
+AddOption('--rpath', dest='rpath', metavar='DIR',
+          help='encode rpath in the executables')
 
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
+opts.Add('LIBDIR', default='/usr/local/lib')
+opts.Add('LIBEXECDIR', default='/usr/local/lib')
+opts.Add('DATADIR', default='/usr/local/share')
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
@@ -32,6 +41,18 @@ opts.Update(env)
 
 if GetOption('prefix') is not None:
     env['PREFIX'] = GetOption('prefix')
+    env['LIBDIR'] = env['PREFIX'] + '/lib'
+    env['LIBEXECDIR'] = env['PREFIX'] + '/lib/'
+    env['DATADIR'] = env['PREFIX'] + '/share/'
+
+if GetOption('libdir') is not None:
+    env['LIBDIR'] = GetOption('libdir')
+
+if GetOption('libexecdir') is not None:
+    env['LIBEXECDIR'] = GetOption('libexecdir')
+
+if GetOption('datadir') is not None:
+    env['DATADIR'] = GetOption('datadir')
 
 opts.Save('configure.conf', env)
 
@@ -55,12 +76,12 @@ if 'CXXFLAGS' in os.environ:
     env['CXXFLAGS'] = os.environ['CXXFLAGS']
 
 
-data_dir = env['PREFIX'] + '/share/ibus-sunpinyin'
-icons_dir = env['PREFIX'] + '/share/ibus-sunpinyin/icons'
-bin_dir = env['PREFIX'] + '/lib/ibus-sunpinyin'
+data_dir = env['DATADIR'] + '/ibus-sunpinyin'
+icons_dir = env['DATADIR'] + '/ibus-sunpinyin/icons'
+bin_dir = env['LIBEXECDIR'] + '/ibus-sunpinyin'
 gettext_package = 'ibus-sunpinyin'
 
-extra_cflags = ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % os.path.join(env['PREFIX'], '/share/locale')
+extra_cflags = ' -DIBUS_SUNPINYIN_LOCALEDIR=\'"%s"\'' % (env['DATADIR'] + '/locale')
 extra_cflags += ' -DIBUS_SUNPINYIN_ICON_DIR=\'"%s"\'' % icons_dir
 extra_cflags += ' -DLIBEXECDIR=\'"%s"\'' % bin_dir
 extra_cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
@@ -111,7 +132,7 @@ for locale in locales:
 # bug of scons...
 # it doesn't include textfile builders by default?
 SCons.Tool.textfile.generate(env)
-sub = {'@LIBEXEC_DIR@': env['PREFIX'] + '/lib/ibus-sunpinyin/',
+sub = {'@LIBEXEC_DIR@': bin_dir,
        '@DATA_DIR@' : data_dir,
        '@ICON_DIR@': icons_dir,
        '@VERSION@' : version,
@@ -142,11 +163,11 @@ def DoInstall():
                                 'icons/han.svg',
                                 'icons/setup.svg',
                                 'icons/sunpinyin-logo.png'])
-    component_target = env.Install(env['PREFIX'] + '/share/ibus/component',
+    component_target = env.Install(env['DATADIR'] + '/ibus/component',
                                    'data/sunpinyin.xml')
     locale_targets = []
     for locale in locales:
-        path = env['PREFIX'] + '/share/locale/%s/LC_MESSAGES/%s.mo' % \
+        path = env['DATADIR'] + '/locale/%s/LC_MESSAGES/%s.mo' % \
             (locale, gettext_package)
         locale_targets.append(env.InstallAs(path, 'po/%s.mo' % (locale,)))
 

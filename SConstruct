@@ -104,17 +104,23 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/sunpinyin.h']
 
 # options
-AddOption('--prefix', dest='prefix', type='string', nargs=1,
-          action='store', metavar='DIR',
+AddOption('--prefix', dest='prefix', metavar='DIR',
           help='installation prefix')
 
-AddOption('--rpath', dest='rpath', type='string', nargs=1,
-          action='store', metavar='DIR',
+AddOption('--libdir', dest='libdir', metavar='DIR',
+          help='installation libdir')
+
+AddOption('--libdatadir', dest='libdatadir', metavar='DIR',
+          help='installation libdata dir')
+
+AddOption('--rpath', dest='rpath', metavar='DIR',
           help='encode rpath in the executables')
 
 # save the options
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
+opts.Add('LIBDIR', default='/usr/local/lib')
+opts.Add('LIBDATADIR', default='/usr/local/lib')
 
 #
 #==============================environment==============================
@@ -151,12 +157,19 @@ opts.Update(env)
 
 if GetOption('prefix') is not None:
     env['PREFIX'] = GetOption('prefix')
+    env['LIBDATADIR'] = env['PREFIX'] + '/lib'
+    env['LIBDIR'] = env['PREFIX'] + '/lib'
+
+if GetOption('libdir') is not None:
+    env['LIBDIR'] = GetOption('libdir')
+
+if GetOption('libdatadir') is not None:
+    env['LIBDATADIR'] = GetOption('libdatadir')
 
 opts.Save('configure.conf', env)
 
-libprefix = '/lib'
-libdir = env['PREFIX'] + libprefix
-libdatadir = libdir + '/sunpinyin/data'
+libdir = env['LIBDIR']
+libdatadir = env['LIBDATADIR'] + '/sunpinyin/data'
 headersdir = env['PREFIX'] + '/include/sunpinyin-2.0'
 
 if GetOS() != 'Darwin':
@@ -313,7 +326,7 @@ def DoConfigure():
     content = (
         'prefix='+env['PREFIX'],
         'exec_prefix=${prefix}',
-        'libdir=${exec_prefix}' + libprefix,
+        'libdir=' + libdir,
         'includedir=${exec_prefix}/include/sunpinyin-2.0',
         '',
         'Name: libsunpinyin',

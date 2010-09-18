@@ -298,7 +298,7 @@ int  CBigramHistory::uniFreq(TUnigram& ug)
         if (it != m_unifreq.end()) {
             freq = it->second;
             TContextMemory::reverse_iterator rit = m_memory.rbegin();
-            for (int i = 0; i < contxt_memory_size * focus_memory_ratio; i++) {
+            for (int i = 0; rit != m_memory.rend() && i < contxt_memory_size * focus_memory_ratio; i++) {
                 if (*rit == ug)
                     freq += 1.0 / focus_memory_ratio;
                 *rit++;
@@ -319,7 +319,7 @@ int  CBigramHistory::biFreq(TBigram& bg)
             freq =  it->second;
             TContextMemory::reverse_iterator re = m_memory.rbegin();
             TContextMemory::reverse_iterator rs = re + 1;
-            for (int i = 0; i < contxt_memory_size * focus_memory_ratio; i++) {
+            for (int i = 0; rs != m_memory.rend() && i < contxt_memory_size * focus_memory_ratio; i++) {
                 if (*rs == bg.first && *re == bg.second)
                     freq += 1.0 / focus_memory_ratio;
                 ++rs; ++re;

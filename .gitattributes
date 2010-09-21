@@ -3,3 +3,5 @@
 /debian export-ignore
 /wrapper/macos export-ignore
 /wrapper/scim export-ignore
+/wrapper/xim/debian export-ignore
+/wrapper/ibus/debian export-ignore

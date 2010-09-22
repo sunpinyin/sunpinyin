@@ -82,7 +82,6 @@ CSimplifiedChinesePolicy::loadResources()
     suc &= createDirectory (tmp);
     free (tmp);
     
-    CBigramHistory::initClass();
     std::string history_path = m_user_data_dir + "/history";
     suc &= m_historyCache.loadFromFile (history_path.c_str());
     

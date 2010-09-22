@@ -41,8 +41,7 @@
 #define MAX_LATTICE_LENGTH      512
 #define MAX_LEXICON_TRIES       32
 #define UNKNOWN_WORD_ID         0
-#define OOV_WORD_ID             69
-#define SENTENCE_BREAKER_ID     10
+#define OOV_WORD_ID             70         /* use comma as the ending character */
 
 #define MAX_USRDEF_WORD_LEN     6
 #define INI_USRDEF_WID          0x00040000 /* 2^18     */

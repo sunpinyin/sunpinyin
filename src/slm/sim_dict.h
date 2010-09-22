@@ -49,10 +49,10 @@ public:
         typedef const TState * PState;
         struct TState {
                 TSIMWordId word_id;
-                std::map<TSIMChar, TState>* follow;
+                std::map<TWCHAR, TState>* follow;
                 TState(TSIMWordId wid=SIM_ID_NOT_WORD) : word_id(wid), follow(NULL) { }
         };
-        typedef std::map<TSIMChar, TState> Map_Type;
+        typedef std::map<TWCHAR, TState> Map_Type;
 
         CSIMDict() : m_root() {}
         ~CSIMDict() { close(); }

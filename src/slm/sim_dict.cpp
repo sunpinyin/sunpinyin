@@ -55,7 +55,7 @@ void CSIMDict::freeSubTree(CSIMDict::TState& root)
 const CSIMDict::TState* CSIMDict::step(const CSIMDict::TState* root, TWCHAR wch)
 {
         if ((root != NULL) && (root->follow != NULL) && wch != WCH_NULL) {
-                Map_Type::iterator it = root->follow->find(TSIMChar(wch));
+                Map_Type::iterator it = root->follow->find(TWCHAR(wch));
                 if (it != root->follow->end())
                         return &(it->second);
         }
@@ -131,7 +131,7 @@ void CSIMDict::insertWord(const TWCHAR* wstr, TSIMWordId id)
 {
         TState* ps = &m_root;
         while (*wstr) {
-                TSIMChar ch(*wstr++);
+                TWCHAR ch(*wstr++);
                 TSIMWordId nodeId = (*wstr)?SIM_ID_NOT_WORD:id;
                 if (ps->follow == NULL) {
                         ps->follow = new Map_Type();

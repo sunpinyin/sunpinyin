@@ -65,11 +65,11 @@ bs_bigram : slmids m2_idngram m2_slm m2_prune m2_thread m2_tslminfo
 bigram : ids m2_idngram m2_slm m2_prune m2_thread m2_tslminfo
 
 m2_idngram : 
-	./ids2ngram -n 2 -s ${SWAP_FILE} -o ${IDNGRAM_FILE} -p 5000000 ${IDS_FILE}
+	./ids2ngram -n 2 -s ${SWAP_FILE} -o ${IDNGRAM_FILE} -p 20000000 ${IDS_FILE}
 	rm -f ${SWAP_FILE}
 
 m2_slm:	
-	./slmbuild -n 2 -o ${RAW_LM_FILE} -w 120000 -c 0,2 -d ABS,0.005 -d ABS,0.6 -b 10 -e 9 ${IDNGRAM_FILE}
+	./slmbuild -n 2 -o ${RAW_LM_FILE} -w 200000 -c 0,2 -d ABS,0.005 -d ABS -b 10 -e 9 ${IDNGRAM_FILE}
 
 m2_prune: 
 	./slmprune ${RAW_LM_FILE} ${SLM_FILE} R 40000 100000
@@ -91,11 +91,11 @@ bs_trigram : slmids3 m3_idngram m3_slm m3_prune m3_thread m3_tslminfo
 trigram : ids m3_idngram m3_slm m3_prune m3_thread m3_tslminfo
 
 m3_idngram : 
-	./ids2ngram -n 3 -s ${SWAP_FILE} -o ${IDNGRAM_FILE3} -p 5000000 ${IDS_FILE}
+	./ids2ngram -n 3 -s ${SWAP_FILE} -o ${IDNGRAM_FILE3} -p 20000000 ${IDS_FILE}
 	rm -f ${SWAP_FILE}
 
 m3_slm:	
-	./slmbuild -n 3 -o ${RAW_LM_FILE3} -w 120000 -c 0,2,2 -d ABS,0.0005 -d ABS -d ABS,0.6 -b 10 -e 9 ${IDNGRAM_FILE3}
+	./slmbuild -n 3 -o ${RAW_LM_FILE3} -w 200000 -c 0,2,2 -d ABS,0.0005 -d ABS -d ABS -b 10 -e 9 ${IDNGRAM_FILE3}
 
 m3_prune: 
 	./slmprune ${RAW_LM_FILE3} ${SLM_FILE3} R 100000 1250000 1000000

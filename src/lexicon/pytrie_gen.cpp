@@ -266,7 +266,10 @@ parseFullPinyin (const char *pinyin, std::vector<TSyllable> &ret)
         if (*p == '\'') {
             *p = '\0';
             unsigned s = CPinyinData::encodeSyllable(q);
-            ret.push_back (TSyllable(s));
+            if (s)
+                ret.push_back (TSyllable(s));
+            else
+                printf ("\nWarning! unrecognized syllable %s", q);
             q = p+1;
         }
         p++;
@@ -274,7 +277,10 @@ parseFullPinyin (const char *pinyin, std::vector<TSyllable> &ret)
 
     if (*q) {
             unsigned s = CPinyinData::encodeSyllable(q);
-            ret.push_back (TSyllable(s));
+            if (s)
+                ret.push_back (TSyllable(s));
+            else
+                printf ("\nWarning! unrecognized syllable %s", q);
     }
 
     free(buf);
@@ -325,6 +331,9 @@ CPinyinTrieMaker::insertFullPinyinPair(const char* pinyin, TWordId wid)
     TNode *pnode = &m_RootNode;
     std::vector<TSyllable> syllables;
     parseFullPinyin (pinyin, syllables);
+
+    if (syllables.empty())
+        return true;
 
     std::vector<TSyllable>::const_iterator it = syllables.begin();
     std::vector<TSyllable>::const_iterator ite = syllables.end();

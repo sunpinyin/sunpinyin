@@ -42,6 +42,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <climits>
 
 #include "../sim_fmerge.h"
 #include "idngram.h"
@@ -69,6 +70,7 @@ void DoIdngramMerge(FILE*out, CMultiWayFileMerger<CSIM_IdngramFreq<N> > &merger)
 			}
 			prevItem = ng;
 		} else {
+                        assert (prevItem.freq < UINT_MAX);
 			prevItem.freq += ng.freq;
 		}
 		merger.next();

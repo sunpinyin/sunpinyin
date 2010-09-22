@@ -51,6 +51,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <climits>
 
 #include "../sim_fmerge.h"
 #include "idngram.h"
@@ -80,6 +81,7 @@ void ProcessingRead(FILE *fp, FILE* swap, std::vector<long>& para_offsets, size_
 	TSIMWordId* ids = ngram.ids;
 	fread(ids, sizeof(TSIMWordId), N-1, fp);
 	while (fread(ids+N-1, sizeof(TSIMWordId), 1, fp) == 1) {
+                assert (map[ngram] < UINT_MAX);
 		++map[ngram];
 		if (map.size() >= paraMax)
 		{

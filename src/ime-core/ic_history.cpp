@@ -378,12 +378,9 @@ void CBigramHistory::forget(unsigned *its_wid, unsigned *ite_wid)
     }
 }
 
-void CBigramHistory::addStopWords(std::set<unsigned int>& stopWords)
+void CBigramHistory::addStopWords(const std::set<unsigned int>& stopWords)
 {
-    std::set<unsigned int>::iterator it  = stopWords.begin();
-    std::set<unsigned int>::iterator ite = stopWords.end();
-
-    m_stopWords.insert (it, ite);
+    m_stopWords.insert (stopWords.begin(), stopWords.end());
 }
 
 void CBigramHistory::initStopWords()

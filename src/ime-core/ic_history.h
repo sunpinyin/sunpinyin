@@ -105,7 +105,7 @@ public:
     loadFromBuffer(void* buf_ptr, size_t sz) = 0;
 
     virtual void
-    addStopWords(std::set<unsigned int>& stopWords) = 0;
+    addStopWords(const std::set<unsigned int>& stopWords) = 0;
 
     virtual void
     initStopWords() = 0;
@@ -153,7 +153,7 @@ public:
     bool
     saveToFile (const char *fname = NULL);
 
-    virtual void addStopWords (std::set<unsigned int>& stopWords);
+    virtual void addStopWords (const std::set<unsigned int>& stopWords);
     virtual void initStopWords ();
 
 protected:

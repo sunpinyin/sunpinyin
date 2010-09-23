@@ -319,7 +319,10 @@ void CIMIContext::_forwardTail (unsigned i, unsigned j)
 {
     CLatticeFrame &fr = m_lattice[j];
     fr.m_type = CLatticeFrame::TAIL;
-    fr.m_lexiconStates.push_back (TLexiconState (i, OOV_WORD_ID));
+
+    fr.m_lexiconStates.push_back (TLexiconState (i, m_pPySegmentor->getSegments().size()<=1?
+                                                    NONE_WORD_ID:
+                                                    ENDING_WORD_ID));
 }
 
 bool CIMIContext::searchFrom (unsigned idx)

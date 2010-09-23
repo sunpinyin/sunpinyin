@@ -712,13 +712,13 @@ void CIMIContext::_saveUserDict ()
     unsigned s = 0;
     bool has_user_selected = false;
     std::vector<unsigned>::iterator it  = m_bestPath.begin();
-    std::vector<unsigned>::iterator ite = m_bestPath.end() - 1;
+    std::vector<unsigned>::iterator ite = m_bestPath.end();
     for (; it != ite; ++it, ++s) {
         CLatticeFrame &fr = m_lattice[*it];
-        if (!fr.isSyllableFrame ())
+        if (!fr.isSyllableFrame ()) {
+            --it;
             break;
-
-        has_user_selected |= (fr.m_bwType & CLatticeFrame::USER_SELECTED);
+        }
 
         CSyllables &tmp = fr.m_bestWord.m_pLexiconState->m_syls;
         if (syls.size() + tmp.size() > MAX_USRDEF_WORD_LEN) {
@@ -726,6 +726,7 @@ void CIMIContext::_saveUserDict ()
             break;
         }
 
+        has_user_selected |= (fr.m_bwType & CLatticeFrame::USER_SELECTED);
         std::copy (tmp.begin(), tmp.end(), back_inserter(syls));
     }
 

@@ -320,9 +320,7 @@ void CIMIContext::_forwardTail (unsigned i, unsigned j)
     CLatticeFrame &fr = m_lattice[j];
     fr.m_type = CLatticeFrame::TAIL;
 
-    fr.m_lexiconStates.push_back (TLexiconState (i, m_pPySegmentor->getSegments().size()<=1?
-                                                    NONE_WORD_ID:
-                                                    ENDING_WORD_ID));
+    fr.m_lexiconStates.push_back (TLexiconState (i, ENDING_WORD_ID));
 }
 
 bool CIMIContext::searchFrom (unsigned idx)
@@ -400,6 +398,11 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end, TLexiconState*
     CLatticeStates::iterator it  = start_fr.m_latticeStates.begin();
     CLatticeStates::iterator ite = start_fr.m_latticeStates.end();
 
+    // for 1-length lattice states, replace ending_word_id (comma) with none_word_id (recognized by CThreadSlm)
+    if (wid == ENDING_WORD_ID && it->m_pBackTraceNode
+            && it->m_pBackTraceNode->m_frIdx == 0)
+        wid = NONE_WORD_ID;
+
     for (; it != ite; ++it) {
         node.m_pBackTraceNode = &(*it);
         node.m_backTraceWordId = wid;
@@ -428,7 +431,7 @@ void CIMIContext::_backTraceBestPaths ()
     CLatticeStates& tail_states = m_lattice[m_tailIdx].m_latticeStates;
 
     // there must be some transfer errors
-    if (tail_states.size() != 1)
+    if (!tail_states.size())
         return;
 
     TLatticeState *bs = &(tail_states[0]);

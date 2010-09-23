@@ -184,7 +184,7 @@ CThreadSlm::rawTransfer(TState history, unsigned int wid, TState& result)
 
     // NON_Word id must be dealed with special, let it transfer to root
     // without any cost
-    if (ID_NOT_WORD == wid || ID_ENDING_WORD == wid) {
+    if (ID_NOT_WORD == wid) {
         result = 0;
         return cost;
     }

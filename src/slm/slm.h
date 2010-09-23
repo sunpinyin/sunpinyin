@@ -71,9 +71,10 @@
 class CThreadSlm {
 public:
     enum {
-        BITS_BOW = 14,
-        BITS_PR  = 16,
-        ID_NOT_WORD = 69
+        BITS_BOW        = 14,
+        BITS_PR         = 16,
+        ID_NOT_WORD     = 69,
+        ID_ENDING_WORD  = 70,
     };
 
     /**

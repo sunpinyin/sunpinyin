@@ -428,7 +428,7 @@ void CIMIContext::_backTraceBestPaths ()
     CLatticeStates& tail_states = m_lattice[m_tailIdx].m_latticeStates;
 
     // there must be some transfer errors
-    if (!tail_states.size())
+    if (tail_states.size() != 1)
         return;
 
     TLatticeState *bs = &(tail_states[0]);

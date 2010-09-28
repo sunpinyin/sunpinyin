@@ -98,6 +98,7 @@ private:
     void update_page_key_bracket();
     void update_page_key(const char* conf_key, bool default_val, 
                          unsigned page_up, unsigned page_down);
+    void update_candi_delete_key();
     void update_cancel_with_backspace();
 
     void update_charset_level();

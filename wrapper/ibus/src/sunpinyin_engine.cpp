@@ -278,6 +278,7 @@ SunPinyinEngine::update_config()
     update_punct_key();
     update_cancel_with_backspace();
     update_punct_mappings();
+    update_candi_delete_key();
     // update_quanpin_config();
     // update_shuangpin_config();
 }
@@ -620,4 +621,11 @@ SunPinyinEngine::update_shuangpin_type()
     EShuangpinType shuangpin_type = MS2003;
     shuangpin_type = (EShuangpinType) m_config.get(SHUANGPIN_TYPE, (int) shuangpin_type);
     AShuangpinSchemePolicy::instance().setShuangpinType(shuangpin_type);
+}
+
+void
+SunPinyinEngine::update_candi_delete_key()
+{
+    /* FIXME: need to get candi_delete_key from user's configuration */
+    m_hotkey_profile->setCandiDeleteKey(CKeyEvent(0, 0, IM_ALT_MASK));
 }

@@ -319,7 +319,7 @@ settings_load()
     if (fp == NULL) {
         char config_dir[256];
         snprintf(config_dir, 256, "%s/.sunpinyin", getenv("HOME"));
-        mkdir(config_dir, 0600);
+        mkdir(config_dir, S_IRWXU);
         settings_save();
         if ((fp = fopen(path, "r")) == NULL)
             return;

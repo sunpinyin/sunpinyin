@@ -190,6 +190,10 @@ private:
     }
     
     void adjust_position() {
+        // update the screen size everytime, because user might adjust their
+        // screen size
+        get_screen_size(&screen_width_, &screen_height_);
+
         x_ = in_range(x_, 0, screen_width_ - width_);
         y_ = in_range(y_, 0, screen_height_ - height_);
 

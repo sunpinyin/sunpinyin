@@ -82,7 +82,7 @@
 #endif
 
 #ifndef SCIM_SUNPINYIN_ICON_FILE
-    #define SCIM_SUNPINYIN_ICON_FILE       (SCIM_ICONDIR "/sunpinyin_logo.xpm")
+    #define SCIM_SUNPINYIN_ICON_FILE       (SCIM_ICONDIR "/sunpinyin_logo.png")
 #endif
 
 #define SCIM_FULL_LETTER_ICON              (SCIM_ICONDIR "/full-letter.png")

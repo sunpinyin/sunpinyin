@@ -425,6 +425,7 @@ unsigned CQuanpinSegmentor::_push (unsigned ch)
                 v = m_pytrie.match_longest (m_pystr.rbegin()+lsum, m_pystr.rend(), l);
                 TSegment &last_seg = new_segs.back ();
                 new_segs.push_back (TSegment(v, last_seg.m_start-l, l));
+				_addFuzzySyllables (new_segs.back ());
                 lsum += l;
             } else {
                 i += 1;

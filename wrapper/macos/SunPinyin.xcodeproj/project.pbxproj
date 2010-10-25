@@ -10,6 +10,7 @@
 		0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0752CBF10F9C723600C7096E /* dsa_pub.pem */; };
 		0752CBF40F9C745200C7096E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
 		0752CC1A0F9C77EB00C7096E /* Sparkle.framework in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
+		3F32A46D1275172C007FFD4D /* hunpin_seg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F32A46B1275172C007FFD4D /* hunpin_seg.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -74,6 +75,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* SunPinyin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyin_Prefix.pch; sourceTree = "<group>"; };
+		3F32A46B1275172C007FFD4D /* hunpin_seg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = hunpin_seg.cpp; path = pinyin/hunpin_seg.cpp; sourceTree = "<group>"; };
+		3F32A46C1275172C007FFD4D /* hunpin_seg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hunpin_seg.h; path = pinyin/hunpin_seg.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SunPinyin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunPinyin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A412C8570F7942DB006B10AD /* SunPinyin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SunPinyin.icns; sourceTree = "<group>"; };
@@ -292,6 +295,8 @@
 		A47C4889105E86C5006D528B /* pinyin */ = {
 			isa = PBXGroup;
 			children = (
+				3F32A46B1275172C007FFD4D /* hunpin_seg.cpp */,
+				3F32A46C1275172C007FFD4D /* hunpin_seg.h */,
 				A47C488A105E86DB006D528B /* datrie.h */,
 				A47C488B105E86DB006D528B /* datrie_impl.h */,
 				A47C488C105E86DB006D528B /* pinyin_data.cpp */,
@@ -465,6 +470,7 @@
 				A47C48DF105E8CE8006D528B /* macos_keycode.mm in Sources */,
 				A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */,
 				A4829AE711060C69004F71A7 /* imi_session_wrapper.mm in Sources */,
+				3F32A46D1275172C007FFD4D /* hunpin_seg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

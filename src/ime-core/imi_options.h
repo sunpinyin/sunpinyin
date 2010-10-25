@@ -48,6 +48,7 @@
 #include "userdict.h"
 #include "ic_history.h"
 #include "pinyin/shuangpin_seg.h"
+#include "pinyin/hunpin_seg.h"
 
 #ifndef SUNPINYIN_USERDATA_DIR_PREFIX
 #define SUNPINYIN_USERDATA_DIR_PREFIX ".sunpinyin"
@@ -88,7 +89,6 @@ protected:
     
     CIMIData             m_coreData;
     CBigramHistory       m_historyCache;
-    CUserDict            m_userDict;
     bool                 m_bLoaded;
     bool                 m_bTried;
     unsigned             m_csLevel;
@@ -98,6 +98,8 @@ protected:
     CGetFullPunctOp      m_getFullPunctOp;
     std::string          m_data_dir;
     std::string          m_user_data_dir;
+public:
+    CUserDict            m_userDict;
 };
 
 typedef SingletonHolder<CSimplifiedChinesePolicy> ASimplifiedChinesePolicy;
@@ -191,6 +193,44 @@ protected:
 
 typedef SingletonHolder<CShuangpinSchemePolicy> AShuangpinSchemePolicy;
 
+struct  CHunpinSchemePolicy: public IConfigurable
+{
+public:
+    CHunpinSchemePolicy();
+    
+    IPySegmentor* createPySegmentor () 
+    {
+        CHunpinSegmentor *pseg = new CHunpinSegmentor (m_shuangpinType);
+        pseg->setGetFuzzySyllablesOp (&m_getFuzzySyllablesOp);
+        return pseg;
+    }
+	
+    void setShuangpinType (EShuangpinType t) {m_shuangpinType = t;}
+	
+    void setFuzzyForwarding (bool enable_fuzzies=true, bool enable_simpler_initials=true)
+    {
+        m_getFuzzySyllablesOp.setEnableFuzzies (enable_fuzzies);
+        m_getFuzzySyllablesOp.setEnableSimplerInitials (enable_simpler_initials);
+    }
+	
+    void clearFuzzyPinyinPairs ()
+	{m_getFuzzySyllablesOp.clearFuzzyMap();}
+	
+    void setFuzzyPinyinPairs (const string_pairs& pairs, bool duplex = true)
+	{m_getFuzzySyllablesOp.initFuzzyMap (pairs, duplex);}
+	
+    virtual bool onConfigChanged(const COptionEvent& event);
+    
+    template<class> friend class SingletonHolder;
+protected:
+    ~CHunpinSchemePolicy () {}
+	
+    EShuangpinType                      m_shuangpinType;
+    CGetFuzzySyllablesOp<CPinyinData>   m_getFuzzySyllablesOp;
+};
+
+typedef SingletonHolder<CHunpinSchemePolicy> AHunpinSchemePolicy;
+
 struct CClassicStylePolicy : public IConfigurable
 {
     CIMIView* createView () {return new CIMIClassicView ();}
@@ -258,6 +298,7 @@ public:
         SHUANGPIN,
         YUEPIN,
         ZHUYIN,
+		HUNPIN,
     } EPyScheme;
     
     typedef enum {

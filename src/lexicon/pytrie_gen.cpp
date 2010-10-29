@@ -163,11 +163,20 @@ CPinyinTrieMaker::CPinyinTrieMaker()
         后面的字段中，如果一个字段仅仅由小写字母和'构成，
         则认为该字段是该词的一个拼音。行长最大4095;
 **********************************************************/
-#define RARE_MULTI_PHONETIC_STARTING_ID 140000 /* FIXME */
+
+typedef struct {
+    std::string word_buf;
+    std::string pystr;
+    int         cost;
+    unsigned    gbcategory;
+} TCacheRecord;
+typedef std::vector<TCacheRecord> CWordCache;
+
 bool
 CPinyinTrieMaker::constructFromLexicon(const char* fileName)
 {
-    static int  rmp_id = RARE_MULTI_PHONETIC_STARTING_ID;
+    CWordCache cached_words;
+
     static char buf[4096];
     static char word_buf[2048];
 
@@ -190,23 +199,38 @@ CPinyinTrieMaker::constructFromLexicon(const char* fileName)
         std::set<TSyllableInfo>::const_iterator its = pyset.begin();
         std::set<TSyllableInfo>::const_iterator ite = pyset.end();
         for (; its != ite; ++its) {
-            const char *t = its->m_py.c_str();
+            const char *pystr = its->m_py.c_str();
             int cost = its->m_cost;
-            int myid = id;
 
-            if (cost < 0) {
-                cost = 30 / (-cost);
-                myid = rmp_id ++;
+            if (cost >= 0) {
+                if (m_Lexicon.size() < id+1) m_Lexicon.resize(id+1);
+                m_Lexicon[id] = std::string(word_buf);
+
+                CPinyinTrieMaker::TWordId wid(id, cost, false, gbcategory);
+                suc = insertFullPinyinPair(pystr, wid) && suc;
+            } else { // cache the rarely seen phonetic
+                TCacheRecord record;
+                record.word_buf   = word_buf;
+                record.pystr      = pystr;
+                record.cost       = cost;
+                record.gbcategory = gbcategory;
+
+                cached_words.push_back (record);
             }
-
-            if (m_Lexicon.size() < myid+1) m_Lexicon.resize(myid+1);
-            m_Lexicon[myid] = std::string(word_buf);
-
-            CPinyinTrieMaker::TWordId wid(myid, cost, its->m_cost < 0, gbcategory);
-            suc = insertFullPinyinPair(t, wid) && suc;
         }
     }
     fclose(fp);
+
+    // insert the cached words with rarely seen phonetic
+    // FIXME: may use the pinlv information in unicode data later
+    ++id;
+    for (CWordCache::iterator it = cached_words.begin(); it != cached_words.end(); ++it, ++id) {
+        if (m_Lexicon.size() < id+1) m_Lexicon.resize(id+1);
+        m_Lexicon[id] = it->word_buf;
+        int cost = 30 / (-it->cost);
+        CPinyinTrieMaker::TWordId wid(id, cost, true, it->gbcategory);
+        suc = insertFullPinyinPair(it->pystr.c_str(), wid) && suc;
+    }
 
     printf("\n    %zd primitive nodes", TNode::m_AllNodes.size());  fflush(stdout);
 

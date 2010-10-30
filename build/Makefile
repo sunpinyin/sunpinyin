@@ -61,6 +61,9 @@ slmids:
 #second round bootstrap bigram
 bs_bigram : slmids m2_idngram m2_slm m2_prune m2_thread m2_tslminfo
 
+#second round bootstrap bigram from a trigram model
+bs_bigram3 : slmids3 m2_idngram m2_slm m2_prune m2_thread m2_tslminfo
+
 #This is the command to make a bigram model
 bigram : ids m2_idngram m2_slm m2_prune m2_thread m2_tslminfo
 
@@ -72,7 +75,7 @@ m2_slm:
 	./slmbuild -n 2 -o ${RAW_LM_FILE} -w 200000 -c 0,2 -d ABS,0.005 -d ABS -b 10 -e 9 ${IDNGRAM_FILE}
 
 m2_prune: 
-	./slmprune ${RAW_LM_FILE} ${SLM_FILE} R 40000 100000
+	./slmprune ${RAW_LM_FILE} ${SLM_FILE} R 100000 200000
 
 m2_thread :
 	./slmthread ${SLM_FILE} ${TSLM_FILE}

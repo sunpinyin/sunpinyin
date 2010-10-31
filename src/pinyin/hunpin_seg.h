@@ -20,7 +20,7 @@
 #include "segmentor.h"
 #include "pinyin_data.h"
 #include <vector>
-
+#include <limits.h>
 
 class CHunpinSegmentor : public IPySegmentor
 {

@@ -65,7 +65,7 @@ struct TSyllable {
         { *((unsigned*)this) = s; }
 
     TSyllable (int i, int f, int t) 
-        : initial(i), final(f), tone(t) { }
+        : initial(i), final(f), tone(t), other(0) { }
 
     operator unsigned int() const 
         { return *((unsigned *)this); }

@@ -274,7 +274,7 @@ protected:
 
     inline bool _buildLattice (IPySegmentor::TSegmentVec &segments, unsigned rebuildFrom=1, bool doSearch=true);
     inline void _forwardSyllables (unsigned i, unsigned j, const IPySegmentor::TSegment& seg);
-    inline void _forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable, const IPySegmentor::TSegment& seg);
+    inline void _forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable, const IPySegmentor::TSegment& seg, bool fuzzy=false);
     inline void _forwardSyllableSep (unsigned i, unsigned j);
     inline void _forwardString (unsigned i, unsigned j, const std::vector<unsigned>& strbuf);
     inline void _forwardPunctChar (unsigned i, unsigned j, unsigned ch);

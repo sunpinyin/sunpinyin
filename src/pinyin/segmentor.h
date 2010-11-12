@@ -65,11 +65,12 @@ struct IPySegmentor
         }
 
         // if segment is a STRING type, m_syllables may contain the string buffer without the '\0'
-        std::vector<unsigned>   m_syllables;
-        unsigned                m_start        : 16;
-        unsigned                m_len          : 8;
-        ESegmentType            m_type         : 7;
-        bool                    m_inner_fuzzy  : 1;
+        std::vector<unsigned>   	m_syllables;
+        std::vector<unsigned>   	m_fuzzy_syllables;
+        unsigned                	m_start        : 16;
+        unsigned                	m_len          : 8;
+        ESegmentType            	m_type         : 7;
+        bool                    	m_inner_fuzzy  : 1;
     };
 
     // it requires the segments are sorted by its m_start field

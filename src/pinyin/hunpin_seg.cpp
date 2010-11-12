@@ -350,14 +350,14 @@ void CHunpinSegmentor::_addFuzzySyllables (TSegment& seg)
 {
     assert (seg.m_type == SYLLABLE);
 	
-    seg.m_syllables.resize (1);
+    seg.m_fuzzy_syllables.clear ();
 	
     CSyllables fuzzy_set = (*m_pGetFuzzySyllablesOp) (seg.m_syllables.front());
     CSyllables::const_iterator it  = fuzzy_set.begin ();
     CSyllables::const_iterator ite = fuzzy_set.end ();
     
     for (; it != ite; ++it)
-        seg.m_syllables.push_back (*it);
+        seg.m_fuzzy_syllables.push_back (*it);
 }
 
 unsigned CHunpinSegmentor::_updateWith (const std::string& new_pystr, unsigned from)

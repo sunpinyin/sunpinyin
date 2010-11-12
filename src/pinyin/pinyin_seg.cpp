@@ -425,7 +425,7 @@ unsigned CQuanpinSegmentor::_push (unsigned ch)
                 v = m_pytrie.match_longest (m_pystr.rbegin()+lsum, m_pystr.rend(), l);
                 TSegment &last_seg = new_segs.back ();
                 new_segs.push_back (TSegment(v, last_seg.m_start-l, l));
-				_addFuzzySyllables (new_segs.back ());
+                _addFuzzySyllables (new_segs.back ());
                 lsum += l;
             } else {
                 i += 1;
@@ -462,14 +462,14 @@ void CQuanpinSegmentor::_addFuzzySyllables (TSegment& seg)
 {
     assert (seg.m_type == SYLLABLE);
 
-    seg.m_syllables.resize (1);
+    seg.m_fuzzy_syllables.clear();
 
     CSyllables fuzzy_set = (*m_pGetFuzzySyllablesOp) (seg.m_syllables.front());
     CSyllables::const_iterator it  = fuzzy_set.begin ();
     CSyllables::const_iterator ite = fuzzy_set.end ();
     
     for (; it != ite; ++it)
-        seg.m_syllables.push_back (*it);
+        seg.m_fuzzy_syllables.push_back (*it);
 }
 
 unsigned CQuanpinSegmentor::_updateWith (const std::string& new_pystr, unsigned from)

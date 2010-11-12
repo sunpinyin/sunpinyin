@@ -78,14 +78,15 @@ struct TLexiconState {
     CSyllables                  m_syls;         // accumulated syllables, may contain fuzzy syllables
     std::vector<unsigned>       m_seg_path;     // accumulated segments,  may contain fuzzy segments
     unsigned                    m_start                 :16;
-    unsigned                    m_num_of_inner_fuzzies  :15;
+    unsigned                    m_num_of_inner_fuzzies  :14;
+    bool                        m_bFuzzy                :1;
     bool                        m_bPinyin               :1;
 
-    TLexiconState (unsigned start, const CPinyinTrie::TNode *pnode, CSyllables& syls, std::vector<unsigned>& seg_path):
-        m_start(start), m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_num_of_inner_fuzzies(0) {}
+    TLexiconState (unsigned start, const CPinyinTrie::TNode *pnode, CSyllables& syls, std::vector<unsigned>& seg_path, bool fuzzy=false):
+        m_start(start), m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(fuzzy), m_num_of_inner_fuzzies(0) {}
 
-    TLexiconState (unsigned start, TWordIdInfoVec &words, CSyllables &syls, std::vector<unsigned>& seg_path):
-        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_num_of_inner_fuzzies(0) {}
+    TLexiconState (unsigned start, TWordIdInfoVec &words, CSyllables &syls, std::vector<unsigned>& seg_path, bool fuzzy=false):
+        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(fuzzy), m_num_of_inner_fuzzies(0) {}
 
     TLexiconState (unsigned start, unsigned wid):
         m_start(start), m_pPYNode(NULL), m_bPinyin(false)

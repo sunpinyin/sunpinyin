@@ -409,8 +409,7 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end, TLexiconState*
     CLatticeStates::iterator ite = start_fr.m_latticeStates.end();
 
     // for 1-length lattice states, replace ending_word_id (comma) with none_word_id (recognized by CThreadSlm)
-    if (wid == ENDING_WORD_ID && it->m_pBackTraceNode
-            && it->m_pBackTraceNode->m_frIdx == 0)
+    if (wid == ENDING_WORD_ID && it != ite && it->m_pBackTraceNode && it->m_pBackTraceNode->m_frIdx == 0)
         wid = NONE_WORD_ID;
 
     for (; it != ite; ++it) {

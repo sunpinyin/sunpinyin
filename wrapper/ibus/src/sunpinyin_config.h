@@ -102,7 +102,7 @@ private:
     static void on_config_value_changed(IBusConfig *config,
                                         const gchar *section,
                                         const gchar *name,
-                                        GValue *value,
+                                        GVariant *value,
                                         SunPinyinConfig *user_data);
 
     std::string get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme);

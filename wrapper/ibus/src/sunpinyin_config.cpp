@@ -58,7 +58,7 @@ struct ConfigItem
     }
 };
 
-static vector<string> get_strings_from_gvalue(GValue* value);
+static vector<string> get_strings_from_gvariant(GVariant* value);
 
 IBusConfig* SunPinyinConfig::m_config;
 
@@ -84,27 +84,25 @@ SunPinyinConfig::get(const char* key, bool val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
+    GVariant * value = NULL;
     gboolean got;
     ConfigItem item(key);
-    got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    got = (value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
     bool result = val;
-    if (got && G_VALUE_TYPE(&v) == G_TYPE_BOOLEAN) {
-        result = (g_value_get_boolean(&v) == TRUE);
+    if (got && g_variant_classify(value) == G_VARIANT_CLASS_BOOLEAN) {
+        result = (g_variant_get_boolean(value) == TRUE);
     }
     return result;
 }
 
 void
-SunPinyinConfig::set(const char* key, bool value)
+SunPinyinConfig::set(const char* key, bool val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
-    g_value_init(&v, G_TYPE_BOOLEAN);
-    g_value_set_boolean(&v, value?TRUE:FALSE);
+    GVariant * value = g_variant_new_boolean(val);
     ConfigItem item(key);
-    ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), value);
 }
 
 std::string
@@ -112,13 +110,13 @@ SunPinyinConfig::get(const char* key, const std::string& val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
+    GVariant * value = NULL;
     gboolean got;
     ConfigItem item(key);
-    got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    got = (value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
     string result = val;
-    if (got && G_VALUE_TYPE(&v) == G_TYPE_STRING) {
-        result = string(g_value_get_string(&v));
+    if (got && g_variant_classify(value) == G_VARIANT_CLASS_STRING) {
+      result = string(g_variant_get_string(value, NULL));
     }
     return result;
 }
@@ -128,11 +126,9 @@ SunPinyinConfig::set(const char* key, const std::string& val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
-    g_value_init(&v, G_TYPE_STRING);
-    g_value_set_string(&v, val.c_str());
+    GVariant * value = g_variant_new_string(val.c_str());
     ConfigItem item(key);
-    ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), value);
 }
 
 int
@@ -140,27 +136,25 @@ SunPinyinConfig::get(const char* key, int val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
+    GVariant * value = NULL;
     gboolean got;
     ConfigItem item(key);
-    got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    got = (value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
     int result = val;
-    if (got && G_VALUE_TYPE(&v) == G_TYPE_INT) {
-        result =  g_value_get_int(&v);
+    if (got &&  g_variant_classify(value) == G_VARIANT_CLASS_INT32) {
+        result =  g_variant_get_int32(value);
     }
     return result;
 }
 
 void 
-SunPinyinConfig::set(const char* key, int value)
+SunPinyinConfig::set(const char* key, int val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
-    g_value_init(&v, G_TYPE_INT);
-    g_value_set_int(&v, value);
+    GVariant * value = g_variant_new_int32(val);
     ConfigItem item(key);
-    ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), value);
 }
 
 std::vector<std::string>
@@ -168,13 +162,13 @@ SunPinyinConfig::get(const char *key, const std::vector<std::string>& val)
 {
     assert(m_config != NULL);
     
-    GValue v = {0};
+    GVariant * value = NULL;
     gboolean got;
     ConfigItem item(key);
-    got = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str(), &v);
+    got = (value =  ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
     vector<string> result(val);
-    if (got && G_VALUE_TYPE(&v) == G_TYPE_VALUE_ARRAY) {
-        result =  get_strings_from_gvalue(&v);
+    if (got && g_variant_classify(value) == G_VARIANT_CLASS_ARRAY) {
+        result =  get_strings_from_gvariant(value);
     }
     return result;
 }
@@ -244,21 +238,19 @@ SunPinyinConfig::get_scheme(const std::string& name)
 }
 
 vector<string>
-get_strings_from_gvalue(GValue *value)
+get_strings_from_gvariant(GVariant *value)
 {
-    GValueArray *array = (GValueArray *)g_value_get_boxed(value);
+    const gchar ** array = g_variant_get_strv(value, NULL);
     assert(array != NULL);
     vector<string> strings;
-    for (unsigned i = 0; i < array->n_values; ++i) {
-        GValue *element = &(array->values[i]);
-        assert (G_VALUE_TYPE(element) == G_TYPE_STRING && "only array of string is supported");
-        strings.push_back(g_value_get_string(element));
+    for (unsigned i = 0; array[i]; ++i) {
+        strings.push_back(array[i]);
     }
     return strings;
 }
 
 static COptionEvent
-g_value_to_event(const gchar *section, const gchar *name, GValue *value)
+g_value_to_event(const gchar *section, const gchar *name, GVariant *value)
 {
     string event_name;
     
@@ -268,18 +260,18 @@ g_value_to_event(const gchar *section, const gchar *name, GValue *value)
         event_name = string(section) + "/" + string(name);
     }
     
-    switch (G_VALUE_TYPE(value)) {
-    case G_TYPE_INT:
-        return COptionEvent(event_name, g_value_get_int(value));
-    case G_TYPE_STRING:
-        return COptionEvent(event_name, g_value_get_string(value));
-    case G_TYPE_BOOLEAN:
+    switch (g_variant_classify(value)) {
+    case G_VARIANT_CLASS_INT32:
+        return COptionEvent(event_name, g_variant_get_int32(value));
+    case G_VARIANT_CLASS_STRING:
+      return COptionEvent(event_name, g_variant_get_string(value, NULL));
+    case G_VARIANT_CLASS_BOOLEAN:
         return COptionEvent(event_name,
-                            g_value_get_boolean(value)?true:false);
+                            g_variant_get_boolean(value)?true:false);
     default:
         // G_TYPE_VALUE_ARRAY() not a constant
-        if (G_TYPE_VALUE_ARRAY == G_VALUE_TYPE(value))
-            return COptionEvent(event_name, get_strings_from_gvalue(value));
+        if (G_VARIANT_CLASS_ARRAY ==  g_variant_classify(value))
+            return COptionEvent(event_name, get_strings_from_gvariant(value));
         assert(false && "unknown gvalue");
         return COptionEvent(event_name, 0);
     }   
@@ -289,7 +281,7 @@ void
 SunPinyinConfig::on_config_value_changed(IBusConfig *config,
                                          const gchar *section,
                                          const gchar *name,
-                                         GValue *value,
+                                         GVariant *value,
                                          SunPinyinConfig* thiz)
 {
     static const char* prefix = "engine/SunPinyin/";

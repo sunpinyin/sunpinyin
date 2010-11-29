@@ -268,14 +268,15 @@ int  CBigramHistory::uniFreq(TUnigram& ug)
         }
     }
     //if (freq != 0) printf("uniFreq[%d]-->%d\n", ug, freq);
-    return freq;
+    return freq / 2;
 }
 
 int  CBigramHistory::biFreq(TBigram& bg)
 {
     int freq = 0;
     //std::set<unsigned>::const_iterator ite = m_stopWords.end();
-    if (bg.first != DCWID && bg.second != DCWID) {
+    if (m_stopWords.find(bg.first) != m_stopWords.end()
+        && m_stopWords.find(bg.second) != m_stopWords.end()) {
         TBigramPool::const_iterator it = m_bifreq.find(bg);
         if (it != m_bifreq.end()) {
             freq =  it->second;

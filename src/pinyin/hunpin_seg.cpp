@@ -83,7 +83,7 @@ bool CHunpinSegmentor::load(const char * pyTrieFileName)
     return m_pytrie.load (pyTrieFileName);
 }
 
-#ifdef DEBUG
+#if 0
 void print_pystr(const std::string pystr)
 {
     for (const char* c = pystr.c_str(); c != pystr.c_str() + pystr.length(); ++c)

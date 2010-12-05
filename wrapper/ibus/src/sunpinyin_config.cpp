@@ -58,7 +58,7 @@ struct ConfigItem
     }
 };
 
-static vector<string> get_strings_from_gvariant(GVariant* value);
+static vector<string> get_strings_from_gvariant(GVariant *value);
 
 IBusConfig* SunPinyinConfig::m_config;
 
@@ -84,12 +84,10 @@ SunPinyinConfig::get(const char* key, bool val)
 {
     assert(m_config != NULL);
     
-    GVariant * value = NULL;
-    gboolean got;
     ConfigItem item(key);
-    got = (value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
+    GVariant* value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str());
     bool result = val;
-    if (got && g_variant_classify(value) == G_VARIANT_CLASS_BOOLEAN) {
+    if (g_variant_classify(value) == G_VARIANT_CLASS_BOOLEAN) {
         result = (g_variant_get_boolean(value) == TRUE);
     }
     return result;
@@ -110,12 +108,10 @@ SunPinyinConfig::get(const char* key, const std::string& val)
 {
     assert(m_config != NULL);
     
-    GVariant * value = NULL;
-    gboolean got;
     ConfigItem item(key);
-    got = (value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
+    GVariant* value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str());
     string result = val;
-    if (got && g_variant_classify(value) == G_VARIANT_CLASS_STRING) {
+    if (g_variant_classify(value) == G_VARIANT_CLASS_STRING) {
       result = string(g_variant_get_string(value, NULL));
     }
     return result;
@@ -126,7 +122,7 @@ SunPinyinConfig::set(const char* key, const std::string& val)
 {
     assert(m_config != NULL);
     
-    GVariant * value = g_variant_new_string(val.c_str());
+    GVariant* value = g_variant_new_string(val.c_str());
     ConfigItem item(key);
     ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), value);
 }
@@ -136,12 +132,10 @@ SunPinyinConfig::get(const char* key, int val)
 {
     assert(m_config != NULL);
     
-    GVariant * value = NULL;
-    gboolean got;
     ConfigItem item(key);
-    got = (value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
+    GVariant* value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str());
     int result = val;
-    if (got &&  g_variant_classify(value) == G_VARIANT_CLASS_INT32) {
+    if (g_variant_classify(value) == G_VARIANT_CLASS_INT32) {
         result =  g_variant_get_int32(value);
     }
     return result;
@@ -152,22 +146,20 @@ SunPinyinConfig::set(const char* key, int val)
 {
     assert(m_config != NULL);
     
-    GVariant * value = g_variant_new_int32(val);
+    GVariant* value = g_variant_new_int32(val);
     ConfigItem item(key);
     ibus_config_set_value(m_config, item.section.c_str(), item.name.c_str(), value);
 }
 
 std::vector<std::string>
-SunPinyinConfig::get(const char *key, const std::vector<std::string>& val)
+SunPinyinConfig::get(const char* key, const std::vector<std::string>& val)
 {
     assert(m_config != NULL);
     
-    GVariant * value = NULL;
-    gboolean got;
     ConfigItem item(key);
-    got = (value =  ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str())) != NULL;
+    GVariant* value = ibus_config_get_value(m_config, item.section.c_str(), item.name.c_str());
     vector<string> result(val);
-    if (got && g_variant_classify(value) == G_VARIANT_CLASS_ARRAY) {
+    if (g_variant_classify(value) == G_VARIANT_CLASS_ARRAY) {
         result =  get_strings_from_gvariant(value);
     }
     return result;
@@ -240,7 +232,7 @@ SunPinyinConfig::get_scheme(const std::string& name)
 vector<string>
 get_strings_from_gvariant(GVariant *value)
 {
-    const gchar ** array = g_variant_get_strv(value, NULL);
+    const gchar **array = g_variant_get_strv(value, NULL);
     assert(array != NULL);
     vector<string> strings;
     for (unsigned i = 0; array[i]; ++i) {

@@ -126,6 +126,7 @@ main(int argc, char* argv[])
     signal(SIGTERM, on_app_sig);
 
     gtk_main();
+    on_app_sig(SIGINT);
     
     return 0;
 }

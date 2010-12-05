@@ -154,7 +154,7 @@ icmgr_init(void)
     memset(ics, 0, sizeof(IC) * MAX_IC_NUM);
     int i;
     for (i = 0; i < MAX_IC_NUM; i++) {
-        ics[i].icid = i + 1;
+        ics[i].icid = i;
         __reset_ic(&ics[i]);
         
         free_stack[free_stack_sz] = &ics[i];

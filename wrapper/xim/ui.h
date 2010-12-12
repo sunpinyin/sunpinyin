@@ -33,64 +33,50 @@
  * to such option by the copyright holder. 
  */
 
-#ifndef _IC_H_
-#define _IC_H_
-
-#include <gtk/gtk.h>
-#include <X11/Xproto.h>
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <X11/Xutil.h>
+#ifndef _UI_H_
+#define _UI_H_
 
 #include "common.h"
+#include "settings.h"
+#include <gtk/gtk.h>
 
 __BEGIN_DECLS
 
+typedef struct _skin_button_info_t
+{
+    int        x, y;
+    GdkPixbuf* normal1;
+    GdkPixbuf* highlight1;
+    GdkPixbuf* pressdown1;
+    GdkPixbuf* normal2;
+    GdkPixbuf* highlight2;
+    GdkPixbuf* pressdown2;
+} skin_button_info_t;
 
-#define MAX_IC_NUM 0x7fff
-#define GC_THRESHOLD 4096
+typedef struct _skin_label_info_t
+{
+    int        x, y;
+    char       font[256];
+    double     color_r, color_g, color_b, color_a;
+} skin_label_info_t;
 
-/* input context */
-typedef struct _IC {
-    Window client_window;
-    bool   is_enabled;
-    bool   is_english;
-    bool   is_full;
-    bool   is_chn_punc;
-    int    icid;
-    int    connect_id;
-    int    offset_x;
-    int    offset_y;
-} IC;
+typedef struct _skin_info_t
+{
+    skin_button_info_t eng_btn, full_btn, punc_btn;
+    GdkPixbuf*         icbar_background;
+    skin_label_info_t  preedit_label;
+    skin_label_info_t  candidate_label;
+    GdkPixbuf*         preedit_background;
+    int                top, left, bottom, right; /* margins of preedit */
+    int                offset_x, offset_y; /* offset of preedit */
+} skin_info_t;
 
-typedef struct _IC_UI {
-    gboolean (*init)    (const char* name);
-    void (*refresh) (void);
-    void (*dispose) (void);
-    const char* (*get_name) (void);
-} IC_UI;
-
-/* input context manager */
-
-void icmgr_init       (void);
-void icmgr_finalize   (void);
-
-IC*  icmgr_create_ic  (int connect_id);
-void icmgr_destroy_ic (int icid);
-bool icmgr_set_current(int icid);
-IC*  icmgr_get        (int icid);
-
-void icmgr_toggle_english (void);
-void icmgr_toggle_full    (void);
-void icmgr_toggle_punc    (void);
-
-IC*  icmgr_get_current  (void);
-void icmgr_clear_current(void);
-void icmgr_refresh      (void);
-
-void icmgr_ui_init      (void);
-void icmgr_ui_refresh   (void);
+void          ui_tray_init       (void);
+void          ui_tray_refresh    (void);
+GtkWidget*    ui_create_window   (void);
+skin_info_t*  ui_skin_new        (const char* name);
+void          ui_skin_destroy    (skin_info_t* info);
 
 __END_DECLS
 
-#endif /* _IC_H_ */
+#endif /* _UI_H_ */

@@ -46,6 +46,15 @@
 #define XIM_NAME "xsunpinyin"
 
 static void
+finalize(void)
+{
+    preedit_finalize();
+    icmgr_finalize();
+    settings_save();
+    settings_destroy();
+}
+
+static void
 on_app_sig(int sig)
 {
     if (sig == SIGUSR1) {
@@ -53,29 +62,8 @@ on_app_sig(int sig)
         settings_load();
         preedit_reload();
     } else {
-        preedit_finalize();
-        icmgr_finalize();
-
-        settings_save();
-        settings_destroy();
-    
         exit(0);
     }
-}
-
-static int
-_xerror_handler (Display *dpy, XErrorEvent *e)
-{
-    // display closed
-    if (e->error_code == 0x9E) {
-        on_app_sig(SIGINT);
-        exit(0);
-    }
-    printf(
-        "XError: "
-        "serial=%lu error_code=%d request_code=%d minor_code=%d resourceid=%lu",
-        e->serial, e->error_code, e->request_code, e->minor_code, e->resourceid);
-    return 1;
 }
 
 #define ALL_LOCALES_STRING "ca,cs,en,es,et,eu,fr,zh,zu"
@@ -92,7 +80,6 @@ main(int argc, char* argv[])
     }
     
     init_display(&argc, &argv);
-    XSetErrorHandler (_xerror_handler);
 
     settings_init();
     settings_load();
@@ -125,8 +112,8 @@ main(int argc, char* argv[])
     signal(SIGINT, on_app_sig);
     signal(SIGTERM, on_app_sig);
 
+    atexit(finalize);
     gtk_main();
-    on_app_sig(SIGINT);
     
     return 0;
 }

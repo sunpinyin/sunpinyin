@@ -64,6 +64,7 @@ static const char* setting_names[] = {
     "fuzzy_segmentation",
     "cancel_on_backspace",
     "smart_punct",
+    "skin_name",
     NULL
 };
 
@@ -259,6 +260,9 @@ __init_default_values()
 
     /* smart punctuation */
     settings_set_int(SMART_PUNCT, 0);
+
+    /* skin support */
+    settings_set_string(SKIN_NAME, "classic");
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -291,6 +295,7 @@ settings_init()
     REGISTER(FUZZY_INNER_SEGMENTATION, int, __int_enc, __int_dec);
     REGISTER(CANCEL_ON_BACKSPACE, int, __int_enc, __int_dec);
     REGISTER(SMART_PUNCT, int, __int_enc, __int_dec);
+    REGISTER(SKIN_NAME, varchar, __varchar_enc, __varchar_dec);
     
     __init_default_values();
 }

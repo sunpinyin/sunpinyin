@@ -35,6 +35,7 @@
 
 #include <gtk/gtk.h>
 #include "ic.h"
+#include "ui.h"
 #include "common.h"
 #include "settings.h"
 
@@ -47,9 +48,6 @@ static GtkStatusIcon* icbar_tray;
 static GtkWidget* popup_menu;
 
 #define LOGO_FILE SUNPINYIN_XIM_ICON_DIR"/sunpinyin-logo.png"
-#define LOGO_FILE_BIG SUNPINYIN_XIM_ICON_DIR"/sunpinyin-logo-big.png"
-#define ENG_ICON SUNPINYIN_XIM_ICON_DIR"/eng.svg"
-#define HAN_ICON SUNPINYIN_XIM_ICON_DIR"/han.svg"
 #define ENG_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/eng.png"
 #define HAN_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/han.png"
 #define FULL_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/full.png"
@@ -57,55 +55,25 @@ static GtkWidget* popup_menu;
 #define CHN_PUNC_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/chnpunc.png"
 #define ENG_PUNC_ICON_PNG SUNPINYIN_XIM_ICON_DIR"/engpunc.png"
 
-static void
-__toggle_mode(gboolean mode, GtkWidget* btn,
-              const char* img_path1, const char* img_path2)
-{
-    GtkWidget* img_wid = gtk_tool_button_get_icon_widget(
-        GTK_TOOL_BUTTON(btn));
-    
-    if (mode) {
-        gtk_image_set_from_file(GTK_IMAGE(img_wid), img_path1);
-    } else {
-        gtk_image_set_from_file(GTK_IMAGE(img_wid), img_path2);
-    }
-    gtk_image_set_pixel_size(GTK_IMAGE(img_wid), 20);
-}
 
 static void
 toggle_english(GtkToggleButton* btn, gpointer userdata)
 {
-    IC* ic = icmgr_get_current();
-    if (ic == NULL)
-        return;
-    ic->is_english = !ic->is_english;
-    
-    if (ic->is_english) {
-        gtk_status_icon_set_from_file(icbar_tray, ENG_ICON);
-    } else {
-        gtk_status_icon_set_from_file(icbar_tray, HAN_ICON);
-    }
+    icmgr_toggle_english();
     icmgr_refresh();
 }
 
 static void
 toggle_full(GtkToggleButton* btn, gpointer userdata)
 {
-    IC* ic = icmgr_get_current();
-    if (ic == NULL)
-        return;
-    ic->is_full = !ic->is_full;
+    icmgr_toggle_full();
     icmgr_refresh();
 }
 
 static void
 toggle_chn_punc(GtkToggleButton* btn, gpointer userdata)
 {
-    IC* ic = icmgr_get_current();
-    if (ic == NULL)
-        return;
-    ic->is_chn_punc = !ic->is_chn_punc;
-
+    icmgr_toggle_punc();
     icmgr_refresh();
 }
 
@@ -146,57 +114,20 @@ icbar_on_motion(GtkWidget* wnd, GdkEventMotion* evt, gpointer data)
 }
 
 static void
-status_icon_popup_menu(GtkStatusIcon *status_icon, guint button,
-                       guint activate_time, gpointer user_data)
+__toggle_mode(gboolean mode, GtkWidget* btn,
+              const char* img_path1, const char* img_path2)
 {
-    gtk_widget_show_all(popup_menu);
-    gtk_menu_popup(GTK_MENU(popup_menu), NULL, NULL,
-                   gtk_status_icon_position_menu, status_icon,
-                   button, activate_time);
-}
-
-static void
-show_ui_about(GtkWidget* wid, gpointer user_data)
-{
-    GError* error = NULL;
-    GdkPixbuf* logo_pixbuf = 
-        gdk_pixbuf_new_from_file(LOGO_FILE_BIG, &error);
+    GtkWidget* img_wid = gtk_tool_button_get_icon_widget(
+        GTK_TOOL_BUTTON(btn));
+    const char* img_path = NULL;
     
-    gtk_show_about_dialog(NULL,
-                          "program-name", XIM_PROGRAM_NAME,
-                          "logo", logo_pixbuf,
-                          "version", XIM_VERSION,
-                          "website", XIM_WEBSITE,
-                          "comments", XIM_COMMENTS,
-                          NULL);
-}
-
-static void
-launch_preferences(GtkWidget* wid, gpointer user_data)
-{
-    system("xsunpinyin-preferences&");
-}
-
-static void
-__init_tray(void)
-{
-    icbar_tray = gtk_status_icon_new_from_file(ENG_ICON);
-    GtkWidget* setting_menu_item =
-        gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
-    g_signal_connect(setting_menu_item, "activate",
-                     G_CALLBACK(launch_preferences), NULL);
-
-    GtkWidget* about_menu_item =
-        gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
-    g_signal_connect(about_menu_item, "activate",
-                     G_CALLBACK(show_ui_about), NULL);
-    
-    popup_menu = gtk_menu_new();
-    gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), setting_menu_item);
-    gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), about_menu_item);
-
-    g_signal_connect(icbar_tray, "popup-menu",
-                     G_CALLBACK(status_icon_popup_menu), NULL);
+    if (mode) {
+        img_path = img_path1;
+    } else {
+        img_path = img_path2;
+    }
+    gtk_image_set_from_file(GTK_IMAGE(img_wid), img_path);
+    gtk_image_set_pixel_size(GTK_IMAGE(img_wid), 20);
 }
 
 static GtkWidget*
@@ -214,17 +145,10 @@ __create_btn(bool stock, const char* img_path, GCallback cb)
     return res;
 }
 
-static void
-__init_icbar(void)
+static gboolean
+icmgr_gtk_init(const char* name)
 {
-    icbar_window = gtk_window_new(GTK_WINDOW_POPUP);
-    gtk_window_set_decorated(GTK_WINDOW(icbar_window), false);
-    gtk_window_set_deletable(GTK_WINDOW(icbar_window), false);
-    gtk_window_set_accept_focus(GTK_WINDOW(icbar_window), false);
-    gtk_window_set_focus_on_map(GTK_WINDOW(icbar_window), false);
-    gtk_window_set_keep_above(GTK_WINDOW(icbar_window), true);
-    gtk_window_set_skip_pager_hint(GTK_WINDOW(icbar_window), true);
-    gtk_window_set_skip_taskbar_hint(GTK_WINDOW(icbar_window), true);
+    icbar_window = ui_create_window();
     
     gtk_widget_add_events(icbar_window,
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
@@ -236,8 +160,6 @@ __init_icbar(void)
     g_signal_connect(icbar_window, "button-release-event",
                      G_CALLBACK(icbar_on_button_release), NULL);
 
-    GtkWidget* about_btn = __create_btn(true, "gtk-about",
-                                        G_CALLBACK(show_ui_about));
     icbar_status_btn = __create_btn(false, ENG_ICON_PNG,
                                     G_CALLBACK(toggle_english));
     icbar_full_btn = __create_btn(false, FULL_ICON_PNG,
@@ -255,31 +177,22 @@ __init_icbar(void)
     gtk_box_pack_start(GTK_BOX(box), icbar_status_btn, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), icbar_full_btn, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), icbar_chn_punc_btn, false, false, 1);
-    gtk_box_pack_start(GTK_BOX(box), about_btn, false, false, 1);
     
     gtk_container_add(GTK_CONTAINER(icbar_window), box);
     
     gtk_widget_show_all(box);
+    return TRUE;
 }
 
-void
-icmgr_init_ui(void)
-{
-    __init_tray();
-    __init_icbar();
-}
-
-void
-icmgr_refresh_ui(void)
+static void
+icmgr_gtk_refresh(void)
 {
     IC* ic = icmgr_get_current();
     if (ic == NULL || !ic->is_enabled) {
-        gtk_status_icon_set_from_file(icbar_tray, ENG_ICON);
         gtk_widget_hide(icbar_window);
         return;
     }
 
-    gtk_status_icon_set_from_file(icbar_tray, HAN_ICON);
     __toggle_mode(ic->is_english, icbar_status_btn,
                   ENG_ICON_PNG, HAN_ICON_PNG);
     __toggle_mode(ic->is_full, icbar_full_btn,
@@ -293,3 +206,21 @@ icmgr_refresh_ui(void)
     gtk_widget_show(icbar_window);
 }
 
+static void
+icmgr_gtk_dispose(void)
+{
+    gtk_widget_destroy(icbar_window);
+}
+
+static const char*
+icmgr_gtk_get_name(void)
+{
+    return "classic";
+}
+
+IC_UI icmgr_gtk = {
+    .get_name = icmgr_gtk_get_name,
+    .init = icmgr_gtk_init,
+    .refresh = icmgr_gtk_refresh,
+    .dispose = icmgr_gtk_dispose,
+};

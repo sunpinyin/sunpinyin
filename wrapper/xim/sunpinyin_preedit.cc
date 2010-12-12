@@ -38,20 +38,88 @@
 
 #include "xim.h"
 #include "common.h"
+#include "settings.h"
+#include "sunpinyin_preedit_ui.h"
 
 #define BUF_SIZE 4096
 
-template <class UIProvider>
-class SSWindowHandler : public CIMIWinHandler, public UIProvider
+class WindowHandler : public CIMIWinHandler
 {
-public:
+protected:
     virtual void updatePreedit(const IPreeditString* ppd);
     virtual void updateCandidates(const ICandidateList* pcl);
     //virtual void updateStatus(int key, int value);
     virtual void commit(const TWCHAR* str);
 
+private:
+    PreeditUI* ui_impl_;
+    
+public:
+
+    WindowHandler() {
+        status_ = false;
+        pause_ = false;
+        ui_impl_ = NULL;
+        handle_ = NULL;
+        memset(buf_, 0, sizeof(char) * BUF_SIZE);
+        memset(front_src, 0, sizeof(TWCHAR) * BUF_SIZE);
+        memset(end_src, 0, sizeof(TWCHAR) * BUF_SIZE);
+    }
+
+    PreeditUI* preedit_ui_impl() { return ui_impl_; }
+    void       set_preedit_ui_impl(PreeditUI* ui_impl) {
+        ui_impl_ = ui_impl;
+    }
+    
     void set_xim_handle(XIMHandle* handle) {
         handle_ = handle;
+    }
+
+    void update_preedit_ui(const IPreeditString* ppd, const char* utf_str) {
+        ui_impl_->update_preedit_string(utf_str);
+        if (ppd->size() == 0) {
+            status_ = false;
+        } else {
+            status_ = true;
+        }
+    }
+
+    void update_candidates_ui(const ICandidateList* pcl, const char* utf_str) {
+        ui_impl_->update_candidates_string(utf_str);
+        if (status_) {
+            ui_impl_->show();
+        } else {
+            ui_impl_->hide();
+        }
+    }
+
+    bool status() {
+        return status_;
+    }
+
+    void pause() {
+        if (status_) {
+            ui_impl_->hide();
+            status_ = false;
+            pause_ = true;
+        }
+    }
+
+    void go_on() {
+        if (!status_ && pause_) {
+            ui_impl_->show();
+            status_ = true;
+            pause_ = false;
+        }
+    }
+
+    void reload_ui() {
+        ui_impl_->reload();
+        if (status_) {
+            ui_impl_->show();
+        } else {
+            ui_impl_->hide();
+        }
     }
 
 private:
@@ -61,10 +129,12 @@ private:
     TWCHAR front_src[BUF_SIZE];
     TWCHAR end_src[BUF_SIZE];
 
+    bool status_;
+    bool pause_;
 };
 
-template <class UIProvider> void
-SSWindowHandler<UIProvider>::updatePreedit(const IPreeditString* ppd)
+void
+WindowHandler::updatePreedit(const IPreeditString* ppd)
 {
     TIConvSrcPtr src = (TIConvSrcPtr) (ppd->string());
     memset(front_src, 0, BUF_SIZE * sizeof(TWCHAR));
@@ -81,11 +151,11 @@ SSWindowHandler<UIProvider>::updatePreedit(const IPreeditString* ppd)
     WCSTOMBS(&buf_[strlen(buf_)], end_src, BUF_SIZE - 1);
 
     // update within the ui provider
-    this->update_preedit_ui(ppd, buf_);
+    update_preedit_ui(ppd, buf_);
 }
 
-template <class UIProvider> void
-SSWindowHandler<UIProvider>::updateCandidates(const ICandidateList* pcl)
+void
+WindowHandler::updateCandidates(const ICandidateList* pcl)
 {
     wstring cand_str;
     for (int i = 0, sz = pcl->size(); i < sz; i++) {
@@ -101,11 +171,11 @@ SSWindowHandler<UIProvider>::updateCandidates(const ICandidateList* pcl)
     WCSTOMBS(buf_, (const TWCHAR*) src, BUF_SIZE - 1);
 
     // update within the ui provider
-    this->update_candidates_ui(pcl, buf_);
+    update_candidates_ui(pcl, buf_);
 }
 
-template <class UIProvider> void
-SSWindowHandler<UIProvider>::commit(const TWCHAR* str)
+void
+WindowHandler::commit(const TWCHAR* str)
 {
     memset(buf_, 0, BUF_SIZE);
     WCSTOMBS(buf_, str, BUF_SIZE - 1);
@@ -115,11 +185,8 @@ SSWindowHandler<UIProvider>::commit(const TWCHAR* str)
 }
 
 
-//TODO: add compiler condition to this
-#include "sunpinyin_preedit_gtk.h"
-typedef GtkProvider UIProvider;
-
-static SSWindowHandler<UIProvider>* instance = NULL;
+static PreeditUI* ui_impl = NULL;
+static WindowHandler* instance = NULL;
 static CIMIView* view = NULL;
 
 __EXPORT_API void
@@ -133,7 +200,12 @@ preedit_init()
     }
     view = fac.createSession();
 
-    instance = new SSWindowHandler<UIProvider>();
+    varchar skin_name;
+    settings_get(SKIN_NAME, skin_name);
+    ui_impl = create_preedit_ui(skin_name);
+    
+    instance = new WindowHandler();
+    instance->set_preedit_ui_impl(ui_impl);
     view->getIC()->setCharsetLevel(1);// GBK
     view->attachWinHandler(instance);
 }
@@ -145,8 +217,8 @@ preedit_finalize(void)
     CSunpinyinSessionFactory& fac = CSunpinyinSessionFactory::getFactory();
     fac.destroySession(view);
 
-    if (instance)
-        delete instance;
+    delete ui_impl;
+    delete instance;
 }
 
 __EXPORT_API void
@@ -196,6 +268,15 @@ preedit_reload(void)
     // cancel last selection on backspace
     view->setCancelOnBackspace(settings_get_int(CANCEL_ON_BACKSPACE));
 
+    // do we need to change the skin?
+    varchar skin_name;
+    settings_get(SKIN_NAME, skin_name);
+    if (ui_impl->name() != skin_name) {
+        delete ui_impl;
+        ui_impl = create_preedit_ui(skin_name);
+        instance->set_preedit_ui_impl(ui_impl);
+    }
+
     instance->reload_ui();
 }
 
@@ -208,7 +289,9 @@ preedit_set_handle(XIMHandle* handle)
 __EXPORT_API void
 preedit_move(int x, int y)
 {
-    instance->move(x, y);
+    PreeditUI* ui = instance->preedit_ui_impl();
+    if (ui)
+        ui->move(x, y);
 }
 
 __EXPORT_API void

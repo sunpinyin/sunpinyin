@@ -2,9 +2,14 @@ import os
 
 sources = ['ic.c',
            'ic_gtk.c',
+           'ic_skin.c',
+           'skin.c',
+           'ui.c',
            'main.c',
            'settings.c',
            'sunpinyin_preedit.cc',
+           'sunpinyin_preedit_gtk.cc',
+           'sunpinyin_preedit_skin.cc',
            'xim.c',
            'xim_trigger.c',
            'xmisc.c']

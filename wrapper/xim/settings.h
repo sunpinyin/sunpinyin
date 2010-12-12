@@ -75,9 +75,10 @@ typedef enum {
     FUZZY_INNER_SEGMENTATION,
     CANCEL_ON_BACKSPACE,
     SMART_PUNCT,
+    SKIN_NAME,
 } setting_key_t;
 
-#define MAX_KEY 0xff
+#define MAX_KEY 0xFF
 
 void  settings_init();
 void  settings_destroy();

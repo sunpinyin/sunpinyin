@@ -42,6 +42,7 @@
 #include <X11/Xutil.h>
 
 #include <unistd.h>
+#include <dirent.h>
 #include <sys/types.h>
 
 #include "settings.h"
@@ -70,6 +71,7 @@ static GtkToggleButton* cancel_on_backspace_check = NULL;
 static GtkToggleButton* smart_punct_check = NULL;
 static GtkToggleButton* shuangpin_check = NULL;
 static GtkComboBox* shuangpin_combo = NULL;
+static GtkComboBox* skin_combo = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
@@ -110,6 +112,37 @@ static const int ui_keysym_model[] =
         gdk_color_parse(colorstr, &color);                      \
         gtk_color_button_set_color((widget_name), &color);      \
     } while(0)
+
+static int
+list_skins(const char* current_skin_name)
+{
+    int idx_ret = 0;
+    
+    GtkListStore* model = GTK_LIST_STORE(gtk_combo_box_get_model(skin_combo));
+    GtkTreeIter iter;
+    gtk_list_store_append(model, &iter);
+    gtk_list_store_set(model, &iter, 0, "classic", -1);
+    
+    char dirpath[256];
+    snprintf(dirpath, 256, "%s/.sunpinyin/xim_skins/", getenv("HOME"));
+    DIR* dir = opendir(dirpath);
+    if (!dir) return 0;
+
+    int i = 1;
+    struct dirent* ent = NULL;
+    while ((ent = readdir(dir))) {
+        if (ent->d_name[0] == '.') continue;
+        /* append to the list store */
+        gtk_list_store_append(model, &iter);
+        gtk_list_store_set(model, &iter, 0, ent->d_name, -1);
+        if (strcmp(ent->d_name, current_skin_name) == 0) {
+            idx_ret = i;
+        }
+        i++;
+    }
+    closedir(dir);
+    return idx_ret;
+}
 
 static void
 init_settings(void)
@@ -159,7 +192,6 @@ init_settings(void)
     gtk_toggle_button_set_active(smart_punct_check,
                                  settings_get_int(SMART_PUNCT));
 
-    fprintf(stderr, "%d\n", settings_get_int(SHUANGPIN));
     gtk_toggle_button_set_active(shuangpin_check,
                                  settings_get_int(SHUANGPIN));
     varchar scheme;
@@ -172,6 +204,11 @@ init_settings(void)
         }
     }
 
+    /* skin */
+    varchar skin_name;
+    settings_get(SKIN_NAME, skin_name);
+    int idx = list_skins(skin_name);
+    gtk_combo_box_set_active(skin_combo, idx);
 }
 
 static void
@@ -201,6 +238,7 @@ init(void)
     RETRIEVE(smart_punct_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(shuangpin_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(shuangpin_combo, GTK_COMBO_BOX);
+    RETRIEVE(skin_combo, GTK_COMBO_BOX);
 
     init_settings();
     
@@ -293,6 +331,9 @@ state_changed()
     int sche_idx = gtk_combo_box_get_active(shuangpin_combo);
     if (sche_idx < UI_SHUANGPIN_SCHEMES_NUM)
         settings_set_string(SHUANGPIN_SCHEME, ui_shuangpin_schemes[sche_idx]);
+    
+    /* skins */
+    settings_set_string(SKIN_NAME, gtk_combo_box_get_active_text(skin_combo));
 
     settings_save();
     send_reload();

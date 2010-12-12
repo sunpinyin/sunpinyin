@@ -44,6 +44,7 @@
 #include <X11/Xatom.h>
 
 #include "common.h"
+#include "settings.h"
 #include "ic.h"
 #include "xmisc.h"
 #include "xim.h"
@@ -136,9 +137,6 @@ __scan_all_ic()
     }
 }
 
-extern void icmgr_init_ui(void);
-extern void icmgr_refresh_ui(void);
-
 static void
 __reset_ic(IC* ic)
 {
@@ -162,7 +160,7 @@ icmgr_init(void)
     }
     current_ic = NULL;
 
-    icmgr_init_ui();
+    icmgr_ui_init();
 }
 
 void
@@ -238,6 +236,30 @@ icmgr_get_current(void)
     return current_ic;
 }
 
+void
+icmgr_toggle_english(void)
+{
+    if (current_ic) {
+        current_ic->is_english = !current_ic->is_english;
+    }
+}
+
+void
+icmgr_toggle_full(void)
+{
+    if (current_ic) {
+        current_ic->is_full = !current_ic->is_full;
+    }
+}
+
+void
+icmgr_toggle_punc(void)
+{
+    if (current_ic) {
+        current_ic->is_chn_punc = !current_ic->is_chn_punc;
+    }
+}
+
 IC*
 icmgr_get(int icid)
 {
@@ -251,10 +273,10 @@ icmgr_clear_current(void)
 }
 
 void
-icmgr_refresh()
+icmgr_refresh(void)
 {
     if (current_ic == NULL) {
-        icmgr_refresh_ui();
+        icmgr_ui_refresh();
         return;
     }
     
@@ -270,5 +292,50 @@ icmgr_refresh()
     } else {
         preedit_pause();
     }
-    icmgr_refresh_ui();
+    icmgr_ui_refresh();
 }
+
+extern IC_UI icmgr_gtk;
+extern IC_UI icmgr_skin;
+
+static IC_UI* current_icmgr_ui = NULL;
+
+static void
+init_front_end()
+{
+    varchar skin_name;
+    settings_get(SKIN_NAME, skin_name);
+    if (strcmp(skin_name, "classic") == 0) {
+        current_icmgr_ui = &icmgr_gtk;
+    } else {
+        current_icmgr_ui = &icmgr_skin;
+    }
+
+    if (!current_icmgr_ui->init(skin_name)) {
+        fprintf(stderr, "Error init front end!\n");
+        exit(-1);
+    }
+}
+
+void
+icmgr_ui_init(void)
+{
+    ui_tray_init();
+    init_front_end();
+}
+
+void
+icmgr_ui_refresh(void)
+{
+    ui_tray_refresh();
+    if (current_icmgr_ui != NULL) {
+        varchar skin_name;
+        settings_get(SKIN_NAME, skin_name);
+        if (strcmp(skin_name, current_icmgr_ui->get_name()) != 0) {
+            current_icmgr_ui->dispose();
+            init_front_end();
+        }
+        current_icmgr_ui->refresh();
+    }
+}
+

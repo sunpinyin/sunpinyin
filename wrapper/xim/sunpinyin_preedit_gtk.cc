@@ -55,7 +55,7 @@ GtkPreeditUI::GtkPreeditUI()
     gtk_box_pack_start(GTK_BOX(box), candidate_area_,
                        FALSE, FALSE, 1);
     gtk_widget_show_all(box);
-    //gtk_widget_realize(main_wnd_);
+    gtk_widget_realize(main_wnd_);
 }
 
 GtkPreeditUI::~GtkPreeditUI()

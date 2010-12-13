@@ -50,6 +50,7 @@ void get_window_size(Window w, int* width, int* height);
 void get_screen_size(int* width, int* height);
 
 void init_display(int* argc, char*** argv);
+void adjust_position(int* x, int* y, int width, int height);
 
 extern Display* dpy;
 

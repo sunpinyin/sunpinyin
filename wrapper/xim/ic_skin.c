@@ -41,7 +41,7 @@
 #include "settings.h"
 
 static skin_info_t* info;
-static const char* skin_name;
+static char* skin_name;
 static skin_window_t* icbar_wind;
 static skin_button_t* icbar_status_btn;
 static skin_button_t* icbar_full_btn;
@@ -81,7 +81,7 @@ icmgr_skin_init(const char* name)
 {
     info = ui_skin_new(name);
     if (!info) return FALSE;
-    skin_name = name;
+    skin_name = strdup(name);
     icbar_wind = skin_window_new(GTK_WINDOW(ui_create_window()),
                                  info->icbar_background,
                                  0, 0, 0, 0, 1);
@@ -143,15 +143,22 @@ icmgr_skin_refresh(void)
     toggle_mode(ic->is_chn_punc, icbar_punc_btn, &(info->punc_btn));
 
     position_t pos;
+    int width, height;
+    gtk_window_get_size(GTK_WINDOW(icbar_wind->widget), &width, &height);
     settings_get(ICBAR_POS, &pos);
-    gtk_window_move(GTK_WINDOW(icbar_wind->widget), pos.x, pos.y);
+    adjust_position(&(pos.x), &(pos.y), width, height);
+    /* write back the adjustion */
+    settings_set(ICBAR_POS, &pos);
+
     gtk_widget_show(icbar_wind->widget);
+    gtk_window_move(GTK_WINDOW(icbar_wind->widget), pos.x, pos.y);
 }
 
 static void
 icmgr_skin_dispose(void)
 {
     ui_skin_destroy(info);
+    free(skin_name);
     skin_button_destroy(icbar_status_btn);
     skin_button_destroy(icbar_full_btn);
     skin_button_destroy(icbar_punc_btn);

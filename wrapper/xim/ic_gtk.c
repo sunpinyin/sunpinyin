@@ -201,7 +201,12 @@ icmgr_gtk_refresh(void)
                   CHN_PUNC_ICON_PNG, ENG_PUNC_ICON_PNG);    
     
     position_t pos;
+    int width, height;
+    gtk_window_get_size(GTK_WINDOW(icbar_window), &width, &height);
     settings_get(ICBAR_POS, &pos);
+    adjust_position(&(pos.x), &(pos.y), width, height);
+    settings_set(ICBAR_POS, &pos);
+    
     gtk_window_move(GTK_WINDOW(icbar_window), pos.x, pos.y);
     gtk_widget_show(icbar_window);
 }

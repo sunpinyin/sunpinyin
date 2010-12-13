@@ -131,7 +131,6 @@ paint_background_with_mask(GtkWidget*      wid,
     right = wind->margin_right;
     bottom = wind->margin_bottom;
 
-
     GdkPixbuf* newbg = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
                                        width, height);
 
@@ -335,7 +334,7 @@ window_on_press_or_release(GtkWidget*      wid,
             /* update drag init positions */
             wind->priv->drag_init_x = evt->x;
             wind->priv->drag_init_y = evt->y;
-            wind->priv->drag_begin = TRUE;
+            wind->priv->drag_begin = wind->priv->enable_drag_to_move;
         } else {
             btncb = (mouse_cb_t) btn->priv->press_cb;
         }

@@ -80,7 +80,7 @@ GtkPreeditUI::move(int x, int y)
 {
     int width = 0, height = 0;
     gtk_window_get_size(GTK_WINDOW(main_wnd_), &width, &height);
-    adjust_position(x, y, width, height);
+    adjust_position(&x, &y, width, height);
     gtk_window_move(GTK_WINDOW(main_wnd_), x, y);
 }
 

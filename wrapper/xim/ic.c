@@ -336,6 +336,8 @@ icmgr_ui_refresh(void)
             init_front_end();
         }
         current_icmgr_ui->refresh();
+    } else {
+        init_front_end();
     }
 }
 

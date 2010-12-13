@@ -81,3 +81,20 @@ init_display(int* argc, char*** argv)
     gtk_init(argc, argv);
     dpy = GDK_DISPLAY();
 }
+
+static int
+in_range(int x, int min, int max)
+{
+    if (x < min) x = min;
+    if (x > max) x = max;
+    return x;
+}
+
+void
+adjust_position(int* x, int* y, int width, int height)
+{
+    int screen_width, screen_height;
+    get_screen_size(&screen_width, &screen_height);
+    *x = in_range(*x, 0, screen_width - width);
+    *y = in_range(*y, 0, screen_height - height);
+}

@@ -60,20 +60,6 @@ public:
     virtual void reload() = 0;
     virtual void update_preedit_string(const char* utf_str) = 0;
     virtual void update_candidates_string(const char* utf_str) = 0;
-
-protected:
-    int in_range(int x, int min, int max) {
-        if (x < min) x = min;
-        if (x > max) x = max;
-        return x;
-    }
-
-    void adjust_position(int& x, int& y, int width, int height) {
-        int screen_width, screen_height;
-        get_screen_size(&screen_width, &screen_height);
-        x = in_range(x, 0, screen_width - width);
-        y = in_range(y, 0, screen_height - height);
-    }
 };
 
 class GtkPreeditUI : public PreeditUI

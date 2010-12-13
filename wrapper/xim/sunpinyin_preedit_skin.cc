@@ -103,7 +103,7 @@ void SkinPreeditUI::internal_move(int x, int y)
 {
     int width, height;
     gtk_window_get_size(GTK_WINDOW(main_wnd_->widget), &width, &height);
-    adjust_position(x, y, width, height);
+    adjust_position(&x, &y, width, height);
     gtk_window_move(GTK_WINDOW(main_wnd_->widget), x, y);
 }
 

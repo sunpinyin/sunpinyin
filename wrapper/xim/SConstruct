@@ -45,7 +45,7 @@ opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
 
 env = Environment(ENV=os.environ,
-                  CFLAGS=cflags, CXXFLAGS=cflags, 
+                  CFLAGS=cflags, CXXFLAGS=cflags,
                   LINKFLAGS=['-export-dynamic'],
                   CPPPATH=['.', 'IMdkit'])
 opts.Update(env)
@@ -64,7 +64,7 @@ if GetOption('rpath') is not None:
 if 'CC' in os.environ:
     print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
     env['CC']=os.environ['CC']
-    
+
 if 'CXX' in os.environ:
     print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
     env['CXX']=os.environ['CXX']
@@ -124,7 +124,7 @@ def DoConfigure():
 
     env = conf.Finish()
     env.ParseConfig('pkg-config gtk+-2.0 x11 sunpinyin-2.0 --libs --cflags')
-    
+
 DoConfigure()
 
 env.Append(LIBS=env.Library('IMdkit', source=imdkit_sources))

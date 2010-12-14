@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <gtk/gtk.h>
@@ -141,7 +141,7 @@ list_skins(const char* current_skin_name)
     int idx_ret = 0;
     int skin_count = 0;
     varchar skins[MAX_SKINS];
-    
+
     GtkListStore* model = GTK_LIST_STORE(gtk_combo_box_get_model(skin_combo));
     GtkTreeIter iter;
     gtk_list_store_append(model, &iter);
@@ -166,7 +166,7 @@ list_skins(const char* current_skin_name)
             }
         }
         if (strcmp(skins[i], current_skin_name) == 0) {
-            idx_ret = i;
+            idx_ret = i + 1;
         }
         gtk_list_store_append(model, &iter);
         gtk_list_store_set(model, &iter, 0, skins[i], -1);
@@ -180,7 +180,7 @@ init_settings(void)
 {
     settings_init();
     settings_load();
-    
+
     hotkey_t hk;
     settings_get(TRIGGER_KEY, &hk);
     INIT_KEY_SETTING(trigger);
@@ -199,10 +199,10 @@ init_settings(void)
     settings_get(PREEDIT_FONT, fontstr);
     gtk_font_button_set_font_name(font_btn, fontstr);
 
-    
+
     gtk_adjustment_set_value(opacity_value,
                              settings_get_double(PREEDIT_OPACITY));
-    
+
     gtk_adjustment_set_value(ncandidates, settings_get_int(CANDIDATES_SIZE));
 
     gtk_toggle_button_set_active(minus_plus_check,
@@ -211,7 +211,7 @@ init_settings(void)
                                  settings_get_int(PAGE_COMMA_PERIOD));
     gtk_toggle_button_set_active(paren_check,
                                  settings_get_int(PAGE_PAREN));
-    
+
     gtk_toggle_button_set_active(fuzzy_seg_check,
                                  settings_get_int(FUZZY_SEGMENTATION));
     gtk_toggle_button_set_active(fuzzy_inner_seg_check,
@@ -272,9 +272,9 @@ init(void)
     RETRIEVE(skin_combo, GTK_COMBO_BOX);
 
     init_settings();
-    
+
     gtk_builder_connect_signals(builder, NULL);
-    
+
     g_object_unref(builder);
 }
 
@@ -362,7 +362,7 @@ state_changed()
     int sche_idx = gtk_combo_box_get_active(shuangpin_combo);
     if (sche_idx < UI_SHUANGPIN_SCHEMES_NUM)
         settings_set_string(SHUANGPIN_SCHEME, ui_shuangpin_schemes[sche_idx]);
-    
+
     /* skins */
     settings_set_string(SKIN_NAME, gtk_combo_box_get_active_text(skin_combo));
 
@@ -374,9 +374,9 @@ int main(int argc, char *argv[])
 {
     init_display(&argc, &argv);
     init();
-    
+
     gtk_widget_show(main_wnd);
-    
+
     gtk_main();
     return 0;
 }

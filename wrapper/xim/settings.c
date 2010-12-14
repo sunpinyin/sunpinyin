@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <X11/X.h>
@@ -166,7 +166,7 @@ __hotkey_enc(char* str, void* data)
             break;
         }
     }
-    
+
     strncat(str, keyname, 255);
 }
 
@@ -186,7 +186,7 @@ __hotkey_dec(char* str, void* data)
             strcpy(text, last_ptr);
         else
             strncpy(text, last_ptr, (ptr - last_ptr) * sizeof(char));
-        
+
         if (ptr == NULL) {
             int i;
             for (i = 0; i < nkmap + 1; i++) {
@@ -277,7 +277,7 @@ void
 settings_init()
 {
     memset(setting_data, 0, sizeof(void*) * MAX_KEY);
-    
+
     REGISTER(TRIGGER_KEY, hotkey_t, __hotkey_enc, __hotkey_dec);
     REGISTER(ENG_KEY, hotkey_t, __hotkey_enc, __hotkey_dec);
     REGISTER(ICBAR_POS, position_t, __position_enc, __position_dec);
@@ -296,7 +296,7 @@ settings_init()
     REGISTER(CANCEL_ON_BACKSPACE, int, __int_enc, __int_dec);
     REGISTER(SMART_PUNCT, int, __int_enc, __int_dec);
     REGISTER(SKIN_NAME, varchar, __varchar_enc, __varchar_dec);
-    
+
     __init_default_values();
 }
 
@@ -335,7 +335,7 @@ settings_load()
             break;
         if (line[0] == 0)
             break;
-        
+
         /* strip the last \n */
         line[strlen(line) - 1] = 0;
 

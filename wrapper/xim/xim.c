@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <assert.h>
@@ -110,7 +110,7 @@ _xim_create_ic(XIMHandle* handle, IMChangeICStruct* proto)
     ic->offset_x = __preedit_x;
     ic->offset_y = __preedit_y;
     LOG("XIM_CREATE_IC %d", proto->icid);
-    
+
     return 1;
 }
 
@@ -171,7 +171,7 @@ _xim_get_ic_values(XIMHandle* handle, IMChangeICStruct* proto)
 {
     LOG("XIM_GET_IC_VALUES %d", proto->icid);
     XICAttribute* ic_attr = proto->ic_attr;
-    
+
     int i;
     for (i = 0; i < (int) proto->ic_attr_num; i++) {
         if (strcmp(XNFilterEvents, ic_attr[i].name) == 0) {
@@ -278,7 +278,7 @@ _open_imdkit(const char* _server_name, const char* _locale)
     };
 
     /* this is rarely documentated, the trigger condition is
-     * 
+     *
      * keycode == keysym && (state & modifier_mask) == modifier
      *
      * where keycode and state is the user pressed
@@ -294,11 +294,11 @@ _open_imdkit(const char* _server_name, const char* _locale)
     XIMTriggerKeys keys;
     XIMStyles styles;
     XIMEncodings encodings;
- 
+
     styles.count_styles =
         sizeof (ims_styles_onspot)/sizeof (XIMStyle) - 1;
     styles.supported_styles = ims_styles_onspot;
- 
+
     encodings.count_encodings =
         sizeof (ims_encodings)/sizeof (XIMEncoding) - 1;
     encodings.supported_encodings = ims_encodings;
@@ -311,7 +311,7 @@ _open_imdkit(const char* _server_name, const char* _locale)
     XSelectInput(dpy, win,
                  ExposureMask | ButtonPressMask | ButtonReleaseMask
                  | ButtonMotionMask | VisibilityChangeMask);
-    
+
     XIMHandle* handle =
         IMOpenIM(dpy,
                  IMModifiers, "Xi18n",
@@ -372,7 +372,7 @@ xim_commit_preedit(XIMHandle* handle, const char* result_str)
     IC* ic = icmgr_get_current();
     if (ic == NULL)
         return;
-    
+
     XTextProperty tp;
     IMCommitStruct cs;
     Xutf8TextListToTextProperty(dpy, (char**) &result_str, 1,

@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <sys/types.h>
@@ -129,7 +129,7 @@ __scan_all_ic()
         IC* ic = icmaps[i];
         if (ic == NULL)
             continue;
-        
+
         if (__ic_available(ic) == false) {
             LOG("GC detected garbage %d", ic->icid);
             icmgr_destroy_ic(i);
@@ -154,7 +154,7 @@ icmgr_init(void)
     for (i = 0; i < MAX_IC_NUM; i++) {
         ics[i].icid = i;
         __reset_ic(&ics[i]);
-        
+
         free_stack[free_stack_sz] = &ics[i];
         free_stack_sz++;
     }
@@ -175,26 +175,26 @@ IC*
 icmgr_create_ic(int connect_id)
 {
     static int created_cnt = 0;
-    
+
     created_cnt++;
     if (created_cnt == GC_THRESHOLD || free_stack_sz < MAX_IC_NUM / 3) {
         __scan_all_ic();
         created_cnt = 0;
     }
-    
+
     if (free_stack_sz == 0) {
         LOG("Error free stack empty!!");
         return NULL;
     }
-    
+
     free_stack_sz--;
     IC* ic = free_stack[free_stack_sz];
-    
+
     icmaps[ic->icid] = ic;
     __reset_ic(ic);
-    
+
     /* icmgr_set_current(ic->icid); */
-    
+
     ic->connect_id = connect_id;
 
     /* current_ic = ic; */
@@ -210,13 +210,13 @@ icmgr_destroy_ic(int icid)
 
     memset(ic, 0, sizeof(IC));
     ic->icid = icid;
-    
+
     icmaps[icid] = NULL;
-    
+
     // return to free stack
     free_stack[free_stack_sz] = ic;
     free_stack_sz++;
-    
+
     current_ic = NULL;
 }
 
@@ -279,14 +279,14 @@ icmgr_refresh(void)
         icmgr_ui_refresh();
         return;
     }
-    
+
     /* refresh preedit */
     if (current_ic->is_enabled) {
         if (current_ic->is_english && preedit_status())
             preedit_pause();
         else
             preedit_go_on();
-        
+
         preedit_set_full(current_ic->is_full);
         preedit_set_chinese_punc(current_ic->is_chn_punc);
     } else {

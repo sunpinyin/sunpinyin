@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <stdlib.h>
@@ -96,7 +96,7 @@ zoom_and_composite(GdkPixbuf* src,
     GdkPixbuf* sub = gdk_pixbuf_new_subpixbuf(src, x, y, width, height);
     double x_scale = 1.0 * dst_width / width;
     double y_scale = 1.0 * dst_height / height;
-    
+
     gdk_pixbuf_scale(sub, dst, dst_x, dst_y, dst_width, dst_height,
                      dst_x, dst_y, x_scale, y_scale, GDK_INTERP_BILINEAR);
     g_object_unref(sub);
@@ -120,12 +120,12 @@ paint_background_with_mask(GtkWidget*      wid,
     int width, height;
     int bg_width, bg_height;
     int top, left, bottom, right;
-    
+
     width = wid->allocation.width;
     height = wid->allocation.height;
     bg_width = gdk_pixbuf_get_width(bg);
     bg_height = gdk_pixbuf_get_height(bg);
-    
+
     top = wind->margin_top;
     left = wind->margin_left;
     right = wind->margin_right;
@@ -183,8 +183,8 @@ paint_background_with_mask(GtkWidget*      wid,
     gdk_pixbuf_render_pixmap_and_mask(newbg, NULL, &mask,
                                       wind->alpha_mask_threshold);
     gdk_window_shape_combine_mask(wid->window, mask, 0, 0);
-    
-    g_object_unref(newbg);    
+
+    g_object_unref(newbg);
 }
 
 static void
@@ -326,7 +326,7 @@ window_on_press_or_release(GtkWidget*      wid,
     skin_button_t* pressdown_btn = NULL;
     mouse_cb_t btncb = NULL;
     mouse_cb_t wincb = NULL;
-    
+
     if (press) {
         wincb = (mouse_cb_t) wind->priv->press_cb;
         pressdown_btn = btn;
@@ -347,7 +347,7 @@ window_on_press_or_release(GtkWidget*      wid,
             btncb = (mouse_cb_t) btn->priv->release_cb;
         }
     }
-    
+
     if (btn) {
         need_redraw = set_expose_env(wind, highlight_btn, pressdown_btn);
         if (btncb) {
@@ -402,7 +402,7 @@ skin_window_new(GtkWindow* widget,
     gtk_window_set_default_size(widget,
                                 gdk_pixbuf_get_width(background_image),
                                 gdk_pixbuf_get_height(background_image));
-    
+
     /* set rgba */
     GdkScreen* screen = gdk_screen_get_default();
     GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
@@ -411,13 +411,13 @@ skin_window_new(GtkWindow* widget,
     } else {
         fprintf(stderr, "Cannot set rgba colormap!\n");
     }
-    
+
     /* signal expose */
     gtk_widget_set_events(wind->widget,
                           GDK_EXPOSURE_MASK | GDK_POINTER_MOTION_MASK
                           | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
     gtk_widget_realize(wind->widget);
-    
+
     g_signal_connect(wind->widget, "expose-event",
                      G_CALLBACK(window_on_expose), wind);
     g_signal_connect(wind->widget, "configure-event",
@@ -496,10 +496,10 @@ skin_button_set_image(skin_button_t* btn,
     gboolean need_set = (btn->normal_image != normal_image) ||
         (btn->highlight_image != highlight_image) ||
         (btn->pressdown_image != pressdown_image);
-    
+
     if (!need_set)
         return;
-    
+
     btn->normal_image = normal_image;
     btn->highlight_image = highlight_image;
     btn->pressdown_image = pressdown_image;
@@ -530,7 +530,7 @@ skin_label_new(char*  font,
     label->layout = NULL;
     label->priv = malloc(sizeof(skin_label_priv_t));
     memset(label->priv, 0, sizeof(skin_label_priv_t));
-    
+
     return label;
 }
 

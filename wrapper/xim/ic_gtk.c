@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <gtk/gtk.h>
@@ -120,7 +120,7 @@ __toggle_mode(gboolean mode, GtkWidget* btn,
     GtkWidget* img_wid = gtk_tool_button_get_icon_widget(
         GTK_TOOL_BUTTON(btn));
     const char* img_path = NULL;
-    
+
     if (mode) {
         img_path = img_path1;
     } else {
@@ -149,7 +149,7 @@ static gboolean
 icmgr_gtk_init(const char* name)
 {
     icbar_window = ui_create_window();
-    
+
     gtk_widget_add_events(icbar_window,
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
                           | GDK_POINTER_MOTION_MASK);
@@ -166,20 +166,20 @@ icmgr_gtk_init(const char* name)
                                   G_CALLBACK(toggle_full));
     icbar_chn_punc_btn = __create_btn(false, CHN_PUNC_ICON_PNG,
                                       G_CALLBACK(toggle_chn_punc));
-    
+
     GtkWidget* logo = gtk_image_new_from_file(LOGO_FILE);
     gtk_widget_add_events(logo,
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-    
+
     GtkWidget* box = gtk_hbox_new(false, 1);
 
     gtk_box_pack_start(GTK_BOX(box), logo, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), icbar_status_btn, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), icbar_full_btn, false, false, 1);
     gtk_box_pack_start(GTK_BOX(box), icbar_chn_punc_btn, false, false, 1);
-    
+
     gtk_container_add(GTK_CONTAINER(icbar_window), box);
-    
+
     gtk_widget_show_all(box);
     return TRUE;
 }
@@ -198,17 +198,17 @@ icmgr_gtk_refresh(void)
     __toggle_mode(ic->is_full, icbar_full_btn,
                   FULL_ICON_PNG, HALF_ICON_PNG);
     __toggle_mode(ic->is_chn_punc, icbar_chn_punc_btn,
-                  CHN_PUNC_ICON_PNG, ENG_PUNC_ICON_PNG);    
-    
+                  CHN_PUNC_ICON_PNG, ENG_PUNC_ICON_PNG);
+
     position_t pos;
     int width, height;
     gtk_window_get_size(GTK_WINDOW(icbar_window), &width, &height);
     settings_get(ICBAR_POS, &pos);
     adjust_position(&(pos.x), &(pos.y), width, height);
     settings_set(ICBAR_POS, &pos);
-    
-    gtk_window_move(GTK_WINDOW(icbar_window), pos.x, pos.y);
+
     gtk_widget_show(icbar_window);
+    gtk_window_move(GTK_WINDOW(icbar_window), pos.x, pos.y);
 }
 
 static void

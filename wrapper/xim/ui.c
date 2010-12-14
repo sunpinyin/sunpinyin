@@ -42,6 +42,10 @@
 #define HAN_ICON SUNPINYIN_XIM_ICON_DIR"/han.svg"
 #define LOGO_FILE_BIG SUNPINYIN_XIM_ICON_DIR"/sunpinyin-logo-big.png"
 
+#define SYSTEM_SKIN_DIR SUNPINYIN_XIM_SETTING_DIR"/skins"
+#define USER_SKIN_DIR "%s/.sunpinyin/xim_skins"
+
+
 static GtkStatusIcon* icbar_tray;
 static GtkWidget* popup_menu;
 
@@ -126,20 +130,25 @@ ui_create_window()
 }
 
 static GdkPixbuf*
-load_pixbuf(const char* skin_name, const char* filename)
+load_pixbuf(const char* skin_name, const char* filename, gboolean sys_dir)
 {
     char filepath[256];
-    snprintf(filepath, 256, "%s/.sunpinyin/xim_skins/%s/%s.png",
-             getenv("HOME"), skin_name, filename);
+    if (sys_dir) {
+        snprintf(filepath, 256, SYSTEM_SKIN_DIR"/%s/%s.png", skin_name,
+                 filename);
+    } else {
+        snprintf(filepath, 256, USER_SKIN_DIR"/%s/%s.png", getenv("HOME"),
+                 skin_name, filename);
+    }
     return gdk_pixbuf_new_from_file(filepath, NULL);
 }
 
 #define FILL_PIXBUF(name)                       \
-    info->name = load_pixbuf(skin_name, name)
+    info->name = load_pixbuf(skin_name, name, sys_dir)
 
 static void
 fill_button_pixbuf(skin_button_info_t* info, const char* skin_name,
-                   const char* normal1, const char* normal2,
+                   gboolean sys_dir, const char* normal1, const char* normal2,
                    const char* highlight1, const char* highlight2,
                    const char* pressdown1, const char* pressdown2)
 {
@@ -167,12 +176,18 @@ skin_info_t*
 ui_skin_new(const char* skin_name)
 {
     char filepath[256];
-    snprintf(filepath, 256, "%s/.sunpinyin/xim_skins/%s/info",
-             getenv("HOME"), skin_name);
+    gboolean sys_dir = TRUE;
+    snprintf(filepath, 256, SYSTEM_SKIN_DIR"/%s/info", skin_name);
     FILE* fp = fopen(filepath, "r");
     if (!fp) {
-        fprintf(stderr, "Cannot open skin %s\n", skin_name);
-        return NULL;
+        sys_dir = FALSE;
+        snprintf(filepath, 256, USER_SKIN_DIR"/%s/info", getenv("HOME"),
+                 skin_name);
+        fp = fopen(filepath, "r");
+        if (!fp) {
+            fprintf(stderr, "Cannot open skin %s\n", skin_name);
+            return NULL;
+        }
     }
     skin_info_t* info = malloc(sizeof(skin_info_t));
     fscanf(fp, "%d %d %d %d %d %d\n", &(info->eng_btn.x), &(info->eng_btn.y),
@@ -188,15 +203,16 @@ ui_skin_new(const char* skin_name)
     
     fclose(fp);
 
-    fill_button_pixbuf(&(info->eng_btn), skin_name, "eng", "han",
+    fill_button_pixbuf(&(info->eng_btn), skin_name, sys_dir, "eng", "han",
                        "eng-hover", "han-hover", "eng-press", "han-press");
-    fill_button_pixbuf(&(info->full_btn), skin_name, "full", "half",
+    fill_button_pixbuf(&(info->full_btn), skin_name, sys_dir, "full", "half",
                        "full-hover", "half-hover", "full-press", "half-press");
-    fill_button_pixbuf(&(info->punc_btn), skin_name, "han-punc", "eng-punc",
+    fill_button_pixbuf(&(info->punc_btn), skin_name, sys_dir,
+                       "han-punc", "eng-punc",
                        "han-punc-hover", "eng-punc-hover",
                        "han-punc-press", "eng-punc-press");
-    info->icbar_background = load_pixbuf(skin_name, "icbar");
-    info->preedit_background = load_pixbuf(skin_name, "preedit");
+    info->icbar_background = load_pixbuf(skin_name, "icbar", sys_dir);
+    info->preedit_background = load_pixbuf(skin_name, "preedit", sys_dir);
     return info;
 }
 

@@ -147,6 +147,7 @@ def DoInstall():
                                'data/sunpinyin-logo-big.png',
                                'data/sunpinyin-logo.png'])
     data_target = env.Install(data_dir, ['data/settings_ui.xml'])
+    data_target += env.Install(data_dir + 'skins/', Glob('data/skins/*'))
     env.Alias('install-bin', bin_target)
     env.Alias('install-data', [icon_target, data_target])
 

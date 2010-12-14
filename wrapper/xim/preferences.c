@@ -114,33 +114,64 @@ static const int ui_keysym_model[] =
     } while(0)
 
 static int
+fill_skin_list(const char* dirpath, varchar names[], int idx)
+{
+    DIR* dir = opendir(dirpath);
+    if (!dir) return idx;
+
+    struct dirent* ent = NULL;
+    while ((ent = readdir(dir))) {
+        if (ent->d_name[0] == '.') continue;
+        if (strcmp(ent->d_name, "classic") == 0) continue;
+
+        strncpy(names[idx], ent->d_name, sizeof(varchar));
+        idx++;
+    }
+    closedir(dir);
+    return idx;
+}
+
+#define SYSTEM_SKIN_DIR SUNPINYIN_XIM_SETTING_DIR"/skins"
+#define USER_SKIN_DIR "%s/.sunpinyin/xim_skins"
+#define MAX_SKINS 256
+
+static int
 list_skins(const char* current_skin_name)
 {
     int idx_ret = 0;
+    int skin_count = 0;
+    varchar skins[MAX_SKINS];
     
     GtkListStore* model = GTK_LIST_STORE(gtk_combo_box_get_model(skin_combo));
     GtkTreeIter iter;
     gtk_list_store_append(model, &iter);
     gtk_list_store_set(model, &iter, 0, "classic", -1);
-    
-    char dirpath[256];
-    snprintf(dirpath, 256, "%s/.sunpinyin/xim_skins/", getenv("HOME"));
-    DIR* dir = opendir(dirpath);
-    if (!dir) return 0;
 
-    int i = 1;
-    struct dirent* ent = NULL;
-    while ((ent = readdir(dir))) {
-        if (ent->d_name[0] == '.') continue;
-        /* append to the list store */
-        gtk_list_store_append(model, &iter);
-        gtk_list_store_set(model, &iter, 0, ent->d_name, -1);
-        if (strcmp(ent->d_name, current_skin_name) == 0) {
+    skin_count = fill_skin_list(SYSTEM_SKIN_DIR, skins, skin_count);
+    varchar dirpath;
+    snprintf(dirpath, 256, USER_SKIN_DIR, getenv("HOME"));
+    skin_count = fill_skin_list(dirpath, skins, skin_count);
+
+    /* sort and unique the names */
+    qsort(skins, skin_count, sizeof(varchar),
+          (int (*)(const void*, const void*)) strcmp);
+
+    int i, j;
+    for (i = 0; i < skin_count; i++) {
+        for (j = i + 1; j < skin_count; j++) {
+            if (strcmp(skins[i], skins[j]) == 0) {
+                i = j;
+            } else {
+                break;
+            }
+        }
+        if (strcmp(skins[i], current_skin_name) == 0) {
             idx_ret = i;
         }
-        i++;
+        gtk_list_store_append(model, &iter);
+        gtk_list_store_set(model, &iter, 0, skins[i], -1);
     }
-    closedir(dir);
+
     return idx_ret;
 }
 

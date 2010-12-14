@@ -91,7 +91,7 @@ zoom_and_composite(GdkPixbuf* src,
                    int        dst_width,
                    int        dst_height)
 {
-    if (width == 0 || height == 0)
+    if (width <= 0 || height <= 0 || dst_width <= 0 || dst_height <= 0)
         return;
     GdkPixbuf* sub = gdk_pixbuf_new_subpixbuf(src, x, y, width, height);
     double x_scale = 1.0 * dst_width / width;

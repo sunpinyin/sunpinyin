@@ -156,7 +156,7 @@ list_skins(const char* current_skin_name)
     qsort(skins, skin_count, sizeof(varchar),
           (int (*)(const void*, const void*)) strcmp);
 
-    int i, j;
+    int i, j, idx = 1;
     for (i = 0; i < skin_count; i++) {
         for (j = i + 1; j < skin_count; j++) {
             if (strcmp(skins[i], skins[j]) == 0) {
@@ -166,10 +166,11 @@ list_skins(const char* current_skin_name)
             }
         }
         if (strcmp(skins[i], current_skin_name) == 0) {
-            idx_ret = i + 1;
+            idx_ret = idx;
         }
         gtk_list_store_append(model, &iter);
         gtk_list_store_set(model, &iter, 0, skins[i], -1);
+        idx++;
     }
 
     return idx_ret;

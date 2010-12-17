@@ -99,8 +99,6 @@ ibus_sunpinyin_engine_class_init (IBusSunPinyinEngineClass *klass)
     engine_class->reset             = ibus_sunpinyin_engine_reset;
     engine_class->enable            = ibus_sunpinyin_engine_enable;
     engine_class->disable           = ibus_sunpinyin_engine_disable;
-    engine_class->focus_in          = ibus_sunpinyin_engine_focus_in;
-    engine_class->focus_out         = ibus_sunpinyin_engine_focus_out;
     engine_class->page_up           = ibus_sunpinyin_engine_page_up;
     engine_class->page_down         = ibus_sunpinyin_engine_page_down;
     engine_class->cursor_up         = ibus_sunpinyin_engine_cursor_up;

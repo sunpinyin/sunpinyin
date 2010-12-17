@@ -38,6 +38,8 @@
 
 #include <ibus.h>
 
+extern "C" {
+
 void ibus_sunpinyin_engine_init(IBusEngine *engine);
 void ibus_sunpinyin_engine_destroy(IBusEngine *engine);
 gboolean ibus_sunpinyin_engine_process_key_event(IBusEngine *engine,
@@ -62,5 +64,6 @@ void ibus_sunpinyin_engine_candidate_clicked(IBusEngine *engine,
                                              guint index,
                                              guint button,
                                              guint state);
+};
 
 #endif // SUNPINYIN_ENGINE_PROXY_H

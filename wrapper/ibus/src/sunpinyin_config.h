@@ -99,11 +99,19 @@ private:
     /**
      * called by ibus when a value changed in config
      */
+#if IBUS_CHECK_VERSION(1, 3, 99)
     static void on_config_value_changed(IBusConfig *config,
                                         const gchar *section,
                                         const gchar *name,
                                         GVariant *value,
                                         SunPinyinConfig *user_data);
+#else
+    static void on_config_value_changed(IBusConfig *config,
+                                        const gchar *section,
+                                        const gchar *name,
+                                        GValue *value,
+                                        SunPinyinConfig *user_data);
+#endif
 
     std::string get_scheme_name(CSunpinyinSessionFactory::EPyScheme scheme);
     CSunpinyinSessionFactory::EPyScheme get_scheme(const std::string& name);

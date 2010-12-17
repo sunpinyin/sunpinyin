@@ -117,7 +117,10 @@ static int
 fill_skin_list(const char* dirpath, varchar names[], int idx)
 {
     DIR* dir = opendir(dirpath);
-    if (!dir) return idx;
+    if (!dir) {
+        mkdir(dirpath, 0644);
+        return idx;
+    }
 
     struct dirent* ent = NULL;
     while ((ent = readdir(dir))) {
@@ -149,7 +152,7 @@ list_skins(const char* current_skin_name)
 
     skin_count = fill_skin_list(SYSTEM_SKIN_DIR, skins, skin_count);
     varchar dirpath;
-    snprintf(dirpath, 256, USER_SKIN_DIR, getenv("HOME"));
+    snprintf(dirpath, sizeof(varchar), USER_SKIN_DIR, getenv("HOME"));
     skin_count = fill_skin_list(dirpath, skins, skin_count);
 
     /* sort and unique the names */

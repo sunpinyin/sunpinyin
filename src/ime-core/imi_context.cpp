@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -80,11 +80,11 @@ void CLatticeFrame::print (std::string prefix)
 
     prefix += "    ";
     printf ("  Lexicon States:\n");
-    for_each (m_lexiconStates.begin (), m_lexiconStates.end (), 
+    for_each (m_lexiconStates.begin (), m_lexiconStates.end (),
               bind2nd (mem_fun_ref (&TLexiconState::print), prefix));
 
     printf ("  Lattice States:\n");
-    for_each (m_latticeStates.begin (), m_latticeStates.end (), 
+    for_each (m_latticeStates.begin (), m_latticeStates.end (),
               bind2nd (mem_fun_ref (&TLatticeState::print), prefix));
     printf ("\n");
 }
@@ -102,12 +102,14 @@ void CIMIContext::printLattice ()
     }
 }
 
-CIMIContext::CIMIContext () 
-    : m_tailIdx(1), m_pModel(NULL), m_pPinyinTrie(NULL), m_pUserDict(NULL), m_pHistory(NULL), 
-      m_historyPower(5), m_bFullSymbolForwarding(false), m_pGetFullSymbolOp(NULL),
-      m_bFullPunctForwarding(true), m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
-      m_candiStarts(0), m_candiEnds(0), m_csLevel(0), m_bNonCompleteSyllable(true),
-      m_pPySegmentor(0), m_bOmitPunct(false)
+CIMIContext::CIMIContext ()
+    : m_tailIdx(1), m_pModel(NULL), m_pPinyinTrie(NULL), m_pUserDict(NULL),
+      m_pHistory(NULL), m_historyPower(5), m_bFullSymbolForwarding(false),
+      m_pGetFullSymbolOp(NULL), m_bFullPunctForwarding(true),
+      m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
+      m_candiStarts(0), m_candiEnds(0), m_csLevel(0),
+      m_bNonCompleteSyllable(true), m_pPySegmentor(0), m_bOmitPunct(false),
+      m_nMaxBest(2)
 {
     m_lattice.resize (MAX_LATTICE_LENGTH);
     m_lattice[0].m_latticeStates.push_back (TLatticeState (-1.0, 0));
@@ -122,7 +124,7 @@ void CIMIContext::setCoreData (CIMIData *pCoreData)
 void CIMIContext::clear ()
 {
     _clearFrom (1);
-    _clearBestPaths ();
+    _clearPaths ();
     m_tailIdx = 1;
     m_candiStarts = m_candiEnds = 0;
 }
@@ -145,8 +147,8 @@ bool CIMIContext::_buildLattice (IPySegmentor::TSegmentVec &segments, unsigned r
 
     IPySegmentor::TSegmentVec::const_iterator it  = segments.begin ();
     IPySegmentor::TSegmentVec::const_iterator ite = segments.end ();
-   
-    unsigned i, j=0; 
+
+    unsigned i, j=0;
     for (; it != ite; ++it) {
         i = it->m_start;
         j = i + it->m_len;
@@ -276,7 +278,7 @@ void CIMIContext::_forwardPunctChar (unsigned i, unsigned j, unsigned ch)
 {
     CLatticeFrame &fr = m_lattice[j];
 
-    wstring wstr; 
+    wstring wstr;
     unsigned wid = 0;
 
     if (m_pGetFullPunctOp) {
@@ -300,7 +302,7 @@ void CIMIContext::_forwardOrdinaryChar (unsigned i, unsigned j, unsigned ch)
 {
     CLatticeFrame &fr = m_lattice[j];
 
-    wstring wstr; 
+    wstring wstr;
     unsigned wid = 0;
 
     if (m_pGetFullSymbolOp) {
@@ -333,9 +335,7 @@ bool CIMIContext::searchFrom (unsigned idx)
 {
     bool affectCandidates = (idx <= m_candiEnds);
 
-    _clearBestPaths ();
-
-    for (; idx<=m_tailIdx; ++idx) {
+    for (; idx <= m_tailIdx; ++idx) {
         CLatticeFrame &fr = m_lattice[idx];
 
         if (fr.m_type == CLatticeFrame::UNUSED)
@@ -344,8 +344,11 @@ bool CIMIContext::searchFrom (unsigned idx)
         fr.m_latticeStates.clear ();
 
         /* user selected word might be cut in next step */
-        if (fr.m_bwType & CLatticeFrame::USER_SELECTED)
-            _transferBetween (fr.m_bestWord.m_start, idx, fr.m_bestWord.m_pLexiconState, fr.m_bestWord.m_wordId);
+        if (fr.m_bwType & CLatticeFrame::USER_SELECTED) {
+            _transferBetween (fr.m_selWord.m_start, idx,
+                              fr.m_selWord.m_pLexiconState,
+                              fr.m_selWord.m_wordId);
+        }
 
         CLexiconStates::iterator it  = fr.m_lexiconStates.begin ();
         CLexiconStates::iterator ite = fr.m_lexiconStates.end ();
@@ -360,37 +363,59 @@ bool CIMIContext::searchFrom (unsigned idx)
             if (lxst.m_start == m_candiStarts && idx > m_candiEnds)
                 affectCandidates = true;
 
-            // only selected the word with higher unigram probablities, and 
+            // only selected the word with higher unigram probablities, and
             // narrow the search deepth and lower the initial score for fuzzy
             // syllables
             int maxsz = it->m_bFuzzy? MAX_LEXICON_TRIES/2: MAX_LEXICON_TRIES;
             double ic = it->m_bFuzzy? 0.5: 1.0;
 
-            int sz = word_num<maxsz? word_num: maxsz;
+            int sz = word_num < maxsz ? word_num: maxsz;
             int i = 0, count = 0;
-            for (i = 0; count < sz && i < sz && (words[i].m_bSeen || count < 2); ++i) {
+            while (count < sz && i < sz && (words[i].m_bSeen || count < 2)) {
                 if (m_csLevel >= words[i].m_csLevel) {
-                    _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id, ic);
+                    _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id,
+                                      ic);
                     ++ count;
                 }
+                i++;
             }
 
             /* try extra words in history cache */
             if (m_pHistory) {
-                for (; i < word_num; ++i) {
-                    if (m_csLevel >= words[i].m_csLevel && m_pHistory->seenBefore (words[i].m_id))
-                        _transferBetween (lxst.m_start, idx, &lxst, words[i].m_id);
+                while (i < word_num) {
+                    if (m_csLevel >= words[i].m_csLevel
+                        && m_pHistory->seenBefore (words[i].m_id))
+                        _transferBetween (lxst.m_start, idx, &lxst,
+                                          words[i].m_id);
+                    i++;
                 }
             }
         }
     }
 
-    _backTraceBestPaths ();
+    _clearPaths ();
+    m_path.clear ();
+    m_segPath.clear ();
+    m_nBest = 0;
+    for (size_t i = 0; i < m_nMaxBest; i++) {
+        TPath path, segpath;
+        if (_backTracePaths(m_nBest, path, segpath)) {
+            m_path.push_back (path);
+            m_segPath.push_back (segpath);
+            m_nBest++;
+        }
+    }
+    printf("nbest: %d\n", m_nBest);
+
+    if (m_pPySegmentor && m_nBest > 0 && !m_segPath[0].empty())
+        m_pPySegmentor->notify_best_segpath(m_segPath[0]);
 
     return affectCandidates;
 }
 
-void CIMIContext::_transferBetween (unsigned start, unsigned end, TLexiconState* plxst, unsigned wid, double ic)
+void CIMIContext::_transferBetween (unsigned start, unsigned end,
+                                    TLexiconState* plxst, unsigned wid,
+                                    double ic)
 {
     CLatticeFrame &start_fr = m_lattice[start];
     CLatticeFrame &end_fr   = m_lattice[end];
@@ -398,18 +423,24 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end, TLexiconState*
     TLatticeState node (-1.0, end, plxst);
     TSentenceScore efic (ic);
 
-    if ((end_fr.m_bwType & CLatticeFrame::USER_SELECTED) && end_fr.m_bestWord.m_wordId == wid)
+    if ((end_fr.m_bwType & CLatticeFrame::USER_SELECTED)
+        && end_fr.m_selWord.m_wordId == wid)
         efic = TSentenceScore (30000, 1.0);
 
-    static double s_history_distribution[11] = {0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50};
+    static double s_history_distribution[] = {
+        0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50
+    };
+
     double weight_h = s_history_distribution[m_historyPower];
     double weight_s = 1.0 - weight_h;
 
     CLatticeStates::iterator it  = start_fr.m_latticeStates.begin();
     CLatticeStates::iterator ite = start_fr.m_latticeStates.end();
 
-    // for 1-length lattice states, replace ending_word_id (comma) with none_word_id (recognized by CThreadSlm)
-    if (wid == ENDING_WORD_ID && it != ite && it->m_pBackTraceNode && it->m_pBackTraceNode->m_frIdx == 0)
+    // for 1-length lattice states, replace ending_word_id (comma)
+    // with none_word_id (recognized by CThreadSlm)
+    if (wid == ENDING_WORD_ID && it != ite && it->m_pBackTraceNode
+        && it->m_pBackTraceNode->m_frIdx == 0)
         wid = NONE_WORD_ID;
 
     for (; it != ite; ++it) {
@@ -419,31 +450,36 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end, TLexiconState*
         double ts = m_pModel->transfer(it->m_slmState, wid, node.m_slmState);
         m_pModel->historify(node.m_slmState);
 
-        // backward to psuedo root, so wid is probably a user word, save the wid in idx field,
-        // so that later we could get it via CThreadSlm::lastWordId, to calculate p_{cache} correctly.
-        if (node.m_slmState.getLevel() == 0 && m_pHistory && m_pHistory->seenBefore(wid))
+        // backward to psuedo root, so wid is probably a user word,
+        // save the wid in idx field, so that later we could get it via
+        // CThreadSlm::lastWordId, to calculate p_{cache} correctly.
+        if (node.m_slmState.getLevel() == 0
+            && m_pHistory && m_pHistory->seenBefore(wid))
             node.m_slmState.setIdx(wid);  // an psuedo unigram node state
 
         if (m_pHistory) {
             unsigned history[2] = {m_pModel->lastWordId(it->m_slmState), wid};
             double hpr = m_pHistory->pr(history, history+2);
-            ts = weight_s * ts + weight_h*hpr;
+            ts = weight_s * ts + weight_h * hpr;
         }
 
         node.m_score = it->m_score * efic * TSentenceScore(ts);
         end_fr.m_latticeStates.push_back (node);
     }
+    printf("transfer from %d to %d, size is %d\n", start, end, end_fr.m_latticeStates.size());
 }
 
-void CIMIContext::_backTraceBestPaths ()
+bool CIMIContext::_backTracePaths(int rank, TPath& path, TPath& segmentPath)
 {
     CLatticeStates& tail_states = m_lattice[m_tailIdx].m_latticeStates;
+    path.clear();
+    segmentPath.clear();
 
-    // there must be some transfer errors
-    if (!tail_states.size())
-        return;
+    printf("all best: %d, tail is %d\n", tail_states.size(), m_tailIdx);
+    if (rank >= tail_states.size())
+        return false;
 
-    TLatticeState *bs = &(tail_states[0]);
+    TLatticeState *bs = &(tail_states[rank]);
 
     while (bs->m_pBackTraceNode) {
         unsigned start = bs->m_pBackTraceNode->m_frIdx;
@@ -451,61 +487,71 @@ void CIMIContext::_backTraceBestPaths ()
         CLatticeFrame & end_fr = m_lattice[end];
 
         if (! (end_fr.m_bwType & CLatticeFrame::USER_SELECTED)) {
-            end_fr.m_bwType |= CLatticeFrame::BESTWORD;
+            const TWCHAR* cwstr = NULL;
+            if (end_fr.m_wstr.empty()) {
+                cwstr = _getWstr(bs->m_backTraceWordId);
+            } else {
+                cwstr = end_fr.m_wstr.c_str();
+            }
+            CCandidate candi(start, end, bs->m_pLexiconState, cwstr,
+                             bs->m_backTraceWordId);
 
-            end_fr.m_bestWord.m_start = start;
-            end_fr.m_bestWord.m_end = end;
-            end_fr.m_bestWord.m_pLexiconState = bs->m_pLexiconState;
-            end_fr.m_bestWord.m_wordId = bs->m_backTraceWordId;
-            end_fr.m_bestWord.m_cwstr = end_fr.m_wstr.empty()?
-                                        _getWstr (bs->m_backTraceWordId):
-                                        end_fr.m_wstr.c_str();
+            end_fr.m_bwType |= CLatticeFrame::BESTWORD;
+            end_fr.m_bestWords[rank] = candi;
+            if (rank == 0) {
+                // select rank 0 sentence by default
+                end_fr.m_selWord = candi;
+            }
         }
 
         if (bs->m_pBackTraceNode->m_pLexiconState) {
-            std::vector<unsigned> seg_path = bs->m_pBackTraceNode->m_pLexiconState->m_seg_path;
+            std::vector<unsigned> seg_path =
+                bs->m_pBackTraceNode->m_pLexiconState->m_seg_path;
             std::vector<unsigned>::reverse_iterator it  = seg_path.rbegin();
             std::vector<unsigned>::reverse_iterator ite = seg_path.rend();
 
             for (; it != seg_path.rend(); ++it) {
-                if (m_bestSegPath.empty() || m_bestSegPath.back() != *it)
-                    m_bestSegPath.push_back (*it);
+                if (segmentPath.empty() || segmentPath.back() != *it)
+                    segmentPath.push_back (*it);
             }
         }
 
-        m_bestPath.push_back (end);
+        path.push_back(end);
         bs = bs->m_pBackTraceNode;
     }
 
-    std::reverse (m_bestPath.begin(), m_bestPath.end());
-    std::reverse (m_bestSegPath.begin(), m_bestSegPath.end());
+    std::reverse (path.begin(), path.end());
+    std::reverse (segmentPath.begin(), segmentPath.end());
 
-    if (m_pPySegmentor)
-        m_pPySegmentor->notify_best_segpath (m_bestSegPath);
-
-#ifdef DEBUG
+//#ifdef DEBUG
     std::vector<unsigned>::iterator it;
 
-    printf ("best lattice path: ");
-    for (it = m_bestPath.begin(); it != m_bestPath.end(); ++it)
-        printf ("%d ", *it);
+    printf("trace lattice path[%d]: ", rank);
+    for (it = path.begin(); it != path.end(); ++it)
+        printf("%d ", *it);
+    printf("\n");
 
-    printf ("best segments path: ");
-    for (it = m_bestSegPath.begin(); it != m_bestSegPath.end(); ++it)
-        printf ("%d ", *it);
-    printf ("\n");
-#endif
+    printf("trace segments path[%d]: ", rank);
+    for (it = segmentPath.begin(); it != segmentPath.end(); ++it)
+        printf("%d ", *it);
+    printf("\n");
+//#endif
 
+    return true;
 }
 
-void CIMIContext::_clearBestPaths ()
+void CIMIContext::_clearPaths ()
 {
-    m_bestPath.clear ();
-    m_bestSegPath.clear ();
+    m_path.clear();
+    m_segPath.clear();
 }
 
-unsigned CIMIContext::getBestSentence (wstring& result, unsigned start, unsigned end)
+unsigned CIMIContext::getBestSentence (wstring& result, int rank,
+                                       unsigned start, unsigned end)
 {
+    if (rank < 0 || rank >= m_nBest)
+        return 0;
+
     result.clear();
 
     if (UINT_MAX == end) end = m_tailIdx - 1;
@@ -516,16 +562,20 @@ unsigned CIMIContext::getBestSentence (wstring& result, unsigned start, unsigned
     unsigned i = end, nWordConverted = 0;
     while (i > start) {
         CLatticeFrame &fr = m_lattice[i];
-        result.insert (0, fr.m_bestWord.m_cwstr);
-        i = fr.m_bestWord.m_start;
+        result.insert (0, fr.m_bestWords[rank].m_cwstr);
+        i = fr.m_bestWords[rank].m_start;
         nWordConverted ++;
     }
 
     return nWordConverted;
 }
 
-unsigned CIMIContext::getBestSentence (std::vector<unsigned>& result, unsigned start, unsigned end)
+unsigned CIMIContext::getBestSentence (std::vector<unsigned>& result, int rank,
+                                       unsigned start, unsigned end)
 {
+    if (rank < 0 || rank >= m_nBest)
+        return 0;
+
     result.clear();
 
     if (UINT_MAX == end) end = m_tailIdx - 1;
@@ -536,11 +586,51 @@ unsigned CIMIContext::getBestSentence (std::vector<unsigned>& result, unsigned s
     unsigned i = end, nWordConverted = 0;
     while (i > start) {
         CLatticeFrame &fr = m_lattice[i];
-        result.insert (result.begin(), fr.m_bestWord.m_wordId);
-        i = fr.m_bestWord.m_start;
-        nWordConverted ++;
+        result.insert (result.begin(), fr.m_bestWords[rank].m_wordId);
+        i = fr.m_bestWords[rank].m_start;
+        nWordConverted++;
     }
 
+    return nWordConverted;
+}
+
+
+unsigned CIMIContext::getSelectedSentence (wstring& result,
+                                           unsigned start, unsigned end)
+{
+    result.clear();
+
+    if (UINT_MAX == end) end = m_tailIdx - 1;
+    while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
+        end--;
+
+    unsigned i = end, nWordConverted = 0;
+    while (i > start) {
+        CLatticeFrame &fr = m_lattice[i];
+        result.insert (0, fr.m_selWord.m_cwstr);
+        i = fr.m_selWord.m_start;
+        nWordConverted++;
+    }
+    return nWordConverted;
+}
+
+
+unsigned CIMIContext::getSelectedSentence (std::vector<unsigned>& result,
+                                           unsigned start, unsigned end)
+{
+    result.clear();
+
+    if (UINT_MAX == end) end = m_tailIdx - 1;
+    while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
+        end--;
+
+    unsigned i = end, nWordConverted = 0;
+    while (i > start) {
+        CLatticeFrame &fr = m_lattice[i];
+        result.insert (result.begin(), fr.m_selWord.m_wordId);
+        i = fr.m_selWord.m_start;
+        nWordConverted++;
+    }
     return nWordConverted;
 }
 
@@ -575,14 +665,14 @@ const TWCHAR *CIMIContext::_getWstr (unsigned wid)
 void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
 {
     TCandiPair cp;
-    static std::map<wstring, TCandiPair> map;
-    std::map<wstring, TCandiPair>::iterator it_map;
+    static std::map<wstring, TCandiPair> candidates_map;
+    std::map<wstring, TCandiPair>::iterator candidates_it;
 
-    map.clear();
+    candidates_map.clear();
     result.clear();
 
     std::vector<unsigned> st;
-    getBestSentence (st, frIdx);
+    getSelectedSentence (st, frIdx);
 
     cp.m_candi.m_start = m_candiStarts = frIdx++;
 
@@ -595,12 +685,17 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
             continue;
 
         cp.m_candi.m_end = frIdx;
-        if (fr.m_bwType != CLatticeFrame::NO_BESTWORD && fr.m_bestWord.m_start == m_candiStarts) {
-            cp.m_candi = fr.m_bestWord;
-            cp.m_Rank = TCandiRank(fr.m_bwType & CLatticeFrame::USER_SELECTED,
-                                   fr.m_bwType & CLatticeFrame::BESTWORD,
-                                   0, false, 0);
-            map [cp.m_candi.m_cwstr] = cp;
+        if (fr.m_bwType != CLatticeFrame::NO_BESTWORD) {
+            for (int i = 0; i < m_nBest; i++) {
+                if (fr.m_bestWords[i].m_start != m_candiStarts)
+                    continue;
+                cp.m_candi = fr.m_bestWords[i];
+                cp.m_Rank =
+                    TCandiRank(fr.m_bwType & CLatticeFrame::USER_SELECTED,
+                               fr.m_bwType & CLatticeFrame::BESTWORD,
+                               0, false, 0);
+                candidates_map [cp.m_candi.m_cwstr] = cp;
+            }
         }
 
         bool found = false;
@@ -630,11 +725,15 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                     continue;
 
                 //sorting according to the order in PinYinTire
-                cp.m_Rank = TCandiRank(false, !st.empty() && st.front() == cp.m_candi.m_wordId,
-                                       len, false, i);
-                it_map = map.find(cp.m_candi.m_cwstr);
-                if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
-                    map [cp.m_candi.m_cwstr] = cp;
+                cp.m_Rank =
+                    TCandiRank(false,
+                               !st.empty() && st.front() == cp.m_candi.m_wordId,
+                               len, false, i);
+                candidates_it = candidates_map.find(cp.m_candi.m_cwstr);
+                if (candidates_it == candidates_map.end()
+                    || cp.m_Rank < candidates_it->second.m_Rank
+                    || cp.m_candi.m_wordId > INI_USRDEF_WID)
+                    candidates_map[cp.m_candi.m_cwstr] = cp;
             }
         }
 
@@ -660,9 +759,11 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                 if (0 == len) len = 1;
                 cp.m_Rank = TCandiRank(false, !st.empty() && st.front() == cp.m_candi.m_wordId,
                                        len, true, ltst.m_score/ltst.m_pBackTraceNode->m_score);
-                it_map = map.find(cp.m_candi.m_cwstr);
-                if (it_map == map.end() || cp.m_Rank < it_map->second.m_Rank || cp.m_candi.m_wordId > INI_USRDEF_WID)
-                    map[cp.m_candi.m_cwstr] = cp;
+                candidates_it = candidates_map.find(cp.m_candi.m_cwstr);
+                if (candidates_it == candidates_map.end()
+                    || cp.m_Rank < candidates_it->second.m_Rank
+                    || cp.m_candi.m_wordId > INI_USRDEF_WID)
+                    candidates_map[cp.m_candi.m_cwstr] = cp;
             }
         }
 
@@ -671,10 +772,11 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
 
     std::vector<TCandiPairPtr> vec;
 
-    vec.reserve(map.size());
-    std::map<wstring, TCandiPair>::iterator it_mapE = map.end();
-    for (it_map = map.begin(); it_map != it_mapE; ++it_map)
-        vec.push_back(TCandiPairPtr(&(it_map->second)));
+    vec.reserve(candidates_map.size());
+    for (candidates_it = candidates_map.begin();
+         candidates_it != candidates_map.end(); ++candidates_it) {
+        vec.push_back(TCandiPairPtr(&(candidates_it->second)));
+    }
     std::make_heap(vec.begin(), vec.end());
     std::sort_heap(vec.begin(), vec.end());
 
@@ -691,9 +793,10 @@ unsigned CIMIContext::cancelSelection (unsigned frIdx, bool doSearch)
         --frIdx;
         fr = m_lattice[frIdx];
     }
-    
-    if (fr.m_bwType & (CLatticeFrame::USER_SELECTED | CLatticeFrame::BESTWORD)) {
-        ret = fr.m_bestWord.m_start;
+
+    if (fr.m_bwType & (CLatticeFrame::USER_SELECTED | CLatticeFrame::BESTWORD))
+    {
+        ret = fr.m_selWord.m_start;
         fr.m_bwType = CLatticeFrame::NO_BESTWORD;
         if (doSearch) searchFrom (frIdx);
     }
@@ -705,75 +808,91 @@ void CIMIContext::makeSelection (CCandidate &candi, bool doSearch)
 {
     CLatticeFrame &fr = m_lattice[candi.m_end];
     fr.m_bwType = fr.m_bwType | CLatticeFrame::USER_SELECTED;
-    fr.m_bestWord = candi;
+    fr.m_selWord = candi;
+    // make best sentence word consistent as well
+    for (int i = 0; i < m_nBest; i++) {
+        fr.m_bestWords[i] = candi;
+    }
+    printf("made selection: %d ", candi.m_end);
+    print_wide(candi.m_cwstr);
+    printf("\n");
+
     if (doSearch) searchFrom (candi.m_end);
 }
 
-void CIMIContext::memorize ()
+void CIMIContext::memorize()
 {
-    _saveUserDict ();
-    _saveHistoryCache ();
+    _saveUserDict();
+    _saveHistoryCache();
 }
 
-void CIMIContext::_saveUserDict ()
+void CIMIContext::_saveUserDict()
 {
     if (!m_pUserDict)
         return;
 
-    if (m_bestPath.empty())
-        return;
-    
     CSyllables syls;
     unsigned s = 0;
     bool has_user_selected = false;
-    std::vector<unsigned>::iterator it  = m_bestPath.begin();
-    std::vector<unsigned>::iterator ite = m_bestPath.end();
-    for (; it != ite; ++it, ++s) {
-        CLatticeFrame &fr = m_lattice[*it];
+    unsigned i = m_tailIdx - 1;
+    while (i > 0 && m_lattice[i].m_bwType == CLatticeFrame::NO_BESTWORD)
+        i--;
+
+    while (i > 0) {
+        CLatticeFrame &fr = m_lattice[i];
         if (!fr.isSyllableFrame ()) {
-            --it;
+            i = fr.m_selWord.m_start;
             break;
         }
 
-        CSyllables &tmp = fr.m_bestWord.m_pLexiconState->m_syls;
-        if (syls.size() + tmp.size() > MAX_USRDEF_WORD_LEN) {
-            --it;
+        TLexiconState* state = fr.m_selWord.m_pLexiconState;
+        if (!state) {
+            i = fr.m_selWord.m_start;
+            continue;
+        }
+
+        if (syls.size() + state->m_syls.size() > MAX_USRDEF_WORD_LEN) {
+            i = fr.m_selWord.m_start;
             break;
         }
 
         has_user_selected |= (fr.m_bwType & CLatticeFrame::USER_SELECTED);
-        std::copy (tmp.begin(), tmp.end(), back_inserter(syls));
+        std::copy (state->m_syls.begin(), state->m_syls.end(),
+                   back_inserter(syls));
+        i = fr.m_selWord.m_start;
     }
-
+    /*
+      ???
     if (s >= 2 && has_user_selected && !syls.empty()) {
         wstring phrase;
-        getBestSentence (phrase, 0, *it);
+        getSelectedSentence (phrase, 0, i);
         m_pUserDict->addWord (syls, phrase);
     }
+    */
 }
 
-void CIMIContext::_saveHistoryCache ()
+void CIMIContext::_saveHistoryCache()
 {
     if (!m_pHistory)
         return;
 
-    if (m_bestPath.empty())
-        return;
-
     std::vector<unsigned> result;
-    std::vector<unsigned>::const_iterator it  = m_bestPath.begin();
-    std::vector<unsigned>::const_iterator ite = m_bestPath.end() - 1;
-    for (; it != ite; ++it) {
-        CLatticeFrame &fr = m_lattice[*it];
-        if (fr.isSyllableFrame ())
-            result.push_back (fr.m_bestWord.m_wordId);
-        else 
-            result.push_back (0);
+    unsigned i = m_tailIdx - 1;
+    while (i > 0 && m_lattice[i].m_bwType == CLatticeFrame::NO_BESTWORD)
+        i--;
+
+    while (i > 0) {
+        CLatticeFrame &fr = m_lattice[i];
+        if (fr.isSyllableFrame()) {
+            result.insert(result.begin(), fr.m_selWord.m_wordId);
+        } else {
+            result.insert(result.begin(), 0);
+        }
+        i = fr.m_selWord.m_start;
     }
 
     if (!result.empty())
         m_pHistory->memorize (&(result[0]), &(result[0]) + result.size());
-
 }
 
 void CIMIContext::deleteCandidate (CCandidate &candi)

@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -69,7 +69,8 @@ CIMIClassicView::clearIC(void)
         m_pIC->clear ();
         m_pPySegmentor->clear ();
         m_candiList.clear ();
-        m_tailSentence.clear ();
+        //m_tailSentence.clear ();
+        m_sentences.clear ();
         return PREEDIT_MASK | CANDIDATE_MASK;
     }
     return 0;
@@ -88,9 +89,20 @@ CIMIClassicView::updateWindows(unsigned mask)
     }
 
     if ((mask & PREEDIT_MASK) || (mask & CANDIDATE_MASK)) {
-        unsigned word_num = m_pIC->getBestSentence (m_tailSentence, m_candiFrIdx);
-        if (word_num <= 1 || (!m_candiList.empty() && m_tailSentence == m_candiList[0].m_cwstr))
-            m_tailSentence.clear ();
+        m_sentences.clear();
+        for (int i = 0; i < m_pIC->getNBest(); i++) {
+            wstring sentence;
+            unsigned word_num = m_pIC->getBestSentence (sentence,
+                                                        i, m_candiFrIdx);
+            /*
+            if (word_num <= 1 || (!m_candiList.empty()
+                                  && m_tailSentence == m_candiList[0].m_cwstr))
+                m_sentences[i].clear ();
+            */
+            if (word_num > 1) {
+                m_sentences.push_back(sentence);
+            }
+        }
     }
 
     if (mask & CANDIDATE_MASK) {
@@ -108,9 +120,9 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
     unsigned keycode = key.code;
     unsigned keyvalue = key.value;
     unsigned modifiers = key.modifiers;
-    
+
 #ifdef DEBUG
-    printf("Classic View got a key (0x%x-0x%x-0x%x)...", 
+    printf("Classic View got a key (0x%x-0x%x-0x%x)...",
            keycode, keyvalue, modifiers);
     if (((modifiers & IM_CTRL_MASK) != 0) && (keyvalue == 'P' || keyvalue=='p'))
         m_pIC->printLattice();
@@ -122,23 +134,23 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             changeMasks |= CANDIDATE_MASK | PREEDIT_MASK;
             clearIC ();
         }
-        
+
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isPunctSwitchKey(key)) {
         // On CTRL+. switch Full/Half punc
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, (!m_bFullPunct)?1:0);
-        
+
     } else if (m_pHotkeyProfile && m_pHotkeyProfile->isSymbolSwitchKey(key)) {
         // On SHIFT+SPACE switch Full/Half symbol
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, (!m_bFullSymbol)?1:0);
-        
+
     } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_LEFT)  { // move left
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
             _moveLeft (changeMasks);
         }
-        
+
     } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_RIGHT) { // move right
         if (!m_pIC->isEmpty ()) {
             changeMasks |= KEYEVENT_USED;
@@ -148,7 +160,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                  (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) &&
                 !m_pIC->isEmpty() ) {
         changeMasks |= KEYEVENT_USED;
-        int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+        int sz = m_candiList.size() + m_sentences.size();
         if (sz > 0 && m_candiPageFirst > 0) {
             m_candiPageFirst -= m_candiWindowSize;
             if (m_candiPageFirst < 0) m_candiPageFirst = 0;
@@ -158,7 +170,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                  (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) &&
                 !m_pIC->isEmpty() ) {
         changeMasks |= KEYEVENT_USED;
-        int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+        int sz = m_candiList.size() + m_sentences.size();
         if (sz > 0 && m_candiPageFirst + m_candiWindowSize < sz) {
             m_candiPageFirst += m_candiWindowSize;
             changeMasks |= CANDIDATE_MASK;
@@ -167,7 +179,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
     else if (m_pHotkeyProfile && m_pHotkeyProfile->isCandiDeleteKey(key, m_candiWindowSize) &&
              !m_pIC->isEmpty ()) {
         changeMasks |= KEYEVENT_USED;
-        unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');        
+        unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');
         _deleteCandidate (sel, changeMasks);
         goto PROCESSED;
 
@@ -183,30 +195,32 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             }
 
             goto PROCESSED;
-        } 
-        
+        }
+
         if (keyvalue == '.' && m_numeric_mode) {
             m_numeric_mode = false;
             goto PROCESSED;
 
         }
-        
+
         m_numeric_mode = false;
 
-        if (keyvalue > 0x60 && keyvalue < 0x7b) { // islower(keyvalue)
+        if (keyvalue > 0x60 && keyvalue < 0x7b) {
+            /* islower(keyvalue) */
             changeMasks |= KEYEVENT_USED;
             _insert (keyvalue, changeMasks);
 
-        } else if (keyvalue > 0x20 && keyvalue < 0x7f) { //isprint(keyvalue) && !isspace(keyvalue)
+        } else if (keyvalue > 0x20 && keyvalue < 0x7f) {
+            /* isprint(keyvalue) && !isspace(keyvalue) */
             changeMasks |= KEYEVENT_USED;
             if (m_pIC->isEmpty ()) {
                 _insert (keyvalue, changeMasks);
-                _doCommit ();
+                _doCommit (0);
                 clearIC ();
             } else {
                 _insert (keyvalue, changeMasks);
             }
-            
+
         } else if (keycode == IM_VK_BACK_SPACE || keycode == IM_VK_DELETE) {
             if (!m_pIC->isEmpty ()) {
                 changeMasks |= KEYEVENT_USED;
@@ -228,7 +242,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
         } else if (keycode == IM_VK_ENTER) {
             if (!m_pIC->isEmpty ()) {
                 changeMasks |= KEYEVENT_USED | CANDIDATE_MASK | PREEDIT_MASK;
-                _doCommit (false);
+                _doCommit (0, false);
                 clearIC ();
             }
 
@@ -265,7 +279,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
     } else {
         goto RETURN;
 
-    } 
+    }
 
 PROCESSED:;
     m_pHotkeyProfile->rememberLastKey(key);
@@ -288,7 +302,7 @@ CIMIClassicView::onCandidatePageRequest(int pgno, bool relative)
 
     if (!m_pIC->isEmpty()) {
         changeMasks |= KEYEVENT_USED;
-        int sz = m_candiList.size() + ((m_tailSentence.size() > 0)?1:0);
+        int sz = m_candiList.size() + m_sentences.size();
         if (sz > 0) {
            lastpgidx = (sz-1)/m_candiWindowSize * m_candiWindowSize;
            if (relative == true) {
@@ -341,7 +355,7 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
     wstring &wstr = ps.getString ();
     IPreeditString::CCharTypeVec& charTypes = ps.getCharTypeVec ();
 
-    m_pIC->getBestSentence (wstr, 0, m_candiFrIdx);
+    m_pIC->getSelectedSentence (wstr, 0, m_candiFrIdx);
 
     int caret = wstr.size ();
     charTypes.reserve (caret);
@@ -383,7 +397,7 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
             charTypes.push_back (ct);
 
         if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
-            if ( it != ite -1 && !lattice[i+l+1].isSyllableSepFrame ()) { 
+            if ( it != ite -1 && !lattice[i+l+1].isSyllableSepFrame ()) {
                 wstr.push_back (' ');
                 charTypes.push_back (IPreeditString::BOUNDARY);
             }
@@ -399,7 +413,7 @@ CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
     cl.clear();
     cl.reserve(size);
 
-    int tscount = (m_tailSentence.size() > 0)? 1: 0;
+    int tscount = m_sentences.size();
     cl.setFirst (start);
     cl.setTotal (tscount + m_candiList.size());
 
@@ -408,14 +422,18 @@ CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
 
     //Loop used for future n-best sentence candidates usage
     for (; start < tscount && size > 0; ++start, --size) {
-        css.push_back (m_tailSentence);
+        css.push_back (m_sentences[start]);
         cts.push_back (ICandidateList::BEST_TAIL);
     }
 
     start -= tscount;
-    for (int sz=m_candiList.size(); start < sz && size > 0; ++start, --size) {
+    for (int sz = m_candiList.size(); start < sz && size > 0; ++start, --size) {
         css.push_back (m_candiList[start].m_cwstr);
-        cts.push_back ((start == 0)?(ICandidateList::BEST_WORD):(ICandidateList::NORMAL_WORD));
+        if (start == 0) {
+            cts.push_back (ICandidateList::BEST_WORD);
+        } else {
+            cts.push_back (ICandidateList::NORMAL_WORD);
+        }
     }
 }
 
@@ -466,7 +484,7 @@ CIMIClassicView::_erase (bool backward, unsigned &changeMasks)
         else
             return;
     }
-    
+
     if (m_pIC->buildLattice (m_pPySegmentor))
         _getCandidates ();
 
@@ -494,13 +512,13 @@ CIMIClassicView::_commitString (const wstring& wstr)
 }
 
 void
-CIMIClassicView::_doCommit (bool bConvert)
+CIMIClassicView::_doCommit (int candiIdx, bool bConvert)
 {
     wstring bs;
 
     if (bConvert) {
         m_pIC->memorize ();
-        m_pIC->getBestSentence (bs);
+        m_pIC->getSelectedSentence (bs);
         m_pWinHandler->commit (bs.c_str());
     } else {
         bs += m_pPySegmentor->getInputBuffer ();
@@ -539,7 +557,8 @@ CIMIClassicView::_moveLeftSyllable (unsigned& mask, bool searchAgain)
     }
 
     std::vector<unsigned>& seg_path = m_pIC->getBestSegPath();
-    std::vector<unsigned>::iterator it = std::upper_bound (seg_path.begin(), seg_path.end(), m_cursorFrIdx-1);
+    std::vector<unsigned>::iterator it =
+        std::upper_bound (seg_path.begin(), seg_path.end(), m_cursorFrIdx-1);
     return m_cursorFrIdx = *(--it);
 }
 
@@ -595,7 +614,7 @@ CIMIClassicView::_moveRightSyllable (unsigned& mask)
         std::vector<unsigned>::iterator it = std::upper_bound (seg_path.begin(), seg_path.end(), m_cursorFrIdx);
         m_cursorFrIdx = *it;
         return m_cursorFrIdx;
-    } 
+    }
 
     return _moveHome (mask);
 }
@@ -614,13 +633,13 @@ CIMIClassicView::_moveEnd (unsigned& mask)
 void
 CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
 {
-    candiIdx += m_candiPageFirst;
-    if (!m_tailSentence.empty ()) --candiIdx;
+    candiIdx += m_candiPageFirst - m_sentences.size();
+    //if (!m_tailSentence.empty ()) --candiIdx;
 
     if (candiIdx < 0) {
         // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        _doCommit ();
+        _doCommit (candiIdx);
         clearIC ();
     } else if (candiIdx < m_candiList.size ()) {
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
@@ -630,7 +649,7 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
         if (m_cursorFrIdx < m_candiFrIdx) m_cursorFrIdx = m_candiFrIdx;
 
         CLattice& lattice = m_pIC->getLattice ();
-        while (m_candiFrIdx < m_pIC->getLastFrIdx () && 
+        while (m_candiFrIdx < m_pIC->getLastFrIdx () &&
                !lattice[m_candiFrIdx+1].isUnusedFrame () &&
                !lattice[m_candiFrIdx+1].isSyllableFrame ()) {
             ++ m_candiFrIdx;
@@ -638,7 +657,7 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
         }
 
         if (m_candiFrIdx == m_pIC->getLastFrIdx ()) {
-            _doCommit ();
+            _doCommit (candiIdx);
             clearIC ();
         } else {
             m_candiPageFirst = 0;
@@ -649,21 +668,21 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
         // make m_candiList empty
         // 0 or space choices should commit previous selected candidates
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        _doCommit();
+        _doCommit(candiIdx);
         clearIC();
     }
 }
-    
+
 void
 CIMIClassicView::_deleteCandidate (int candiIdx, unsigned& mask)
 {
-    candiIdx += m_candiPageFirst;
-    if (!m_tailSentence.empty ()) --candiIdx;
+    candiIdx += m_candiPageFirst - m_sentences.size();
+    //if (!m_tailSentence.empty ()) --candiIdx;
 
     if (candiIdx < 0) {
         // try to remove candidate 0 which is a calculated sentence
         std::vector<unsigned> wids;
-        m_pIC->getBestSentence (wids, m_candiFrIdx);
+        m_pIC->getSelectedSentence (wids, m_candiFrIdx);
         m_pIC->removeFromHistoryCache(wids);
     } else {
         // remove an ordinary candidate

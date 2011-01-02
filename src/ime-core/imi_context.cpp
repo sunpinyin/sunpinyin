@@ -502,14 +502,14 @@ bool CIMIContext::_backTracePaths(const std::vector<TLatticeState>& tail_states,
             } else {
                 cwstr = end_fr.m_wstr.c_str();
             }
+
             CCandidate candi(start, end, bs->m_pLexiconState, cwstr,
                              bs->m_backTraceWordId);
 
             end_fr.m_bwType |= CLatticeFrame::BESTWORD;
             end_fr.m_bestWords[rank] = candi;
             if (rank == 0) {
-                // select rank 0 sentence by default
-                end_fr.m_selWord = candi;
+                end_fr.m_selWord = candi; // select the first by default.
             }
         }
 
@@ -696,6 +696,8 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
         cp.m_candi.m_end = frIdx;
         if (fr.m_bwType != CLatticeFrame::NO_BESTWORD) {
             for (int i = 0; i < m_nBest; i++) {
+                if (fr.m_bestWords.find(i) == fr.m_bestWords.end())
+                    continue;
                 if (fr.m_bestWords[i].m_start != m_candiStarts)
                     continue;
                 cp.m_candi = fr.m_bestWords[i];

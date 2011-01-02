@@ -94,14 +94,23 @@ CIMIClassicView::updateWindows(unsigned mask)
             wstring sentence;
             unsigned word_num = m_pIC->getBestSentence (sentence,
                                                         i, m_candiFrIdx);
-            /*
-            if (word_num <= 1 || (!m_candiList.empty()
-                                  && m_tailSentence == m_candiList[0].m_cwstr))
-                m_sentences[i].clear ();
-            */
-            if (word_num > 1) {
-                m_sentences.push_back(sentence);
+            if (word_num <= 1) break; // when sentence is not worthy of
+
+            printf("%d ", i);
+            print_wide(sentence.c_str());
+            printf("\n");
+
+            for (int j = 0; j < m_sentences.size(); j++) {
+                if (sentence == m_sentences[j].second) goto stop;
             }
+            for (int j = 0; j < m_candiList.size(); j++) {
+                if (sentence == m_candiList[j].m_cwstr) goto stop;
+            }
+            m_sentences.push_back(std::make_pair(i, sentence));
+            continue;
+
+        stop:
+            break; // sentence is not worthy of anymore
         }
     }
 
@@ -156,9 +165,9 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             changeMasks |= KEYEVENT_USED;
             _moveRight (changeMasks);
         }
-    } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_UP) ||
-                 (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key))) &&
-                !m_pIC->isEmpty() ) {
+    } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_UP)
+                 || (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey (key)))
+                && !m_pIC->isEmpty() ) {
         changeMasks |= KEYEVENT_USED;
         int sz = m_candiList.size() + m_sentences.size();
         if (sz > 0 && m_candiPageFirst > 0) {
@@ -166,9 +175,9 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             if (m_candiPageFirst < 0) m_candiPageFirst = 0;
             changeMasks |= CANDIDATE_MASK;
         }
-    } else if ( ((modifiers == 0 && keycode == IM_VK_PAGE_DOWN) ||
-                 (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key))) &&
-                !m_pIC->isEmpty() ) {
+    } else if (((modifiers == 0 && keycode == IM_VK_PAGE_DOWN)
+                || (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey (key)))
+               && !m_pIC->isEmpty() ) {
         changeMasks |= KEYEVENT_USED;
         int sz = m_candiList.size() + m_sentences.size();
         if (sz > 0 && m_candiPageFirst + m_candiWindowSize < sz) {
@@ -176,8 +185,9 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             changeMasks |= CANDIDATE_MASK;
         }
     }
-    else if (m_pHotkeyProfile && m_pHotkeyProfile->isCandiDeleteKey(key, m_candiWindowSize) &&
-             !m_pIC->isEmpty ()) {
+    else if (m_pHotkeyProfile
+             && m_pHotkeyProfile->isCandiDeleteKey(key, m_candiWindowSize)
+             && !m_pIC->isEmpty ()) {
         changeMasks |= KEYEVENT_USED;
         unsigned sel = (keyvalue == '0'? 9: keyvalue-'1');
         _deleteCandidate (sel, changeMasks);
@@ -422,7 +432,7 @@ CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
 
     //Loop used for future n-best sentence candidates usage
     for (; start < tscount && size > 0; ++start, --size) {
-        css.push_back (m_sentences[start]);
+        css.push_back (m_sentences[start].second);
         cts.push_back (ICandidateList::BEST_TAIL);
     }
 
@@ -639,7 +649,10 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
     if (candiIdx < 0) {
         // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        m_pIC->selectSentence (candiIdx + m_sentences.size());
+        printf("selecting sentence %d\n", candiIdx + m_sentences.size());
+        // get the rank of that sentence
+        int rank = m_sentences[candiIdx + m_sentences.size()].first;
+        m_pIC->selectSentence (rank);
         _doCommit (candiIdx);
         clearIC ();
     } else if (candiIdx < m_candiList.size ()) {

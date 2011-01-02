@@ -68,8 +68,8 @@ private:
 
     bool m_numeric_mode;
 
-    CCandidates          m_candiList;
-    std::vector<wstring> m_sentences;
+    CCandidates                           m_candiList;
+    std::vector<std::pair<int, wstring> > m_sentences;
 
     inline void _insert (unsigned keyvalue, unsigned& mask);
     inline void _erase (bool backward, unsigned& mask);

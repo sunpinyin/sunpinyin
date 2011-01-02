@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifndef SUNPY_LATTICE_STATES_H
@@ -118,7 +118,7 @@ struct TLatticeState {
     TLatticeState      *m_pBackTraceNode;
     CSlmState           m_slmState;
     CWordId             m_backTraceWordId;
-    
+
     TLatticeState(double score = -1.0,
                   unsigned frIdx=0,
                   TLexiconState* lxstPtr = NULL,
@@ -131,6 +131,11 @@ struct TLatticeState {
     /** for debug printing... */
     void
     print(std::string prefix) const;
+
+    bool operator< (const TLatticeState& rhs) const {
+        return m_score < rhs.m_score;
+    }
+
 };
 
 typedef std::vector<TLatticeState>  CLatticeStateVec;
@@ -143,7 +148,7 @@ typedef std::vector<TLatticeState>  CLatticeStateVec;
  */
 class CLatticeStates {
 private:
-    static const unsigned beam_width = 32;
+    static const unsigned beam_width = 64;
 
 public:
     /** just use the CLatticeStateVec's iterator */
@@ -163,49 +168,25 @@ public:
     void
     push_back(const TLatticeState& node);
 
-    //@{
-    /** return the first iterator of m_vec. */
-    size_t
-    size()
-        { return m_vec.size(); }
+    size_t size() { return m_vec.size(); }
 
-    iterator
-    begin()
-        { return m_vec.begin(); }
+    iterator begin() { return m_vec.begin(); }
+    const_iterator begin() const { return m_vec.begin(); }
 
-    /** return the first iterator of m_vec. */
-    const_iterator
-    begin() const
-        { return m_vec.begin(); }
-    //@}
+    iterator end() { return m_vec.end(); }
+    const_iterator end() const { return m_vec.end(); }
 
+    reference operator[] (size_type index)
+    { return m_vec[index]; }
 
-    //@{
-    /** return the last iterator of m_vec. */
-    iterator
-    end()
-        { return m_vec.end(); }
+    const_reference operator[] (size_type index) const
+    { return m_vec[index]; }
 
-    /** return the last iterator of m_vec. */
-    const_iterator
-    end() const
-        { return m_vec.end(); }
-    //@}
-
-    reference
-    operator[] (size_type index)
-        {return m_vec[index];}
-
-    const_reference
-    operator[] (size_type index) const
-        {return m_vec[index];}
+    std::vector<TLatticeState> getSortedResult() const;
 
 protected:
-    void
-    bubbleUp(int idxInHeap);
-
-    void
-    ironDown(int idxInHeap);
+    void bubbleUp(int idxInHeap);
+    void ironDown(int idxInHeap);
 
 protected:
     std::vector<TLatticeState>      m_vec;

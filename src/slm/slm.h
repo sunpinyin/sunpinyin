@@ -85,19 +85,21 @@ public:
         TState(const TState& b) : m_all(b.m_all) { }
         TState(unsigned level=0, unsigned idx=0) { anony.m_Level=level; anony.m_Idx=idx; }
 
-        inline TState& operator++()              { ++anony.m_Idx; return *this; }
+        TState& operator++()              { ++anony.m_Idx; return *this; }
 
-        inline void setIdx(unsigned int idx)     { anony.m_Idx = idx; }
-        inline void setLevel(unsigned int lvl)   { anony.m_Level = lvl; }
+        void setIdx(unsigned int idx)     { anony.m_Idx = idx; }
+        void setLevel(unsigned int lvl)   { anony.m_Level = lvl; }
 
-        inline unsigned int getLevel() const     { return anony.m_Level; }
-        inline unsigned int getIdx() const       { return anony.m_Idx; }
-        inline operator unsigned() const         { return m_all; }
+        unsigned int getLevel() const     { return anony.m_Level; }
+        unsigned int getIdx() const       { return anony.m_Idx; }
+        operator unsigned() const         { return m_all; }
 
-        inline bool operator==(const TState & b) const {
+        bool isTailState() const { return getIdx() <= 1; }
+
+        bool operator==(const TState & b) const {
             return m_all == b.m_all;
         }
-        inline bool operator< (const TState & b) const {
+        bool operator< (const TState & b) const {
             return unsigned(*this) <  unsigned(b);
         }
 

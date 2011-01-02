@@ -639,6 +639,7 @@ CIMIClassicView::_makeSelection (int candiIdx, unsigned& mask)
     if (candiIdx < 0) {
         // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
+        m_pIC->selectSentence (candiIdx + m_sentences.size());
         _doCommit (candiIdx);
         clearIC ();
     } else if (candiIdx < m_candiList.size ()) {

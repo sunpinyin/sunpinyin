@@ -93,7 +93,7 @@ void CIMIContext::printLattice ()
 {
     std::string prefix;
 
-    for (int i=0; i<=m_tailIdx; ++i) {
+    for (int i = 0; i <= m_tailIdx; ++i) {
         if (m_lattice[i].m_type == CLatticeFrame::UNUSED)
             continue;
 
@@ -397,15 +397,26 @@ bool CIMIContext::searchFrom (unsigned idx)
     m_path.clear ();
     m_segPath.clear ();
     m_nBest = 0;
+
+    std::vector<TLatticeState> tail_states =
+        m_lattice[m_tailIdx].m_latticeStates.getSortedResult();
+
+#ifdef DEBUG
+    for (int i = 0; i < tail_states.size(); i++) {
+        std::string score;
+        tail_states[i].m_score.toString(score);
+        printf("score: %s\n", score.c_str());
+    }
+#endif
+
     for (size_t i = 0; i < m_nMaxBest; i++) {
         TPath path, segpath;
-        if (_backTracePaths(m_nBest, path, segpath)) {
+        if (_backTracePaths(tail_states, m_nBest, path, segpath)) {
             m_path.push_back (path);
             m_segPath.push_back (segpath);
             m_nBest++;
         }
     }
-    printf("nbest: %d\n", m_nBest);
 
     if (m_pPySegmentor && m_nBest > 0 && !m_segPath[0].empty())
         m_pPySegmentor->notify_best_segpath(m_segPath[0]);
@@ -466,20 +477,18 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end,
         node.m_score = it->m_score * efic * TSentenceScore(ts);
         end_fr.m_latticeStates.push_back (node);
     }
-    printf("transfer from %d to %d, size is %d\n", start, end, end_fr.m_latticeStates.size());
 }
 
-bool CIMIContext::_backTracePaths(int rank, TPath& path, TPath& segmentPath)
+bool CIMIContext::_backTracePaths(const std::vector<TLatticeState>& tail_states,
+                                  int rank, TPath& path, TPath& segmentPath)
 {
-    CLatticeStates& tail_states = m_lattice[m_tailIdx].m_latticeStates;
     path.clear();
     segmentPath.clear();
 
-    printf("all best: %d, tail is %d\n", tail_states.size(), m_tailIdx);
     if (rank >= tail_states.size())
         return false;
 
-    TLatticeState *bs = &(tail_states[rank]);
+    const TLatticeState *bs = &(tail_states[rank]);
 
     while (bs->m_pBackTraceNode) {
         unsigned start = bs->m_pBackTraceNode->m_frIdx;
@@ -523,7 +532,7 @@ bool CIMIContext::_backTracePaths(int rank, TPath& path, TPath& segmentPath)
     std::reverse (path.begin(), path.end());
     std::reverse (segmentPath.begin(), segmentPath.end());
 
-//#ifdef DEBUG
+#ifdef DEBUG
     std::vector<unsigned>::iterator it;
 
     printf("trace lattice path[%d]: ", rank);
@@ -535,7 +544,7 @@ bool CIMIContext::_backTracePaths(int rank, TPath& path, TPath& segmentPath)
     for (it = segmentPath.begin(); it != segmentPath.end(); ++it)
         printf("%d ", *it);
     printf("\n");
-//#endif
+#endif
 
     return true;
 }
@@ -813,11 +822,21 @@ void CIMIContext::makeSelection (CCandidate &candi, bool doSearch)
     for (int i = 0; i < m_nBest; i++) {
         fr.m_bestWords[i] = candi;
     }
-    printf("made selection: %d ", candi.m_end);
-    print_wide(candi.m_cwstr);
-    printf("\n");
 
     if (doSearch) searchFrom (candi.m_end);
+}
+
+void CIMIContext::selectSentence (int idx)
+{
+    unsigned i = m_tailIdx - 1;
+    while (i > 0 && m_lattice[i].m_bwType == CLatticeFrame::NO_BESTWORD)
+        i--;
+
+    while (i > 0) {
+        CLatticeFrame &fr = m_lattice[i];
+        fr.m_selWord = fr.m_bestWords[idx];
+        i = fr.m_selWord.m_start;
+    }
 }
 
 void CIMIContext::memorize()

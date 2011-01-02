@@ -138,7 +138,7 @@ CLatticeStates::push_back(const TLatticeState& node)
 
     itMap = m_map.find(node.m_slmState);
     // node.slmState is 0 means the tail node, shouldn't prune it.
-    if (itMap != m_map.end() && node.m_slmState != 0) {
+    if (itMap != m_map.end() && !node.m_slmState.isTailState()) {
         TLatticeState& oldNode = m_vec[itMap->second];
         if (node.m_score < oldNode.m_score) {
             oldNode = node;
@@ -149,7 +149,7 @@ CLatticeStates::push_back(const TLatticeState& node)
             TLatticeState& oldNode = m_vec[m_heap[0]];
             if (node.m_score < oldNode.m_score) {
                 itMap = m_map.find(oldNode.m_slmState);
-                m_map.erase(itMap);
+                if (itMap != m_map.end()) m_map.erase(itMap);
                 m_map[node.m_slmState] = m_heap[0];
                 oldNode = node;
                 ironDown(0);
@@ -162,6 +162,13 @@ CLatticeStates::push_back(const TLatticeState& node)
             bubbleUp(m_heap.size()-1);
         }
     }
+}
+
+std::vector<TLatticeState> CLatticeStates::getSortedResult() const
+{
+    std::vector<TLatticeState> res = m_vec;
+    std::sort(res.begin(), res.end());
+    return res;
 }
 
 /**

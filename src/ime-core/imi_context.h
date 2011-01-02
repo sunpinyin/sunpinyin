@@ -290,6 +290,7 @@ public:
     unsigned cancelSelection (unsigned frIdx, bool doSearch=true);
     void makeSelection (CCandidate &candi, bool doSearch=true);
     void deleteCandidate (CCandidate &candi);
+    void selectSentence (int idx);
 
     void memorize ();
     void removeFromHistoryCache (std::vector<unsigned>& wids);
@@ -314,7 +315,8 @@ protected:
 
     void _transferBetween (unsigned start, unsigned end, TLexiconState* plxst,
                            unsigned wid, double ic = 1.0);
-    bool _backTracePaths (int rank, TPath& path, TPath& segPath);
+    bool _backTracePaths (const std::vector<TLatticeState>& tail_states,
+                          int rank, TPath& path, TPath& segPath);
     void _clearPaths ();
 
     const TWCHAR *_getWstr (unsigned wid);

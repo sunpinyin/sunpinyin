@@ -112,7 +112,7 @@ CIMIContext::CIMIContext ()
       m_nMaxBest(2)
 {
     m_lattice.resize (MAX_LATTICE_LENGTH);
-    m_lattice[0].m_latticeStates.push_back (TLatticeState (-1.0, 0));
+    m_lattice[0].m_latticeStates.add(TLatticeState (-1.0, 0));
 }
 
 void CIMIContext::setCoreData (CIMIData *pCoreData)
@@ -475,7 +475,7 @@ void CIMIContext::_transferBetween (unsigned start, unsigned end,
         }
 
         node.m_score = it->m_score * efic * TSentenceScore(ts);
-        end_fr.m_latticeStates.push_back (node);
+        end_fr.m_latticeStates.add(node);
     }
 }
 

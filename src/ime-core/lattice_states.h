@@ -136,9 +136,39 @@ struct TLatticeState {
         return m_score < rhs.m_score;
     }
 
+    bool operator== (const TLatticeState& rhs) const {
+        return m_score == rhs.m_score;
+    }
+
+    bool operator> (const TLatticeState& rhs) const {
+        return !((*this) < rhs || (*this) == rhs);
+    }
+
 };
 
 typedef std::vector<TLatticeState>  CLatticeStateVec;
+
+/**
+ * A container that keeps the top K elements.
+ */
+class CTopLatticeStates {
+    std::vector<TLatticeState> m_heap;
+    size_t m_threshold;
+public:
+    CTopLatticeStates(size_t threshold) : m_threshold(threshold) {}
+
+    bool push(const TLatticeState& state);
+    void pop();
+
+    const TLatticeState& top() const { return m_heap[0]; }
+
+    size_t size() const { return m_heap.size(); }
+
+    typedef std::vector<TLatticeState>::iterator iterator;
+
+    iterator begin() { return m_heap.begin(); }
+    iterator end() { return m_heap.end(); }
+};
 
 /**
  * All lattice node on a lattice frame. This class provide beam pruning
@@ -148,51 +178,42 @@ typedef std::vector<TLatticeState>  CLatticeStateVec;
  */
 class CLatticeStates {
 private:
-    static const unsigned beam_width = 64;
+    static const unsigned beam_width = 32;
 
 public:
-    /** just use the CLatticeStateVec's iterator */
-    typedef CLatticeStateVec::iterator        iterator;
+    CLatticeStates() : m_size(0), m_nMaxBest(2) {}
 
-    /** just use the CLatticeStateVec's iterator */
-    typedef CLatticeStateVec::const_iterator  const_iterator;
+    void clear();
+    void add(const TLatticeState& state);
 
-    typedef CLatticeStateVec::reference       reference;
-    typedef CLatticeStateVec::const_reference const_reference;
-    typedef CLatticeStateVec::size_type       size_type;
+    std::vector<TLatticeState> getSortedResult();
 
-public:
-    void
-    clear();
+    typedef std::map<CSlmState, CTopLatticeStates> state_map;
+    class iterator {
+    friend class CLatticeStates;
+        state_map::iterator         main_end;
+        state_map::iterator         main_it;
+        CTopLatticeStates::iterator child_it;
+    public:
+        iterator(state_map::iterator mit, state_map::iterator mend,
+                 CTopLatticeStates::iterator cit)
+            : main_it(mit), main_end(mend), child_it(cit) {}
 
-    void
-    push_back(const TLatticeState& node);
+        iterator() {}
 
-    size_t size() { return m_vec.size(); }
+        void operator++();
+        bool operator!=(const CLatticeStates::iterator& rhs);
+        TLatticeState& operator*();
+        TLatticeState* operator->();
+    };
 
-    iterator begin() { return m_vec.begin(); }
-    const_iterator begin() const { return m_vec.begin(); }
-
-    iterator end() { return m_vec.end(); }
-    const_iterator end() const { return m_vec.end(); }
-
-    reference operator[] (size_type index)
-    { return m_vec[index]; }
-
-    const_reference operator[] (size_type index) const
-    { return m_vec[index]; }
-
-    std::vector<TLatticeState> getSortedResult() const;
+    iterator begin();
+    iterator end();
 
 protected:
-    void bubbleUp(int idxInHeap);
-    void ironDown(int idxInHeap);
-
-protected:
-    std::vector<TLatticeState>      m_vec;
-    std::vector<int>                m_vecIdxInHeap;
-    std::map<CSlmState, int>        m_map;
-    std::vector<int>                m_heap;
+    state_map    m_stateMap;
+    size_t       m_size;
+    size_t       m_nMaxBest;
 };
 
 #endif

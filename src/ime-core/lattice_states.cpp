@@ -37,6 +37,7 @@
 
 #include "pinyin_data.h"
 #include "lattice_states.h"
+#include <algorithm>
 
 const CPinyinTrie::TWordIdInfo*
 TLexiconState::getWords (unsigned &num)
@@ -95,138 +96,126 @@ TLatticeState::print(std::string prefix) const
 
 const unsigned CLatticeStates::beam_width;
 
-/**
- * clear all existing states, and assure the vector's size.
- * Of cause the reserve space action only useful right after construction,
- * but just let it be.
- */
+bool
+CTopLatticeStates::push(const TLatticeState& state)
+{
+    bool ret = true;
+    if (size() >= m_threshold) {
+        if (m_heap[0] < state) return false;
+        std::pop_heap(m_heap.begin(), m_heap.end());
+        m_heap.pop_back();
+        ret = false;
+    }
+    m_heap.push_back(state);
+    std::push_heap(m_heap.begin(), m_heap.end());
+    return ret;
+}
+
+void
+CTopLatticeStates::pop()
+{
+    std::pop_heap(m_heap.begin(), m_heap.end());
+    m_heap.pop_back();
+}
+
 void
 CLatticeStates::clear()
 {
-    m_vec.clear();
-    m_heap.clear();
-    m_vecIdxInHeap.clear();
-    m_map.clear();
-
-    m_vec.reserve(beam_width);
-    m_vecIdxInHeap.reserve(beam_width);
-    m_heap.reserve(beam_width);
+    m_stateMap.clear();
+    m_size = 0;
 }
 
-/**
- * Following conditions may be encountered:
- *    - node's StateKey is alredy in the map
- *        -# But its score is larger than the original one: \n
- *                   ===> do nothing.
- *        -# its score is less than the original one: \n
- *                   ===> replace original node with new one, ironDown it
- *    - node is a new node
- *        -# Vector is full
- *            - and node's score is >= the largest score of all existing node:\n
- *                   ===> do nothing.
- *            - node score < the largest score of all existing node:\n
- *                   ===> Relpace the largest node in the vector with new node,
- *                   ironDown it (0 on the heap)
- *        -# Vector is not full: \n
- *             ===> push_back the new node in vector, build heap node in the
- *             heap tail. bubbleUp it.
- */
-void
-CLatticeStates::push_back(const TLatticeState& node)
+std::vector<TLatticeState>
+CLatticeStates::getSortedResult()
 {
-    std::map<CSlmState, int>::iterator itMap;
-
-    itMap = m_map.find(node.m_slmState);
-    // node.slmState is 0 means the tail node, shouldn't prune it.
-    if (itMap != m_map.end() && !node.m_slmState.isTailState()) {
-        TLatticeState& oldNode = m_vec[itMap->second];
-        if (node.m_score < oldNode.m_score) {
-            oldNode = node;
-            ironDown(m_vecIdxInHeap[itMap->second]);
-        }
-    } else {
-        if (m_vec.size() >= beam_width) {
-            TLatticeState& oldNode = m_vec[m_heap[0]];
-            if (node.m_score < oldNode.m_score) {
-                itMap = m_map.find(oldNode.m_slmState);
-                if (itMap != m_map.end()) m_map.erase(itMap);
-                m_map[node.m_slmState] = m_heap[0];
-                oldNode = node;
-                ironDown(0);
-            }
-        } else {
-            m_map[node.m_slmState] = m_vec.size();
-            m_vecIdxInHeap.push_back(m_vec.size());
-            m_vec.push_back(node);
-            m_heap.push_back(m_heap.size());
-            bubbleUp(m_heap.size()-1);
-        }
+    std::vector<TLatticeState> res;
+    for (CLatticeStates::iterator it = begin(); it != end(); ++it) {
+        res.push_back(*it);
     }
-}
-
-std::vector<TLatticeState> CLatticeStates::getSortedResult() const
-{
-    std::vector<TLatticeState> res = m_vec;
     std::sort(res.begin(), res.end());
     return res;
 }
 
-/**
- * The index of heap's corresponding node like a bubble,
- * it should go up in the heap until it goes to the top
- * or meet lighter bubble.
- */
 void
-CLatticeStates::bubbleUp(int idxInHeap)
+CLatticeStates::add(const TLatticeState& state)
 {
-    while (idxInHeap > 0) {
-        int idxNode = m_heap[idxInHeap];
-        int parentInHeap = (idxInHeap-1) / 2;
-        int parentNode = m_heap[parentInHeap];
-
-        // if child's score > parent's, try to swap them
-        if (m_vec[parentNode].m_score < m_vec[idxNode].m_score) {
-            m_vecIdxInHeap[idxNode] = parentInHeap;
-            m_vecIdxInHeap[parentNode]  = idxInHeap;
-            m_heap[idxInHeap] = parentNode;
-            m_heap[parentInHeap] = idxNode;
-            idxInHeap = parentInHeap;
-        } else {
-            break;
+    bool inserted = false;
+    state_map::iterator it = m_stateMap.find(state.m_slmState);
+    if (it == m_stateMap.end()) {
+        CTopLatticeStates topstates(m_nMaxBest);
+        inserted = topstates.push(state);
+        m_stateMap.insert(std::make_pair(state.m_slmState, topstates));
+    } else {
+        inserted = it->second.push(state);
+    }
+    if (inserted) m_size++;
+    if (m_size > beam_width) {
+        TSentenceScore max_score(-1.0 * INT_MAX);
+        // find the largest top states
+        std::map<CSlmState, CTopLatticeStates>::iterator it, mark;
+        for (it = m_stateMap.begin(); it != m_stateMap.end(); ++it) {
+            TSentenceScore this_score = it->second.top().m_score;
+            if (max_score < this_score) {
+                max_score = this_score;
+                mark = it;
+            }
         }
+        // pop one node from it, and if it's empty, remove it from map
+        mark->second.pop();
+        if (mark->second.size() == 0) {
+            m_stateMap.erase(mark);
+        }
+        m_size--;
     }
 }
 
-/**
- * The index of heap's corresponding node like a iron,
- * it should go down in the heap, until to the bottom, or
- * meet heavier bubble.
- */
-void
-CLatticeStates::ironDown(int idxInHeap)
+CLatticeStates::iterator
+CLatticeStates::begin()
 {
-    int sz = m_heap.size(), lcInHeap, rcInHeap;
-    while ((lcInHeap = 2*idxInHeap + 1) < sz) {
-        int idxNode = m_heap[idxInHeap];
-        int lcNode = m_heap[lcInHeap];
+    CLatticeStates::iterator it;
+    it.main_it = m_stateMap.begin();
+    it.main_end = m_stateMap.end();
+    it.child_it = it.main_it->second.begin();
+    return it;
+}
 
-        // make the rcInHeap become the child idx in heap whose node's
-        // score is the largest of the two child node
-        rcInHeap = lcInHeap + 1;
-        if (rcInHeap >= sz ||
-            m_vec[m_heap[rcInHeap]].m_score <= m_vec[lcNode].m_score)
-            rcInHeap = lcInHeap;
-        int rcNode = m_heap[rcInHeap];
+CLatticeStates::iterator
+CLatticeStates::end()
+{
+    CLatticeStates::iterator it;
+    it.main_end = it.main_it = m_stateMap.end();
+    return it;
+}
 
-        // if parent score not the largest, try to swap it with better child
-        if (m_vec[idxNode].m_score < m_vec[rcNode].m_score) {
-            m_vecIdxInHeap[idxNode] = rcInHeap;
-            m_vecIdxInHeap[rcNode]  = idxInHeap;
-            m_heap[idxInHeap] = rcNode;
-            m_heap[rcInHeap] = idxNode;
-            idxInHeap = rcInHeap;
-        } else {
-            break;
-        }
+void
+CLatticeStates::iterator::operator++()
+{
+    ++child_it;
+    if (child_it == main_it->second.end()) {
+        ++main_it;
+        if (main_it != main_end)
+            child_it = main_it->second.begin();
     }
+}
+
+bool
+CLatticeStates::iterator::operator!=(const CLatticeStates::iterator& rhs)
+{
+    if (main_it == main_end || rhs.main_it == rhs.main_end) {
+        return main_it != rhs.main_it;
+    } else {
+        return main_it != rhs.main_it && child_it != rhs.child_it;
+    }
+}
+
+TLatticeState&
+CLatticeStates::iterator::operator*()
+{
+    return child_it.operator*();
+}
+
+TLatticeState*
+CLatticeStates::iterator::operator->()
+{
+    return child_it.operator->();
 }

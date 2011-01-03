@@ -130,11 +130,14 @@ GtkPreeditUI::update_candidates_string(const char* utf_str)
 {
     gtk_label_set(GTK_LABEL(candidate_area_), utf_str);
 
-    PangoLayout* lay = gtk_label_get_layout(GTK_LABEL(candidate_area_));
+    PangoLayout* pre_lay = gtk_label_get_layout(GTK_LABEL(preedit_area_));
+    PangoLayout* can_lay = gtk_label_get_layout(GTK_LABEL(candidate_area_));
     int x = 0, y = 0;
-    int wid = -1;
-    pango_layout_get_pixel_size(lay, &wid, NULL);
-    gtk_window_resize(GTK_WINDOW(main_wnd_), wid + 1, 1);
+    int pre_wid = -1, can_wid = -1;
+    pango_layout_get_pixel_size(pre_lay, &pre_wid, NULL);
+    pango_layout_get_pixel_size(can_lay, &can_wid, NULL);
+
+    gtk_window_resize(GTK_WINDOW(main_wnd_), MAX(pre_wid, can_wid) + 1, 1);
 
     gtk_window_get_position(GTK_WINDOW(main_wnd_), &x, &y);
     move(x, y);

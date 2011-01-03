@@ -128,13 +128,18 @@ SkinPreeditUI::update_candidates_string(const char* utf_str)
 void
 SkinPreeditUI::adjust_size()
 {
-    if (candidate_label_->layout) {
+    if (candidate_label_->layout && preedit_label_->layout) {
         int x = 0, y = 0;
-        int width = 0, height = 0;
+        int can_wid = 0, pre_wid = 0, width = 0, height = 0;
         int hmargin, vmargin;
         hmargin = info_->candidate_label.x + info_->right;
         vmargin = info_->candidate_label.y + info_->bottom;
-        pango_layout_get_pixel_size(candidate_label_->layout, &width, &height);
+
+        pango_layout_get_pixel_size(preedit_label_->layout, &pre_wid, NULL);
+        pango_layout_get_pixel_size(candidate_label_->layout, &can_wid,
+                                    &height);
+        width = MAX(pre_wid, can_wid);
+
         gtk_window_resize(GTK_WINDOW(main_wnd_->widget), width + hmargin,
                           height + vmargin);
         gtk_window_get_position(GTK_WINDOW(main_wnd_->widget), &x, &y);

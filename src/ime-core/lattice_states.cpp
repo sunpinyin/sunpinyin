@@ -121,6 +121,8 @@ CTopLatticeStates::pop()
 void
 CLatticeStates::clear()
 {
+    m_heapIdx.clear();
+    m_scoreHeap.clear();
     m_stateMap.clear();
     m_size = 0;
 }
@@ -139,33 +141,104 @@ CLatticeStates::getSortedResult()
 void
 CLatticeStates::add(const TLatticeState& state)
 {
+    CSlmState slmState = state.m_slmState;
+    state_map::iterator it = m_stateMap.find(slmState);
     bool inserted = false;
-    state_map::iterator it = m_stateMap.find(state.m_slmState);
+
     if (it == m_stateMap.end()) {
         CTopLatticeStates topstates(m_nMaxBest);
         inserted = topstates.push(state);
-        m_stateMap.insert(std::make_pair(state.m_slmState, topstates));
+        m_stateMap.insert(std::make_pair(slmState, topstates));
+        _pushScoreHeap(state.m_score, slmState);
     } else {
         inserted = it->second.push(state);
+        slmState = it->second.top().m_slmState;
+        if (inserted) {
+            _adjustDown(m_heapIdx[slmState]);
+        }
     }
     if (inserted) m_size++;
+
     if (m_size > beam_width) {
-        TSentenceScore max_score(-1.0 * INT_MAX);
-        // find the largest top states
-        std::map<CSlmState, CTopLatticeStates>::iterator it, mark;
-        for (it = m_stateMap.begin(); it != m_stateMap.end(); ++it) {
-            TSentenceScore this_score = it->second.top().m_score;
-            if (max_score < this_score) {
-                max_score = this_score;
-                mark = it;
-            }
-        }
-        // pop one node from it, and if it's empty, remove it from map
-        mark->second.pop();
-        if (mark->second.size() == 0) {
-            m_stateMap.erase(mark);
+        slmState = m_scoreHeap[0].second;
+        it = m_stateMap.find(slmState);
+
+        // pop one node from it, and if it's empty, remove it from map and heap
+        it->second.pop();
+        if (it->second.size() == 0) {
+            m_stateMap.erase(it);
+            _popScoreHeap();
+        } else {
+            m_scoreHeap[0].first = it->second.top().m_score;
+            _adjustDown(0);
         }
         m_size--;
+    }
+}
+
+void
+CLatticeStates::_pushScoreHeap(TSentenceScore score, CSlmState slmState)
+{
+    m_scoreHeap.push_back(std::make_pair(score, slmState));
+    _adjustUp(m_scoreHeap.size() - 1);
+}
+
+void
+CLatticeStates::_popScoreHeap()
+{
+    m_heapIdx.erase(m_scoreHeap[0].second);
+    m_scoreHeap[0] = m_scoreHeap[m_scoreHeap.size() - 1];
+    m_scoreHeap.pop_back();
+    if (m_scoreHeap.size() > 0) {
+        _refreshHeapIdx(0);
+        _adjustDown(0);
+    }
+}
+
+void
+CLatticeStates::_refreshHeapIdx(int heapIdx)
+{
+    m_heapIdx[m_scoreHeap[heapIdx].second] = heapIdx;
+}
+
+void
+CLatticeStates::_adjustUp(int node)
+{
+    int parent = (node - 1) / 2;
+    while (parent >= 0) {
+        if (m_scoreHeap[parent].first < m_scoreHeap[node].first) {
+            std::swap(m_scoreHeap[parent], m_scoreHeap[node]);
+            _refreshHeapIdx(parent);
+            node = parent;
+            parent = (node - 1) / 2;
+        } else {
+            _refreshHeapIdx(node);
+            return;
+        }
+    }
+}
+
+void
+CLatticeStates::_adjustDown(int node)
+{
+    int left = node * 2 + 1;
+    int right = node * 2 + 2;
+    while (left < m_scoreHeap.size()) {
+        int child = -1;
+        if (m_scoreHeap[node].first < m_scoreHeap[left].first) {
+            child = left;
+        } else if (right < m_scoreHeap.size()
+                   && m_scoreHeap[node].first < m_scoreHeap[right].first) {
+            child = right;
+        } else {
+            _refreshHeapIdx(node);
+            return;
+        }
+        std::swap(m_scoreHeap[node], m_scoreHeap[child]);
+        _refreshHeapIdx(child);
+        node = child;
+        left = node * 2 + 1;
+        right = node * 2 + 2;
     }
 }
 

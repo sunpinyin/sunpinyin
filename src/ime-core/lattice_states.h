@@ -209,11 +209,20 @@ public:
 
     iterator begin();
     iterator end();
+private:
+    void _pushScoreHeap(TSentenceScore score, CSlmState slmState);
+    void _popScoreHeap();
+    void _refreshHeapIdx(int heapIdx);
+    void _adjustUp(int node);
+    void _adjustDown(int node);
 
-protected:
+private:
     state_map    m_stateMap;
     size_t       m_size;
     size_t       m_nMaxBest;
-};
 
+    std::map<CSlmState, int>                           m_heapIdx;
+    std::vector<std::pair<TSentenceScore, CSlmState> > m_scoreHeap;
+
+};
 #endif

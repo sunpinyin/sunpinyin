@@ -181,7 +181,9 @@ private:
     static const unsigned beam_width = 32;
 
 public:
-    CLatticeStates() : m_size(0), m_nMaxBest(2) {}
+    CLatticeStates() : m_size(0), m_maxBest(2) {}
+
+    void setMaxBest(size_t maxBest) { m_maxBest = maxBest; }
 
     void clear();
     void add(const TLatticeState& state);
@@ -191,13 +193,13 @@ public:
     typedef std::map<CSlmState, CTopLatticeStates> state_map;
     class iterator {
     friend class CLatticeStates;
-        state_map::iterator         main_end;
-        state_map::iterator         main_it;
-        CTopLatticeStates::iterator child_it;
+        state_map::iterator         m_mainEnd;
+        state_map::iterator         m_mainIt;
+        CTopLatticeStates::iterator m_childIt;
     public:
         iterator(state_map::iterator mit, state_map::iterator mend,
                  CTopLatticeStates::iterator cit)
-            : main_it(mit), main_end(mend), child_it(cit) {}
+            : m_mainIt(mit), m_mainEnd(mend), m_childIt(cit) {}
 
         iterator() {}
 
@@ -219,10 +221,10 @@ private:
 private:
     state_map    m_stateMap;
     size_t       m_size;
-    size_t       m_nMaxBest;
+    size_t       m_maxBest;
 
     std::map<CSlmState, int>                           m_heapIdx;
     std::vector<std::pair<TSentenceScore, CSlmState> > m_scoreHeap;
-
 };
+
 #endif

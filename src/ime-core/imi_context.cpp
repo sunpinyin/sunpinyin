@@ -109,10 +109,11 @@ CIMIContext::CIMIContext ()
       m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
       m_candiStarts(0), m_candiEnds(0), m_csLevel(0),
       m_bNonCompleteSyllable(true), m_pPySegmentor(0), m_bOmitPunct(false),
-      m_nMaxBest(2)
+      m_maxBest(2)
 {
     m_lattice.resize (MAX_LATTICE_LENGTH);
     m_lattice[0].m_latticeStates.add(TLatticeState (-1.0, 0));
+    setMaxBest(m_maxBest);
 }
 
 void CIMIContext::setCoreData (CIMIData *pCoreData)
@@ -401,15 +402,15 @@ bool CIMIContext::searchFrom (unsigned idx)
     std::vector<TLatticeState> tail_states =
         m_lattice[m_tailIdx].m_latticeStates.getSortedResult();
 
-#ifdef DEBUG
+//#ifdef DEBUG
     for (int i = 0; i < tail_states.size(); i++) {
         std::string score;
         tail_states[i].m_score.toString(score);
         printf("score: %s\n", score.c_str());
     }
-#endif
+//#endif
 
-    for (size_t i = 0; i < m_nMaxBest; i++) {
+    for (size_t i = 0; i < m_maxBest; i++) {
         TPath path, segpath;
         if (_backTracePaths(tail_states, m_nBest, path, segpath)) {
             m_path.push_back (path);

@@ -91,7 +91,8 @@ TLatticeState::print(std::string prefix) const
     printf("%s", prefix.c_str());
     char valbuf[256];
     m_score.toString(valbuf);
-    printf("<State(%d:%d), from word %d, score %s>\n", m_slmState.getLevel(), m_slmState.getIdx(), m_backTraceWordId, valbuf);
+    printf("<State(%d:%d), from word %d, score %s>\n", m_slmState.getLevel(),
+           m_slmState.getIdx(), m_backTraceWordId, valbuf);
 }
 
 const unsigned CLatticeStates::beam_width;
@@ -146,16 +147,14 @@ CLatticeStates::add(const TLatticeState& state)
     bool inserted = false;
 
     if (it == m_stateMap.end()) {
-        CTopLatticeStates topstates(m_nMaxBest);
+        CTopLatticeStates topstates(m_maxBest);
         inserted = topstates.push(state);
         m_stateMap.insert(std::make_pair(slmState, topstates));
         _pushScoreHeap(state.m_score, slmState);
     } else {
         inserted = it->second.push(state);
         slmState = it->second.top().m_slmState;
-        if (inserted) {
-            _adjustDown(m_heapIdx[slmState]);
-        }
+        _adjustDown(m_heapIdx[slmState]);
     }
     if (inserted) m_size++;
 
@@ -246,9 +245,9 @@ CLatticeStates::iterator
 CLatticeStates::begin()
 {
     CLatticeStates::iterator it;
-    it.main_it = m_stateMap.begin();
-    it.main_end = m_stateMap.end();
-    it.child_it = it.main_it->second.begin();
+    it.m_mainIt = m_stateMap.begin();
+    it.m_mainEnd = m_stateMap.end();
+    it.m_childIt = it.m_mainIt->second.begin();
     return it;
 }
 
@@ -256,39 +255,39 @@ CLatticeStates::iterator
 CLatticeStates::end()
 {
     CLatticeStates::iterator it;
-    it.main_end = it.main_it = m_stateMap.end();
+    it.m_mainEnd = it.m_mainIt = m_stateMap.end();
     return it;
 }
 
 void
 CLatticeStates::iterator::operator++()
 {
-    ++child_it;
-    if (child_it == main_it->second.end()) {
-        ++main_it;
-        if (main_it != main_end)
-            child_it = main_it->second.begin();
+    ++m_childIt;
+    if (m_childIt == m_mainIt->second.end()) {
+        ++m_mainIt;
+        if (m_mainIt != m_mainEnd)
+            m_childIt = m_mainIt->second.begin();
     }
 }
 
 bool
 CLatticeStates::iterator::operator!=(const CLatticeStates::iterator& rhs)
 {
-    if (main_it == main_end || rhs.main_it == rhs.main_end) {
-        return main_it != rhs.main_it;
+    if (m_mainIt == m_mainEnd || rhs.m_mainIt == rhs.m_mainEnd) {
+        return m_mainIt != rhs.m_mainIt;
     } else {
-        return main_it != rhs.main_it && child_it != rhs.child_it;
+        return m_mainIt != rhs.m_mainIt && m_childIt != rhs.m_childIt;
     }
 }
 
 TLatticeState&
 CLatticeStates::iterator::operator*()
 {
-    return child_it.operator*();
+    return m_childIt.operator*();
 }
 
 TLatticeState*
 CLatticeStates::iterator::operator->()
 {
-    return child_it.operator->();
+    return m_childIt.operator->();
 }

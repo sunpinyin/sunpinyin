@@ -253,6 +253,13 @@ public:
 
     bool searchFrom (unsigned from = 1);
 
+    void setMaxBest(size_t maxBest) {
+        m_maxBest = maxBest;
+        for (int i = 0; i < MAX_LATTICE_LENGTH; i++) {
+            m_lattice[i].m_latticeStates.setMaxBest(m_maxBest);
+        }
+    }
+
     size_t getNBest() { return m_nBest; }
     std::vector<TPath>& getPath (int rank) { return m_path; }
     std::vector<TPath>& getSegPath (int rank) { return m_segPath; }
@@ -329,7 +336,7 @@ protected:
     unsigned                    m_tailIdx;
 
     size_t                      m_nBest;
-    size_t                      m_nMaxBest;
+    size_t                      m_maxBest;
     std::vector<TPath>          m_path;
     std::vector<TPath>          m_segPath;
 

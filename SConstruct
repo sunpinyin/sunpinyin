@@ -154,6 +154,12 @@ def CreateEnvironment():
                        TAR=tar, MAKE=make, WGET=wget,
                        CPPPATH=['.'] + allinc())
 
+def PassVariables(envvar, env):
+    for (x, y) in envvar:
+        if x in os.environ:
+            print 'Warning: you\'ve set %s in the environmental variable!' % x
+            env[y] = os.environ[x]
+    
 env = CreateEnvironment()
 opts.Update(env)
 
@@ -180,34 +186,16 @@ if GetOS() != 'Darwin':
 if GetOption('rpath') is not None and GetOS() != 'Darwin':
     env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
 
-if 'CC' in os.environ:
-    print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
-    env['CC']=os.environ['CC']
-    
-if 'CXX' in os.environ:
-    print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
-    env['CXX']=os.environ['CXX']
-
-if 'CFLAGS' in os.environ:
-    print 'Warning: you\'ve set an external compiler flags for C.'
-    env['CFLAGS'] = os.environ['CFLAGS']
-
-if 'CXXFLAGS' in os.environ:
-    print 'Warning: you\'ve set an external compiler flags for C++.'
-    env['CXXFLAGS'] = os.environ['CXXFLAGS']
-
-if 'TAR' in os.environ:
-    print 'Warning: you\'ve set %s as tar' % os.environ['TAR']
-    env['TAR'] = os.environ['TAR']
-
-if 'MAKE' in os.environ:
-    print 'Warning: you\'ve set %s as make' % os.environ['MAKE']
-    env['MAKE'] = os.environ['MAKE']
-
-if 'WGET' in os.environ:
-    print 'Warning: you\'ve set %s as wget' % os.environ['WGET']
-    env['WGET'] = os.environ['WGET']
-
+# pass through environmental variables
+envvar = [('CC', 'CC'),
+          ('CXX', 'CXX'),
+          ('CFLAGS', 'CFLAGS'),
+          ('CXXFLAGS', 'CXXFLAGS'),
+          ('LDFLAGS', 'LINKFLAGS'),
+          ('TAR', 'TAR'),
+          ('MAKE', 'MAKE'),
+          ('WGET', 'WGET')]
+PassVariables(envvar, env)
 
 # append critical cflags
 extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir

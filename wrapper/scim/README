@@ -1,0 +1,6 @@
+scim-sunpinyin
+===
+
+scim-sunpinyin is a wrapper around SunPinyin which enables user to use
+SunPinyin with SCIM(Smart Common Input Method).
+

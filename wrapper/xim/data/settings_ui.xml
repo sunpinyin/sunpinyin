@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
@@ -9,8 +9,8 @@
     <property name="window_position">center</property>
     <property name="icon_name">preferences-desktop</property>
     <property name="type_hint">dialog</property>
-    <signal name="close" handler="gtk_main_quit" swapped="no"/>
-    <signal name="response" handler="gtk_main_quit" swapped="no"/>
+    <signal name="close" handler="gtk_main_quit"/>
+    <signal name="response" handler="gtk_main_quit"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
@@ -74,7 +74,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -87,7 +87,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -97,7 +97,7 @@
                       <object class="GtkComboBox" id="trigger_combo">
                         <property name="visible">True</property>
                         <property name="model">keysym</property>
-                        <signal name="changed" handler="state_changed" swapped="no"/>
+                        <signal name="changed" handler="state_changed"/>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext1"/>
                           <attributes>
@@ -126,7 +126,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -139,7 +139,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -149,7 +149,7 @@
                       <object class="GtkComboBox" id="english_combo">
                         <property name="visible">True</property>
                         <property name="model">keysym</property>
-                        <signal name="changed" handler="state_changed" swapped="no"/>
+                        <signal name="changed" handler="state_changed"/>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
                           <attributes>
@@ -193,7 +193,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="state_changed" swapped="no"/>
+                    <signal name="toggled" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -213,7 +213,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -226,7 +226,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -239,7 +239,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">2</property>
@@ -290,7 +290,7 @@
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">remove_on_backspace_check</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -304,7 +304,7 @@
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">cancel_on_backspace_check</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                        <signal name="toggled" handler="state_changed"/>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -325,7 +325,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="state_changed" swapped="no"/>
+                    <signal name="toggled" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -341,7 +341,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="state_changed" swapped="no"/>
+                    <signal name="toggled" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -382,7 +382,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="state_changed" swapped="no"/>
+                    <signal name="toggled" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="y_options">GTK_FILL</property>
@@ -396,7 +396,7 @@
                     <property name="receives_default">False</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">pinyin_check</property>
-                    <signal name="toggled" handler="state_changed" swapped="no"/>
+                    <signal name="toggled" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="top_attach">1</property>
@@ -426,7 +426,7 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                     <property name="visible">True</property>
                     <property name="model">shuangpin_scheme</property>
                     <property name="active">0</property>
-                    <signal name="changed" handler="state_changed" swapped="no"/>
+                    <signal name="changed" handler="state_changed"/>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext3"/>
                       <attributes>
@@ -516,7 +516,7 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="color">#000000000000</property>
-                    <signal name="color-set" handler="state_changed" swapped="no"/>
+                    <signal name="color_set" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -545,7 +545,7 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="font-set" handler="state_changed" swapped="no"/>
+                    <signal name="font_set" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -575,7 +575,7 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="color">#000000000000</property>
-                    <signal name="color-set" handler="state_changed" swapped="no"/>
+                    <signal name="color_set" handler="state_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -588,24 +588,30 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                 <child>
                   <object class="GtkLabel" id="label14">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">classic skin:</property>
+                    <property name="label" translatable="yes">Classic Skin:</property>
                   </object>
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
+                    <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label15">
                     <property name="visible">True</property>
+                    <property name="xalign">1</property>
+                    <property name="xpad">8</property>
                     <property name="label" translatable="yes">Skin:</property>
                   </object>
+                  <packing>
+                    <property name="y_options"></property>
+                  </packing>
                 </child>
                 <child>
                   <object class="GtkComboBox" id="skin_combo">
                     <property name="visible">True</property>
                     <property name="model">skin_list</property>
-                    <signal name="changed" handler="state_changed" swapped="no"/>
+                    <signal name="changed" handler="state_changed"/>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext4"/>
                       <attributes>
@@ -616,10 +622,20 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
+                    <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkLabel" id="label16">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                    <property name="y_options"></property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -676,13 +692,13 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
     </action-widgets>
   </object>
   <object class="GtkAdjustment" id="opacity_value">
+    <property name="value">0.01</property>
     <property name="lower">0.01</property>
     <property name="upper">1.01</property>
-    <property name="value">0.01</property>
     <property name="step_increment">0.10000000000000001</property>
     <property name="page_increment">0.01</property>
     <property name="page_size">0.01</property>
-    <signal name="value-changed" handler="state_changed" swapped="no"/>
+    <signal name="value_changed" handler="state_changed"/>
   </object>
   <object class="GtkListStore" id="keysym">
     <columns>
@@ -708,13 +724,13 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
     </data>
   </object>
   <object class="GtkAdjustment" id="ncandidates">
+    <property name="value">10</property>
     <property name="lower">3</property>
     <property name="upper">11</property>
-    <property name="value">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
     <property name="page_size">1</property>
-    <signal name="value-changed" handler="state_changed" swapped="no"/>
+    <signal name="value_changed" handler="state_changed"/>
   </object>
   <object class="GtkListStore" id="shuangpin_scheme">
     <columns>

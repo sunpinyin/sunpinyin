@@ -284,7 +284,7 @@ icmgr_refresh(void)
     if (current_ic->is_enabled) {
         if (current_ic->is_english && preedit_status())
             preedit_pause();
-        else
+        else if (!current_ic->is_english && !preedit_status())
             preedit_go_on();
 
         preedit_set_full(current_ic->is_full);

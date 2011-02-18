@@ -1,0 +1,47 @@
+Release 2.0.3
+=============
+
+2.0.3 release is containing a lot of major fix compare to last release.  User should update to this release as soon as possible.  It fixed many inconveniet bugs.  Changes compare to 2.0.2 are described below:
+
+Build
+-----
+
+* CFLAGS, CXXFLAGS and LDFLAGS are recongnized.
+* Scons scripts now will remember the configuration arguments in configure.conf.
+* Ported to ARMEL architecture.
+* Able to build on FreeBSD.
+
+libsunpinyin
+------------
+
+* New LOGO!
+* History cache focus more on recent commits.
+* Supports --libdir and --libdatadir as configuration arguments.
+* Hunpin support. (Contributed by Hanjie Xu)
+* Fixed weird behavior of history with a single character.
+* Fixed a potential issue for candidate ranking.
+
+ibus-sunpinyin
+--------------
+
+* Supports --libdir, --datadir, --execdir as configuration arguments.
+* Alt+num key as the candidate delete key for ibus-sunpinyin.
+* Able to build on IBus-1.4
+
+xsunpinyin
+----------
+
+* Synchronized the version between xsunpinyin and libsunpinyin project.
+* Fixed startup crash with empty directory.
+* Fixed position problem on multi-screen.
+* Fixed crash on exit, which caused history information lost.
+* Refact UI system
+* Added skin support
+* Fixed text overbound when pinyin are too long.
+* Fixed ignorance of ShuangPin setting.
+* Fixed weird behavior of fast switch to english. (Issue 213).
+
+scim-sunpinyin
+--------------
+
+* Add legacy support for scim (Thanks to liangguo)

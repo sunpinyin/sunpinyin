@@ -158,7 +158,7 @@ def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
-            env[y] = os.environ[x]
+            env[y] += os.environ[x]
     
 env = CreateEnvironment()
 opts.Update(env)

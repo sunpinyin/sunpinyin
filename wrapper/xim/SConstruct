@@ -32,7 +32,7 @@ imdkit_sources = ['IMdkit/FrameMgr.c',
                   'IMdkit/IMValues.c']
 
 
-cflags='-O2 -g -pipe'
+cflags='-O2 -g -pipe '
 
 # options
 AddOption('--prefix', dest='prefix', type='string', nargs=1, action='store',
@@ -48,7 +48,7 @@ def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
-            env[y] = os.environ[x]
+            env[y] += os.environ[x]
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags,

@@ -3,7 +3,7 @@ import SCons.Tool.textfile
 
 locales = []
 
-cflags = '-O2 -g -pipe'
+cflags = '-O2 -g -pipe '
 version = '2.0.3'
 
 AddOption('--prefix', dest='prefix', metavar='DIR',
@@ -27,7 +27,7 @@ def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
-            env[y] = os.environ[x]
+            env[y] += os.environ[x]
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 

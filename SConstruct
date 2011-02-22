@@ -158,7 +158,7 @@ def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
-            env[y] += os.environ[x]
+            env[y] = os.environ[x]
     
 env = CreateEnvironment()
 opts.Update(env)
@@ -180,12 +180,6 @@ libdir = env['LIBDIR']
 libdatadir = env['LIBDATADIR'] + '/sunpinyin/data'
 headersdir = env['PREFIX'] + '/include/sunpinyin-2.0'
 
-if GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
-
-if GetOption('rpath') is not None and GetOS() != 'Darwin':
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
-
 # pass through environmental variables
 envvar = [('CC', 'CC'),
           ('CXX', 'CXX'),
@@ -201,6 +195,12 @@ PassVariables(envvar, env)
 extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
+
+if GetOS() != 'Darwin':
+    env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
+
+if GetOption('rpath') is not None and GetOS() != 'Darwin':
+    env.Append(LINKFLAGS=['-Wl,-R', '-Wl,%s' % GetOption('rpath')])
 
 #
 #==============================configure================================

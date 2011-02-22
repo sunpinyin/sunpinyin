@@ -27,7 +27,7 @@ def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
-            env[y] += os.environ[x]
+            env[y] = os.environ[x]
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
@@ -51,9 +51,6 @@ if GetOption('datadir') is not None:
 
 opts.Save('configure.conf', env)
 
-if GetOption('rpath') is not None:
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
-
 envvar = [('CC', 'CC'),
           ('CXX', 'CXX'),
           ('CFLAGS', 'CFLAGS'),
@@ -75,6 +72,10 @@ extra_cflags += ' -Isrc'
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
 env.Replace(SHLIBPREFIX = '')
+
+if GetOption('rpath') is not None:
+    env.Append(LINKFLAGS=['-Wl,-R', '-Wl,%s' % GetOption('rpath')])
+
 #
 #==============================configure================================
 #

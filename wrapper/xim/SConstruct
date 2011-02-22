@@ -48,11 +48,10 @@ def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
-            env[y] += os.environ[x]
+            env[y] = os.environ[x]
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags,
-                  LINKFLAGS=['-export-dynamic'],
                   CPPPATH=['.', 'IMdkit'])
 opts.Update(env)
 
@@ -61,11 +60,6 @@ if GetOption('prefix') is not None:
     env['PREFIX'] = GetOption('prefix')
 
 opts.Save('configure.conf', env)
-
-
-# set rpath
-if GetOption('rpath') is not None:
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
 
 envvar = [('CC', 'CC'),
           ('CXX', 'CXX'),
@@ -83,7 +77,11 @@ extra_cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
+env.Append(LINKFLAGS=['-export-dynamic'])
 
+# set rpath
+if GetOption('rpath') is not None:
+    env.Append(LINKFLAGS=['-Wl,-R', '-Wl,%s' % GetOption('rpath')])
 
 #
 #==============================configure================================

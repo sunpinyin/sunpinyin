@@ -52,19 +52,29 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
     if (size <= 0)
         return size;
     
-    const int total = cl.total();    
-    // expand the array in lookup_table
-    // we will fill the missing items in when we have them
+    const int total = cl.total();
+    // total is the number of items in all pages, while size is the number of items in the current
+    // page (only these items are included in the candidate list).
     ibus_lookup_table_set_page_size(*this, size);
-    g_array_set_size((*this)->candidates, total);
-
-    for (int i = 0, begin = 0; i < size; ++i) {
-        const int len = append_candidate(cl, i, begin);
-        if (len)
-            begin += len;
-        else
-            break;
+    // We are updating the current page only, thus some ugly hacks are needed...
+    ibus_lookup_table_clear(*this);
+    int page_start = get_current_page_start(), cur_total = 0;
+    // Dummy candidates are inserted when they are not in the current page.
+    // Maybe we can share these candidates (but what if someone else changes the attributes?)
+    for (; cur_total < page_start; ++cur_total)
+	ibus_lookup_table_append_candidate(*this, ibus_text_new_from_static_string(""));
+    for (int i = 0; i < size; ++i) {
+	const TWCHAR* cand = cl.candiString(i);
+	if (cand && cl.candiSize(i)) {
+	    ibus::Text text(ibus_text_new_from_ucs4(cand));
+	    decorate_candidate(text, cl.candiType(i));
+	    ibus_lookup_table_append_candidate(*this, text);
+	    ++cur_total;
+	} else break; // I think this shouldn't happen...
     }
+    for (; cur_total < total; ++cur_total)
+	ibus_lookup_table_append_candidate(*this, ibus_text_new_from_static_string(""));
+
     return size;
     //ibus_lookup_table_set_cursor_pos (m_lookup_table, index);
 }
@@ -87,41 +97,6 @@ size_t
 SunPinyinLookupTable::get_cursor_pos() const
 {
     return ibus_lookup_table_get_cursor_pos(*this);
-}
-
-// an alternative to ibus_lookup_table_append_candidate(m_lookup_table, text);
-// if we can assume that WinHandler::updateCandiates() is called
-// in sequence. we can use ibus_lookup_table_append_candidate()
-static void
-ibus_lookup_table_set_candidate(IBusLookupTable *table,
-                                guint index,
-                                IBusText *text)
-{
-    g_return_if_fail (IBUS_IS_LOOKUP_TABLE (table));
-    g_return_if_fail (IBUS_IS_TEXT (text));
-    g_assert(index < table->candidates->len);
-    
-    g_object_ref (text);
-    g_array_insert_val (table->candidates, index, text);
-}
-
-int
-SunPinyinLookupTable::append_candidate(const ICandidateList& cl,
-                                       int item,
-                                       int begin)
-{
-    const TWCHAR* cand = 0;
-    int len = 0;
-    
-    cand = cl.candiString(item);
-    if (!cand)
-        return len;
-    len = cl.candiSize(item);
-    ibus::Text text(ibus_text_new_from_ucs4(cand));
-    decorate_candidate(text, cl.candiType(item));
-    int index = get_current_page_start() + item;
-    ibus_lookup_table_set_candidate(*this, index, text);
-    return len;
 }
 
 void

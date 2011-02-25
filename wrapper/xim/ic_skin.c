@@ -133,6 +133,10 @@ toggle_mode(gboolean mode, skin_button_t* btn, skin_button_info_t* info)
 static void
 icmgr_skin_refresh(void)
 {
+    if (settings_get_int(HIDE_ICBAR)) {
+        gtk_widget_hide(icbar_wind->widget);
+        return;
+    }
     IC* ic = icmgr_get_current();
     if (ic == NULL || !ic->is_enabled) {
         gtk_widget_hide(GTK_WIDGET(icbar_wind->widget));
@@ -150,8 +154,8 @@ icmgr_skin_refresh(void)
     /* write back the adjustion */
     settings_set(ICBAR_POS, &pos);
 
-    gtk_widget_show(icbar_wind->widget);
     gtk_window_move(GTK_WINDOW(icbar_wind->widget), pos.x, pos.y);
+    gtk_widget_show(icbar_wind->widget);
 }
 
 static void

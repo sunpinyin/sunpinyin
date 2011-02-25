@@ -76,6 +76,7 @@ typedef enum {
     CANCEL_ON_BACKSPACE,
     SMART_PUNCT,
     SKIN_NAME,
+    HIDE_ICBAR,
 } setting_key_t;
 
 #define MAX_KEY 0xFF

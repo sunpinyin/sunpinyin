@@ -55,6 +55,13 @@ GtkPreeditUI::GtkPreeditUI()
     gtk_box_pack_start(GTK_BOX(box), candidate_area_,
                        FALSE, FALSE, 1);
     gtk_widget_show_all(box);
+
+    // set the colormap before realized the window
+    GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
+    GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
+    if (cmap) {
+        gtk_widget_set_colormap(main_wnd_, cmap);
+    }
     gtk_widget_realize(main_wnd_);
 }
 
@@ -105,18 +112,10 @@ GtkPreeditUI::reload()
     gtk_widget_modify_fg(preedit_area_, GTK_STATE_NORMAL, &color);
 
     settings_get(PREEDIT_OPACITY, &opa);
-    GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
-    if (opa < 1.0) {
-        GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
-        if (cmap) {
-            gtk_widget_set_colormap(main_wnd_, cmap);
-            gtk_window_set_opacity(GTK_WINDOW(main_wnd_), opa);
-        }
-    } else {
-        GdkColormap* cmap = gdk_screen_get_rgb_colormap(screen);
-        gtk_window_set_opacity(GTK_WINDOW(main_wnd_), 1.0);
-        gtk_widget_set_colormap(main_wnd_, cmap);
-    }
+
+    // setting the opacity
+    if (opa > 1.0) opa = 1.0;
+    gtk_window_set_opacity(GTK_WINDOW(main_wnd_), opa);
 }
 
 void

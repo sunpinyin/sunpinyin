@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -177,16 +177,16 @@ bool CBigramHistory::loadFromFile (const char *fname)
         perror("fopen bi-gram");
         return suc;
     }
-    
+
     struct stat info;
     fstat (fd, &info);
     void* buf = malloc (info.st_size);
-    
+
     if (buf) {
         read (fd, buf, info.st_size);
         suc = loadFromBuffer (buf, info.st_size);
         free (buf);
-    }  
+    }
     close (fd);
     return suc;
 }
@@ -275,8 +275,9 @@ int  CBigramHistory::biFreq(TBigram& bg)
 {
     int freq = 0;
     //std::set<unsigned>::const_iterator ite = m_stopWords.end();
-    if (m_stopWords.find(bg.first) != m_stopWords.end()
-        && m_stopWords.find(bg.second) != m_stopWords.end()) {
+    if (m_stopWords.find(bg.first) == m_stopWords.end()
+        && m_stopWords.find(bg.second) == m_stopWords.end()) {
+        puts("here");
         TBigramPool::const_iterator it = m_bifreq.find(bg);
         if (it != m_bifreq.end()) {
             freq =  it->second;
@@ -338,7 +339,7 @@ void CBigramHistory::incBiFreq(TBigram& bg)
 // a better data structure for this.
 //
 // And Even though, we may also need to remove the individual characters in this
-// word (identified by wid), which is current infeasible, 
+// word (identified by wid), which is current infeasible,
 //
 // Here are what we need to do:
 //   1. get the wstring by word id from userdict
@@ -357,7 +358,7 @@ void CBigramHistory::forget(unsigned wid)
 
     while (it != ite) {
         TBigram bigram = it->first;
-        
+
         if (bigram.first == wid || bigram.second == wid)
             m_bifreq.erase (it++);
         else
@@ -387,7 +388,7 @@ void CBigramHistory::addStopWords(const std::set<unsigned int>& stopWords)
 void CBigramHistory::initStopWords()
 {
     m_stopWords.clear();
-    
+
     m_stopWords.insert(0);     //unknown world
     m_stopWords.insert(DCWID); //seperator word id used by history memory interanlly
 }

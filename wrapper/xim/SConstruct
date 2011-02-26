@@ -77,11 +77,11 @@ extra_cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
-env.Append(LINKFLAGS=['-export-dynamic'])
+env.Append(LINKFLAGS=' -export-dynamic')
 
 # set rpath
 if GetOption('rpath') is not None:
-    env.Append(LINKFLAGS=['-Wl,-R', '-Wl,%s' % GetOption('rpath')])
+    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================

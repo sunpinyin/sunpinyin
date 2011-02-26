@@ -74,7 +74,7 @@ env.Append(CXXFLAGS=extra_cflags)
 env.Replace(SHLIBPREFIX = '')
 
 if GetOption('rpath') is not None:
-    env.Append(LINKFLAGS=['-Wl,-R', '-Wl,%s' % GetOption('rpath')])
+    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================

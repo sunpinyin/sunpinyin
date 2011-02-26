@@ -197,10 +197,10 @@ env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
 
 if GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
+    env.Append(LINKFLAGS=' -Wl,-soname=libsunpinyin.so.%d' % abi_major)
 
 if GetOption('rpath') is not None and GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=['-Wl,-R', '-Wl,%s' % GetOption('rpath')])
+    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================

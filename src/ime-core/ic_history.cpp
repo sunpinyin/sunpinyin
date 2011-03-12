@@ -277,7 +277,6 @@ int  CBigramHistory::biFreq(TBigram& bg)
     //std::set<unsigned>::const_iterator ite = m_stopWords.end();
     if (m_stopWords.find(bg.first) == m_stopWords.end()
         && m_stopWords.find(bg.second) == m_stopWords.end()) {
-        puts("here");
         TBigramPool::const_iterator it = m_bifreq.find(bg);
         if (it != m_bifreq.end()) {
             freq =  it->second;

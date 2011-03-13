@@ -230,7 +230,7 @@ def AppendEndianCheck(conf):
   || defined(_POWER)   || defined(__powerpc__) \
   || defined(__ppc__)  || defined(__hpux) || defined(__hppa) \
   || defined(_MIPSEB)  || defined(_POWER) \
-  || defined(__s390__)
+  || defined(__s390__) || (defined(__sh__) && defined(__BIG_ENDIAN__))
 # define WORDS_BIGENDIAN 1
 
 #elif defined(__i386__) || defined(__i386) \
@@ -240,7 +240,8 @@ def AppendEndianCheck(conf):
   || defined(__amd64__) || defined(_M_AMD64) \
   || defined(__x86_64)  || defined(__x86_64__) \
   || defined(_M_X64)    || defined(__bfin__) \
-  || defined(__alpha__) || defined(__ARMEL__)
+  || defined(__alpha__) || defined(__ARMEL__) \
+  || (defined(__sh__) && defined(__LITTLE_ENDIAN__))
 # undef WORDS_BIGENDIAN
 
 #else

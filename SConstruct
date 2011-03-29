@@ -241,7 +241,7 @@ def AppendEndianCheck(conf):
   || defined(__x86_64)  || defined(__x86_64__) \
   || defined(_M_X64)    || defined(__bfin__) \
   || defined(__alpha__) || defined(__ARMEL__) \
-  || (defined(__sh__) && defined(__LITTLE_ENDIAN__))
+  || defined(_MIPSEL)   || (defined(__sh__) && defined(__LITTLE_ENDIAN__))
 # undef WORDS_BIGENDIAN
 
 #else

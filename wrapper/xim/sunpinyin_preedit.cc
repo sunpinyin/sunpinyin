@@ -48,7 +48,7 @@ class WindowHandler : public CIMIWinHandler
 protected:
     virtual void updatePreedit(const IPreeditString* ppd);
     virtual void updateCandidates(const ICandidateList* pcl);
-    //virtual void updateStatus(int key, int value);
+    virtual void updateStatus(int key, int value);
     virtual void commit(const TWCHAR* str);
 
 private:
@@ -221,6 +221,10 @@ WindowHandler::updateCandidates(const ICandidateList* pcl)
     // update within the ui provider
     update_candidates_ui(pcl, candidate_str_);
 }
+
+void
+WindowHandler::updateStatus(int key, int value)
+{}
 
 void
 WindowHandler::commit(const TWCHAR* str)

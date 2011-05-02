@@ -36,13 +36,21 @@
  */
 
 #include <assert.h>
+#include <stdlib.h>
 #include "userdict.h"
 
 
 bool CUserDict::load(const char  *fname)
 {	
-    int rc = sqlite3_open(fname, &m_db);
+    int rc = sqlite3_open(":memory:", &m_db);
 
+    if (rc != SQLITE_OK) {
+        sqlite3_close(m_db);
+        return false;
+    }
+
+    m_fname = strdup(fname);
+    rc = _copyDb(Load);
     if (rc != SQLITE_OK) {
         sqlite3_close(m_db);
         return false;
@@ -54,6 +62,12 @@ bool CUserDict::load(const char  *fname)
 
 void CUserDict::free()
 {
+    if (m_fname) {
+        _copyDb(Save);
+        ::free(m_fname);
+        m_fname = NULL;
+    }
+
     if (m_db) {
         sqlite3_close(m_db);
         m_db = NULL;
@@ -227,6 +241,25 @@ const TWCHAR* CUserDict::operator [] (unsigned wid)
     return ret;
 }
 
+int CUserDict::_copyDb(DBCopyDirection direction)
+{
+    sqlite3 *disk_db;
+    int rc = sqlite3_open(m_fname, &disk_db);
+
+    if (rc == SQLITE_OK) {
+        sqlite3 *dst = direction == Load ? m_db : disk_db;
+        sqlite3 *src = direction == Save ? m_db : disk_db;
+        sqlite3_backup *backup = sqlite3_backup_init(dst, "main", src, "main");
+        if (backup) {
+            sqlite3_backup_step(backup, -1);
+            sqlite3_backup_finish(backup);
+        }
+        rc = sqlite3_errcode(dst);
+    }
+
+    sqlite3_close(disk_db);
+    return rc;
+}
 
 bool CUserDict::_createTable()
 {

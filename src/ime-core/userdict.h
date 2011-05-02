@@ -47,7 +47,7 @@
 class CUserDict
 {
 public:
-     CUserDict () : m_db(NULL) {}
+     CUserDict () : m_fname(NULL), m_db(NULL) {}
 
     ~CUserDict () {free ();}
 
@@ -64,9 +64,17 @@ public:
     const TWCHAR* operator [] (unsigned wid);
 
 private:
+    enum DBCopyDirection
+    {
+        Load,
+        Save
+    };
+
+    int _copyDb(DBCopyDirection direction);
     bool _createTable();
     bool _createIndexes();
 
+    char                       *m_fname;
     sqlite3                    *m_db;
     std::map<unsigned, wstring> m_dict;
 };

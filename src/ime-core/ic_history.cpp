@@ -54,7 +54,6 @@ CICHistory::~CICHistory()
 {
 }
 
-static bool bBigramHistoryInited = false;
 const size_t  CBigramHistory::contxt_memory_size = 8192;
 const double  CBigramHistory::focus_memory_ratio = 0.05;
 

@@ -49,9 +49,13 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 -(void)setAttributedString:(NSAttributedString *)str;
 -(void)setBgColor:(NSColor*)color;
 
+@property (retain, nonatomic) NSColor *bgColor;
+
 @end
 
 @implementation CandidateView
+
+@synthesize bgColor  = _bgColor;
 
 -(void)setAttributedString:(NSAttributedString *)str
 {
@@ -59,18 +63,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     [_string release];
     _string = str;
     [self setNeedsDisplay:YES];
-}
-
--(NSColor*)bgColor
-{
-    return _bgColor;
-}
-    
--(void)setBgColor:(NSColor*)color
-{
-    [color retain];
-    [_bgColor release];
-    _bgColor = color;
 }
 
 -(void)setRadius:(float)radius
@@ -108,6 +100,9 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 @end
 
 @implementation CandidateWindow
+
+@synthesize fgColor  = _fgColor;
+@synthesize hlColor  = _hlColor;
 
 -(id)init
 {
@@ -157,30 +152,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 {
     [(CandidateView*)_view setBgColor:color];
 }     
-     
--(NSColor *)fgColor
-{
-    return _fgColor;
-}
-
--(void)setFgColor:(NSColor*)color
-{
-    [color retain];
-    [_fgColor release];
-    _fgColor = color;
-}
-
--(NSColor *)hlColor
-{
-    return _hlColor;
-}
-
--(void)setHlColor:(NSColor*)color
-{
-    [color retain];
-    [_hlColor release];
-    _hlColor = color;
-}
 
 -(void)setRadius:(float)radius
 {

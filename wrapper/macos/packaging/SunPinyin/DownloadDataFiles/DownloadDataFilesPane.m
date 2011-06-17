@@ -260,7 +260,7 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
     // inform the user
     NSLog(@"Download failed! Error - %@ %@",
           [error localizedDescription],
-          [[error userInfo] objectForKey: NSErrorFailingURLStringKey]);
+          [[error userInfo] objectForKey: NSURLErrorFailingURLStringErrorKey]);
 }
 
 - (void) download: (NSURLDownload *) download didReceiveDataOfLength: (NSUInteger) length
@@ -329,7 +329,7 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
-          [[error userInfo] objectForKey: NSErrorFailingURLStringKey]);
+          [[error userInfo] objectForKey: NSURLErrorFailingURLStringErrorKey]);
 
     [self gotoNextPane];
 }

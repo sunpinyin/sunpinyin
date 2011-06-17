@@ -701,6 +701,10 @@ void CIMIContext::getCandidates (unsigned frIdx, CCandidates& result)
                     continue;
                 if (fr.m_bestWords[i].m_start != m_candiStarts)
                     continue;
+
+                TLexiconState & lxst = *(cp.m_candi.m_pLexiconState);
+                int len = lxst.m_syls.size() - lxst.m_num_of_inner_fuzzies;
+                if (0 == len) len = 1;
                 cp.m_candi = fr.m_bestWords[i];
                 cp.m_Rank =
                     TCandiRank(fr.m_bwType & CLatticeFrame::USER_SELECTED,

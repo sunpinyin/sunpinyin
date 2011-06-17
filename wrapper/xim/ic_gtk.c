@@ -187,6 +187,10 @@ icmgr_gtk_init(const char* name)
 static void
 icmgr_gtk_refresh(void)
 {
+    if (settings_get_int(HIDE_ICBAR)) {
+        gtk_widget_hide(icbar_window);
+        return;
+    }
     IC* ic = icmgr_get_current();
     if (ic == NULL || !ic->is_enabled) {
         gtk_widget_hide(icbar_window);
@@ -207,8 +211,8 @@ icmgr_gtk_refresh(void)
     adjust_position(&(pos.x), &(pos.y), width, height);
     settings_set(ICBAR_POS, &pos);
 
-    gtk_widget_show(icbar_window);
     gtk_window_move(GTK_WINDOW(icbar_window), pos.x, pos.y);
+    gtk_widget_show(icbar_window);
 }
 
 static void

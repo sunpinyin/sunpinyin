@@ -52,10 +52,8 @@ typedef enum {
     SWITCH_BY_SHIFT     = 2,
 } SwitchingPolicies;
 
-// if MAC_OS_X_VERSION_10_6 > MAC_OS_X_VERSION_MAX_ALLOWED, 
-// @interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
 // Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
-@interface SunPinyinApplicationDelegate : NSObject <GrowlApplicationBridgeDelegate>
+@interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
 {
     IBOutlet NSMenu*            _menu;
     IBOutlet CandidateWindow*   _candiWin;

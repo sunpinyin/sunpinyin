@@ -386,6 +386,7 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SunPinyin" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -434,7 +435,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ibtool --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool --compile zh_CN.lproj/MainMenu.nib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.nib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.nib";
+			shellScript = "ibtool3 --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool3 --compile zh_CN.lproj/MainMenu.nib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.nib ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.nib";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -525,7 +526,7 @@
 					../../src,
 				);
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = macosx10.5;
 			};
 			name = "Release-ppc";
 		};
@@ -556,6 +557,7 @@
 					"-liconv",
 				);
 				PRODUCT_NAME = SunPinyin;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Release-ppc";
@@ -589,6 +591,7 @@
 					"-liconv",
 				);
 				PRODUCT_NAME = SunPinyin;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -621,6 +624,7 @@
 					"-liconv",
 				);
 				PRODUCT_NAME = SunPinyin;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Release-i386";
@@ -636,7 +640,7 @@
 					../../src,
 				);
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -652,7 +656,7 @@
 					../../src,
 				);
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = macosx10.5;
 			};
 			name = "Release-i386";
 		};

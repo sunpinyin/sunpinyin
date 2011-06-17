@@ -55,6 +55,13 @@ GtkPreeditUI::GtkPreeditUI()
     gtk_box_pack_start(GTK_BOX(box), candidate_area_,
                        FALSE, FALSE, 1);
     gtk_widget_show_all(box);
+
+    // set the colormap before realized the window
+    GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
+    GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
+    if (cmap) {
+        gtk_widget_set_colormap(main_wnd_, cmap);
+    }
     gtk_widget_realize(main_wnd_);
 }
 
@@ -105,18 +112,10 @@ GtkPreeditUI::reload()
     gtk_widget_modify_fg(preedit_area_, GTK_STATE_NORMAL, &color);
 
     settings_get(PREEDIT_OPACITY, &opa);
-    GdkScreen* screen = gtk_widget_get_screen(main_wnd_);
-    if (opa < 1.0) {
-        GdkColormap* cmap = gdk_screen_get_rgba_colormap(screen);
-        if (cmap) {
-            gtk_widget_set_colormap(main_wnd_, cmap);
-            gtk_window_set_opacity(GTK_WINDOW(main_wnd_), opa);
-        }
-    } else {
-        GdkColormap* cmap = gdk_screen_get_rgb_colormap(screen);
-        gtk_window_set_opacity(GTK_WINDOW(main_wnd_), 1.0);
-        gtk_widget_set_colormap(main_wnd_, cmap);
-    }
+
+    // setting the opacity
+    if (opa > 1.0) opa = 1.0;
+    gtk_window_set_opacity(GTK_WINDOW(main_wnd_), opa);
 }
 
 void
@@ -130,11 +129,14 @@ GtkPreeditUI::update_candidates_string(const char* utf_str)
 {
     gtk_label_set(GTK_LABEL(candidate_area_), utf_str);
 
-    PangoLayout* lay = gtk_label_get_layout(GTK_LABEL(candidate_area_));
+    PangoLayout* pre_lay = gtk_label_get_layout(GTK_LABEL(preedit_area_));
+    PangoLayout* can_lay = gtk_label_get_layout(GTK_LABEL(candidate_area_));
     int x = 0, y = 0;
-    int wid = -1;
-    pango_layout_get_pixel_size(lay, &wid, NULL);
-    gtk_window_resize(GTK_WINDOW(main_wnd_), wid + 1, 1);
+    int pre_wid = -1, can_wid = -1;
+    pango_layout_get_pixel_size(pre_lay, &pre_wid, NULL);
+    pango_layout_get_pixel_size(can_lay, &can_wid, NULL);
+
+    gtk_window_resize(GTK_WINDOW(main_wnd_), MAX(pre_wid, can_wid) + 1, 1);
 
     gtk_window_get_position(GTK_WINDOW(main_wnd_), &x, &y);
     move(x, y);

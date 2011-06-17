@@ -72,6 +72,7 @@ static GtkToggleButton* smart_punct_check = NULL;
 static GtkToggleButton* shuangpin_check = NULL;
 static GtkComboBox* shuangpin_combo = NULL;
 static GtkComboBox* skin_combo = NULL;
+static GtkToggleButton* hide_icbar_check = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))
@@ -244,6 +245,9 @@ init_settings(void)
     settings_get(SKIN_NAME, skin_name);
     int idx = list_skins(skin_name);
     gtk_combo_box_set_active(skin_combo, idx);
+
+    gtk_toggle_button_set_active(hide_icbar_check,
+                                 settings_get_int(HIDE_ICBAR));
 }
 
 static void
@@ -274,6 +278,7 @@ init(void)
     RETRIEVE(shuangpin_check, GTK_TOGGLE_BUTTON);
     RETRIEVE(shuangpin_combo, GTK_COMBO_BOX);
     RETRIEVE(skin_combo, GTK_COMBO_BOX);
+    RETRIEVE(hide_icbar_check, GTK_TOGGLE_BUTTON);
 
     init_settings();
 
@@ -369,6 +374,9 @@ state_changed()
 
     /* skins */
     settings_set_string(SKIN_NAME, gtk_combo_box_get_active_text(skin_combo));
+
+    /* whether hide icbar */
+    settings_set_int(HIDE_ICBAR, gtk_toggle_button_get_active(hide_icbar_check));
 
     settings_save();
     send_reload();

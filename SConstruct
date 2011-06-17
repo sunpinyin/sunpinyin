@@ -154,6 +154,12 @@ def CreateEnvironment():
                        TAR=tar, MAKE=make, WGET=wget,
                        CPPPATH=['.'] + allinc())
 
+def PassVariables(envvar, env):
+    for (x, y) in envvar:
+        if x in os.environ:
+            print 'Warning: you\'ve set %s in the environmental variable!' % x
+            env[y] = os.environ[x]
+    
 env = CreateEnvironment()
 opts.Update(env)
 
@@ -174,45 +180,27 @@ libdir = env['LIBDIR']
 libdatadir = env['LIBDATADIR'] + '/sunpinyin/data'
 headersdir = env['PREFIX'] + '/include/sunpinyin-2.0'
 
-if GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=['-Wl,-soname=libsunpinyin.so.%d' % abi_major])
-
-if GetOption('rpath') is not None and GetOS() != 'Darwin':
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
-
-if 'CC' in os.environ:
-    print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
-    env['CC']=os.environ['CC']
-    
-if 'CXX' in os.environ:
-    print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
-    env['CXX']=os.environ['CXX']
-
-if 'CFLAGS' in os.environ:
-    print 'Warning: you\'ve set an external compiler flags for C.'
-    env['CFLAGS'] = os.environ['CFLAGS']
-
-if 'CXXFLAGS' in os.environ:
-    print 'Warning: you\'ve set an external compiler flags for C++.'
-    env['CXXFLAGS'] = os.environ['CXXFLAGS']
-
-if 'TAR' in os.environ:
-    print 'Warning: you\'ve set %s as tar' % os.environ['TAR']
-    env['TAR'] = os.environ['TAR']
-
-if 'MAKE' in os.environ:
-    print 'Warning: you\'ve set %s as make' % os.environ['MAKE']
-    env['MAKE'] = os.environ['MAKE']
-
-if 'WGET' in os.environ:
-    print 'Warning: you\'ve set %s as wget' % os.environ['WGET']
-    env['WGET'] = os.environ['WGET']
-
+# pass through environmental variables
+envvar = [('CC', 'CC'),
+          ('CXX', 'CXX'),
+          ('CFLAGS', 'CFLAGS'),
+          ('CXXFLAGS', 'CXXFLAGS'),
+          ('LDFLAGS', 'LINKFLAGS'),
+          ('TAR', 'TAR'),
+          ('MAKE', 'MAKE'),
+          ('WGET', 'WGET')]
+PassVariables(envvar, env)
 
 # append critical cflags
 extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
+
+if GetOS() != 'Darwin':
+    env.Append(LINKFLAGS=' -Wl,-soname=libsunpinyin.so.%d' % abi_major)
+
+if GetOption('rpath') is not None and GetOS() != 'Darwin':
+    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================
@@ -242,7 +230,7 @@ def AppendEndianCheck(conf):
   || defined(_POWER)   || defined(__powerpc__) \
   || defined(__ppc__)  || defined(__hpux) || defined(__hppa) \
   || defined(_MIPSEB)  || defined(_POWER) \
-  || defined(__s390__)
+  || defined(__s390__) || (defined(__sh__) && defined(__BIG_ENDIAN__))
 # define WORDS_BIGENDIAN 1
 
 #elif defined(__i386__) || defined(__i386) \
@@ -252,7 +240,8 @@ def AppendEndianCheck(conf):
   || defined(__amd64__) || defined(_M_AMD64) \
   || defined(__x86_64)  || defined(__x86_64__) \
   || defined(_M_X64)    || defined(__bfin__) \
-  || defined(__alpha__) || defined(__ARMEL__)
+  || defined(__alpha__) || defined(__ARMEL__) \
+  || defined(_MIPSEL)   || (defined(__sh__) && defined(__LITTLE_ENDIAN__))
 # undef WORDS_BIGENDIAN
 
 #else

@@ -53,15 +53,12 @@
 -(NSColor*)bgColor;
 -(void)setBgColor:(NSColor*)color;
 
--(NSColor*)fgColor;
--(void)setFgColor:(NSColor*)color;
-
--(NSColor*)hlColor;
--(void)setHlColor:(NSColor*)color;
-
 -(void)showCandidates:(NSArray*)candiArray around:(NSRect)cursorRect;
 -(void)hideCandidates;
 
 -(void)setRadius:(float)radius;
+
+@property (retain, nonatomic) NSColor *fgColor;
+@property (retain, nonatomic) NSColor *hlColor;
 
 @end

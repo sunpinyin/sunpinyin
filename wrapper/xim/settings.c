@@ -65,6 +65,7 @@ static const char* setting_names[] = {
     "cancel_on_backspace",
     "smart_punct",
     "skin_name",
+    "hide_icbar",
     NULL
 };
 
@@ -263,6 +264,9 @@ __init_default_values()
 
     /* skin support */
     settings_set_string(SKIN_NAME, "classic");
+
+    /* whether hide icbar */
+    settings_set_int(HIDE_ICBAR, 0);
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -296,6 +300,7 @@ settings_init()
     REGISTER(CANCEL_ON_BACKSPACE, int, __int_enc, __int_dec);
     REGISTER(SMART_PUNCT, int, __int_enc, __int_dec);
     REGISTER(SKIN_NAME, varchar, __varchar_enc, __varchar_dec);
+    REGISTER(HIDE_ICBAR, int, __int_enc, __int_dec);
 
     __init_default_values();
 }

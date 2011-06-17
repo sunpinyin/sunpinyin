@@ -14,7 +14,7 @@ sources = ['src/debug.cpp',
 
 locales = ['zh_CN']
 
-cflags = '-O2 -g -pipe'
+cflags = '-O2 -g -pipe '
 version = '2.0.3'
 
 AddOption('--prefix', dest='prefix', metavar='DIR',
@@ -33,6 +33,12 @@ opts.Add('PREFIX', default='/usr/local')
 opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('LIBEXECDIR', default='/usr/local/lib')
 opts.Add('DATADIR', default='/usr/local/share')
+
+def PassVariables(envvar, env):
+    for (x, y) in envvar:
+        if x in os.environ:
+            print 'Warning: you\'ve set %s in the environmental variable!' % x
+            env[y] = os.environ[x]
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
@@ -56,25 +62,12 @@ if GetOption('datadir') is not None:
 
 opts.Save('configure.conf', env)
 
-if GetOption('rpath') is not None:
-    env.Append(LINKFLAGS='-Wl,-R -Wl,%s' % GetOption('rpath'))
-
-if 'CC' in os.environ:
-    print 'Warning: you\'ve set %s as C compiler' % os.environ['CC']
-    env['CC']=os.environ['CC']
-    
-if 'CXX' in os.environ:
-    print 'Warning: you\'ve set %s as C++ compiler' % os.environ['CXX']
-    env['CXX']=os.environ['CXX']
-
-if 'CFLAGS' in os.environ:
-    print 'Warning: you\'ve set an external compiler flags for C.'
-    env['CFLAGS'] = os.environ['CFLAGS']
-
-if 'CXXFLAGS' in os.environ:
-    print 'Warning: you\'ve set an external compiler flags for C++.'
-    env['CXXFLAGS'] = os.environ['CXXFLAGS']
-
+envvar = [('CC', 'CC'),
+          ('CXX', 'CXX'),
+          ('CFLAGS', 'CFLAGS'),
+          ('CXXFLAGS', 'CXXFLAGS'),
+          ('LDFLAGS', 'LINKFLAGS')]
+PassVariables(envvar, env)
 
 data_dir = env['DATADIR'] + '/ibus-sunpinyin'
 icons_dir = env['DATADIR'] + '/ibus-sunpinyin/icons'
@@ -88,6 +81,9 @@ extra_cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
 
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
+
+if GetOption('rpath') is not None:
+    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================

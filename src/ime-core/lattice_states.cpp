@@ -95,7 +95,9 @@ TLatticeState::print(std::string prefix) const
            m_slmState.getIdx(), m_backTraceWordId, valbuf);
 }
 
-const unsigned CLatticeStates::beam_width;
+const unsigned CLatticeStates::beam_width = 32;
+const double CLatticeStates::filter_ratio = 0.12;
+const double CLatticeStates::filter_threshold_exp = 45;
 
 bool
 CTopLatticeStates::push(const TLatticeState& state)
@@ -136,6 +138,28 @@ CLatticeStates::getSortedResult()
         res.push_back(*it);
     }
     std::sort(res.begin(), res.end());
+    return res;
+}
+
+std::vector<TLatticeState>
+CLatticeStates::getFilteredResult()
+{
+    std::vector<TLatticeState> sorted = getSortedResult();
+    std::vector<TLatticeState> res;
+    if (sorted.size() == 0) {
+        return sorted;
+    }
+    res.push_back(sorted[0]);
+    TSentenceScore max_score = sorted[0].m_score;
+    for (int i = 1; i < sorted.size(); i++) {
+        TSentenceScore current_score = sorted[i].m_score;
+        if (TSentenceScore(-1.0, filter_threshold_exp) < current_score
+            && current_score / max_score < TSentenceScore(filter_ratio)) {
+            break;
+        } else {
+            res.push_back(sorted[i]);
+        }
+    }
     return res;
 }
 

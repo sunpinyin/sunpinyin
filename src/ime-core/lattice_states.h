@@ -178,7 +178,9 @@ public:
  */
 class CLatticeStates {
 private:
-    static const unsigned beam_width = 32;
+    static const unsigned beam_width;
+    static const double filter_ratio;
+    static const double filter_threshold_exp;
 
 public:
     CLatticeStates() : m_size(0), m_maxBest(2) {}
@@ -189,6 +191,7 @@ public:
     void add(const TLatticeState& state);
 
     std::vector<TLatticeState> getSortedResult();
+    std::vector<TLatticeState> getFilteredResult();
 
     typedef std::map<CSlmState, CTopLatticeStates> state_map;
     class iterator {

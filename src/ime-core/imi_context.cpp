@@ -400,15 +400,15 @@ bool CIMIContext::searchFrom (unsigned idx)
     m_nBest = 0;
 
     std::vector<TLatticeState> tail_states =
-        m_lattice[m_tailIdx].m_latticeStates.getSortedResult();
+        m_lattice[m_tailIdx].m_latticeStates.getFilteredResult();
 
-//#ifdef DEBUG
+#ifdef DEBUG
     for (int i = 0; i < tail_states.size(); i++) {
         std::string score;
         tail_states[i].m_score.toString(score);
         printf("score: %s\n", score.c_str());
     }
-//#endif
+#endif
 
     for (size_t i = 0; i < m_maxBest; i++) {
         TPath path, segpath;

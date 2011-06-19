@@ -130,7 +130,7 @@ __move_preedit(IC* ic)
     get_window_position(ic->client_window, &root_x, &root_y);
     LOG("root: %d, %d offset: %d,%d", root_x, root_y,
         ic->offset_x, ic->offset_y);
-    if (ic->offset_x == 0 && ic->offset_y == 0) {
+    if (ic->offset_x <= 0 && ic->offset_y <= 0) {
         int height;
         get_window_size(ic->client_window, NULL, &height);
         root_x += 4;

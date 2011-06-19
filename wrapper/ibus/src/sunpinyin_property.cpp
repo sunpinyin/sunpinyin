@@ -163,7 +163,7 @@ SetupLauncher::SetupLauncher()
                           NULL)),
       m_name("setup")
 {
-    m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"Perference");
+    m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"Preference");
     m_info.tooltip = ibus_text_new_from_static_string(_("Preference"));
     m_info.icon    = IBUS_SUNPINYIN_ICON_DIR"/setup.svg";
     init();

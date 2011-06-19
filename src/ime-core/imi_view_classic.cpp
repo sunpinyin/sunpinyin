@@ -92,25 +92,30 @@ CIMIClassicView::updateWindows(unsigned mask)
         m_sentences.clear();
         for (int i = 0; i < m_pIC->getNBest(); i++) {
             wstring sentence;
-            unsigned word_num = m_pIC->getBestSentence (sentence,
-                                                        i, m_candiFrIdx);
-            if (word_num <= 1) break; // when sentence is not worthy of
+            unsigned word_num = m_pIC->getBestSentence (sentence, i,
+                                                        m_candiFrIdx);
+            if (word_num <= 1) goto pass; // when sentence is not worthy of
 
+#ifdef DEBUG
             printf("%d ", i);
             print_wide(sentence.c_str());
             printf("\n");
+#endif
 
             for (int j = 0; j < m_sentences.size(); j++) {
-                if (sentence == m_sentences[j].second) goto stop;
+                if (sentence == m_sentences[j].second) goto pass;
             }
             for (int j = 0; j < m_candiList.size(); j++) {
-                if (sentence == m_candiList[j].m_cwstr) goto stop;
+                if (sentence == m_candiList[j].m_cwstr) {
+                    // remove the word in candidate list, this candidate will
+                    // appear in the front
+                    m_candiList.erase(m_candiList.begin() + j);
+                    break;
+                }
             }
             m_sentences.push_back(std::make_pair(i, sentence));
+        pass:
             continue;
-
-        stop:
-            break; // sentence is not worthy of anymore
         }
     }
 

@@ -180,7 +180,7 @@ class CLatticeStates {
 private:
     static const unsigned beam_width;
     static const double filter_ratio;
-    static const double filter_threshold_exp;
+    static const int filter_threshold_exp;
 
 public:
     CLatticeStates() : m_size(0), m_maxBest(2) {}

@@ -97,7 +97,7 @@ TLatticeState::print(std::string prefix) const
 
 const unsigned CLatticeStates::beam_width = 32;
 const double CLatticeStates::filter_ratio = 0.12;
-const double CLatticeStates::filter_threshold_exp = 45;
+const int CLatticeStates::filter_threshold_exp = -40;
 
 bool
 CTopLatticeStates::push(const TLatticeState& state)
@@ -153,7 +153,7 @@ CLatticeStates::getFilteredResult()
     TSentenceScore max_score = sorted[0].m_score;
     for (int i = 1; i < sorted.size(); i++) {
         TSentenceScore current_score = sorted[i].m_score;
-        if (TSentenceScore(-1.0, filter_threshold_exp) < current_score
+        if (TSentenceScore(filter_threshold_exp, -1.0) < current_score
             && current_score / max_score < TSentenceScore(filter_ratio)) {
             break;
         } else {

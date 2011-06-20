@@ -406,7 +406,7 @@ bool CIMIContext::searchFrom (unsigned idx)
     for (int i = 0; i < tail_states.size(); i++) {
         std::string score;
         tail_states[i].m_score.toString(score);
-        printf("score: %s\n", score.c_str());
+        printf("score[%d]: %s\n", i, score.c_str());
     }
 #endif
 

@@ -52,6 +52,8 @@ CIMIClassicView::CIMIClassicView()
 CIMIClassicView::~CIMIClassicView()
     { }
 
+int CIMIClassicView::top_candidate_threshold = 5;
+
 void
 CIMIClassicView::attachIC(CIMIContext* pIC)
 {
@@ -94,7 +96,7 @@ CIMIClassicView::updateWindows(unsigned mask)
             wstring sentence;
             unsigned word_num = m_pIC->getBestSentence (sentence, i,
                                                         m_candiFrIdx);
-            if (word_num <= 1) goto pass; // when sentence is not worthy of
+            if (word_num == 0) goto pass; // when sentence is not worthy of
 
 #ifdef DEBUG
             printf("%d ", i);
@@ -109,8 +111,12 @@ CIMIClassicView::updateWindows(unsigned mask)
                 if (sentence == m_candiList[j].m_cwstr) {
                     // remove the word in candidate list, this candidate will
                     // appear in the front
-                    m_candiList.erase(m_candiList.begin() + j);
-                    break;
+                    if (j < top_candidate_threshold) {
+                        m_candiList.erase(m_candiList.begin() + j);
+                        break;
+                    } else {
+                        goto pass;
+                    }
                 }
             }
             m_sentences.push_back(std::make_pair(i, sentence));

@@ -179,8 +179,9 @@ public:
 class CLatticeStates {
 private:
     static const unsigned beam_width;
-    static const double filter_ratio;
-    static const int filter_threshold_exp;
+    static const TSentenceScore filter_ratio_l1;
+    static const TSentenceScore filter_ratio_l2;
+    static const TSentenceScore filter_threshold_exp;
 
 public:
     CLatticeStates() : m_size(0), m_maxBest(2) {}

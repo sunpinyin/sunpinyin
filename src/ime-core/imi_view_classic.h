@@ -62,6 +62,8 @@ public:
     virtual int  onCandidateSelectRequest(int index);
 
 private:
+    static int top_candidate_threshold;
+
     unsigned m_cursorFrIdx;
     unsigned m_candiFrIdx;
     unsigned m_candiPageFirst;

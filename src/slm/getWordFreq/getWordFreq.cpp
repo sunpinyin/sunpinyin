@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -58,16 +58,17 @@ showUsage()
     cerr << "Usage:\n";
     cerr << "getWordFreq [-s corpus_size] [-v] [-e] -m slm_file -l lexicon\n";
     cerr << "    default corpus_size is 300000000 if not given\n";
-    cerr << "    -v means output other information after word and freq for each line\n";
+    cerr <<
+    "    -v means output other information after word and freq for each line\n";
     cerr << "    -e give format for ervin\n";
     exit(10);
 }
 
 static char* slm_file = NULL;
 static char* lexicon_file = NULL;
-static int   corpus_size = 300000000;
-static bool  verbose = false;
-static bool  ervin   = false;
+static int corpus_size = 300000000;
+static bool verbose = false;
+static bool ervin = false;
 
 static bool
 getParameters(int argc, char* argv[])
@@ -89,7 +90,7 @@ getParameters(int argc, char* argv[])
             return false;
         }
     }
-    return (slm_file && lexicon_file && corpus_size > 10);
+    return(slm_file && lexicon_file && corpus_size > 10);
 }
 
 static char buf[8192];
@@ -117,14 +118,16 @@ tagFile(FILE *fp, CThreadSlm& slm)
             if (ervin) {
                 vector<char* > pyv;
                 if (info) {
-                    for (char *p = strtok(info, " \t\n\r"); p != NULL; p = strtok(NULL, " \t\n\t"))
+                    for (char *p = strtok(info, " \t\n\r");
+                         p != NULL;
+                         p = strtok(NULL, " \t\n\t"))
                         pyv.push_back(p);
                 }
-                for (int i=0, sz=pyv.size(); i < sz; ++i) {
-                    cout << wrd << " " << pyv[i] <<  " " << freq << "\n";
+                for (int i = 0, sz = pyv.size(); i < sz; ++i) {
+                    cout << wrd << " " << pyv[i] << " " << freq << "\n";
                 }
             } else if (idstr && verbose) {
-                cout << wrd << " " << idstr <<  " " << freq;
+                cout << wrd << " " << idstr << " " << freq;
                 if (info)
                     cout << " " << info;
                 cout << "\n";

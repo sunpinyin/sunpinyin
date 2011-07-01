@@ -9,11 +9,10 @@
 
 class COptionEventBus;
 
-struct COptionEvent
-{
-    template<typename ValueType>
-    COptionEvent(const std::string& k, const ValueType& v)
-        : name(k), value(v) 
+struct COptionEvent {
+    template<typename ValueType>COptionEvent(const std::string& k,
+                                             const ValueType& v)
+        : name(k), value(v)
     {}
 
     int get_int() const;
@@ -21,28 +20,26 @@ struct COptionEvent
     std::string get_string() const;
     std::vector<std::string> get_string_list() const;
     std::vector<string_pair> get_string_pair_list() const;
-    
+
     /* TODO:
      * string_pair get_string_pair() const;
      * std::vector<bool> get_bool_list() const;
      * std::vector<int> get_int_list() const;
      */
-    
+
     int type;
     std::string name;
-    
-    struct variant_
-    {
+
+    struct variant_ {
         variant_(int);
         variant_(const std::string&);
         variant_(bool);
         variant_(const std::vector<std::string>&);
         variant_(const std::vector<string_pair>&);
-        struct val_
-        {
-            int                      d_int;
-            std::string              d_string;
-            bool                     d_bool;
+        struct val_ {
+            int d_int;
+            std::string d_string;
+            bool d_bool;
             std::vector<std::string> d_strings;
             std::vector<string_pair> d_string_pair_list;
         } data;
@@ -81,7 +78,7 @@ public:
      * @param listener who is interested in a change of options
      */
     void registerAsListener(IConfigurable* listener);
-    
+
     /**
      * remove listener from the subscriber list
      * @param listener who is no more interested in a change of options

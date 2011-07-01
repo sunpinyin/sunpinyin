@@ -4,11 +4,14 @@
 
 #include "writer.h"
 
-int get_host_endian() {
+int
+get_host_endian()
+{
     return htons(0x0001) == 0x0100 ? LITTLE_ENDIAN : BIG_ENDIAN;
 }
 
-int parse_endian(const char* arg)
+int
+parse_endian(const char* arg)
 {
     if (!strcmp(arg, "le")) {
         return LITTLE_ENDIAN;
@@ -19,11 +22,12 @@ int parse_endian(const char* arg)
     }
 }
 
-const char* endian2str(int endian)
+const char*
+endian2str(int endian)
 {
     static const char le[] = "little-endian";
     static const char be[] = "big-endian";
-    
+
     switch (endian) {
     case LITTLE_ENDIAN:
         return le;

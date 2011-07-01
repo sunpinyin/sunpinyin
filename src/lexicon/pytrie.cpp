@@ -11,20 +11,22 @@
 #endif
 
 bool
-CPinyinTrie::isValid(const TNode* pnode, bool allowNonComplete, unsigned csLevel)
+CPinyinTrie::isValid(const TNode* pnode,
+                     bool allowNonComplete,
+                     unsigned csLevel)
 {
     if ((pnode != NULL) && (csLevel <= pnode->m_csLevel))
-        return (allowNonComplete || (pnode->m_bFullSyllableTransfer == 1));
+        return(allowNonComplete || (pnode->m_bFullSyllableTransfer == 1));
     return false;
 }
 
 int
 CPinyinTrie::lengthAt(unsigned int idx) const
 {
-    if (idx < getWordCount() -1 ) {
-       return (m_words[idx+1] - m_words[idx]) - 1;
+    if (idx < getWordCount() - 1) {
+        return (m_words[idx + 1] - m_words[idx]) - 1;
     } else if (idx == getWordCount() - 1) {
-        return (((TWCHAR*)(m_mem+m_Size))-m_words[idx])-1;
+        return (((TWCHAR*)(m_mem + m_Size)) - m_words[idx]) - 1;
     }
     return 0;
 }
@@ -56,14 +58,14 @@ CPinyinTrie::free(void)
 {
     if (m_mem) {
 #ifdef HAVE_SYS_MMAN_H
-        munmap (m_mem, m_Size);
+        munmap(m_mem, m_Size);
 #else
-        delete []m_mem;
+        delete [] m_mem;
 #endif
         m_mem = NULL;
     }
     if (m_words) {
-        delete []m_words;
+        delete [] m_words;
         m_words = NULL;
     }
     m_SymbolMap.clear();
@@ -82,23 +84,26 @@ CPinyinTrie::load(const char *fname)
     lseek(fd, 0, SEEK_SET);
 
 #ifdef HAVE_SYS_MMAN_H
-    suc = (m_mem = (char *) mmap (NULL, m_Size, PROT_READ, MAP_SHARED, fd, 0)) != MAP_FAILED;
+    suc =
+        (m_mem =
+             (char*)mmap(NULL, m_Size, PROT_READ, MAP_SHARED, fd,
+                         0)) != MAP_FAILED;
 #else
     suc = (m_mem = new char [m_Size]) != NULL;
-    suc = suc && (read (fd, m_mem, m_Size) > 0);
+    suc = suc && (read(fd, m_mem, m_Size) > 0);
 #endif
     close(fd);
 
     suc = suc && ((m_words = new TWCHAR*[getWordCount()]) != NULL);
 
     if (suc) {
-        TWCHAR *p = (TWCHAR *)(m_mem + getStringOffset());
-        for (int i=0, sz=getWordCount(); i < sz; ++i) {
+        TWCHAR *p = (TWCHAR*)(m_mem + getStringOffset());
+        for (int i = 0, sz = getWordCount(); i < sz; ++i) {
             m_words[i] = p;
             while (*p++)
                 ;
         }
-        for (unsigned i=1; i < 100; ++i) {
+        for (unsigned i = 1; i < 100; ++i) {
             if (*m_words[i] != WCH_NULL && *m_words[i] != WCH_LESSTHAN)
                 m_SymbolMap[wstring(m_words[i])] = i;
         }
@@ -148,6 +153,6 @@ CPinyinTrie::print(const TNode* pRoot, std::string& prefix, FILE *fp) const
         if (!str) break;
         prefix = prefix + str + '\'';
         print(pch, prefix, fp);
-        prefix.resize(prefix.size()-strlen(str)-1);
+        prefix.resize(prefix.size() - strlen(str) - 1);
     }
 }

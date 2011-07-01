@@ -70,27 +70,27 @@ private:
 
     bool m_numeric_mode;
 
-    CCandidates                           m_candiList;
+    CCandidates m_candiList;
     std::vector<std::pair<int, wstring> > m_sentences;
 
-    inline void _insert (unsigned keyvalue, unsigned& mask);
-    inline void _erase (bool backward, unsigned& mask);
+    inline void _insert(unsigned keyvalue, unsigned& mask);
+    inline void _erase(bool backward, unsigned& mask);
 
-    inline void _getCandidates ();
-    inline void _makeSelection (int candiIdx, unsigned& mask);
-    inline void _deleteCandidate (int candiIdx, unsigned& mask);
+    inline void _getCandidates();
+    inline void _makeSelection(int candiIdx, unsigned& mask);
+    inline void _deleteCandidate(int candiIdx, unsigned& mask);
 
-    inline void _commitChar (TWCHAR ch);
-    inline void _commitString (const wstring& wstr);
-    inline void _doCommit (int candiIdx, bool bConvert=true);
+    inline void _commitChar(TWCHAR ch);
+    inline void _commitString(const wstring& wstr);
+    inline void _doCommit(int candiIdx, bool bConvert = true);
 
-    inline unsigned _moveLeft (unsigned& mask, bool searchAgain=true);
-    inline unsigned _moveLeftSyllable (unsigned& mask, bool searchAgain=true);
-    inline unsigned _moveHome (unsigned& mask, bool searchAgain=true);
+    inline unsigned _moveLeft(unsigned& mask, bool searchAgain = true);
+    inline unsigned _moveLeftSyllable(unsigned& mask, bool searchAgain = true);
+    inline unsigned _moveHome(unsigned& mask, bool searchAgain = true);
 
-    inline unsigned _moveRight (unsigned& mask);
-    inline unsigned _moveRightSyllable (unsigned& mask);
-    inline unsigned _moveEnd (unsigned& mask);
+    inline unsigned _moveRight(unsigned& mask);
+    inline unsigned _moveRightSyllable(unsigned& mask);
+    inline unsigned _moveEnd(unsigned& mask);
 };
 
 #endif

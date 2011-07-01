@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -60,20 +60,22 @@
 
 static struct option long_options[] =
 {
-    {"ngram",    1, 0, 'n'},
-    {"out",      1, 0, 'o'},
-    {"cut",      1, 0, 'c'},
-    {"discount", 1, 0, 'd'},
-    {"wordcount",1, 0, 'w'},
-    {"breakid",  1, 0, 'b'},
-    {"excludeid",1, 0, 'e'},
-    {"log",      1, 0, 'l'},
-    {NULL,       0, 0, 0}
+    { "ngram", 1, 0, 'n' },
+    { "out", 1, 0, 'o' },
+    { "cut", 1, 0, 'c' },
+    { "discount", 1, 0, 'd' },
+    { "wordcount", 1, 0, 'w' },
+    { "breakid", 1, 0, 'b' },
+    { "excludeid", 1, 0, 'e' },
+    { "log", 1, 0, 'l' },
+    { NULL, 0, 0, 0 }
 };
 
-static void ShowUsage(void)
+static void
+ShowUsage(void)
 {
-    printf("\
+    printf(
+        "\
 Usage:\n\
   slmbuild options idngram\n\
 \n\
@@ -123,22 +125,24 @@ Example:\n\
     exit(100);
 }
 
-static int N=0;
+static int N = 0;
 static CSlmBuilder builder;
 static char* inputfilename = NULL;
 static char* outfilename = NULL;
 static std::vector<CSlmDiscounter *> discounter;
 
-static void getParameters(int argc, char* argv[])
+static void
+getParameters(int argc, char* argv[])
 {
     int c = 0;
-    char *ac=NULL, *cuts=NULL, *idstring=NULL, *dis_str=NULL;
+    char *ac = NULL, *cuts = NULL, *idstring = NULL, *dis_str = NULL;
     std::vector<TSIMWordId> ids;
     std::vector<CSlmBuilder::FREQ_TYPE> threshold;
     bool bUseLogPr = false;
 
-    while ((c=getopt_long(argc, argv, "lw:n:c:d:o:b:e:", long_options, NULL)) != -1)
-    {
+    while ((c =
+                getopt_long(argc, argv, "lw:n:c:d:o:b:e:", long_options,
+                            NULL)) != -1) {
         int n, rmax, cut;
         double dis = 0;
         switch (c) {
@@ -210,33 +214,35 @@ static void getParameters(int argc, char* argv[])
             break;
         default:
             ShowUsage();
-      }
+        }
     }
 
-    builder.SetUseLogPr(((bUseLogPr)?1:0));
-    if (optind == argc-1) {
+    builder.SetUseLogPr(((bUseLogPr) ? 1 : 0));
+    if (optind == argc - 1) {
         inputfilename = strdup(argv[optind]);
         builder.SetDiscounter(&(discounter[0]));
     } else {
         fprintf(stderr, "Parameter input_file error\n");
-        for (int i=optind; i < argc; ++i)
+        for (int i = optind; i < argc; ++i)
             fprintf(stderr, "%s ", argv[i]);
         fprintf(stderr, "\n");
         ShowUsage();
     }
 }
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
     getParameters(argc, argv);
 
-    TSIMWordId * ngram = new TSIMWordId[N+1];
+    TSIMWordId * ngram = new TSIMWordId[N + 1];
     CSlmBuilder::FREQ_TYPE freq;
 
     printf("Reading and Processing raw idngram..."); fflush(stdout);
     FILE *fp = fopen(inputfilename, "rb");
     int nItems = 0;
-    while (fread(ngram, sizeof(TSIMWordId), N, fp) == N && fread(&freq, sizeof(freq), 1, fp)==1) {
+    while (fread(ngram, sizeof(TSIMWordId), N,
+                 fp) == N && fread(&freq, sizeof(freq), 1, fp) == 1) {
         builder.AddNGram(ngram, freq);
         ++nItems;
     }

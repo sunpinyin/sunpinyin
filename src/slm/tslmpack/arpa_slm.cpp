@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 #include <string>
 #include <iostream>
@@ -43,10 +43,11 @@ using namespace std;
 /**
  * the GNU extension is not always available, so we invent another wheel.
  */
-size_t getline(char *buf, size_t n, FILE* stream)
+size_t
+getline(char *buf, size_t n, FILE* stream)
 {
     char* p;
-    char* end = buf+n;
+    char* end = buf + n;
     for (p = buf; p != end; ++p) {
         int c = fgetc(stream);
         if (c == '\n' || c == EOF)
@@ -57,11 +58,12 @@ size_t getline(char *buf, size_t n, FILE* stream)
     if (p != end)
         *p = 0;
     else
-        *(p-1) = 0;
-    return p-buf;
+        *(p - 1) = 0;
+    return p - buf;
 }
 
-char* getwords(char* buf, char** next)
+char*
+getwords(char* buf, char** next)
 {
     char* word = buf;
     char* delim = strstr(buf, "  ");
@@ -70,11 +72,12 @@ char* getwords(char* buf, char** next)
         exit(2);
     }
     *delim = '\0';
-    *next = delim+2;
+    *next = delim + 2;
     return word;
 }
 
-unsigned get_wid(const char* word, const TLexicon& lexicon)
+unsigned
+get_wid(const char* word, const TLexicon& lexicon)
 {
     TLexicon::const_iterator lexi = lexicon.find(word);
     unsigned wid;
@@ -97,7 +100,7 @@ CArpaSlm::TLeaf::load_words(char* buf, const TLexicon& lexicon)
             assert(nword < N_GRAM);
             *end = 0;
             hw[nword++] = get_wid(word, lexicon);
-            word = end+1;
+            word = end + 1;
         }
     }
     if (buf != end) {
@@ -106,7 +109,7 @@ CArpaSlm::TLeaf::load_words(char* buf, const TLexicon& lexicon)
     return nword;
 }
 
-void 
+void
 CArpaSlm::TLeaf::load(istream& is, const TLexicon& lexicon)
 {
     char buf[1024];
@@ -118,7 +121,7 @@ CArpaSlm::TLeaf::load(istream& is, const TLexicon& lexicon)
            &pr, &bol, &bon);
 }
 
-void 
+void
 CArpaSlm::TNode::load(istream& is, const TLexicon& lexicon)
 {
     char buf[1024];
@@ -130,7 +133,7 @@ CArpaSlm::TNode::load(istream& is, const TLexicon& lexicon)
            &pr, &bow, &bol, &bon);
 }
 
-void 
+void
 CArpaSlm::TNode::load_level0(istream& is)
 {
     hw[0] = 0;
@@ -161,8 +164,7 @@ CArpaSlm::load(const char* filename, const TLexicon& lexicon)
             TNode node0;
             node0.load_level0(file);
             m_levels[0].push_back(node0);
-        }
-        else if (lvl < m_N) {
+        } else if (lvl < m_N) {
             m_levels[lvl].reserve(size);
             for (int i = 0; i < size; ++i) {
                 TNode node;
@@ -182,14 +184,17 @@ CArpaSlm::load(const char* filename, const TLexicon& lexicon)
 }
 
 template <class NodeT>
-struct CompareNode
-{
+struct CompareNode {
     const unsigned m_lvl;
-    CompareNode(unsigned lvl) : m_lvl(lvl) {}
+    CompareNode(unsigned lvl) : m_lvl(lvl)
+    {
+    }
     /**
      * @return true if strictly less, false otherwise
      */
-    bool operator () (const NodeT& node, const TSIMWordId hw[N_GRAM]) {
+    bool
+    operator ()(const NodeT& node, const TSIMWordId hw[N_GRAM])
+    {
         for (unsigned i = 0; i < m_lvl; ++i) {
             if (node.hw[i] < hw[i])
                 return true;
@@ -200,8 +205,8 @@ struct CompareNode
         return false;
     }
 };
-  
-void 
+
+void
 CArpaSlm::threading()
 {
     {
@@ -211,7 +216,9 @@ CArpaSlm::threading()
     for (unsigned lvl = 1; lvl < m_N; ++lvl) {
         TNodeLevel& level = m_levels[lvl];
         unsigned last_child = 0;
-        for (TNodeLevel::iterator node = level.begin(); node != level.end(); ++node) {
+        for (TNodeLevel::iterator node = level.begin();
+             node != level.end();
+             ++node) {
             node->ch = last_child = find_1st_child(lvl, *node, last_child);
         }
     }
@@ -220,13 +227,17 @@ CArpaSlm::threading()
 unsigned
 CArpaSlm::find_1st_child(unsigned lvl, const TNode& node, int last_child)
 {
-    assert (lvl < m_N);
-    if (lvl == m_N-1) {
-        TLeafLevel::iterator found = lower_bound(m_lastLevel.begin(), m_lastLevel.end(), node.hw, CompareNode<TLeaf>(lvl));
+    assert(lvl < m_N);
+    if (lvl == m_N - 1) {
+        TLeafLevel::iterator found = lower_bound(
+            m_lastLevel.begin(), m_lastLevel.end(), node.hw,
+            CompareNode<TLeaf>(lvl));
         return distance(m_lastLevel.begin(), found);
     } else {
-        const TNodeLevel& level = m_levels[lvl+1];
-        TNodeLevel::const_iterator found = lower_bound(level.begin(), level.end(), node.hw, CompareNode<TNode>(lvl));
+        const TNodeLevel& level = m_levels[lvl + 1];
+        TNodeLevel::const_iterator found = lower_bound(level.begin(), level.end(
+                                                           ), node.hw,
+                                                       CompareNode<TNode>(lvl));
         return distance(level.begin(), found);
     }
 }

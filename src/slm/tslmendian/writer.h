@@ -20,43 +20,40 @@ const char* endian2str(int endian);
 
 // change the byte order of given variable
 template <typename Type>
-Type change_byte_order(const Type& v)
-{
+Type change_byte_order(const Type& v){
     Type t = v;
     const size_t size = sizeof(v);
-    uint8_t* first = (uint8_t*)(&t);
-    uint8_t* last  = first+size-1;
+    uint8_t* first = (uint8_t *) (&t);
+    uint8_t* last = first + size - 1;
     while (first < last) {
         std::swap(*first++, *last--);
     }
     return t;
 }
-    
+
 template <typename T>
 class OtherEndian
 {
 public:
     typedef T TargetType;
-    static TargetType create(const T& from)
-    {
+    static TargetType create(const T& from){
         return from;
     }
 };
 
 #if WORDS_BIGENDIAN
-#define DEFINE_OTHER_TYPE(__T__) typedef __T__##_BE TargetType
+#define DEFINE_OTHER_TYPE(__T__) typedef __T__ ## _BE TargetType
 #else
-#define DEFINE_OTHER_TYPE(__T__) typedef __T__##_LE TargetType
+#define DEFINE_OTHER_TYPE(__T__) typedef __T__ ## _LE TargetType
 #endif
 
 //
-// we always defined a reversed layout of big-endian and little-endian 
+// we always defined a reversed layout of big-endian and little-endian
 // bit-field struct, so such kind of struct need to be reverted if host
 // arch is different from build arch.
 //
 template <typename T>
-bool revert_write(const T& t, FILE *fp)
-{
+bool revert_write(const T& t, FILE *fp){
     T reverted = change_byte_order(t);
     typename OtherEndian<T>::TargetType o =
         OtherEndian<T>::create(reverted);
@@ -72,22 +69,20 @@ class Writer
 {
 public:
     Writer(FILE *fp, bool doRevert)
-        : m_fp (fp), m_doRevert(doRevert)
+        : m_fp(fp), m_doRevert(doRevert)
     {}
-    
+
     template <typename T>
-    bool write(const T& t)
-    {
+    bool write(const T& t){
         if (m_doRevert)
             return revert_write(t, m_fp);
         else
             return fwrite(&t, sizeof(t), 1, m_fp) == 1;
     }
-    
-    
+
+
     template <typename T>
-    bool write(const T* t, size_t len)
-    {
+    bool write(const T* t, size_t len){
         for (unsigned i = 0; i < len; i++) {
             if (!write(t[i]))
                 return false;

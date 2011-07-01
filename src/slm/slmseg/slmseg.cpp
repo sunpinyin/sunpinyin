@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -61,12 +61,12 @@
 
 static struct option long_options[] =
 {
-    {"dict", 1, 0, 'd'},
-    {"format", 1, 0, 'f'},
-    {"show-id", 0, 0, 'i'},
-    {"s-tok", 1, 0, 's'},
-    {"model", 1, 0, 'm'},
-    {0, 0, 0, 0}
+    { "dict", 1, 0, 'd' },
+    { "format", 1, 0, 'f' },
+    { "show-id", 0, 0, 'i' },
+    { "s-tok", 1, 0, 's' },
+    { "model", 1, 0, 'm' },
+    { 0, 0, 0, 0 }
 };
 
 static char* s_strDictFile = NULL;
@@ -82,23 +82,35 @@ static void
 ShowUsage()
 {
     fprintf(stderr, "\nUsage:\n");
-    fprintf(stderr, "slmseg -d dict_file [-f (text|bin)] [-i] [-s STOK_ID] [-m lm_file]\n\n");
+    fprintf(
+        stderr,
+        "slmseg -d dict_file [-f (text|bin)] [-i] [-s STOK_ID] [-m lm_file]\n\n");
     fprintf(stderr, "  -f --format:\n");
-    fprintf(stderr, "    Output Format, can be 'text' or 'bin'. default 'bin'\n");
-    fprintf(stderr, "    Normally, in text mode, word text are output, while in binary mode,\n");
-    fprintf(stderr, "    binary short integer of the word-ids are writed to stdout.\n");
+    fprintf(stderr,
+            "    Output Format, can be 'text' or 'bin'. default 'bin'\n");
+    fprintf(
+        stderr,
+        "    Normally, in text mode, word text are output, while in binary mode,\n");
+    fprintf(stderr,
+            "    binary short integer of the word-ids are writed to stdout.\n");
     fprintf(stderr, "  -s --stok:\n");
     fprintf(stderr, "    Sentence token id. Default 10.\n");
-    fprintf(stderr, "    It will be write to output in binary mode after every sentence.\n");
+    fprintf(
+        stderr,
+        "    It will be write to output in binary mode after every sentence.\n");
     fprintf(stderr, "  -i --show-id:\n");
-    fprintf(stderr, "    Show Id info. Under text output format mode, Attach id after known-words.\n");
+    fprintf(
+        stderr,
+        "    Show Id info. Under text output format mode, Attach id after known-words.\n");
     fprintf(stderr, "                  Under binary mode, print id in text.\n");
     fprintf(stderr, "  -m --model:\n");
     fprintf(stderr, "    Language model file name");
     fprintf(stderr, "\n");
     fprintf(stderr, "Notes:\n");
-    fprintf(stderr, "  Under binary mode, consecutive id of 0 are merged into one 0.\n");
-    fprintf(stderr, "  Under text mode, no space are insert between unknown-words. \n");
+    fprintf(stderr,
+            "  Under binary mode, consecutive id of 0 are merged into one 0.\n");
+    fprintf(stderr,
+            "  Under text mode, no space are insert between unknown-words. \n");
     fprintf(stderr, "\n");
     fprintf(stderr, "\n");
     exit(1000);
@@ -108,8 +120,9 @@ static void
 getParameters(int argc, char* argv[])
 {
     int c;
-    while ((c=getopt_long(argc, argv, "d:if:s:m:", long_options, NULL)) != -1)
-    {
+    while ((c =
+                getopt_long(argc, argv, "d:if:s:m:", long_options,
+                            NULL)) != -1) {
         switch (c) {
         case 'd':
             s_strDictFile = strdup(optarg);
@@ -124,7 +137,7 @@ getParameters(int argc, char* argv[])
             s_iSTOKID = atoi(optarg);
             break;
         case 'm':
-            s_strSlmFile  = strdup(optarg);
+            s_strSlmFile = strdup(optarg);
             break;
         default:
             ShowUsage();
@@ -149,14 +162,18 @@ output_stok(int& nWords)
 }
 
 static void
-output(int len, const TWCHAR* p, TSIMWordId idprev, TSIMWordId idcur, int& nWords)
+output(int len,
+       const TWCHAR* p,
+       TSIMWordId idprev,
+       TSIMWordId idcur,
+       int& nWords)
 {
     static char mbword[1024];
     static TWCHAR wcword[1024];
 
     bool bRealGap = (idcur != SIM_ID_NOT_WORD || idprev != SIM_ID_NOT_WORD);
     if (s_bTextOut) {
-        for (int i=0; i < len; ++i, ++p)
+        for (int i = 0; i < len; ++i, ++p)
             wcword[i] = *p;
         wcword[len] = 0;
         WCSTOMBS(mbword, wcword, sizeof(mbword));
@@ -182,35 +199,42 @@ output(int len, const TWCHAR* p, TSIMWordId idprev, TSIMWordId idcur, int& nWord
 }
 
 struct TLatticeWord {
-  int m_left;
-  int m_right;
-  int m_wordId;
+    int m_left;
+    int m_right;
+    int m_wordId;
 
-  TLatticeWord(int left=0, int right=0, int wid=0)
-      : m_left(left), m_right(right), m_wordId(wid) { }
+    TLatticeWord(int left = 0, int right = 0, int wid = 0)
+        : m_left(left), m_right(right), m_wordId(wid)
+    {
+    }
 };
 
 typedef std::vector<TLatticeWord> TLatticeWordVec;
 
 struct TLatticeStateValue {
-  double                m_pr;
-  TLatticeWord*         mp_btword;
-  CThreadSlm::TState    m_btstate;
+    double m_pr;
+    TLatticeWord*         mp_btword;
+    CThreadSlm::TState m_btstate;
 
-  TLatticeStateValue(double pr=0.0, TLatticeWord* btword=NULL, CThreadSlm::TState btstate = CThreadSlm::TState())
-      : m_pr(pr), mp_btword(btword), m_btstate(btstate) { }
+    TLatticeStateValue(double pr = 0.0,
+                       TLatticeWord* btword = NULL,
+                       CThreadSlm::TState btstate = CThreadSlm::TState())
+        : m_pr(pr), mp_btword(btword), m_btstate(btstate)
+    {
+    }
 };
 
 typedef std::map<CThreadSlm::TState, TLatticeStateValue> TLatticeColumnStates;
 
 struct TLatticeColumn {
-  TLatticeWordVec          m_wordstarting;
-  TLatticeColumnStates     m_states;
+    TLatticeWordVec m_wordstarting;
+    TLatticeColumnStates m_states;
 };
 
 typedef std::vector<TLatticeColumn> CLattice;
 
-inline void insertLatticeWord(CLattice& lattice, TLatticeWord word)
+inline void
+insertLatticeWord(CLattice& lattice, TLatticeWord word)
 {
     lattice[word.m_left].m_wordstarting.push_back(word);
 }
@@ -220,53 +244,62 @@ getAmbiLen(const TWCHAR* p, int word_len)
 {
     const CSIMDict::TState* pstate;
 
-    for (int i=1; (i<word_len) && *(p+i) != WCH_NULL; ++i) {
-        int len = s_dict->matchLongest(s_dict->getRoot(), pstate, p+i);
-        if (word_len < i+len)
-            word_len = i+len;
+    for (int i = 1; (i < word_len) && *(p + i) != WCH_NULL; ++i) {
+        int len = s_dict->matchLongest(s_dict->getRoot(), pstate, p + i);
+        if (word_len < i + len)
+            word_len = i + len;
     }
 
     return word_len;
 }
 
-void fullSegBuildLattice(wstring& sntnc, int left, int len, CLattice& lattice)
+void
+fullSegBuildLattice(wstring& sntnc, int left, int len, CLattice& lattice)
 {
-    for (int right=left+len; left < right; ++left) {
+    for (int right = left + len; left < right; ++left) {
         bool found = false;
 
-        const TWCHAR* p = sntnc.c_str()+left;
+        const TWCHAR* p = sntnc.c_str() + left;
         const CSIMDict::TState* pds = s_dict->getRoot();
-        for (len = 0; left+len < right; ++len) {
+        for (len = 0; left + len < right; ++len) {
             if ((pds = s_dict->step(pds, *p++)) == NULL)
                 break;
             if (pds->word_id != SIM_ID_NOT_WORD) {
                 found = true;
-                insertLatticeWord(lattice, TLatticeWord(left, left+len+1, pds->word_id));
+                insertLatticeWord(lattice,
+                                  TLatticeWord(left, left + len + 1,
+                                               pds->word_id));
             }
         }
         if (!found)
-            insertLatticeWord(lattice, TLatticeWord(left, left+1, SIM_ID_NOT_WORD));
+            insertLatticeWord(lattice,
+                              TLatticeWord(left, left + 1, SIM_ID_NOT_WORD));
     }
 }
 
 /**
-* Lattice head should have one state, with its TState using slm's root. its
-* pr = 0 and its mp_btword == NULL;
-* Lattice tail must contain no word, and it previous node contain only one word
-* with its right = left+1, right == tail.
-* The lattice should ensure the lattice path existing
-*/
-void buildLattice(wstring &sntnc, CLattice& lattice)
+ * Lattice head should have one state, with its TState using slm's root. its
+ * pr = 0 and its mp_btword == NULL;
+ * Lattice tail must contain no word, and it previous node contain only one word
+ * with its right = left+1, right == tail.
+ * The lattice should ensure the lattice path existing
+ */
+void
+buildLattice(wstring &sntnc, CLattice& lattice)
 {
     lattice.clear();
-    lattice.resize(sntnc.size()+2);
+    lattice.resize(sntnc.size() + 2);
 
     unsigned int idcur = SIM_ID_NOT_WORD;
-    lattice[0].m_states[CThreadSlm::TState()] = TLatticeStateValue(0.0, NULL, CThreadSlm::TState());
+    lattice[0].m_states[CThreadSlm::TState()] = TLatticeStateValue(
+        0.0,
+        NULL,
+        CThreadSlm::
+        TState());
 
-    for (int i=0, sz=sntnc.size(); i < sz; ) {
+    for (int i = 0, sz = sntnc.size(); i < sz; ) {
         const CSIMDict::TState* pstate;
-        const TWCHAR* p = sntnc.c_str()+i;
+        const TWCHAR* p = sntnc.c_str() + i;
         int len = s_dict->matchLongest(s_dict->getRoot(), pstate, p);
         if (len <= 0) {
             idcur = SIM_ID_NOT_WORD;
@@ -277,19 +310,22 @@ void buildLattice(wstring &sntnc, CLattice& lattice)
         int ambilen = getAmbiLen(p, len);
 
         if (ambilen <= len) {
-            insertLatticeWord(lattice, TLatticeWord(i, i+len, idcur));
+            insertLatticeWord(lattice, TLatticeWord(i, i + len, idcur));
             i += len;
         } else {
             fullSegBuildLattice(sntnc, i, ambilen, lattice);
             i += ambilen;
         }
     }
-    lattice[sntnc.size()].m_wordstarting.push_back(TLatticeWord(sntnc.size(), sntnc.size()+1, s_iSTOKID));
+    lattice[sntnc.size()].m_wordstarting.push_back(TLatticeWord(sntnc.size(),
+                                                                sntnc.size() +
+                                                                1, s_iSTOKID));
 }
 
-void searchBest(CLattice& lattice)
+void
+searchBest(CLattice& lattice)
 {
-    for (int i=0, sz=lattice.size(); i < sz; ++i) {
+    for (int i = 0, sz = lattice.size(); i < sz; ++i) {
         TLatticeColumnStates & states = lattice[i].m_states;
         TLatticeColumnStates::iterator itss = states.begin();
         TLatticeColumnStates::iterator itse = states.end();
@@ -315,7 +351,8 @@ void searchBest(CLattice& lattice)
     }
 }
 
-void getBestPath(CLattice& lattice, TLatticeWordVec& segResult)
+void
+getBestPath(CLattice& lattice, TLatticeWordVec& segResult)
 {
     TLatticeColumnStates & states = lattice.back().m_states;
     TLatticeColumnStates::iterator its = states.begin();
@@ -360,7 +397,7 @@ processSingleFile(FILE* fp, int &nWords, int &nAmbis)
     if (!s_bTextOut)
         output_stok(nWords);
 
-    while (true){
+    while (true) {
         if (ReadSentence(sntnc, iter, false) == false)
             break;
 
@@ -371,8 +408,8 @@ processSingleFile(FILE* fp, int &nWords, int &nAmbis)
         TLatticeWordVec segResult;
         getBestPath(lattice, segResult);
 
-        for (int i=0, sz=segResult.size(); i < sz; ++i) {
-            const TWCHAR *p = sntnc.c_str()+segResult[i].m_left;
+        for (int i = 0, sz = segResult.size(); i < sz; ++i) {
+            const TWCHAR *p = sntnc.c_str() + segResult[i].m_left;
             int len = segResult[i].m_right - segResult[i].m_left;
             idcur = segResult[i].m_wordId;
 
@@ -424,13 +461,13 @@ main(int argc, char *argv[])
         fprintf(stderr, "%d words, %d ambiguious. Done!\n", nWords, nAmbis);
         fflush(stderr);
     } else {
-        for (int i=0; i < argc; ++i) {
+        for (int i = 0; i < argc; ++i) {
             fprintf(stderr, "\nProcessing %s...", argv[i]); fflush(stderr);
             FILE *fp = fopen(argv[i], "r");
             if (fp != NULL) {
                 processSingleFile(fp, nWords, nAmbis);
                 fprintf(stderr, "@Offset %ld, %d words, %d ambiguious. Done!\n",
-                                ftell(fp), nWords, nAmbis);
+                        ftell(fp), nWords, nAmbis);
                 fflush(stderr);
             } else {
                 fprintf(stderr, "Can not Open!!!!!!!\n");

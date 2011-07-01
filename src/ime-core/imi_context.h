@@ -71,15 +71,15 @@ class CIMIContext;
 
 typedef std::vector<CLatticeFrame>  CLattice;
 typedef std::vector<CCandidate>     CCandidates;
-typedef CCandidates::iterator       CCandidatesIter;
+typedef CCandidates::iterator CCandidatesIter;
 
 union TCandiRank {
 public:
-    bool
-    operator< (const TCandiRank& b) const
+    bool operator<(const TCandiRank& b) const
     { return m_all < b.m_all; };
 
-    TCandiRank() : m_all(0) { }
+    TCandiRank() : m_all(0) {
+    }
 
     TCandiRank(bool user, bool best, unsigned int len,
                bool fromLattice, TSentenceScore score);
@@ -88,22 +88,22 @@ public:
                bool fromLattice, unsigned score);
 
 protected:
-    unsigned  int               m_all;
+    unsigned int m_all;
 #if !defined(WORDS_BIGENDIAN)
     struct TAnony {
-        unsigned                m_cost   : 24;
-        unsigned                m_lattice: 1;
-        unsigned                m_best   : 1;
-        unsigned                m_len    : 5;
-        unsigned                m_user   : 1;
+        unsigned m_cost   : 24;
+        unsigned m_lattice : 1;
+        unsigned m_best   : 1;
+        unsigned m_len    : 5;
+        unsigned m_user   : 1;
     } anony;
 #else
     struct TAnony {
-        unsigned                m_user   : 1;
-        unsigned                m_len    : 5;
-        unsigned                m_best   : 1;
-        unsigned                m_lattice: 1;
-        unsigned                m_cost   : 24;
+        unsigned m_user   : 1;
+        unsigned m_len    : 5;
+        unsigned m_best   : 1;
+        unsigned m_lattice : 1;
+        unsigned m_cost   : 24;
     } anony;
 #endif
 }; // TCandiRank
@@ -114,26 +114,29 @@ protected:
  * word id.
  */
 class CCandidate {
-friend class CIMIContext;
+    friend class CIMIContext;
 public:
-    unsigned            m_start;
-    unsigned            m_end;
+    unsigned m_start;
+    unsigned m_end;
     const TWCHAR       *m_cwstr;
 
 public:
     /** Give out the constructor for convinience */
-    CCandidate(unsigned start=0, unsigned end=0, TLexiconState* pLxst = NULL,
-               const TWCHAR* s = NULL, unsigned int wid=0)
+    CCandidate(unsigned start = 0,
+               unsigned end = 0,
+               TLexiconState* pLxst = NULL,
+               const TWCHAR* s = NULL,
+               unsigned int wid = 0)
         : m_start(start), m_end(end), m_pLexiconState(pLxst), m_cwstr(s),
           m_wordId(wid) {}
 
 protected:
-    unsigned int        m_wordId;
+    unsigned int m_wordId;
     TLexiconState*      m_pLexiconState;
 }; // of CCandidate
 
 class CLatticeFrame {
-friend class CIMIContext;
+    friend class CIMIContext;
 public:
     enum TYPE {
         UNUSED                  = 0x0000,      // unused frame
@@ -158,26 +161,25 @@ public:
         IGNORED                 = 1 << 3,
     }; // BESTWORD_TYPE
 
-    unsigned    m_type;
-    unsigned    m_bwType;
-    wstring     m_wstr;
+    unsigned m_type;
+    unsigned m_bwType;
+    wstring m_wstr;
 
-    CLatticeFrame () : m_type (UNUSED), m_bwType (NO_BESTWORD) {}
+    CLatticeFrame () : m_type(UNUSED), m_bwType(NO_BESTWORD) {}
 
-    bool isUnusedFrame () const
+    bool isUnusedFrame() const
     { return m_type == 0; }
 
-    bool isSyllableFrame () const
-    { return (m_type & CATE_SYLLABLE); }
+    bool isSyllableFrame() const
+    { return(m_type & CATE_SYLLABLE); }
 
-    bool isSyllableSepFrame () const
-    { return ((m_type & SYLLABLE_SEP) > CATE_SYLLABLE); }
+    bool isSyllableSepFrame() const
+    { return((m_type & SYLLABLE_SEP) > CATE_SYLLABLE); }
 
-    bool isTailFrame () const
-    { return (m_type == TAIL); }
+    bool isTailFrame() const
+    { return(m_type == TAIL); }
 
-    void clear ()
-    {
+    void clear(){
         m_type = UNUSED;
         m_bwType = NO_BESTWORD;
         m_lexiconStates.clear();
@@ -186,13 +188,13 @@ public:
         m_bestWords.clear();
     }
 
-    void print (std::string prefix);
+    void print(std::string prefix);
 
 protected:
     std::map<int, CCandidate>   m_bestWords;
-    CCandidate                  m_selWord;
-    CLexiconStates              m_lexiconStates;
-    CLatticeStates              m_latticeStates;
+    CCandidate m_selWord;
+    CLexiconStates m_lexiconStates;
+    CLatticeStates m_latticeStates;
 }; // CLatticeFrame
 
 typedef std::vector<unsigned> TPath;
@@ -200,58 +202,58 @@ typedef std::vector<unsigned> TPath;
 class CIMIContext {
 public:
     CIMIContext ();
-    ~CIMIContext () {clear();}
+    ~CIMIContext () { clear(); }
 
-    void clear ();
+    void clear();
 
-    void setCoreData (CIMIData *pCoreData);
-    void setUserDict (CUserDict *pUserDict) { m_pUserDict = pUserDict; }
+    void setCoreData(CIMIData *pCoreData);
+    void setUserDict(CUserDict *pUserDict) { m_pUserDict = pUserDict; }
 
-    void setHistoryMemory (CICHistory *phm) { m_pHistory = phm; }
-    CICHistory * getHistoryMemory () { return m_pHistory; }
+    void setHistoryMemory(CICHistory *phm) { m_pHistory = phm; }
+    CICHistory * getHistoryMemory() { return m_pHistory; }
 
-    void setHistoryPower (unsigned power)
-    { m_historyPower = power <= 10? power : 3; }
+    void setHistoryPower(unsigned power)
+    { m_historyPower = power <= 10 ? power : 3; }
 
-    int getHistoryPower ()
+    int getHistoryPower()
     { return m_historyPower; }
 
-    void setFullSymbolForwarding (bool value=true) {
+    void setFullSymbolForwarding(bool value = true) {
         m_bFullSymbolForwarding = value;
     }
-    bool getFullSymbolForwarding () { return m_bFullSymbolForwarding; }
-    void setGetFullSymbolOp (CGetFullSymbolOp *op) { m_pGetFullSymbolOp = op; }
-    CGetFullSymbolOp& fullSymbolOp () const { return *m_pGetFullSymbolOp; }
+    bool getFullSymbolForwarding() { return m_bFullSymbolForwarding; }
+    void setGetFullSymbolOp(CGetFullSymbolOp *op) { m_pGetFullSymbolOp = op; }
+    CGetFullSymbolOp& fullSymbolOp() const { return *m_pGetFullSymbolOp; }
 
-    void setFullPunctForwarding (bool value=true) {
+    void setFullPunctForwarding(bool value = true) {
         m_bFullPunctForwarding = value;
     }
-    bool getFullPunctForwarding () { return m_bFullPunctForwarding; }
-    void setGetFullPunctOp (CGetFullPunctOp *op) { m_pGetFullPunctOp = op; }
-    CGetFullPunctOp& fullPuncOp () const { return *m_pGetFullPunctOp; }
+    bool getFullPunctForwarding() { return m_bFullPunctForwarding; }
+    void setGetFullPunctOp(CGetFullPunctOp *op) { m_pGetFullPunctOp = op; }
+    CGetFullPunctOp& fullPuncOp() const { return *m_pGetFullPunctOp; }
 
-    void setNonCompleteSyllable(bool value=true) {
+    void setNonCompleteSyllable(bool value = true) {
         m_bNonCompleteSyllable = value;
     }
     bool getNonCompleteSyllable() { return m_bNonCompleteSyllable; }
 
-    void setCharsetLevel (unsigned l) { m_csLevel = l; }
-    unsigned getCharsetLevel () { return m_csLevel; }
+    void setCharsetLevel(unsigned l) { m_csLevel = l; }
+    unsigned getCharsetLevel() { return m_csLevel; }
 
-    void setDynamicCandidateOrder (bool value=true) {
+    void setDynamicCandidateOrder(bool value = true) {
         m_bDynaCandiOrder = value;
     }
-    bool getDynaCandiOrder () { return m_bDynaCandiOrder; }
+    bool getDynaCandiOrder() { return m_bDynaCandiOrder; }
 
-    CLattice& getLattice () { return m_lattice; }
-    bool buildLattice (IPySegmentor *segmentor, bool doSearch=true);
-    bool isEmpty () { return m_tailIdx <= 1; }
-    unsigned getLastFrIdx () { return m_tailIdx-1; }
+    CLattice& getLattice() { return m_lattice; }
+    bool buildLattice(IPySegmentor *segmentor, bool doSearch = true);
+    bool isEmpty() { return m_tailIdx <= 1; }
+    unsigned getLastFrIdx() { return m_tailIdx - 1; }
 
     // omit next punctuation if the very next symbol is an punctuation
     void omitNextPunct() { m_bOmitPunct = true; }
 
-    bool searchFrom (unsigned from = 1);
+    bool searchFrom(unsigned from = 1);
 
     void setMaxBest(size_t maxBest) {
         m_maxBest = maxBest;
@@ -261,11 +263,11 @@ public:
     }
 
     size_t getNBest() { return m_nBest; }
-    std::vector<TPath>& getPath (int rank) { return m_path; }
-    std::vector<TPath>& getSegPath (int rank) { return m_segPath; }
+    std::vector<TPath>& getPath(int rank) { return m_path; }
+    std::vector<TPath>& getSegPath(int rank) { return m_segPath; }
 
-    TPath& getBestPath () { return m_path[0]; }
-    TPath& getBestSegPath () {
+    TPath& getBestPath() { return m_path[0]; }
+    TPath& getBestSegPath() {
         // CIMIContext would fail to backTrace the bestPathes when there are
         // no latticeStates on frame e.g., 'yiden' in Quanpin mode, in this
         // case, return the original segs
@@ -273,7 +275,7 @@ public:
             // only require the primary segments without the auxiliary ones
             IPySegmentor::TSegmentVec& segments =
                 m_pPySegmentor->getSegments(false);
-            IPySegmentor::TSegmentVec::const_iterator it  = segments.begin();
+            IPySegmentor::TSegmentVec::const_iterator it = segments.begin();
             IPySegmentor::TSegmentVec::const_iterator ite = segments.end();
             m_segPath[0].push_back(0);
             for (; it != ite; ++it)
@@ -282,61 +284,61 @@ public:
         return m_segPath[0];
     }
 
-    unsigned getBestSentence (wstring& result, int rank,
-                              unsigned start = 0, unsigned end = UINT_MAX);
-    unsigned getBestSentence (std::vector<unsigned>& result, int rank,
-                              unsigned start = 0, unsigned end = UINT_MAX);
+    unsigned getBestSentence(wstring& result, int rank,
+                             unsigned start = 0, unsigned end = UINT_MAX);
+    unsigned getBestSentence(std::vector<unsigned>& result, int rank,
+                             unsigned start = 0, unsigned end = UINT_MAX);
 
 
-    unsigned getSelectedSentence (wstring& result,
-                                  unsigned start = 0, unsigned end = UINT_MAX);
-    unsigned getSelectedSentence (std::vector<unsigned>& result,
-                                  unsigned start = 0, unsigned end = UINT_MAX);
+    unsigned getSelectedSentence(wstring& result,
+                                 unsigned start = 0, unsigned end = UINT_MAX);
+    unsigned getSelectedSentence(std::vector<unsigned>& result,
+                                 unsigned start = 0, unsigned end = UINT_MAX);
 
-    void getCandidates (unsigned frIdx, CCandidates& result);
-    unsigned cancelSelection (unsigned frIdx, bool doSearch=true);
-    void makeSelection (CCandidate &candi, bool doSearch=true);
-    void deleteCandidate (CCandidate &candi);
-    void selectSentence (int idx);
+    void getCandidates(unsigned frIdx, CCandidates& result);
+    unsigned cancelSelection(unsigned frIdx, bool doSearch = true);
+    void makeSelection(CCandidate &candi, bool doSearch = true);
+    void deleteCandidate(CCandidate &candi);
+    void selectSentence(int idx);
 
-    void memorize ();
-    void removeFromHistoryCache (std::vector<unsigned>& wids);
-    void printLattice ();
-
-protected:
-    void _clearFrom (unsigned from);
-
-    bool _buildLattice (IPySegmentor::TSegmentVec &segments,
-                        unsigned rebuildFrom = 1, bool doSearch = true);
-    void _forwardSyllables (unsigned i, unsigned j,
-                            const IPySegmentor::TSegment& seg);
-    void _forwardSingleSyllable (unsigned i, unsigned j, TSyllable syllable,
-                                 const IPySegmentor::TSegment& seg,
-                                 bool fuzzy = false);
-    void _forwardSyllableSep (unsigned i, unsigned j);
-    void _forwardString (unsigned i, unsigned j,
-                         const std::vector<unsigned>& strbuf);
-    void _forwardPunctChar (unsigned i, unsigned j, unsigned ch);
-    void _forwardOrdinaryChar (unsigned i, unsigned j, unsigned ch);
-    void _forwardTail (unsigned i, unsigned j);
-
-    void _transferBetween (unsigned start, unsigned end, TLexiconState* plxst,
-                           unsigned wid, double ic = 1.0);
-    bool _backTracePaths (const std::vector<TLatticeState>& tail_states,
-                          int rank, TPath& path, TPath& segPath);
-    void _clearPaths ();
-
-    const TWCHAR *_getWstr (unsigned wid);
-
-    void _saveUserDict ();
-    void _saveHistoryCache ();
+    void memorize();
+    void removeFromHistoryCache(std::vector<unsigned>& wids);
+    void printLattice();
 
 protected:
-    CLattice                    m_lattice;
-    unsigned                    m_tailIdx;
+    void _clearFrom(unsigned from);
 
-    size_t                      m_nBest;
-    size_t                      m_maxBest;
+    bool _buildLattice(IPySegmentor::TSegmentVec &segments,
+                       unsigned rebuildFrom = 1, bool doSearch = true);
+    void _forwardSyllables(unsigned i, unsigned j,
+                           const IPySegmentor::TSegment& seg);
+    void _forwardSingleSyllable(unsigned i, unsigned j, TSyllable syllable,
+                                const IPySegmentor::TSegment& seg,
+                                bool fuzzy = false);
+    void _forwardSyllableSep(unsigned i, unsigned j);
+    void _forwardString(unsigned i, unsigned j,
+                        const std::vector<unsigned>& strbuf);
+    void _forwardPunctChar(unsigned i, unsigned j, unsigned ch);
+    void _forwardOrdinaryChar(unsigned i, unsigned j, unsigned ch);
+    void _forwardTail(unsigned i, unsigned j);
+
+    void _transferBetween(unsigned start, unsigned end, TLexiconState* plxst,
+                          unsigned wid, double ic = 1.0);
+    bool _backTracePaths(const std::vector<TLatticeState>& tail_states,
+                         int rank, TPath& path, TPath& segPath);
+    void _clearPaths();
+
+    const TWCHAR *_getWstr(unsigned wid);
+
+    void _saveUserDict();
+    void _saveHistoryCache();
+
+protected:
+    CLattice m_lattice;
+    unsigned m_tailIdx;
+
+    size_t m_nBest;
+    size_t m_maxBest;
     std::vector<TPath>          m_path;
     std::vector<TPath>          m_segPath;
 
@@ -344,25 +346,24 @@ protected:
     CPinyinTrie                *m_pPinyinTrie;
     CUserDict                  *m_pUserDict;
     CICHistory                 *m_pHistory;
-    unsigned                    m_historyPower;
+    unsigned m_historyPower;
 
-    unsigned                    m_csLevel;
+    unsigned m_csLevel;
 
-    bool                        m_bFullSymbolForwarding;
-    bool                        m_bOmitPunct;
+    bool m_bFullSymbolForwarding;
+    bool m_bOmitPunct;
     CGetFullSymbolOp           *m_pGetFullSymbolOp;
 
-    bool                        m_bFullPunctForwarding;
+    bool m_bFullPunctForwarding;
     CGetFullPunctOp            *m_pGetFullPunctOp;
 
     IPySegmentor               *m_pPySegmentor;
 
-    bool                        m_bNonCompleteSyllable;
-    bool                        m_bDynaCandiOrder;
+    bool m_bNonCompleteSyllable;
+    bool m_bDynaCandiOrder;
 
-    unsigned                    m_candiStarts;
-    unsigned                    m_candiEnds;
-
+    unsigned m_candiStarts;
+    unsigned m_candiEnds;
 }; // CIMIContext
 
 #endif

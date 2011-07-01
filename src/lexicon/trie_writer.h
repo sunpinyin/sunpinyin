@@ -8,25 +8,24 @@ template <>
 class OtherEndian<CPinyinTrie::TNode>
 {
     struct TNode_BE {
-        unsigned        m_other      : 5;
-        unsigned        m_bFullSyllableTransfer: 1;
-        unsigned        m_csLevel    : 2;
-        unsigned        m_nTransfer  : 12;
-        unsigned        m_nWordId    : 12;
+        unsigned m_other      : 5;
+        unsigned m_bFullSyllableTransfer : 1;
+        unsigned m_csLevel    : 2;
+        unsigned m_nTransfer  : 12;
+        unsigned m_nWordId    : 12;
     };
-    
+
     struct TNode_LE {
-        unsigned        m_nWordId    : 12;
-        unsigned        m_nTransfer  : 12;
-        unsigned        m_csLevel    : 2;
-        unsigned        m_bFullSyllableTransfer: 1;
-        unsigned        m_other      : 5;
+        unsigned m_nWordId    : 12;
+        unsigned m_nTransfer  : 12;
+        unsigned m_csLevel    : 2;
+        unsigned m_bFullSyllableTransfer : 1;
+        unsigned m_other      : 5;
     };
 public:
     DEFINE_OTHER_TYPE(TNode);
-    
-    static TargetType create(const CPinyinTrie::TNode& from) 
-    {
+
+    static TargetType create(const CPinyinTrie::TNode& from){
         TargetType to;
         to.m_nTransfer = from.m_nTransfer;
         to.m_nWordId = from.m_nWordId;
@@ -47,7 +46,7 @@ class OtherEndian<TSyllable>
         unsigned final    : 8;
         unsigned tone     : 4;
     };
-    
+
     struct TSyllable_LE {
         unsigned tone     : 4;
         unsigned final    : 8;
@@ -58,8 +57,7 @@ class OtherEndian<TSyllable>
 public:
     DEFINE_OTHER_TYPE(TSyllable);
 
-    static TargetType create(const TSyllable& from)
-    {
+    static TargetType create(const TSyllable& from){
         TargetType to;
         to.other = from.other;
         to.initial = from.initial;
@@ -73,24 +71,23 @@ template <>
 class OtherEndian<CPinyinTrie::TWordIdInfo>
 {
     struct TWordIdInfo_BE {
-        unsigned        m_bSeen    : 1;
-        unsigned        m_cost     : 5;
-        unsigned        m_csLevel  : 2;
-        unsigned        m_id       : WORD_ID_WIDTH;
+        unsigned m_bSeen    : 1;
+        unsigned m_cost     : 5;
+        unsigned m_csLevel  : 2;
+        unsigned m_id       : WORD_ID_WIDTH;
     };
-    
+
     struct TWordIdInfo_LE {
-        unsigned        m_id       : WORD_ID_WIDTH;
-        unsigned        m_csLevel  : 2;
-        unsigned        m_cost     : 5;
-        unsigned        m_bSeen    : 1;
+        unsigned m_id       : WORD_ID_WIDTH;
+        unsigned m_csLevel  : 2;
+        unsigned m_cost     : 5;
+        unsigned m_bSeen    : 1;
     };
-    
+
 public:
     DEFINE_OTHER_TYPE(TWordIdInfo);
-    
-    static TargetType create(const CPinyinTrie::TWordIdInfo& from) 
-    {
+
+    static TargetType create(const CPinyinTrie::TWordIdInfo& from){
         TargetType to;
         to.m_id = from.m_id;
         to.m_csLevel = from.m_csLevel;
@@ -101,6 +98,7 @@ public:
 };
 
 template <>
-bool revert_write<CPinyinTrie::TTransUnit> (const CPinyinTrie::TTransUnit& t, FILE *fp);
+bool revert_write<CPinyinTrie::TTransUnit> (const CPinyinTrie::TTransUnit& t,
+                                            FILE *fp);
 
 #endif //__SUNPINYIN_PYTRIE_WRITER_H__

@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "imi_option_event.h"
 
-COptionEvent::variant_::variant_(int v) 
+COptionEvent::variant_::variant_(int v)
     : type(VAL_INTEGER)
 {
     data.d_int = v;
@@ -75,9 +75,9 @@ IConfigurable::~IConfigurable()
 void
 COptionEventBus::registerAsListener(IConfigurable* listener)
 {
-    Subscribers::iterator  found = find(m_listeners.begin(),
-                                        m_listeners.end(),
-                                        listener);
+    Subscribers::iterator found = find(m_listeners.begin(),
+                                       m_listeners.end(),
+                                       listener);
     if (found == m_listeners.end())
         m_listeners.push_back(listener);
     else
@@ -87,9 +87,9 @@ COptionEventBus::registerAsListener(IConfigurable* listener)
 void
 COptionEventBus::unregisterAsListener(IConfigurable* listener)
 {
-    Subscribers::iterator  found = find(m_listeners.begin(),
-                                        m_listeners.end(),
-                                        listener);
+    Subscribers::iterator found = find(m_listeners.begin(),
+                                       m_listeners.end(),
+                                       listener);
     if (found != m_listeners.end())
         m_listeners.erase(found);
     else

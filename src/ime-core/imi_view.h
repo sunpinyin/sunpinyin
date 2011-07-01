@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifndef SUNPY_IMI_SESSION_VIEW_H
@@ -51,56 +51,46 @@ class CHotkeyProfile : private CNonCopyable
 {
 public:
     CHotkeyProfile();
-    
-    void clear () 
-    {
+
+    void clear(){
         m_pageUpKeys.clear();
         m_pageDownKeys.clear();
         m_modeSwitchKeys.clear();
     }
 
-    void addPageUpKey (const CKeyEvent& key)
-    {
-        m_pageUpKeys.insert (key);
+    void addPageUpKey(const CKeyEvent& key){
+        m_pageUpKeys.insert(key);
     }
 
-    void removePageUpKey (const CKeyEvent& key)
-    {
-        m_pageUpKeys.erase (key);
-    }
-    
-    bool isPageUpKey  (const CKeyEvent& key) const
-    {
-        return (m_pageUpKeys.find (key) != m_pageUpKeys.end());
+    void removePageUpKey(const CKeyEvent& key){
+        m_pageUpKeys.erase(key);
     }
 
-    void addPageDownKey (const CKeyEvent& key)
-    {
-        m_pageDownKeys.insert (key);
+    bool isPageUpKey(const CKeyEvent& key) const {
+        return(m_pageUpKeys.find(key) != m_pageUpKeys.end());
     }
 
-    void removePageDownKey (const CKeyEvent& key)
-    {
-        m_pageDownKeys.erase (key);
-    }
-    
-    bool isPageDownKey  (const CKeyEvent& key) const
-    {
-        return (m_pageDownKeys.find (key) != m_pageDownKeys.end());
+    void addPageDownKey(const CKeyEvent& key){
+        m_pageDownKeys.insert(key);
     }
 
-    void addModeSwitchKey (const CKeyEvent& key)
-    {
-        m_modeSwitchKeys.insert (key);
+    void removePageDownKey(const CKeyEvent& key){
+        m_pageDownKeys.erase(key);
     }
 
-    void removeModeSwitchKey (const CKeyEvent& key)
-    {
-        m_modeSwitchKeys.erase (key);
+    bool isPageDownKey(const CKeyEvent& key) const {
+        return(m_pageDownKeys.find(key) != m_pageDownKeys.end());
     }
-    
-    bool isModeSwitchKey (const CKeyEvent& key) const
-    {
+
+    void addModeSwitchKey(const CKeyEvent& key){
+        m_modeSwitchKeys.insert(key);
+    }
+
+    void removeModeSwitchKey(const CKeyEvent& key){
+        m_modeSwitchKeys.erase(key);
+    }
+
+    bool isModeSwitchKey(const CKeyEvent& key) const {
         std::set<CKeyEvent>::const_iterator end(m_modeSwitchKeys.end());
         for (std::set<CKeyEvent>::const_iterator it = m_modeSwitchKeys.begin();
              it != end; ++it) {
@@ -109,86 +99,79 @@ public:
         }
         return false;
     }
-    
-    void setPunctSwitchKey (const CKeyEvent& key)
-    {
+
+    void setPunctSwitchKey(const CKeyEvent& key){
         m_punctSwitchKey = key;
     }
-    
-    bool isPunctSwitchKey (const CKeyEvent& key) const
-    {
+
+    bool isPunctSwitchKey(const CKeyEvent& key) const {
         return matches(m_punctSwitchKey, key);
     }
-    
-    void setSymbolSwitchKey (const CKeyEvent& key)
-    {
+
+    void setSymbolSwitchKey(const CKeyEvent& key){
         m_symbolSwitchKey = key;
     }
-    
-    bool isSymbolSwitchKey (const CKeyEvent& key) const
-    {
+
+    bool isSymbolSwitchKey(const CKeyEvent& key) const {
         return matches(m_symbolSwitchKey, key);
     }
 
-    void rememberLastKey(const CKeyEvent& key)
-    {
+    void rememberLastKey(const CKeyEvent& key){
         m_prevKey = key;
     }
 
-    void setCandiDeleteKey (const CKeyEvent& key)
-    {
+    void setCandiDeleteKey(const CKeyEvent& key){
         m_candiDeleteKey = key;
     }
 
-    bool isCandiDeleteKey (const CKeyEvent& key, unsigned candiWndSize)
-    {
+    bool isCandiDeleteKey(const CKeyEvent& key, unsigned candiWndSize){
         return (key.modifiers == m_candiDeleteKey.modifiers) &&
-               (key.value >= '0' && key.value <= '9') && 
+               (key.value >= '0' && key.value <= '9') &&
                (candiWndSize >= 10 || key.value < ('1' + candiWndSize));
     }
-    
+
 private:
-    bool matches(const CKeyEvent& lhs, const CKeyEvent& rhs) const
-    {
+    bool matches(const CKeyEvent& lhs, const CKeyEvent& rhs) const {
         if (lhs == rhs)
-            return ( !(lhs.modifiers & IM_RELEASE_MASK) ||
-                     m_prevKey.code == rhs.code );
+            return(!(lhs.modifiers & IM_RELEASE_MASK) ||
+                   m_prevKey.code == rhs.code);
         return false;
     }
-    
+
 protected:
     std::set<CKeyEvent> m_pageUpKeys;
     std::set<CKeyEvent> m_pageDownKeys;
     std::set<CKeyEvent> m_modeSwitchKeys;
-    CKeyEvent           m_punctSwitchKey;
-    CKeyEvent           m_symbolSwitchKey;
-    CKeyEvent           m_candiDeleteKey;
-    CKeyEvent           m_prevKey;
+    CKeyEvent m_punctSwitchKey;
+    CKeyEvent m_symbolSwitchKey;
+    CKeyEvent m_candiDeleteKey;
+    CKeyEvent m_prevKey;
 };
 
 class CIMIView {
 public:
     enum {
         KEYEVENT_USED  = (1),
-        PREEDIT_MASK   = (1<<2),
-        CANDIDATE_MASK = (1<<3)
+        PREEDIT_MASK   = (1 << 2),
+        CANDIDATE_MASK = (1 << 3)
     };
 
 public:
     CIMIView();
     virtual ~CIMIView() {}
 
-    void attachIC(CIMIContext* pIC) {m_pIC = pIC;}
-    CIMIContext* getIC(void) {return m_pIC;}
+    void attachIC(CIMIContext* pIC) { m_pIC = pIC; }
+    CIMIContext* getIC(void) { return m_pIC; }
 
-    void setPySegmentor (IPySegmentor *p) {m_pPySegmentor = p;}
-    IPySegmentor* getPySegmentor () {return m_pPySegmentor;}
+    void setPySegmentor(IPySegmentor *p) { m_pPySegmentor = p; }
+    IPySegmentor* getPySegmentor() { return m_pPySegmentor; }
 
-    void attachWinHandler(CIMIWinHandler* wh) {m_pWinHandler = wh;}
-    CIMIWinHandler* getWinHandler(void) {return m_pWinHandler;}
+    void attachWinHandler(CIMIWinHandler* wh) { m_pWinHandler = wh; }
+    CIMIWinHandler* getWinHandler(void) { return m_pWinHandler; }
 
-    void setHotkeyProfile (CHotkeyProfile *prof) { m_pHotkeyProfile = prof;}
-    void setCandiWindowSize (unsigned size) {m_candiWindowSize = size<10? size: 10;}
+    void setHotkeyProfile(CHotkeyProfile *prof) { m_pHotkeyProfile = prof; }
+    void setCandiWindowSize(unsigned size) { m_candiWindowSize = size <
+                                                                 10 ? size : 10; }
     CHotkeyProfile* getHotkeyProfile() { return m_pHotkeyProfile; }
     unsigned getCandiWindowSize() { return m_candiWindowSize; }
 
@@ -196,8 +179,8 @@ public:
     { m_backspaceCancel = backspaceCancel; }
     bool getCancelOnBackspace() { return m_backspaceCancel; }
 
-    virtual unsigned clearIC(void) {m_pIC->clear(); return 0;}
-    virtual bool onKeyEvent(const CKeyEvent&) {return false;}
+    virtual unsigned clearIC(void) { m_pIC->clear(); return 0; }
+    virtual bool onKeyEvent(const CKeyEvent&) { return false; }
 
     virtual void setStatusAttrValue(int key, int value);
     virtual int  getStatusAttrValue(int key);
@@ -215,12 +198,12 @@ protected:
     IPySegmentor       *m_pPySegmentor;
     CHotkeyProfile     *m_pHotkeyProfile;
 
-    unsigned            m_candiWindowSize;
+    unsigned m_candiWindowSize;
 
-    bool                m_bCN;
-    bool                m_bFullPunct;
-    bool                m_bFullSymbol;
-    bool                m_backspaceCancel;
+    bool m_bCN;
+    bool m_bFullPunct;
+    bool m_bFullSymbol;
+    bool m_backspaceCancel;
 };
 
 #endif

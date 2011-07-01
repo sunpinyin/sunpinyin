@@ -77,43 +77,46 @@ public:
     };
 
     /**
-    * (level:idx) located a state in the language model very well
-    * Please note the psuedo unigram state, with level == 0, but idx > 0
-    * it's for used with bigram cache model
-    */
-    union TState{
-        TState(const TState& b) : m_all(b.m_all) { }
-        TState(unsigned level=0, unsigned idx=0) { anony.m_Level=level; anony.m_Idx=idx; }
+     * (level:idx) located a state in the language model very well
+     * Please note the psuedo unigram state, with level == 0, but idx > 0
+     * it's for used with bigram cache model
+     */
+    union TState {
+        TState(const TState &b) : m_all(b.m_all) {
+        }
+        TState(unsigned level = 0, unsigned idx = 0) {
+            anony.m_Level = level; anony.m_Idx = idx;
+        }
 
         TState& operator++()              { ++anony.m_Idx; return *this; }
 
         void setIdx(unsigned int idx)     { anony.m_Idx = idx; }
         void setLevel(unsigned int lvl)   { anony.m_Level = lvl; }
 
-        unsigned int getLevel() const     { return anony.m_Level; }
-        unsigned int getIdx() const       { return anony.m_Idx; }
-        operator unsigned() const         { return m_all; }
+        unsigned int getLevel() const { return anony.m_Level; }
+        unsigned int getIdx() const { return anony.m_Idx; }
+        operator unsigned() const { return m_all; }
 
         bool isTailState() const { return getIdx() <= 1; }
 
         bool operator==(const TState & b) const {
             return m_all == b.m_all;
         }
-        bool operator< (const TState & b) const {
-            return unsigned(*this) <  unsigned(b);
+        bool operator<(const TState & b) const {
+            return unsigned(*this) < unsigned(b);
         }
 
-    private:
+private:
         unsigned int m_all;
 #ifndef WORDS_BIGENDIAN
         struct TAnonymous {
-            unsigned m_Idx   :24;
+            unsigned m_Idx   : 24;
             unsigned m_Level : 8;
         } anony;
 #else
         struct TAnonymous {
             unsigned m_Level : 8;
-            unsigned m_Idx   :24;
+            unsigned m_Idx   : 24;
         } anony;
 #endif
     };
@@ -122,92 +125,80 @@ public:
      * Machine dependent
      */
     struct TNode {
-    public:
-        unsigned int wid() const
-        {
+public:
+        unsigned int wid() const {
             return m_wid;
         }
 
-        unsigned int bow() const
-        {
+        unsigned int bow() const {
             return m_bow;
         }
 
-        unsigned int pr()  const
-        {
+        unsigned int pr()  const {
             return m_pr;
         }
 
-        unsigned int bon() const
-        {
+        unsigned int bon() const {
             return m_bon;
         }
 
-        unsigned int bol() const
-        {
+        unsigned int bol() const {
             return m_bol;
         }
 
-        unsigned int ch()  const
-        {
-            return ((m_ch_hi << 16) + m_ch_lo);
+        unsigned int ch()  const {
+            return((m_ch_hi << 16) + m_ch_lo);
         }
 
-        void set_wid(unsigned int wid)
-        {
+        void set_wid(unsigned int wid){
             m_wid = wid;
         }
 
-        void set_bow(unsigned int bow)
-        {
+        void set_bow(unsigned int bow){
             m_bow = bow;
         }
 
-        void set_pr(unsigned int pr)
-        {
+        void set_pr(unsigned int pr){
             m_pr = pr;
         }
 
-        void set_bon(unsigned int bon)
-        {
+        void set_bon(unsigned int bon){
             m_bon = bon;
         }
 
-        void set_bol(unsigned int bol)
-        {
+        void set_bol(unsigned int bol){
             m_bol = bol;
         }
 
-        void set_ch(unsigned int ch)
-        {
-            m_ch_hi=((ch >> 16) & 0x7F);
-            m_ch_lo=(ch & 0xFFFF);
+        void set_ch(unsigned int ch){
+            m_ch_hi = ((ch >> 16) & 0x7F);
+            m_ch_lo = (ch & 0xFFFF);
         }
 
-    protected:
+protected:
 #ifndef WORDS_BIGENDIAN
-        unsigned m_wid       :18;
-        unsigned m_bow       :14;
-        unsigned m_pr        :16;
-        unsigned m_ch_lo     :16;
-        unsigned m_bon       :23;
+        unsigned m_wid       : 18;
+        unsigned m_bow       : 14;
+        unsigned m_pr        : 16;
+        unsigned m_ch_lo     : 16;
+        unsigned m_bon       : 23;
         unsigned m_bol       : 2;
         unsigned m_ch_hi     : 7;
 #else
         unsigned m_ch_hi     : 7;
         unsigned m_bol       : 2;
-        unsigned m_bon       :23;
-        unsigned m_ch_lo     :16;
-        unsigned m_pr        :16;
-        unsigned m_bow       :14;
-        unsigned m_wid       :18;
+        unsigned m_bon       : 23;
+        unsigned m_ch_lo     : 16;
+        unsigned m_pr        : 16;
+        unsigned m_bow       : 14;
+        unsigned m_wid       : 18;
 #endif
 
-    private:
+private:
         /**
          * Machine dependent
-        union TChildIdx {
-        public:
+           union TChildIdx {
+           public:
             inline TChildIdx(unsigned val) : m_all(val) { }
             inline TChildIdx(const TChildIdx& b) : m_all(b.m_all) { }
             inline TChildIdx(unsigned int hi, unsigned lo) : m_all(0) { anony.m_hi = hi; anony.m_lo = lo; }
@@ -220,88 +211,89 @@ public:
             inline unsigned int set_hi(unsigned int hi) { return (anony.m_hi = hi); }
             inline unsigned int set_all(unsigned int all) { return (m_all = all); }
 
-        private:
+           private:
             unsigned int m_all;
-#ifndef WORDS_BIGENDIAN
+         *#ifndef WORDS_BIGENDIAN
             struct TAnony {
                 unsigned m_lo :16;
                 unsigned m_hi : 7;
                 unsigned NOUSE: 9;
             } anony;
-#else
+         *#else
             struct TAnony {
                 unsigned NOUSE: 9;
                 unsigned m_hi : 7;
                 unsigned m_lo :16;
             } anony;
-#endif
-        };
-        */
+         *#endif
+           };
+         */
     };
 
     /**
      * Machine dependent
      */
     struct TLeaf {
-    public:
+public:
         inline unsigned int wid() const { return m_wid; }
         inline unsigned int bon() const { return m_bon; }
         inline unsigned int bol() const { return m_bol; }
-        inline unsigned int pr()  const { return ((m_pr_hi << 14) + m_pr_lo); }
+        inline unsigned int pr()  const { return((m_pr_hi << 14) + m_pr_lo); }
 
         inline void set_wid(unsigned int wid) { m_wid = wid; }
         inline void set_bon(unsigned int bon) { m_bon = bon; }
         inline void set_bol(unsigned int bol) { m_bol = bol; }
-        inline void set_pr(unsigned int pr)   { m_pr_hi = ((pr >> 14) & 0x3); m_pr_lo = pr & 0x3FFF; }
+        inline void set_pr(unsigned int pr)   { m_pr_hi = ((pr >> 14) & 0x3);
+                                                m_pr_lo = pr & 0x3FFF; }
 
-    protected:
+protected:
 #ifndef WORDS_BIGENDIAN
-        unsigned m_wid       :18;
-        unsigned m_pr_lo     :14;
-        unsigned m_bon       :23;
+        unsigned m_wid       : 18;
+        unsigned m_pr_lo     : 14;
+        unsigned m_bon       : 23;
         unsigned m_bol       : 2;
         unsigned m_pr_hi     : 2;
 #else
         unsigned m_pr_hi     : 2;
         unsigned m_bol       : 2;
-        unsigned m_bon       :23;
-        unsigned m_pr_lo     :14;
-        unsigned m_wid       :18;
+        unsigned m_bon       : 23;
+        unsigned m_pr_lo     : 14;
+        unsigned m_wid       : 18;
 #endif
 
-    private:
-    /*
-        union TPr {
-        public:
-            inline TPr(unsigned int val) : m_all(val) { }
-            inline TPr(const TPr & b) : m_all(b.m_all) { }
-            inline TPr(unsigned int hi, unsigned lo) : m_all(0) { anony.m_hi=hi, anony.m_lo=lo; }
+private:
+        /*
+            union TPr {
+            public:
+                inline TPr(unsigned int val) : m_all(val) { }
+                inline TPr(const TPr & b) : m_all(b.m_all) { }
+                inline TPr(unsigned int hi, unsigned lo) : m_all(0) { anony.m_hi=hi, anony.m_lo=lo; }
 
-            inline unsigned int lo() { return anony.m_lo; }
-            inline unsigned int hi() { return anony.m_hi; }
-            inline unsigned int all(){ return m_all; }
+                inline unsigned int lo() { return anony.m_lo; }
+                inline unsigned int hi() { return anony.m_hi; }
+                inline unsigned int all(){ return m_all; }
 
-            inline unsigned int set_lo(unsigned int lo) { return (anony.m_lo = lo); }
-            inline unsigned int set_hi(unsigned int hi) { return (anony.m_hi = hi); }
-            inline unsigned int set_all(unsigned int all) { return (m_all = all); }
+                inline unsigned int set_lo(unsigned int lo) { return (anony.m_lo = lo); }
+                inline unsigned int set_hi(unsigned int hi) { return (anony.m_hi = hi); }
+                inline unsigned int set_all(unsigned int all) { return (m_all = all); }
 
-        private:
-            unsigned int m_all;
-#ifndef WORDS_BIGENDIAN
-            struct TAnony {
-                unsigned m_lo  :14;
-                unsigned m_hi  : 2;
-                unsigned NONUSE:16;
-            } anony;
-#else
-            struct TAnony {
-                unsigned NONUSE:16;
-                unsigned m_hi  : 2;
-                unsigned m_lo  :14;
-            } anony;
-#endif
-        };
-        */
+            private:
+                unsigned int m_all;
+           #ifndef WORDS_BIGENDIAN
+                struct TAnony {
+                    unsigned m_lo  :14;
+                    unsigned m_hi  : 2;
+                    unsigned NONUSE:16;
+                } anony;
+           #else
+                struct TAnony {
+                    unsigned NONUSE:16;
+                    unsigned m_hi  : 2;
+                    unsigned m_lo  :14;
+                } anony;
+           #endif
+            };
+         */
     };
 
 public:
@@ -312,10 +304,9 @@ public:
     ~CThreadSlm() { free(); }
 
     bool
-    load(const char* fname, bool MMap=false);
+    load(const char* fname, bool MMap = false);
 
-    unsigned
-    isUseLogPr() const
+    unsigned isUseLogPr() const
     { return m_UseLogPr; }
 
     void
@@ -343,16 +334,16 @@ protected:
 protected:
     typedef  void*   PtrVoid;
 
-    unsigned  m_N;
-    unsigned  m_UseLogPr;
+    unsigned m_N;
+    unsigned m_UseLogPr;
     void    **m_Levels;
     unsigned *m_LevelSizes;
     float    *m_bowTable;
     float    *m_prTable;
 
 private:
-    ssize_t   m_bufSize;
-    bool      m_bMMap;
+    ssize_t m_bufSize;
+    bool m_bMMap;
     char     *m_buf;
 };
 

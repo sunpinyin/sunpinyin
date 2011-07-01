@@ -1,19 +1,19 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- * 
+ *
  * Copyright (c) 2007 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * The contents of this file are subject to the terms of either the GNU Lesser
  * General Public License Version 2.1 only ("LGPL") or the Common Development and
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -21,9 +21,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -32,7 +32,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -61,7 +61,7 @@ TLongExpFloat::TLongExpFloat(double d)
 }
 
 TLongExpFloat
-TLongExpFloat::operator* (const TLongExpFloat& b) const
+TLongExpFloat::operator*(const TLongExpFloat& b) const
 {
     double d = this->m_base * b.m_base;
     TLongExpFloat reda(d);
@@ -70,7 +70,7 @@ TLongExpFloat::operator* (const TLongExpFloat& b) const
 }
 
 TLongExpFloat
-TLongExpFloat::operator/ (const TLongExpFloat& b) const
+TLongExpFloat::operator/(const TLongExpFloat& b) const
 {
     double d = this->m_base / b.m_base;
     TLongExpFloat reda(d);
@@ -79,12 +79,12 @@ TLongExpFloat::operator/ (const TLongExpFloat& b) const
 }
 
 bool
-TLongExpFloat::operator< (const TLongExpFloat& b) const
+TLongExpFloat::operator<(const TLongExpFloat& b) const
 {
     if (m_base >= 0.0 && b.m_base >= 0.0) {
-        return (m_exp < b.m_exp || (m_exp == b.m_exp && m_base < b.m_base));
+        return(m_exp < b.m_exp || (m_exp == b.m_exp && m_base < b.m_base));
     } else if (m_base < 0.0 && b.m_base < 0.0) {
-        return (m_exp > b.m_exp || (m_exp == b.m_exp && m_base < b.m_base));
+        return(m_exp > b.m_exp || (m_exp == b.m_exp && m_base < b.m_base));
     } else if (m_base < 0.0 && b.m_base >= 0.0)
         return true;
     else
@@ -95,9 +95,9 @@ bool
 TLongExpFloat::operator<=(const TLongExpFloat& b) const
 {
     if (m_base >= 0.0 && b.m_base >= 0.0) {
-        return (m_exp < b.m_exp || (m_exp == b.m_exp && m_base <= b.m_base));
+        return(m_exp < b.m_exp || (m_exp == b.m_exp && m_base <= b.m_base));
     } else if (m_base < 0.0 && b.m_base < 0.0) {
-        return (m_exp > b.m_exp || (m_exp == b.m_exp && m_base <= b.m_base));
+        return(m_exp > b.m_exp || (m_exp == b.m_exp && m_base <= b.m_base));
     } else if (m_base < 0.0 && b.m_base >= 0.0)
         return true;
     else
@@ -107,7 +107,7 @@ TLongExpFloat::operator<=(const TLongExpFloat& b) const
 bool
 TLongExpFloat::operator==(const TLongExpFloat& b) const
 {
-    return (m_base == b.m_base && m_exp == b.m_exp);
+    return(m_base == b.m_base && m_exp == b.m_exp);
 }
 
 void
@@ -122,12 +122,13 @@ TLongExpFloat::toString(std::string& str) const
 #include <iconv.h>
 
 /**
-* convert UTF-8 string pointed by s into UCS-4 Wide String at pwcs.
-* No more than n wide char could be converted into target buffer.
-* return -1 means error.
-* other means the converted wide char number do not count the end 0.
-*/
-size_t MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
+ * convert UTF-8 string pointed by s into UCS-4 Wide String at pwcs.
+ * No more than n wide char could be converted into target buffer.
+ * return -1 means error.
+ * other means the converted wide char number do not count the end 0.
+ */
+size_t
+MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
 {
 #ifndef WORDS_BIGENDIAN
     static iconv_t ic = iconv_open("UCS-4LE", "UTF-8");
@@ -139,27 +140,28 @@ size_t MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
 
     // To eliminate the const char* and char* diffirence in differnt system
     TIConvSrcPtr src = (TIConvSrcPtr)s;
-    size_t srclen = std::strlen(s)+1;
-    char* dst = (char *)pwcs;
-    size_t dstlen = n*sizeof(TWCHAR);
+    size_t srclen = std::strlen(s) + 1;
+    char* dst = (char*)pwcs;
+    size_t dstlen = n * sizeof(TWCHAR);
 
     size_t res = iconv(ic, &src, &srclen, &dst, &dstlen);
 
     if (res != size_t(-1) && srclen == 0) {
-        n -= dstlen/sizeof(TWCHAR);
-        return (n > 0)?(n-1):0;
+        n -= dstlen / sizeof(TWCHAR);
+        return (n > 0) ? (n - 1) : 0;
     } else {
         return size_t(-1);
     }
 }
 
 /**
-* convert UCS-4 string pointed by pwcs into UTF-8 String at s.
-* No more than n byte could be converted into target buffer.
-* return -1 means error.
-* Other means the converted byte number do not count the end 0.
-*/
-size_t WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
+ * convert UCS-4 string pointed by pwcs into UTF-8 String at s.
+ * No more than n byte could be converted into target buffer.
+ * return -1 means error.
+ * Other means the converted byte number do not count the end 0.
+ */
+size_t
+WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
 {
 #ifndef WORDS_BIGENDIAN
     static iconv_t ic = iconv_open("UTF-8", "UCS-4LE");
@@ -170,15 +172,15 @@ size_t WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
     assert(ic != (iconv_t)-1);
 
     TIConvSrcPtr src = (TIConvSrcPtr)pwcs;
-    size_t srclen = (WCSLEN(pwcs)+1)*sizeof(TWCHAR);
-    char* dst = (char *)s;
+    size_t srclen = (WCSLEN(pwcs) + 1) * sizeof(TWCHAR);
+    char* dst = (char*)s;
     size_t dstlen = n;
 
     size_t res = iconv(ic, &src, &srclen, &dst, &dstlen);
 
     if (res != size_t(-1) && srclen == 0) {
         n -= dstlen;
-        return (n > 0)?(n-1):0;
+        return (n > 0) ? (n - 1) : 0;
     } else {
         return size_t(-1);
     }
@@ -186,35 +188,40 @@ size_t WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
 
 #else // !HAVE_ICONV_H
 
-size_t MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
+size_t
+MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
 {
     const unsigned char *src = (const unsigned char*)s;
     TWCHAR* dst = pwcs;
 
     while (dst - pwcs < n) {
         if (*src < 0xc0 || *src >= 0xfe) {
-            if(*src < 0x80) *dst++ = *src;
-            if(*src++ == 0) break;
+            if (*src < 0x80) *dst++ = *src;
+            if (*src++ == 0) break;
             continue;
         }
 
         for (int bytes = 2; bytes <= 6; bytes++) {
-            if ((*src & ~(0xff >> (bytes + 1))) != (((1 << bytes) - 1) << (8 - bytes))) continue;
+            if ((*src & ~(0xff >> (bytes + 1))) !=
+                (((1 << bytes) - 1) << (8 - bytes))) continue;
             if (bytes > 4) {
                 src += bytes;
             } else {
-                *dst = TWCHAR(*src++ & (0xff >> (bytes + 1))) << (6 * (bytes - 1));
-                for (; bytes-- > 1; src++) *dst |= TWCHAR(*src & 0x3f) << (6 * (bytes - 1));
+                *dst =
+                    TWCHAR(*src++ & (0xff >> (bytes + 1))) << (6 * (bytes - 1));
+                for (; bytes-- > 1; src++) *dst |=
+                        TWCHAR(*src & 0x3f) << (6 * (bytes - 1));
                 dst++;
             }
             break;
         }
     }
 
-    return (dst - pwcs);
+    return(dst - pwcs);
 }
 
-size_t WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
+size_t
+WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
 {
     char* dst = s;
 
@@ -234,18 +241,21 @@ size_t WCSTOMBS(char* s, const TWCHAR* pwcs, size_t n)
         char *tmp = dst - 1;
 
         for (; nbyte > 0; c >>= 6, nbyte--)
-                *tmp-- = (nbyte == 1 ? (((1 << bytes) - 1) << (8 - bytes)) : 0x80) | (c & 0x3f);
+            *tmp-- =
+                (nbyte ==
+                 1 ? (((1 << bytes) - 1) << (8 - bytes)) : 0x80) | (c & 0x3f);
     }
 
-    return (dst - s);
+    return(dst - s);
 }
 
 #endif // HAVE_ICONV_H
 
 /**
-* return the wide string len at pwcs, not count the end 0.
-*/
-size_t WCSLEN(const TWCHAR* pwcs)
+ * return the wide string len at pwcs, not count the end 0.
+ */
+size_t
+WCSLEN(const TWCHAR* pwcs)
 {
     size_t sz = 0;
     if (pwcs) {
@@ -256,23 +266,24 @@ size_t WCSLEN(const TWCHAR* pwcs)
 }
 
 #if !defined (HAVE_STRNDUP)
-extern "C" char *strndup( const char *s, size_t n )
+extern "C" char *
+strndup(const char *s, size_t n)
 {
     size_t nMost;
-    char *p = NULL;                                                                          
-                                                                  
-    if ( !s )
+    char *p = NULL;
+
+    if (!s)
         return NULL;
-  
-#ifdef __cplusplus                                                                                                                                       
-    nMost = std::min( strlen(s) + 1, n + 1 );
+
+#ifdef __cplusplus
+    nMost = std::min(strlen(s) + 1, n + 1);
 #else
-    nMost = min( strlen(s) + 1, n + 1 );
+    nMost = min(strlen(s) + 1, n + 1);
 #endif
-    p     = (char*)malloc( nMost );
-    memcpy( p, s, nMost );
+    p = (char*)malloc(nMost);
+    memcpy(p, s, nMost);
     p[nMost - 1] = '\0';
-                                                                                                                                                
+
     return p;
 }
 #endif //HAVE_STRNDUP

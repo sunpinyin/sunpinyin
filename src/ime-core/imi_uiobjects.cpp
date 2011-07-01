@@ -81,7 +81,8 @@ CPreEditString::charTypeSize() const
 int
 CPreEditString::charTypeAt(int idx) const
 {
-    return (idx < 0 || idx >= m_charTypes.size())?(DONTCARE_CHAR):(m_charTypes[idx]);
+    return (idx < 0 || idx >=
+            m_charTypes.size()) ? (DONTCARE_CHAR) : (m_charTypes[idx]);
 }
 
 int
@@ -175,19 +176,20 @@ CCandidateList::setFirst(int first)
 int
 CCandidateList::candiType(unsigned item) const
 {
-    return (item >= m_candiTypes.size())?(NORMAL_WORD):(m_candiTypes[item]);
+    return (item >= m_candiTypes.size()) ? (NORMAL_WORD) : (m_candiTypes[item]);
 }
 
 int
 CCandidateList::candiSize(unsigned item) const
 {
-    return (item >= m_candiStrings.size())?(0):(m_candiStrings[item].size());
+    return (item >= m_candiStrings.size()) ? (0) : (m_candiStrings[item].size());
 }
 
 const TWCHAR*
 CCandidateList::candiString(unsigned item) const
 {
-    return (item >= m_candiStrings.size())?(NULL):(m_candiStrings[item].c_str());
+    return (item >=
+            m_candiStrings.size()) ? (NULL) : (m_candiStrings[item].c_str());
 }
 
 int
@@ -203,7 +205,7 @@ int
 CCandidateList::candiCharTypeAt(unsigned item, unsigned idx) const
 {
     int sz = candiCharTypeSizeAt(item);
-    return (idx >= sz)?(DONTCARE_CHAR):(m_candiCharTypeVecs[item][idx]);
+    return (idx >= sz) ? (DONTCARE_CHAR) : (m_candiCharTypeVecs[item][idx]);
 }
 
 void

@@ -55,14 +55,14 @@ typedef TLongExpFloat TSentenceScore;
  * StateNode from language model implemetation to replace this
  * definition.
  */
-typedef CThreadSlm::TState          CSlmState;
+typedef CThreadSlm::TState CSlmState;
 
 /**
  * A WordKey could represent a word. Define this use the unsigned int
  * directly. Because in the future, we may adopt word class, such as
  * Digital Word Class.
  */
-typedef unsigned                    CWordId;
+typedef unsigned CWordId;
 
 /**
  * This class is used to record lexicon state (pinyin trie nodes)
@@ -74,30 +74,40 @@ struct TLexiconState {
     typedef std::vector<CPinyinTrie::TWordIdInfo> TWordIdInfoVec;
 
     const CPinyinTrie::TNode   *m_pPYNode;
-    TWordIdInfoVec              m_words;
-    CSyllables                  m_syls;         // accumulated syllables, may contain fuzzy syllables
+    TWordIdInfoVec m_words;
+    CSyllables m_syls;                          // accumulated syllables, may contain fuzzy syllables
     std::vector<unsigned>       m_seg_path;     // accumulated segments,  may contain fuzzy segments
-    unsigned                    m_start                 :16;
-    unsigned                    m_num_of_inner_fuzzies  :14;
-    bool                        m_bFuzzy                :1;
-    bool                        m_bPinyin               :1;
+    unsigned m_start                 : 16;
+    unsigned m_num_of_inner_fuzzies  : 14;
+    bool m_bFuzzy                : 1;
+    bool m_bPinyin               : 1;
 
-    TLexiconState (unsigned start, const CPinyinTrie::TNode *pnode, CSyllables& syls, std::vector<unsigned>& seg_path, bool fuzzy=false):
-        m_start(start), m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(fuzzy), m_num_of_inner_fuzzies(0) {}
+    TLexiconState (unsigned start,
+                   const CPinyinTrie::TNode *pnode,
+                   CSyllables& syls,
+                   std::vector<unsigned>& seg_path,
+                   bool fuzzy = false) :
+        m_start(start), m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path),
+        m_bPinyin(true), m_bFuzzy(fuzzy), m_num_of_inner_fuzzies(0) {}
 
-    TLexiconState (unsigned start, TWordIdInfoVec &words, CSyllables &syls, std::vector<unsigned>& seg_path, bool fuzzy=false):
-        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls), m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(fuzzy), m_num_of_inner_fuzzies(0) {}
+    TLexiconState (unsigned start,
+                   TWordIdInfoVec &words,
+                   CSyllables &syls,
+                   std::vector<unsigned>& seg_path,
+                   bool fuzzy = false) :
+        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls),
+        m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(fuzzy),
+        m_num_of_inner_fuzzies(0) {}
 
-    TLexiconState (unsigned start, unsigned wid):
-        m_start(start), m_pPYNode(NULL), m_bPinyin(false)
-        {
-            m_words.push_back(wid);
-            m_seg_path.push_back (start);
-            m_seg_path.push_back (start+1);
-        }
+    TLexiconState (unsigned start, unsigned wid) :
+        m_start(start), m_pPYNode(NULL), m_bPinyin(false){
+        m_words.push_back(wid);
+        m_seg_path.push_back(start);
+        m_seg_path.push_back(start + 1);
+    }
 
-    const CPinyinTrie::TWordIdInfo *getWords (unsigned &num);
-    void print (std::string prefix) const;
+    const CPinyinTrie::TWordIdInfo *getWords(unsigned &num);
+    void print(std::string prefix) const;
 };
 
 /**
@@ -112,18 +122,18 @@ typedef std::vector<TLexiconState>    CLexiconStates;
  * The basic static unit used in the lattice searching
  */
 struct TLatticeState {
-    TSentenceScore      m_score;
-    unsigned            m_frIdx;
+    TSentenceScore m_score;
+    unsigned m_frIdx;
     TLexiconState      *m_pLexiconState;
     TLatticeState      *m_pBackTraceNode;
-    CSlmState           m_slmState;
-    CWordId             m_backTraceWordId;
+    CSlmState m_slmState;
+    CWordId m_backTraceWordId;
 
     TLatticeState(double score = -1.0,
-                  unsigned frIdx=0,
+                  unsigned frIdx = 0,
                   TLexiconState* lxstPtr = NULL,
                   TLatticeState* btNodePtr = NULL,
-                  CSlmState sk= CSlmState(),
+                  CSlmState sk = CSlmState(),
                   CWordId wk = CWordId())
         : m_score(score), m_frIdx(frIdx), m_pBackTraceNode(btNodePtr),
           m_pLexiconState(lxstPtr), m_slmState(sk), m_backTraceWordId(wk) {}
@@ -132,18 +142,17 @@ struct TLatticeState {
     void
     print(std::string prefix) const;
 
-    bool operator< (const TLatticeState& rhs) const {
+    bool operator<(const TLatticeState& rhs) const {
         return m_score < rhs.m_score;
     }
 
-    bool operator== (const TLatticeState& rhs) const {
+    bool operator==(const TLatticeState& rhs) const {
         return m_score == rhs.m_score;
     }
 
-    bool operator> (const TLatticeState& rhs) const {
+    bool operator>(const TLatticeState& rhs) const {
         return !((*this) < rhs || (*this) == rhs);
     }
-
 };
 
 typedef std::vector<TLatticeState>  CLatticeStateVec;
@@ -196,11 +205,11 @@ public:
 
     typedef std::map<CSlmState, CTopLatticeStates> state_map;
     class iterator {
-    friend class CLatticeStates;
-        state_map::iterator         m_mainEnd;
-        state_map::iterator         m_mainIt;
+        friend class CLatticeStates;
+        state_map::iterator m_mainEnd;
+        state_map::iterator m_mainIt;
         CTopLatticeStates::iterator m_childIt;
-    public:
+public:
         iterator(state_map::iterator mit, state_map::iterator mend,
                  CTopLatticeStates::iterator cit)
             : m_mainIt(mit), m_mainEnd(mend), m_childIt(cit) {}
@@ -223,9 +232,9 @@ private:
     void _adjustDown(int node);
 
 private:
-    state_map    m_stateMap;
-    size_t       m_size;
-    size_t       m_maxBest;
+    state_map m_stateMap;
+    size_t m_size;
+    size_t m_maxBest;
 
     std::map<CSlmState, int>                           m_heapIdx;
     std::vector<std::pair<TSentenceScore, CSlmState> > m_scoreHeap;

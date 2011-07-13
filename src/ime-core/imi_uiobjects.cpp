@@ -51,7 +51,7 @@ IPreeditString::~IPreeditString()
 }
 
 CPreEditString::CPreEditString()
-    : m_caret(0), m_candi_start(0), m_wstr(), m_charTypes()
+    : m_caret(0), m_candi_start(0), m_charTypes()
 {
     m_charTypes.reserve(MAX_STRING_LEN_CANDI_PREEDIT);
 }
@@ -81,8 +81,10 @@ CPreEditString::charTypeSize() const
 int
 CPreEditString::charTypeAt(int idx) const
 {
-    return (idx < 0 || idx >=
-            m_charTypes.size()) ? (DONTCARE_CHAR) : (m_charTypes[idx]);
+    if (idx < 0 || idx >= (int) m_charTypes.size()) {
+        return DONTCARE_CHAR;
+    }
+    return m_charTypes[idx];
 }
 
 int
@@ -134,8 +136,7 @@ ICandidateList::~ICandidateList()
 }
 
 CCandidateList::CCandidateList()
-    : m_candiStrings(), m_candiTypes(), m_candiCharTypeVecs(),
-      m_first(0), m_total(0)
+    : m_total(0), m_first(0)
 {
 }
 
@@ -205,7 +206,10 @@ int
 CCandidateList::candiCharTypeAt(unsigned item, unsigned idx) const
 {
     int sz = candiCharTypeSizeAt(item);
-    return (idx >= sz) ? (DONTCARE_CHAR) : (m_candiCharTypeVecs[item][idx]);
+    if ((int) idx >= sz) {
+        return DONTCARE_CHAR;
+    }
+    return m_candiCharTypeVecs[item][idx];
 }
 
 void

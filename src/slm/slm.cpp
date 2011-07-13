@@ -121,7 +121,7 @@ CThreadSlm::load(const char* fname, bool MMap)
     //m_Levels = new (void*) [m_N + 1];
     m_Levels = new PtrVoid[m_N + 1];
 
-    for (int lvl = 0; lvl <= m_N; ++lvl) {
+    for (size_t lvl = 0; lvl <= m_N; ++lvl) {
         m_Levels[lvl] = (void*)pn;
         pn += m_LevelSizes[lvl];
     }

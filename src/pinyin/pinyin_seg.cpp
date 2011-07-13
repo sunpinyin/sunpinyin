@@ -68,7 +68,7 @@ CGetFuzzySegmentsOp::_initMaps()
     const unsigned * fuzzy_final_map = CPinyinData::getInnerFuzzyFinalMap(
         num_of_fuzzy_finals);
 
-    for (int i = 0; i < num_of_fuzzy_finals; ++i) {
+    for (size_t i = 0; i < num_of_fuzzy_finals; ++i) {
         unsigned f = *(fuzzy_final_map++);
         unsigned _f = *(fuzzy_final_map++);
         unsigned l = *(fuzzy_final_map++);
@@ -204,11 +204,11 @@ RETURN:;
 
 
 CQuanpinSegmentor::CQuanpinSegmentor ()
-    : m_updatedFrom(0),
-      m_pGetFuzzySyllablesOp(NULL),
+    : m_pGetFuzzySyllablesOp(NULL),
       m_pGetCorrectionPairOp(NULL),
       m_pGetFuzzySegmentsOp(NULL),
-      m_pytrie(base, check, value, sizeof(base) / sizeof(*base))
+      m_pytrie(base, check, value, sizeof(base) / sizeof(*base)),
+      m_updatedFrom(0)
 {
     m_segs.reserve(32);
 }
@@ -403,7 +403,7 @@ CQuanpinSegmentor::_push(unsigned ch)
             int v = m_pytrie.match_longest(m_pystr.rbegin(), m_pystr.rend(), l);
 
             TSegment &last_seg = m_segs.back();
-            if (l == last_seg.m_len + 1) {
+            if (l == (unsigned) last_seg.m_len + 1) {
                 last_seg.m_len += 1;
                 last_seg.m_syllables[0] = v;
                 ret = m_pystr.size() - l;
@@ -417,7 +417,8 @@ CQuanpinSegmentor::_push(unsigned ch)
         // push the new 1-length segment
         ret = m_pystr.size() - 1;
         m_segs.push_back(TSegment(v, ret, 1));
-    } else if (l == m_segs.back().m_len + 1) { // current segment is extensible, e.g., [xia] + n -> [xian]
+    } else if (l == (unsigned) m_segs.back().m_len + 1) {
+        // current segment is extensible, e.g., [xia] + n -> [xian]
         TSegment &last_seg = m_segs.back();
         last_seg.m_len += 1;
         last_seg.m_syllables[0] = v;

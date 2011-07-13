@@ -241,8 +241,8 @@ main(int argc, char* argv[])
     printf("Reading and Processing raw idngram..."); fflush(stdout);
     FILE *fp = fopen(inputfilename, "rb");
     int nItems = 0;
-    while (fread(ngram, sizeof(TSIMWordId), N,
-                 fp) == N && fread(&freq, sizeof(freq), 1, fp) == 1) {
+    while (fread(ngram, sizeof(TSIMWordId), N, fp) == (size_t) N
+           && fread(&freq, sizeof(freq), 1, fp) == 1) {
         builder.AddNGram(ngram, freq);
         ++nItems;
     }

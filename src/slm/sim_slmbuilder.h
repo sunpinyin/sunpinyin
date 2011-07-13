@@ -54,8 +54,8 @@ public:
 
 public:
     CSlmBuilder()
-        : m_nWord(0), nlevel(0), level(NULL), cut(NULL), discounter(NULL),
-          nr(NULL), breaker(), m_excludes(), bUseLogPr(0) { }
+        : nlevel(0), bUseLogPr(0), level(NULL), m_nWord(0), cut(NULL),
+          discounter(NULL), nr(NULL), breaker(), m_excludes() { }
     ~CSlmBuilder()
     { Close(); }
 
@@ -124,8 +124,8 @@ public:
 class CSlmGTDiscounter : public CSlmDiscounter {
 public:
     CSlmGTDiscounter(int threshold = 10, double highfreq_discount =
-                         0.95) : thres(threshold), hd(highfreq_discount),
-                                 dis(NULL) {}
+                     0.95) : thres(threshold), hd(highfreq_discount),
+                             dis(NULL) {}
     virtual void init(int n, CSlmBuilder::FREQ_TYPE *nr);
     virtual double discount(int freq);
     virtual const char* getName()

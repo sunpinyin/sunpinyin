@@ -42,7 +42,7 @@
 #include "imi_view.h"
 #include "imi_view_classic.h"
 
-#pragma setlocale("zh_CN.UTF-8")
+// #pragma setlocale("zh_CN.UTF-8")
 
 CHotkeyProfile::CHotkeyProfile()
     : m_punctSwitchKey(IM_VK_PERIOD, 0, IM_CTRL_MASK),

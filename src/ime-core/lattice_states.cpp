@@ -154,7 +154,7 @@ CLatticeStates::getFilteredResult()
     }
     res.push_back(sorted[0]);
     TSentenceScore max_score = sorted[0].m_score;
-    for (int i = 1; i < sorted.size(); i++) {
+    for (size_t i = 1; i < sorted.size(); i++) {
         TSentenceScore current_score = sorted[i].m_score;
         if (filter_threshold_exp < current_score
             && current_score / max_score < filter_ratio_l1) {
@@ -251,11 +251,11 @@ CLatticeStates::_adjustDown(int node)
 {
     int left = node * 2 + 1;
     int right = node * 2 + 2;
-    while (left < m_scoreHeap.size()) {
+    while (left < (int) m_scoreHeap.size()) {
         int child = -1;
         if (m_scoreHeap[node].first < m_scoreHeap[left].first) {
             child = left;
-        } else if (right < m_scoreHeap.size()
+        } else if (right < (int) m_scoreHeap.size()
                    && m_scoreHeap[node].first < m_scoreHeap[right].first) {
             child = right;
         } else {

@@ -123,7 +123,7 @@ bool
 CIterateThreadSlm::beginLevel(int lvl, iterator& it)
 {
     it.clear();
-    if (lvl > m_N) return false;
+    if (lvl > (int) m_N) return false;
     for (int i = 0; i <= lvl; ++i)
         it.push_back(TState(i, 0));
     adjustIterator(it);

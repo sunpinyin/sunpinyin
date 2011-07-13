@@ -54,7 +54,7 @@ CIMIClassicView::~CIMIClassicView()
 {
 }
 
-int CIMIClassicView::top_candidate_threshold = 5;
+size_t CIMIClassicView::top_candidate_threshold = 5;
 
 void
 CIMIClassicView::attachIC(CIMIContext* pIC)
@@ -85,7 +85,7 @@ bool
 CIMIClassicView::_findCandidate(wstring sentence)
 {
     // TODO: linear search is too slow?
-    for (int i = 0; i < m_candiList.size(); i++) {
+    for (size_t i = 0; i < m_candiList.size(); i++) {
         if (sentence != m_candiList[i].m_cwstr) {
             continue;
         }
@@ -116,7 +116,7 @@ CIMIClassicView::updateWindows(unsigned mask)
         // calculate all possible best sentences
         m_sentences.clear();
         int best_rank = -1;
-        for (int i = 0; i < m_pIC->getNBest(); i++) {
+        for (size_t i = 0; i < m_pIC->getNBest(); i++) {
             wstring sentence;
             unsigned word_num = m_pIC->getBestSentence(sentence, i,
                                                        m_candiFrIdx);
@@ -128,7 +128,7 @@ CIMIClassicView::updateWindows(unsigned mask)
             printf("\n");
 #endif
 
-            for (int j = 0; j < m_sentences.size(); j++) {
+            for (size_t j = 0; j < m_sentences.size(); j++) {
                 if (sentence == m_sentences[j].second) goto pass;
             }
             if (_findCandidate(sentence)) goto pass;
@@ -155,7 +155,7 @@ CIMIClassicView::updateWindows(unsigned mask)
                 CCandidates tail(sentence.begin(),
                                  sentence.begin() + tail_word_num);
                 wstring tail_text;
-                for (int i = 0; i < tail.size(); i++) {
+                for (size_t i = 0; i < tail.size(); i++) {
                     tail_text += tail[i].m_cwstr;
                 }
                 if (!_findCandidate(tail_text)) {
@@ -354,11 +354,11 @@ CIMIClassicView::onCandidatePageRequest(int pgno, bool relative)
         lastpgidx = (sz - 1) / m_candiWindowSize * m_candiWindowSize;
         if (relative == true) {
             ncandi = m_candiPageFirst + pgno * m_candiWindowSize;
-            if (ncandi >= sz)
+            if (ncandi >= (int) sz)
                 ncandi = lastpgidx;
             if (ncandi < 0)
                 ncandi = 0;
-            if (ncandi != m_candiPageFirst) {
+            if (ncandi != (int) m_candiPageFirst) {
                 m_candiPageFirst = ncandi;
                 changeMasks |= CANDIDATE_MASK;
             }
@@ -370,7 +370,7 @@ CIMIClassicView::onCandidatePageRequest(int pgno, bool relative)
                 if (ncandi > lastpgidx)
                     ncandi = lastpgidx;
             }
-            if (ncandi != m_candiPageFirst) {
+            if (ncandi != (int) m_candiPageFirst) {
                 m_candiPageFirst = ncandi;
                 changeMasks |= CANDIDATE_MASK;
             }
@@ -440,7 +440,7 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
         }
 
         wstr.insert(wstr.end(), pystr.begin() + i, pystr.begin() + i + l);
-        for (int c = 0; c < l; ++c)
+        for (size_t c = 0; c < l; ++c)
             charTypes.push_back(ct);
 
         if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
@@ -465,7 +465,7 @@ CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
 
     ICandidateList::CCandiStrings& css = cl.getCandiStrings();
     ICandidateList::CCandiTypeVec& cts = cl.getCandiTypeVec();
-    size_t count = 0;
+    int count = 0;
 
     // sentences
     for (size_t i = 0; i < m_sentences.size(); i++) {
@@ -713,7 +713,7 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
     int wordIdx = candiIdx - m_sentences.size() - m_tails.size();
     bool selected = false;
 
-    if (candiIdx < m_sentences.size()) {
+    if (candiIdx < (int) m_sentences.size()) {
         // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
         // get the rank of that sentence
@@ -721,14 +721,14 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
         m_pIC->selectSentence(rank);
         _doCommit(candiIdx);
         clearIC();
-    } else if (candiIdx < m_sentences.size() + m_tails.size()) {
+    } else if (candiIdx < (int) (m_sentences.size() + m_tails.size())) {
         CCandidates& tail = m_tails[tailIdx].second;
-        for (int i = 0; i < tail.size(); i++) {
+        for (size_t i = 0; i < tail.size(); i++) {
             m_pIC->makeSelection(tail[i]);
         }
         m_candiFrIdx = tail.back().m_end;
         selected = true;
-    } else if (candiIdx < _candidateListSize()) {
+    } else if (candiIdx < (int) _candidateListSize()) {
         CCandidate& candi = m_candiList[wordIdx];
         m_pIC->makeSelection(candi);
         m_candiFrIdx = candi.m_end;
@@ -760,17 +760,17 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
 void
 CIMIClassicView::_deleteCandidate(int candiIdx, unsigned& mask)
 {
-    candiIdx += m_candiPageFirst - m_sentences.size();
-    //if (!m_tailSentence.empty ()) --candiIdx;
+    candiIdx += m_candiPageFirst;
+    int wordIdx = candiIdx - m_sentences.size() - m_tails.size();
 
-    if (candiIdx < 0) {
+    if (candiIdx < (int) m_sentences.size()) {
         // try to remove candidate 0 which is a calculated sentence
         std::vector<unsigned> wids;
         m_pIC->getSelectedSentence(wids, m_candiFrIdx);
         m_pIC->removeFromHistoryCache(wids);
-    } else {
+    } else if (candiIdx >= (int) (m_sentences.size() + m_tails.size())) {
         // remove an ordinary candidate
-        CCandidate& candi = m_candiList [candiIdx];
+        CCandidate& candi = m_candiList[wordIdx];
         m_pIC->deleteCandidate(candi);
     }
 

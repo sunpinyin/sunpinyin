@@ -63,9 +63,9 @@ static struct option long_options[] =
 };
 
 static int N = 0;
-static int paraMax = 0;
+// static int paraMax = 0;
 static char* output = NULL;
-static char* swapfile = NULL;
+// static char* swapfile = NULL;
 
 void
 ShowUsage()
@@ -141,7 +141,7 @@ main(int argc, char* argv[])
     }
     printf("\n");
     fclose(out);
-    for (int i = 0; i < idngram_files.size(); ++i)
+    for (size_t i = 0; i < idngram_files.size(); i++)
         fclose(idngram_files[i]);
     return 0;
 }

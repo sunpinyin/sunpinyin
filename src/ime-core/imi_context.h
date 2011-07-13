@@ -127,12 +127,12 @@ public:
                TLexiconState* pLxst = NULL,
                const TWCHAR* s = NULL,
                unsigned int wid = 0)
-        : m_start(start), m_end(end), m_pLexiconState(pLxst), m_cwstr(s),
-          m_wordId(wid) {}
+        : m_start(start), m_end(end), m_cwstr(s), m_wordId(wid),
+          m_pLexiconState(pLxst) {}
 
 protected:
     unsigned int m_wordId;
-    TLexiconState*      m_pLexiconState;
+    TLexiconState* m_pLexiconState;
 }; // of CCandidate
 
 class CLatticeFrame {
@@ -340,25 +340,25 @@ protected:
 
     size_t m_nBest;
     size_t m_maxBest;
-    std::vector<TPath>          m_path;
-    std::vector<TPath>          m_segPath;
+    std::vector<TPath> m_path;
+    std::vector<TPath> m_segPath;
 
-    CThreadSlm                 *m_pModel;
-    CPinyinTrie                *m_pPinyinTrie;
-    CUserDict                  *m_pUserDict;
-    CICHistory                 *m_pHistory;
+    CThreadSlm* m_pModel;
+    CPinyinTrie* m_pPinyinTrie;
+    CUserDict* m_pUserDict;
+    CICHistory* m_pHistory;
     unsigned m_historyPower;
 
     unsigned m_csLevel;
 
     bool m_bFullSymbolForwarding;
     bool m_bOmitPunct;
-    CGetFullSymbolOp           *m_pGetFullSymbolOp;
+    CGetFullSymbolOp  *m_pGetFullSymbolOp;
 
     bool m_bFullPunctForwarding;
-    CGetFullPunctOp            *m_pGetFullPunctOp;
+    CGetFullPunctOp *m_pGetFullPunctOp;
 
-    IPySegmentor               *m_pPySegmentor;
+    IPySegmentor *m_pPySegmentor;
 
     bool m_bNonCompleteSyllable;
     bool m_bDynaCandiOrder;

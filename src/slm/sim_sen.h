@@ -54,8 +54,8 @@ public:
     TWCHAR & operator*() const;
 
 private:
-    int idx;
     CSIMCharReader* reader;
+    int idx;
 };
 
 class CSIMCharReader {

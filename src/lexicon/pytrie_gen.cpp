@@ -167,7 +167,6 @@ parseLine(char* buf,
 
 
 CPinyinTrieMaker::CPinyinTrieMaker()
-    : m_RootNode(), m_StateMap()
 {
     m_RootNode.m_bExpanded = true;
 }
@@ -264,8 +263,7 @@ CPinyinTrieMaker::constructFromLexicon(const char* fileName)
 
 CPinyinTrieMaker::CNodeList CPinyinTrieMaker::TNode::m_AllNodes;
 CPinyinTrieMaker::TNode::TNode()
-    : m_bFullSyllableTransfer(false), m_bExpanded(false), m_WordIdSet(),
-      m_Trans(), m_cmbNodes()
+    : m_bExpanded(false), m_bFullSyllableTransfer(false)
 {
     m_AllNodes.push_back(this);
 }

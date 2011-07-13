@@ -62,7 +62,7 @@ SIMCharReaderIterator::operator*() const
             ++i;
         }
     }
-    if (idx >= buf.size() && buf.back() == WCH_NULL)
+    if (idx >= (int) buf.size() && buf.back() == WCH_NULL)
         return buf.back();
     return buf[idx];
 }

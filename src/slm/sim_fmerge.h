@@ -66,7 +66,7 @@ public:
     typedef typename TItemBuf::const_iterator TIBConstIterator;
 
     file_para(FILE* p_file, size_t start, size_t end)
-        : fp(p_file), cur_offset(start), last_offset(end), runOut(false),
+        : fp(p_file), runOut(false), cur_offset(start), last_offset(end),
           buf() {}
 
     UnitAndParaInfo& operator*(){
@@ -129,10 +129,11 @@ public:
     typedef file_para<unit_type> TPara;
     typedef std::vector<TPara*> TParaVec;
 
-    void addPara(FILE *fp, size_t first_offset, size_t last_offset){
+    void addPara(FILE *fp, size_t first_offset, size_t last_offset) {
         paras.push_back(new TPara(fp, first_offset, last_offset));
     }
-    void start(){
+
+    void start() {
         std::make_heap(paras.begin(), paras.end(), PtrCompare<TPara*>());
     }
     TPara* getBest(){ //You then have to deal same items form different part
@@ -143,8 +144,11 @@ public:
         ++(*(paras.back()));
         std::push_heap(paras.begin(), paras.end(), PtrCompare<TPara*>());
     }
-    ~CMultiWayFileMerger() { for (int i = 0; i < paras.size();
-                                  ++i) delete paras[i]; }
+    ~CMultiWayFileMerger() {
+        for (size_t i = 0; i < paras.size(); i++) {
+            delete paras[i];
+        }
+    }
 private:
     TParaVec paras;
 };

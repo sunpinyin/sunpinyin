@@ -95,23 +95,23 @@ CIMIContext::printLattice()
 {
     std::string prefix;
 
-    for (int i = 0; i <= m_tailIdx; ++i) {
+    for (size_t i = 0; i <= m_tailIdx; ++i) {
         if (m_lattice[i].m_type == CLatticeFrame::UNUSED)
             continue;
 
-        printf("Lattice Frame [%d]:", i);
+        printf("Lattice Frame [%lu]:", i);
         m_lattice[i].print(prefix);
     }
 }
 
 CIMIContext::CIMIContext ()
-    : m_tailIdx(1), m_pModel(NULL), m_pPinyinTrie(NULL), m_pUserDict(NULL),
-      m_pHistory(NULL), m_historyPower(5), m_bFullSymbolForwarding(false),
+    : m_tailIdx(1), m_maxBest(2), m_pModel(NULL), m_pPinyinTrie(NULL),
+      m_pUserDict(NULL), m_pHistory(NULL), m_historyPower(5), m_csLevel(0),
+      m_bFullSymbolForwarding(false), m_bOmitPunct(false),
       m_pGetFullSymbolOp(NULL), m_bFullPunctForwarding(true),
-      m_pGetFullPunctOp(NULL), m_bDynaCandiOrder(true),
-      m_candiStarts(0), m_candiEnds(0), m_csLevel(0),
-      m_bNonCompleteSyllable(true), m_pPySegmentor(0), m_bOmitPunct(false),
-      m_maxBest(2)
+      m_pGetFullPunctOp(NULL), m_pPySegmentor(NULL),
+      m_bNonCompleteSyllable(true), m_bDynaCandiOrder(true),
+      m_candiStarts(0), m_candiEnds(0)
 {
     m_lattice.resize(MAX_LATTICE_LENGTH);
     m_lattice[0].m_latticeStates.add(TLatticeState(-1.0, 0));
@@ -137,7 +137,7 @@ CIMIContext::clear()
 void
 CIMIContext::_clearFrom(unsigned idx)
 {
-    for (int i = idx; i < m_tailIdx + 1; ++i)
+    for (size_t i = idx; i < m_tailIdx + 1; i++)
         m_lattice[i].clear();
 }
 
@@ -411,7 +411,7 @@ CIMIContext::searchFrom(unsigned idx)
                         2 : MAX_LEXICON_TRIES;
             double ic = it->m_bFuzzy ? 0.5 : 1.0;
 
-            int sz = word_num < maxsz ? word_num : maxsz;
+            int sz = (int) word_num < maxsz ? (int) word_num : maxsz;
             int i = 0, count = 0;
             while (count < sz && i < sz && (words[i].m_bSeen || count < 2)) {
                 if (m_csLevel >= words[i].m_csLevel) {
@@ -424,7 +424,7 @@ CIMIContext::searchFrom(unsigned idx)
 
             /* try extra words in history cache */
             if (m_pHistory) {
-                while (i < word_num) {
+                while (i < (int) word_num) {
                     if (m_csLevel >= words[i].m_csLevel
                         && m_pHistory->seenBefore(words[i].m_id))
                         _transferBetween(lxst.m_start, idx, &lxst,
@@ -529,7 +529,7 @@ CIMIContext::_backTracePaths(const std::vector<TLatticeState>& tail_states,
     path.clear();
     segmentPath.clear();
 
-    if (rank >= tail_states.size())
+    if (rank >= (int) tail_states.size())
         return false;
 
     const TLatticeState *bs = &(tail_states[rank]);
@@ -561,7 +561,6 @@ CIMIContext::_backTracePaths(const std::vector<TLatticeState>& tail_states,
             std::vector<unsigned> seg_path =
                 bs->m_pBackTraceNode->m_pLexiconState->m_seg_path;
             std::vector<unsigned>::reverse_iterator it = seg_path.rbegin();
-            std::vector<unsigned>::reverse_iterator ite = seg_path.rend();
 
             for (; it != seg_path.rend(); ++it) {
                 if (segmentPath.empty() || segmentPath.back() != *it)
@@ -732,7 +731,7 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
 
         cp.m_candi.m_end = frIdx;
         if (fr.m_bwType != CLatticeFrame::NO_BESTWORD) {
-            for (int i = 0; i < m_nBest; i++) {
+            for (size_t i = 0; i < m_nBest; i++) {
                 if (fr.m_bestWords.find(i) == fr.m_bestWords.end())
                     continue;
                 if (fr.m_bestWords[i].m_start != m_candiStarts)
@@ -867,7 +866,7 @@ CIMIContext::makeSelection(CCandidate &candi, bool doSearch)
     fr.m_bwType = fr.m_bwType | CLatticeFrame::USER_SELECTED;
     fr.m_selWord = candi;
     // make best sentence word consistent as well
-    for (int i = 0; i < m_nBest; i++) {
+    for (size_t i = 0; i < m_nBest; i++) {
         fr.m_bestWords[i] = candi;
     }
 
@@ -902,7 +901,6 @@ CIMIContext::_saveUserDict()
         return;
 
     CSyllables syls;
-    unsigned s = 0;
     bool has_user_selected = false;
     unsigned i = m_tailIdx - 1;
     while (i > 0 && m_lattice[i].m_bwType == CLatticeFrame::NO_BESTWORD)

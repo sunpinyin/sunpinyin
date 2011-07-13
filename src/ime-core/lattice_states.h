@@ -75,8 +75,11 @@ struct TLexiconState {
 
     const CPinyinTrie::TNode   *m_pPYNode;
     TWordIdInfoVec m_words;
-    CSyllables m_syls;                          // accumulated syllables, may contain fuzzy syllables
-    std::vector<unsigned>       m_seg_path;     // accumulated segments,  may contain fuzzy segments
+    // accumulated syllables, may contain fuzzy syllables
+    CSyllables m_syls;
+    // accumulated segments,  may contain fuzzy segments
+    std::vector<unsigned> m_seg_path;
+
     unsigned m_start                 : 16;
     unsigned m_num_of_inner_fuzzies  : 14;
     bool m_bFuzzy                : 1;
@@ -86,21 +89,21 @@ struct TLexiconState {
                    const CPinyinTrie::TNode *pnode,
                    CSyllables& syls,
                    std::vector<unsigned>& seg_path,
-                   bool fuzzy = false) :
-        m_start(start), m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path),
-        m_bPinyin(true), m_bFuzzy(fuzzy), m_num_of_inner_fuzzies(0) {}
+                   bool fuzzy = false)
+    : m_pPYNode(pnode), m_syls(syls), m_seg_path(seg_path), m_start(start),
+        m_num_of_inner_fuzzies(0), m_bFuzzy(fuzzy), m_bPinyin(true) {}
 
     TLexiconState (unsigned start,
                    TWordIdInfoVec &words,
                    CSyllables &syls,
                    std::vector<unsigned>& seg_path,
-                   bool fuzzy = false) :
-        m_start(start), m_pPYNode(NULL), m_words(words), m_syls(syls),
-        m_seg_path(seg_path), m_bPinyin(true), m_bFuzzy(fuzzy),
-        m_num_of_inner_fuzzies(0) {}
+                   bool fuzzy = false)
+    : m_pPYNode(NULL), m_words(words), m_syls(syls), m_seg_path(seg_path),
+        m_start(start), m_num_of_inner_fuzzies(0), m_bFuzzy(fuzzy),
+        m_bPinyin(true) {}
 
-    TLexiconState (unsigned start, unsigned wid) :
-        m_start(start), m_pPYNode(NULL), m_bPinyin(false){
+    TLexiconState (unsigned start, unsigned wid)
+    : m_pPYNode(NULL), m_start(start), m_bPinyin(false) {
         m_words.push_back(wid);
         m_seg_path.push_back(start);
         m_seg_path.push_back(start + 1);
@@ -124,8 +127,8 @@ typedef std::vector<TLexiconState>    CLexiconStates;
 struct TLatticeState {
     TSentenceScore m_score;
     unsigned m_frIdx;
-    TLexiconState      *m_pLexiconState;
-    TLatticeState      *m_pBackTraceNode;
+    TLexiconState* m_pLexiconState;
+    TLatticeState* m_pBackTraceNode;
     CSlmState m_slmState;
     CWordId m_backTraceWordId;
 
@@ -135,12 +138,11 @@ struct TLatticeState {
                   TLatticeState* btNodePtr = NULL,
                   CSlmState sk = CSlmState(),
                   CWordId wk = CWordId())
-        : m_score(score), m_frIdx(frIdx), m_pBackTraceNode(btNodePtr),
-          m_pLexiconState(lxstPtr), m_slmState(sk), m_backTraceWordId(wk) {}
+    : m_score(score), m_frIdx(frIdx), m_pLexiconState(lxstPtr),
+        m_pBackTraceNode(btNodePtr), m_slmState(sk), m_backTraceWordId(wk) {}
 
     /** for debug printing... */
-    void
-    print(std::string prefix) const;
+    void print(std::string prefix) const;
 
     bool operator<(const TLatticeState& rhs) const {
         return m_score < rhs.m_score;
@@ -206,8 +208,8 @@ public:
     typedef std::map<CSlmState, CTopLatticeStates> state_map;
     class iterator {
         friend class CLatticeStates;
-        state_map::iterator m_mainEnd;
         state_map::iterator m_mainIt;
+        state_map::iterator m_mainEnd;
         CTopLatticeStates::iterator m_childIt;
 public:
         iterator(state_map::iterator mit, state_map::iterator mend,

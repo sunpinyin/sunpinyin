@@ -218,7 +218,7 @@ CSlmBuilder::AddNGram(TSIMWordId* ngram, FREQ_TYPE fr)
     for (int i = 1; (!brk && i < nlevel); ++i) {
         std::vector<TNode> & pv = *(TNodeLevel*)(level[i - 1]);
         std::vector<TNode> & v = *(TNodeLevel*)(level[i]);
-        branch = branch || (pv.back().child >= v.size()) ||
+        branch = branch || (pv.back().child >= (int) v.size()) ||
                  (v.back().id != ngram[i - 1]);
         if (branch) {
             if (i == nlevel - 1)
@@ -253,7 +253,7 @@ CSlmBuilder::CountNr()
         for (TNodeIterator it = v.begin(), ite = v.end(); it != ite; ++it) {
             FREQ_TYPE freq = it->freq;
             nr[lvl][0] += freq;
-            if (freq < SLM_MAX_R && freq > 0)
+            if (freq < (int) SLM_MAX_R && freq > 0)
                 nr[lvl][freq] += freq;
         }
     }
@@ -261,7 +261,7 @@ CSlmBuilder::CountNr()
     for (TLeafIterator it = v.begin(), ite = v.end(); it != ite; ++it) {
         FREQ_TYPE freq = it->freq;
         nr[nlevel][0] += freq;
-        if (freq < SLM_MAX_R && freq > 0)
+        if (freq < (int) SLM_MAX_R && freq > 0)
             nr[nlevel][freq] += freq;
     }
     printf("\n"); fflush(stdout);
@@ -278,7 +278,7 @@ CSlmBuilder::CutLeafLevel(TNodeIterator pfirst,
     TLeafIterator chchk = chfirst;
     for (idxfirst = idxchk = 0; chchk != chlast; ++chchk, ++idxchk) {
         //do not cut item whoese 1. freq > thred; 2. psuedo tail
-        if (chchk->freq > thred || (chchk + 1) == chlast) {
+        if ((int) chchk->freq > thred || (chchk + 1) == chlast) {
             if (idxfirst < idxchk)
                 *chfirst = *chchk;
             for (; pfirst != plast && pfirst->child <= idxchk; ++pfirst)
@@ -303,7 +303,7 @@ CSlmBuilder::CutNodeLevel(TNodeIterator pfirst,
     for (idxfirst = idxchk = 0; chchk != chlast; ++chchk, ++idxchk) {
         //do not cut item whoese 1. freq > thred; 2. psuedo tail; 3. leading children
         TNodeIterator chnext = chchk + 1;
-        if (chchk->freq > thred || chnext == chlast ||
+        if ((int) chchk->freq > thred || chnext == chlast ||
             (chnext->child != chchk->child)) {
             if (idxfirst < idxchk)
                 *chfirst = *chchk;

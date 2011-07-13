@@ -18,9 +18,9 @@
 CShuangpinData CHunpinSegmentor::s_shpData;
 
 CHunpinSegmentor::CHunpinSegmentor (EShuangpinType shpType)
-    : m_updatedFrom(0),
-      m_pGetFuzzySyllablesOp(NULL),
-      m_pytrie(base, check, value, sizeof(base) / sizeof(*base))
+    : m_pGetFuzzySyllablesOp(NULL),
+      m_pytrie(base, check, value, sizeof(base) / sizeof(*base)),
+      m_updatedFrom(0)
 {
     m_segs.reserve(32);
     s_shpData.setShuangpinType(shpType);

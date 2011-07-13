@@ -136,7 +136,7 @@ PrintARPALevel(int lvl, FILE* fp, TReverseLexicon* plexicon, bool output_log_pr)
         offset += sz[i] * sizeof(CSIMSlm::TNode);
     }
 
-    TSIMWordId ngram[16];   //it should be N+1, Yet some compiler do not support it
+    // TSIMWordId ngram[16];
     int idx[16];   //it should be N+1, Yet some compiler do not support it
     CSIMSlm::TNode nodes[16][2];  //it should be N+1, Yet some compiler do not support it
     for (int i = 0; i <= lvl; ++i) {

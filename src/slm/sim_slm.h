@@ -96,9 +96,9 @@ protected:
 
 protected:
     int N;
-    unsigned bUseLogPr;
     int* sz;
     void** level;
+    unsigned bUseLogPr;
 };
 
 

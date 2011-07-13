@@ -211,15 +211,14 @@ CValueCompressor::operator()(std::map<float, int>& values,
         BubbleUp(heap, arr, heap.size() - 1);
     }
 
-    int cur, prev, next, hiprev, hinext;
+    int cur, next, hiprev, hinext;
 
     while (heap.size() > N) {
         cur = heap[0].m_first;
         if (cur == 0) {
-            prev = hiprev = -1;
+            hiprev = -1;
         } else {
             hiprev = arr[cur - 1].m_heapIdx;
-            prev = heap[hiprev].m_first;
         }
         next = heap[0].m_last;
         hinext = arr[next].m_heapIdx;

@@ -335,10 +335,9 @@ CShuangpinData::_genCodingMap()
     unsigned len;
     const TPyTabEntry *pinyin_table = CPinyinData::getPinyinTable(len);
 
-    for (int i = 0; i < len; ++i) {
-        m_codingmap.insert(
-            CEncodingMap::value_type
-                (pinyin_table[i].pystr, pinyin_table[i].id));
+    for (size_t i = 0; i < len; ++i) {
+        m_codingmap.insert(CEncodingMap::value_type(pinyin_table[i].pystr,
+                                                    pinyin_table[i].id));
     }
 }
 

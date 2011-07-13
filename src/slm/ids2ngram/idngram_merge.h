@@ -83,7 +83,7 @@ void ProcessingIdngramMerge(FILE *swap,
                             std::vector<long>& para_offsets){
     CMultiWayFileMerger<CSIM_IdngramFreq<N> > merger;
     long s = 0;
-    for (int i = 0; i < para_offsets.size(); ++i) {
+    for (size_t i = 0; i < para_offsets.size(); i++) {
         merger.addPara(swap, s, para_offsets[i]);
         s = para_offsets[i];
     }
@@ -93,7 +93,7 @@ void ProcessingIdngramMerge(FILE *swap,
 template<int N>
 void ProcessingIdngramMerge(FILE* out, std::vector<FILE* >& file_list){
     CMultiWayFileMerger<CSIM_IdngramFreq<N> > merger;
-    for (int i = 0; i < file_list.size(); ++i) {
+    for (size_t i = 0; i < file_list.size(); ++i) {
         fseek(file_list[i], 0, SEEK_END);
         merger.addPara(file_list[i], 0, ftell(file_list[i]));
     }

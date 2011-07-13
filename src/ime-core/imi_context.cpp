@@ -211,9 +211,11 @@ CIMIContext::_forwardString(unsigned i,
 {
     if (strbuf.size() == 1) {
         unsigned ch = strbuf[0];
-        ispunct(ch) ? _forwardPunctChar(i, j, ch) : _forwardOrdinaryChar(i,
-                                                                         j,
-                                                                         ch);
+        if (ispunct(ch)) {
+            _forwardPunctChar(i, j, ch);
+        } else {
+            _forwardOrdinaryChar(i, j, ch);
+        }
     } else{
         CLatticeFrame &fr = m_lattice[j];
         fr.m_wstr.assign(strbuf.begin(), strbuf.end());
@@ -599,27 +601,46 @@ CIMIContext::_clearPaths()
 }
 
 unsigned
-CIMIContext::getBestSentence(wstring& result, int rank,
+CIMIContext::getBestSentence(CCandidates& result, int rank,
                              unsigned start, unsigned end)
 {
-    if (rank < 0 || rank >= m_nBest)
+    // -1 means selected sentence
+    if (rank < -1 || rank >= (int) m_nBest)
         return 0;
 
     result.clear();
 
-    if (UINT_MAX == end) end = m_tailIdx - 1;
+    if (end == UINT_MAX)
+        end = m_tailIdx - 1;
 
     while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
         end--;
 
     unsigned i = end, nWordConverted = 0;
     while (i > start) {
-        CLatticeFrame &fr = m_lattice[i];
-        result.insert(0, fr.m_bestWords[rank].m_cwstr);
-        i = fr.m_bestWords[rank].m_start;
+        CLatticeFrame& fr = m_lattice[i];
+        if (rank < 0) {
+            result.insert(result.begin(), fr.m_selWord);
+            i = fr.m_selWord.m_start;
+        } else {
+            result.insert(result.begin(), fr.m_bestWords[rank]);
+            i = fr.m_bestWords[rank].m_start;
+        }
         nWordConverted++;
     }
+    return nWordConverted;
+}
 
+unsigned
+CIMIContext::getBestSentence(wstring& result, int rank,
+                             unsigned start, unsigned end)
+{
+    CCandidates sentence;
+    unsigned nWordConverted = getBestSentence(sentence, rank, start, end);
+    result.clear();
+    for (size_t i = 0; i < sentence.size(); i++) {
+        result += sentence[i].m_cwstr;
+    }
     return nWordConverted;
 }
 
@@ -627,24 +648,12 @@ unsigned
 CIMIContext::getBestSentence(std::vector<unsigned>& result, int rank,
                              unsigned start, unsigned end)
 {
-    if (rank < 0 || rank >= m_nBest)
-        return 0;
-
+    CCandidates sentence;
+    unsigned nWordConverted = getBestSentence(sentence, rank, start, end);
     result.clear();
-
-    if (UINT_MAX == end) end = m_tailIdx - 1;
-
-    while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
-        end--;
-
-    unsigned i = end, nWordConverted = 0;
-    while (i > start) {
-        CLatticeFrame &fr = m_lattice[i];
-        result.insert(result.begin(), fr.m_bestWords[rank].m_wordId);
-        i = fr.m_bestWords[rank].m_start;
-        nWordConverted++;
+    for (size_t i = 0; i < sentence.size(); i++) {
+        result.push_back(sentence[i].m_wordId);
     }
-
     return nWordConverted;
 }
 
@@ -653,20 +662,7 @@ unsigned
 CIMIContext::getSelectedSentence(wstring& result,
                                  unsigned start, unsigned end)
 {
-    result.clear();
-
-    if (UINT_MAX == end) end = m_tailIdx - 1;
-    while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
-        end--;
-
-    unsigned i = end, nWordConverted = 0;
-    while (i > start) {
-        CLatticeFrame &fr = m_lattice[i];
-        result.insert(0, fr.m_selWord.m_cwstr);
-        i = fr.m_selWord.m_start;
-        nWordConverted++;
-    }
-    return nWordConverted;
+    return getBestSentence(result, -1, start, end);
 }
 
 
@@ -674,20 +670,7 @@ unsigned
 CIMIContext::getSelectedSentence(std::vector<unsigned>& result,
                                  unsigned start, unsigned end)
 {
-    result.clear();
-
-    if (UINT_MAX == end) end = m_tailIdx - 1;
-    while (end > start && m_lattice[end].m_bwType == CLatticeFrame::NO_BESTWORD)
-        end--;
-
-    unsigned i = end, nWordConverted = 0;
-    while (i > start) {
-        CLatticeFrame &fr = m_lattice[i];
-        result.insert(result.begin(), fr.m_selWord.m_wordId);
-        i = fr.m_selWord.m_start;
-        nWordConverted++;
-    }
-    return nWordConverted;
+    return getBestSentence(result, -1, start, end);
 }
 
 struct TCandiPair {

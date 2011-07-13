@@ -75,9 +75,29 @@ CIMIClassicView::clearIC(void)
         m_candiList.clear();
         //m_tailSentence.clear ();
         m_sentences.clear();
+        m_tails.clear();
         return PREEDIT_MASK | CANDIDATE_MASK;
     }
     return 0;
+}
+
+bool
+CIMIClassicView::_findCandidate(wstring sentence)
+{
+    // TODO: linear search is too slow?
+    for (int i = 0; i < m_candiList.size(); i++) {
+        if (sentence != m_candiList[i].m_cwstr) {
+            continue;
+        }
+        // remove the word in the candidate list, this candidate will appear in
+        // the front
+        if (i < top_candidate_threshold) {
+            m_candiList.erase(m_candiList.begin() + i);
+            return false;
+        }
+        return true;
+    }
+    return false;
 }
 
 void
@@ -93,7 +113,9 @@ CIMIClassicView::updateWindows(unsigned mask)
     }
 
     if ((mask & PREEDIT_MASK) || (mask & CANDIDATE_MASK)) {
+        // calculate all possible best sentences
         m_sentences.clear();
+        int best_rank = -1;
         for (int i = 0; i < m_pIC->getNBest(); i++) {
             wstring sentence;
             unsigned word_num = m_pIC->getBestSentence(sentence, i,
@@ -109,21 +131,37 @@ CIMIClassicView::updateWindows(unsigned mask)
             for (int j = 0; j < m_sentences.size(); j++) {
                 if (sentence == m_sentences[j].second) goto pass;
             }
-            for (int j = 0; j < m_candiList.size(); j++) {
-                if (sentence == m_candiList[j].m_cwstr) {
-                    // remove the word in candidate list, this candidate will
-                    // appear in the front
-                    if (j < top_candidate_threshold) {
-                        m_candiList.erase(m_candiList.begin() + j);
-                        break;
-                    } else {
-                        goto pass;
-                    }
-                }
+            if (_findCandidate(sentence)) goto pass;
+
+            if (best_rank < 0 && word_num > 1) {
+                best_rank = i;
             }
             m_sentences.push_back(std::make_pair(i, sentence));
         pass:
             continue;
+        }
+        // build all possible tails with best_rank
+        m_tails.clear();
+        if (best_rank >= 0) {
+            CCandidates sentence;
+            unsigned word_num = m_pIC->getBestSentence(sentence, best_rank,
+                                                       m_candiFrIdx);
+            unsigned tail_word_num = word_num;
+            while (true) {
+                tail_word_num -= std::min(tail_word_num / 8 + 1, tail_word_num);
+                if (tail_word_num <= 1) {
+                    break;
+                }
+                CCandidates tail(sentence.begin(),
+                                 sentence.begin() + tail_word_num);
+                wstring tail_text;
+                for (int i = 0; i < tail.size(); i++) {
+                    tail_text += tail[i].m_cwstr;
+                }
+                if (!_findCandidate(tail_text)) {
+                    m_tails.push_back(std::make_pair(tail_text, tail));
+                }
+            }
         }
     }
 
@@ -181,8 +219,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 || (m_pHotkeyProfile && m_pHotkeyProfile->isPageUpKey(key)))
                && !m_pIC->isEmpty()) {
         changeMasks |= KEYEVENT_USED;
-        int sz = m_candiList.size() + m_sentences.size();
-        if (sz > 0 && m_candiPageFirst > 0) {
+        if (m_candiPageFirst > 0) {
             m_candiPageFirst -= m_candiWindowSize;
             if (m_candiPageFirst < 0) m_candiPageFirst = 0;
             changeMasks |= CANDIDATE_MASK;
@@ -191,8 +228,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 || (m_pHotkeyProfile && m_pHotkeyProfile->isPageDownKey(key)))
                && !m_pIC->isEmpty()) {
         changeMasks |= KEYEVENT_USED;
-        int sz = m_candiList.size() + m_sentences.size();
-        if (sz > 0 && m_candiPageFirst + m_candiWindowSize < sz) {
+        if (m_candiPageFirst + m_candiWindowSize < _candidateListSize()) {
             m_candiPageFirst += m_candiWindowSize;
             changeMasks |= CANDIDATE_MASK;
         }
@@ -314,31 +350,29 @@ CIMIClassicView::onCandidatePageRequest(int pgno, bool relative)
 
     if (!m_pIC->isEmpty()) {
         changeMasks |= KEYEVENT_USED;
-        int sz = m_candiList.size() + m_sentences.size();
-        if (sz > 0) {
-            lastpgidx = (sz - 1) / m_candiWindowSize * m_candiWindowSize;
-            if (relative == true) {
-                ncandi = m_candiPageFirst + pgno * m_candiWindowSize;
-                if (ncandi >= sz)
-                    ncandi = lastpgidx;
-                if (ncandi < 0)
-                    ncandi = 0;
-                if (ncandi != m_candiPageFirst) {
-                    m_candiPageFirst = ncandi;
-                    changeMasks |= CANDIDATE_MASK;
-                }
+        size_t sz = _candidateListSize();
+        lastpgidx = (sz - 1) / m_candiWindowSize * m_candiWindowSize;
+        if (relative == true) {
+            ncandi = m_candiPageFirst + pgno * m_candiWindowSize;
+            if (ncandi >= sz)
+                ncandi = lastpgidx;
+            if (ncandi < 0)
+                ncandi = 0;
+            if (ncandi != m_candiPageFirst) {
+                m_candiPageFirst = ncandi;
+                changeMasks |= CANDIDATE_MASK;
+            }
+        } else {
+            if (pgno == -1) { //last page
+                ncandi = lastpgidx;
             } else {
-                if (pgno == -1) { //last page
+                ncandi = pgno * m_candiWindowSize;
+                if (ncandi > lastpgidx)
                     ncandi = lastpgidx;
-                } else {
-                    ncandi = pgno * m_candiWindowSize;
-                    if (ncandi > lastpgidx)
-                        ncandi = lastpgidx;
-                }
-                if (ncandi != m_candiPageFirst) {
-                    m_candiPageFirst = ncandi;
-                    changeMasks |= CANDIDATE_MASK;
-                }
+            }
+            if (ncandi != m_candiPageFirst) {
+                m_candiPageFirst = ncandi;
+                changeMasks |= CANDIDATE_MASK;
             }
         }
     }
@@ -426,27 +460,42 @@ CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
     cl.clear();
     cl.reserve(size);
 
-    int tscount = m_sentences.size();
     cl.setFirst(start);
-    cl.setTotal(tscount + m_candiList.size());
+    cl.setTotal(_candidateListSize());
 
     ICandidateList::CCandiStrings& css = cl.getCandiStrings();
     ICandidateList::CCandiTypeVec& cts = cl.getCandiTypeVec();
+    size_t count = 0;
 
-    //Loop used for future n-best sentence candidates usage
-    for (; start < tscount && size > 0; ++start, --size) {
-        css.push_back(m_sentences[start].second);
-        cts.push_back(ICandidateList::BEST_TAIL);
+    // sentences
+    for (size_t i = 0; i < m_sentences.size(); i++) {
+        if (count >= start) {
+            css.push_back(m_sentences[i].second);
+            cts.push_back(ICandidateList::BEST_TAIL);
+        }
+        if (++count > start + size - 1) {
+            return;
+        }
     }
-
-    start -= tscount;
-    for (int sz = m_candiList.size(); start < sz && size > 0; ++start,
-         --size) {
-        css.push_back(m_candiList[start].m_cwstr);
-        if (start == 0) {
-            cts.push_back(ICandidateList::BEST_WORD);
-        } else {
-            cts.push_back(ICandidateList::NORMAL_WORD);
+    // possible tails
+    for (size_t i = 0; i < m_tails.size(); i++) {
+        if (count >= start) {
+            css.push_back(m_tails[i].first);
+            cts.push_back(ICandidateList::OTHER_BEST_TAIL);
+        }
+        if (++count > start + size - 1) {
+            return;
+        }
+    }
+    // word candidates
+    for (size_t i = 0; i < m_candiList.size(); i++) {
+        if (count >= start) {
+            css.push_back(m_candiList[i].m_cwstr);
+            cts.push_back(i == 0 ? ICandidateList::BEST_WORD
+                          : ICandidateList::NORMAL_WORD);
+        }
+        if (++count > start + size - 1) {
+            return;
         }
     }
 }
@@ -648,24 +697,47 @@ CIMIClassicView::_moveEnd(unsigned& mask)
 void
 CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
 {
-    candiIdx += m_candiPageFirst - m_sentences.size();
-    //if (!m_tailSentence.empty ()) --candiIdx;
+    if (m_candiList.size() == 0 || m_sentences.size() == 0) {
+        // user might delete all the left over pinyin characters, this will
+        // make m_candiList empty
+        // 0 or space choices should commit previous selected candidates
+        mask |= PREEDIT_MASK | CANDIDATE_MASK;
+        _doCommit(candiIdx);
+        clearIC();
+        return;
+    }
 
-    if (candiIdx < 0) {
+    candiIdx += m_candiPageFirst;
+    int sentenceIdx = candiIdx;
+    int tailIdx = candiIdx - m_sentences.size();
+    int wordIdx = candiIdx - m_sentences.size() - m_tails.size();
+    bool selected = false;
+
+    if (candiIdx < m_sentences.size()) {
         // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        printf("selecting sentence %d\n", candiIdx + m_sentences.size());
         // get the rank of that sentence
-        int rank = m_sentences[candiIdx + m_sentences.size()].first;
+        int rank = m_sentences[sentenceIdx].first;
         m_pIC->selectSentence(rank);
         _doCommit(candiIdx);
         clearIC();
-    } else if (candiIdx < m_candiList.size()) {
-        mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        CCandidate& candi = m_candiList [candiIdx];
+    } else if (candiIdx < m_sentences.size() + m_tails.size()) {
+        CCandidates& tail = m_tails[tailIdx].second;
+        for (int i = 0; i < tail.size(); i++) {
+            m_pIC->makeSelection(tail[i]);
+        }
+        m_candiFrIdx = tail.back().m_end;
+        selected = true;
+    } else if (candiIdx < _candidateListSize()) {
+        CCandidate& candi = m_candiList[wordIdx];
         m_pIC->makeSelection(candi);
         m_candiFrIdx = candi.m_end;
-        if (m_cursorFrIdx < m_candiFrIdx) m_cursorFrIdx = m_candiFrIdx;
+        selected = true;
+    }
+    if (selected) {
+        mask |= PREEDIT_MASK | CANDIDATE_MASK;
+        if (m_cursorFrIdx < m_candiFrIdx)
+            m_cursorFrIdx = m_candiFrIdx;
 
         CLattice& lattice = m_pIC->getLattice();
         while (m_candiFrIdx < m_pIC->getLastFrIdx() &&
@@ -682,13 +754,6 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
             m_candiPageFirst = 0;
             _getCandidates();
         }
-    } else if (candiIdx == 0 && m_candiList.size() == 0) {
-        // user might delete all the left over pinyin characters, this will
-        // make m_candiList empty
-        // 0 or space choices should commit previous selected candidates
-        mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        _doCommit(candiIdx);
-        clearIC();
     }
 }
 

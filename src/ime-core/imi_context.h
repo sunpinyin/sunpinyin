@@ -284,11 +284,12 @@ public:
         return m_segPath[0];
     }
 
+    unsigned getBestSentence(CCandidates& result, int rank,
+                             unsigned start = 0, unsigned end = UINT_MAX);
     unsigned getBestSentence(wstring& result, int rank,
                              unsigned start = 0, unsigned end = UINT_MAX);
     unsigned getBestSentence(std::vector<unsigned>& result, int rank,
                              unsigned start = 0, unsigned end = UINT_MAX);
-
 
     unsigned getSelectedSentence(wstring& result,
                                  unsigned start = 0, unsigned end = UINT_MAX);

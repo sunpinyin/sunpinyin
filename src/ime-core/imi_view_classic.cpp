@@ -205,12 +205,14 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
         changeMasks |= KEYEVENT_USED;
         setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL,
                            (!m_bFullSymbol) ? 1 : 0);
-    } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_LEFT) {  // move left
+    } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_LEFT) {
+        // move left
         if (!m_pIC->isEmpty()) {
             changeMasks |= KEYEVENT_USED;
             _moveLeft(changeMasks);
         }
-    } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_RIGHT) { // move right
+    } else if (modifiers == IM_CTRL_MASK && keycode == IM_VK_RIGHT) {
+        // move right
         if (!m_pIC->isEmpty()) {
             changeMasks |= KEYEVENT_USED;
             _moveRight(changeMasks);
@@ -242,9 +244,10 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
     } else if ((modifiers &
                 (IM_CTRL_MASK | IM_ALT_MASK | IM_SUPER_MASK |
                  IM_RELEASE_MASK)) == 0) {
-        if ((keyvalue >= '0' && keyvalue <= '9') &&
-            (m_candiWindowSize >= 10 || keyvalue <
-             ('1' + m_candiWindowSize))) {                                              // try to make selection
+        if ((keyvalue >= '0' && keyvalue <= '9')
+            && (m_candiWindowSize >= 10
+                || keyvalue < ('1' + m_candiWindowSize))) {
+            // try to make selection
             if (!m_pIC->isEmpty()) {
                 changeMasks |= KEYEVENT_USED;
                 unsigned sel = (keyvalue == '0' ? 9 : keyvalue - '1');
@@ -415,21 +418,19 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
     if (pystr.empty())
         return;
 
-    std::vector<unsigned>::iterator it = seg_path.begin() + 1;
-    std::vector<unsigned>::iterator ite = seg_path.end();
-
     CLattice& lattice = m_pIC->getLattice();
-    unsigned i = 0, l = 0;
-    for (; it != ite; i = *(it++)) {
-        l = *it - i;
-
-        if (*it <= m_candiFrIdx)
+    unsigned last = 0, len = 0;
+    for (std::vector<unsigned>::iterator it = seg_path.begin();
+         it != seg_path.end(); ++it) {
+        len = *it - last;
+        if (*it <= m_candiFrIdx) {
+            last = *it;
             continue;
+        }
+        if (last < m_cursorFrIdx && m_cursorFrIdx <= last + len)
+            caret = wstr.size() + (m_cursorFrIdx - last);
 
-        if (i < m_cursorFrIdx && m_cursorFrIdx <= i + l)
-            caret = wstr.size() + (m_cursorFrIdx - i);
-
-        CLatticeFrame &fr = lattice [i + l];
+        CLatticeFrame &fr = lattice[last + len];
         int ct = IPreeditString::PINYIN_CHAR;
         if (fr.isSyllableSepFrame()) {
             ct = IPreeditString::BOUNDARY | IPreeditString::USER_CHOICE;
@@ -439,16 +440,19 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
             ct = IPreeditString::SYMBOL_CHAR;
         }
 
-        wstr.insert(wstr.end(), pystr.begin() + i, pystr.begin() + i + l);
-        for (size_t c = 0; c < l; ++c)
+        wstr.insert(wstr.end(), pystr.begin() + last,
+                    pystr.begin() + last + len);
+        for (size_t c = 0; c < len; ++c)
             charTypes.push_back(ct);
 
         if (fr.isSyllableFrame() && !fr.isSyllableSepFrame()) {
-            if (it != ite - 1 && !lattice[i + l + 1].isSyllableSepFrame()) {
+            if (it != seg_path.end() - 1
+                && !lattice[last + len + 1].isSyllableSepFrame()) {
                 wstr.push_back(' ');
                 charTypes.push_back(IPreeditString::BOUNDARY);
             }
         }
+        last = *it;
     }
 
     ps.setCaret(caret);
@@ -528,26 +532,28 @@ CIMIClassicView::_erase(bool backward, unsigned &changeMasks)
         // if possible to cancel the last selection
         if (m_backspaceCancel) {
             if (m_candiFrIdx > 0) {
-                changeMasks |= CANDIDATE_MASK | PREEDIT_MASK | KEYEVENT_USED;
                 m_candiFrIdx = m_pIC->cancelSelection(m_candiFrIdx, true);
-                _getCandidates();
-                return;
+                goto done;
             }
         }
-        if (m_cursorFrIdx == m_pIC->getLastFrIdx())
+        if (m_cursorFrIdx == m_pIC->getLastFrIdx()) {
             m_pPySegmentor->pop();
-        else if (m_cursorFrIdx > 0)
+        } else if (m_cursorFrIdx > 0) {
             m_pPySegmentor->deleteAt(m_cursorFrIdx - 1, backward);
-        else
+        } else {
             return;
+        }
         _moveLeft(changeMasks, true);
     } else {
-        if (m_cursorFrIdx < m_pIC->getLastFrIdx())
+        if (m_cursorFrIdx == m_pIC->getLastFrIdx() - 1) {
+            m_pPySegmentor->pop();
+        } else if (m_cursorFrIdx < m_pIC->getLastFrIdx() - 1) {
             m_pPySegmentor->deleteAt(m_cursorFrIdx - 1, backward);
-        else
+        } else {
             return;
+        }
     }
-
+done:
     if (m_pIC->buildLattice(m_pPySegmentor))
         _getCandidates();
 

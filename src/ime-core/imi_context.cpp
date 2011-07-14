@@ -529,8 +529,10 @@ CIMIContext::_backTracePaths(const std::vector<TLatticeState>& tail_states,
     path.clear();
     segmentPath.clear();
 
-    if (rank >= (int) tail_states.size())
+    if (rank >= (int) tail_states.size()) {
+        // rank out of bounds, only return the segment path
         return false;
+    }
 
     const TLatticeState *bs = &(tail_states[rank]);
 

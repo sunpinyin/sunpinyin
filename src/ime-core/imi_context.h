@@ -268,10 +268,14 @@ public:
 
     TPath& getBestPath() { return m_path[0]; }
     TPath& getBestSegPath() {
+        if (m_segPath.empty()) {
+            static TPath emptyPath;
+            return emptyPath;
+        }
         // CIMIContext would fail to backTrace the bestPathes when there are
         // no latticeStates on frame e.g., 'yiden' in Quanpin mode, in this
         // case, return the original segs
-        if (!m_segPath.empty() && m_segPath[0].empty() && m_pPySegmentor) {
+        if (m_segPath[0].empty() && m_pPySegmentor) {
             // only require the primary segments without the auxiliary ones
             IPySegmentor::TSegmentVec& segments =
                 m_pPySegmentor->getSegments(false);

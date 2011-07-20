@@ -377,7 +377,7 @@ xim_commit_preedit(XIMHandle* handle, const char* result_str)
     IMCommitStruct cs;
     Xutf8TextListToTextProperty(dpy, (char**) &result_str, 1,
                                 XCompoundTextStyle, &tp);
-
+    memset(&cs, 0, sizeof(IMCommitStruct));
     cs.major_code = XIM_COMMIT;
     cs.icid = ic->icid;
     cs.connect_id = ic->connect_id;

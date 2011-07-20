@@ -147,7 +147,7 @@ def DoInstall():
         env.AddPostAction(exec_bin, Chmod(str(exec_bin), 0755))
         
     setup_target = env.Install(data_dir + '/setup',
-                               ['setup/setup.glade',
+                               ['setup/setup.xml',
                                 'setup/main.py',
                                 'setup/config.py'])
     icons_target = env.Install(icons_dir,

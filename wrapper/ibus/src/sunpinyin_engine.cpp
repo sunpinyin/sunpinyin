@@ -6,12 +6,12 @@
  * Distribution License ("CDDL")(collectively, the "License"). You may not use this
  * file except in compliance with the License. You can obtain a copy of the CDDL at
  * http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
- * http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+ * http://www.opensource.org/licenses/lgpl-license.php. See the License for the
  * specific language governing permissions and limitations under the License. When
  * distributing the software, include this License Header Notice in each file and
  * include the full text of the License in the License file as well as the
  * following notice:
- * 
+ *
  * NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
  * (CDDL)
  * For Covered Software in this distribution, this License shall be governed by the
@@ -19,9 +19,9 @@
  * Any litigation relating to this License shall be subject to the jurisdiction of
  * the Federal Courts of the Northern District of California and the state courts
  * of the State of California, with venue lying in Santa Clara County, California.
- * 
+ *
  * Contributor(s):
- * 
+ *
  * If you wish your version of this file to be governed by only the CDDL or only
  * the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
  * include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -30,7 +30,7 @@
  * Version 2.1, or to extend the choice of license to its licensees as provided
  * above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
  * Version 2 license, then the option applies only if the new code is made subject
- * to such option by the copyright holder. 
+ * to such option by the copyright holder.
  */
 
 #include <cassert>
@@ -74,26 +74,26 @@ SunPinyinEngine::SunPinyinEngine(IBusEngine *engine)
     }
     update_user_data_dir();
     update_punct_mappings();
-    
+
     factory.setCandiWindowSize(m_config.get(CONFIG_GENERAL_PAGE_SIZE, 10));
-    
+
     m_pv = factory.createSession();
     if (!m_pv)
         return;
 
     m_hotkey_profile = new CHotkeyProfile();
     m_pv->setHotkeyProfile(m_hotkey_profile);
-    
+
     m_wh = new CIBusWinHandler(this);
     m_pv->attachWinHandler(m_wh);
 
     m_prop_list = ibus_prop_list_new();
-    
+
     ibus_prop_list_append(m_prop_list, m_status_prop);
     ibus_prop_list_append(m_prop_list, m_letter_prop);
     ibus_prop_list_append(m_prop_list, m_punct_prop);
     ibus_prop_list_append(m_prop_list, m_setup_prop);
-    
+
     update_config();
 }
 
@@ -104,7 +104,7 @@ SunPinyinEngine::~SunPinyinEngine()
             CSunpinyinSessionFactory::getFactory();
         factory.destroySession(m_pv);
     }
-    
+
     delete m_wh;
     delete m_hotkey_profile;
 }
@@ -129,19 +129,19 @@ SunPinyinEngine::process_key_event (guint key_val,
                                     guint modifiers)
 {
     CKeyEvent key = translate_key(key_val, key_code, modifiers);
-    
-    if ( !m_pv->getStatusAttrValue(CIBusWinHandler::STATUS_ID_CN) ) {
+
+    if (!m_pv->getStatusAttrValue(CIBusWinHandler::STATUS_ID_CN)) {
         // we are in English input mode
-        if ( !m_hotkey_profile->isModeSwitchKey(key) ) {
+        if (!m_hotkey_profile->isModeSwitchKey(key)) {
             m_hotkey_profile->rememberLastKey(key);
             return FALSE;
         }
-    } else if ( m_hotkey_profile->isModeSwitchKey(key) ) {
+    } else if (m_hotkey_profile->isModeSwitchKey(key)) {
         m_pv->onKeyEvent(CKeyEvent(IM_VK_ENTER, 0, 0));
         m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, false);
         return TRUE;
     }
-    
+
     return m_pv->onKeyEvent(key);
 }
 
@@ -201,13 +201,13 @@ void
 SunPinyinEngine::property_activate (const std::string& property, unsigned /*state*/)
 {
     if (m_status_prop.toggle(property)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN, 
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_CN,
                                  m_status_prop.state());
     } else if (m_letter_prop.toggle(property)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL, 
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL,
                                  m_letter_prop.state());
     } else if (m_punct_prop.toggle(property)) {
-        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC, 
+        m_pv->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC,
                                  m_punct_prop.state());
     } else {
         // try to launch the setup UI
@@ -260,8 +260,10 @@ SunPinyinEngine::onConfigChanged(const COptionEvent& event)
         update_fuzzy_segs();
     } else if (event.name == CONFIG_KEYBOARD_CANCEL_BACKSPACE) {
         update_cancel_with_backspace();
+    } else if (event.name == CONFIG_KEYBOARD_SMARK_PUNCT) {
+        update_smart_punc();
     }
-    
+
     return false;
 }
 
@@ -277,6 +279,7 @@ SunPinyinEngine::update_config()
     update_mode_key();
     update_punct_key();
     update_cancel_with_backspace();
+    update_smart_punc();
     update_punct_mappings();
     update_candi_delete_key();
     // update_quanpin_config();
@@ -335,7 +338,7 @@ void decorate_preedit_string_using_char_type(IBusText *text, const IPreeditStrin
 {
     for (int i = 0, size = preedit.charTypeSize(); i < size; ) {
         int len = 0;
-        if ((len = decorate_preedit_char(text, preedit, i, size, preedit.PINYIN_CHAR, 
+        if ((len = decorate_preedit_char(text, preedit, i, size, preedit.PINYIN_CHAR,
                                          GRAY_BLUE)) > 0) {
             i += len;
         } else if ((len = decorate_preedit_char(text, preedit, i, size,
@@ -348,7 +351,7 @@ void decorate_preedit_string_using_char_type(IBusText *text, const IPreeditStrin
     }
 }
 
-    
+
 void decorate_preedit_string_using_caret_pos(IBusText *text, const IPreeditString& preedit, int caret)
 {
     if (caret < preedit.size()) {
@@ -368,15 +371,15 @@ SunPinyinEngine::update_preedit_string(const IPreeditString& preedit)
     const int len = preedit.size();
     if (len > 0) {
         IBusText *text = ibus_text_new_from_ucs4((const gunichar*) preedit.string());
-        
-        
+
+
         const int caret = preedit.caret();
         if (caret < len) {
             decorate_preedit_string_using_caret_pos(text, preedit, caret);
         } else {
             decorate_preedit_string_using_char_type(text, preedit);
         }
-        
+
         ibus_engine_update_preedit_text(m_engine, text, caret, TRUE);
     } else {
         ibus_engine_hide_preedit_text(m_engine);
@@ -437,7 +440,7 @@ SunPinyinEngine::update_mode_key()
     CKeyEvent shift_r  (IM_VK_SHIFT_R, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
     CKeyEvent control_l(IM_VK_CONTROL_L, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
     CKeyEvent control_r(IM_VK_CONTROL_R, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
-    
+
     if (mode_switch == "Shift") {
         m_hotkey_profile->removeModeSwitchKey(control_l);
         m_hotkey_profile->removeModeSwitchKey(control_r);
@@ -485,7 +488,7 @@ SunPinyinEngine::update_page_key_bracket()
 }
 
 void
-SunPinyinEngine::update_page_key(const char* conf_key, bool default_val, 
+SunPinyinEngine::update_page_key(const char* conf_key, bool default_val,
                             unsigned page_up, unsigned page_down)
 {
     bool enabled = m_config.get(conf_key, default_val);
@@ -506,18 +509,24 @@ SunPinyinEngine::update_cancel_with_backspace()
     m_pv->setCancelOnBackspace(enabled);
 }
 
+void
+SunPinyinEngine::update_smart_punc()
+{
+    m_pv->setSmartPunct(m_config.get(CONFIG_KEYBOARD_SMARK_PUNCT, true));
+}
+
 string_pairs parse_pairs(const vector<string>& strings)
 {
     string_pairs pairs;
     for (vector<string>::const_iterator pair = strings.begin();
          pair != strings.end(); ++pair) {
-        
+
         std::string::size_type found = pair->find(':');
         if (found == pair->npos || pair->length() < 3)
             continue;
         if (found == 0 && (*pair)[0] == ':')
             found = 1;
-        
+
         pairs.push_back(make_pair(pair->substr(0, found),
                                   pair->substr(found+1)));
     }

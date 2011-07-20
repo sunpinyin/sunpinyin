@@ -157,6 +157,7 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
                 } else {
                     LOG("ignore");
                 }
+                return 0;
             }
         }
     }

@@ -58,7 +58,7 @@ CIMIView::CIMIView()
     : m_pIC(NULL), m_pWinHandler(NULL), m_pPySegmentor(NULL),
       m_pHotkeyProfile(NULL),
       m_candiWindowSize(10), m_bCN(true), m_bFullPunct(true),
-      m_bFullSymbol(false)
+      m_bFullSymbol(false), m_backspaceCancel(true), m_smartPunct(true)
 {
 }
 

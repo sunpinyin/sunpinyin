@@ -38,7 +38,6 @@ import sys
 import os
 from os import path
 import gtk
-import gtk.glade as glade
 import ibus
 import gettext
 import locale
@@ -46,7 +45,7 @@ import locale
 GETTEXT_PACKAGE="ibus-sunpinyin"
 _ = lambda msg: gettext.gettext(msg)
 
-GLADE_FILE = path.join(path.dirname(__file__), "setup.glade")
+XML_FILE = path.join(path.dirname(__file__), "setup.xml")
 SEPARATOR = "/"
 
 class Logger:
@@ -88,8 +87,8 @@ class TrivalOption(Option):
     def __init__(self, name, default, owner):
         super(TrivalOption, self).__init__(name, default)
         self.xml = owner
-        self.widget = owner.get_widget(name)
-        assert self.widget is not None, "%s not found in glade" % name
+        self.widget = owner.get_object(name)
+        assert self.widget is not None, "%s not found in gtkbuilder" % name
 
     def init_ui(self):
         self.init()
@@ -182,7 +181,7 @@ class RadioOption(Option):
     def read_config(self):
         self.v = self.read()
         name = SEPARATOR.join([self.name, self.v])
-        button = self.xml.get_widget(name)
+        button = self.xml.get_object(name)
         assert button is not None, "button: %r not found" % name
         button.set_active(True)
 
@@ -190,7 +189,7 @@ class RadioOption(Option):
         active_opt = None
         for opt in self.options:
             radio_name = SEPARATOR.join([self.name, opt])
-            radio = self.xml.get_widget(radio_name)
+            radio = self.xml.get_object(radio_name)
             if radio.get_active():
                 active_opt = opt
                 break
@@ -210,7 +209,7 @@ class MappingOption(object):
     """
     def __init__(self, name, mappings, owner):
         self.name = name
-        self.widget = owner.get_widget(name)
+        self.widget = owner.get_object(name)
         self.mappings = mappings
         
     def get_mappings(self):
@@ -278,14 +277,15 @@ class MultiCheckDialog (object):
     
     def __init_ui(self):
         dlg_name = self.get_setup_name()
-        self.__xml = glade.XML(GLADE_FILE, dlg_name)
-        self.__dlg = self.__xml.get_widget(dlg_name)
-        assert self.__dlg is not None, "dialog %s not found in %s" % (dlg_name, GLADE_FILE)
+        self.__xml = gtk.Builder()
+        self.__xml.add_objects_from_file(XML_FILE, dlg_name)
+        self.__dlg = self.__xml.get_object(dlg_name)
+        assert self.__dlg is not None, "dialog %s not found in %s" % (dlg_name, XML_FILE)
         handlers = {'_'.join(["on", self.ui_name, "select_all_clicked"]) : self.on_button_check_all_clicked,
                     '_'.join(["on", self.ui_name, "unselect_all_clicked"]) : self.on_button_uncheck_all_clicked,
                     '_'.join(["on", self.ui_name, "ok_clicked"]) : self.on_button_ok_clicked,
                     '_'.join(["on", self.ui_name, "cancel_clicked"]) : self.on_button_cancel_clicked}
-        self.__xml.signal_autoconnect(handlers)
+        self.__xml.connect_signals(handlers)
 
         options = [self.option_klass(m.name, m.mapping, self.__xml) 
                    for m in self.mappings]
@@ -451,7 +451,7 @@ class PunctMappingSetupDialog (MultiCheckDialog):
                                   mappings=mappings,
                                   option_klass=PunctMapping)
 
-class MainWindow ():
+class MainWindow():
     def __init__ (self):
         self.__bus = ibus.Bus()
         self.__config = self.__bus.get_config()
@@ -464,11 +464,12 @@ class MainWindow ():
         
     def __init_ui(self, name):
         self.__init_gettext()
-        glade_file = path.join(path.dirname(__file__), GLADE_FILE)
-        self.__xml = glade.XML (glade_file, name)
+        xml_file = path.join(path.dirname(__file__), XML_FILE)
+        self.__xml = gtk.Builder()
+        self.__xml.add_objects_from_file(xml_file, [name, 'pymodel', 'memory_adjustment', 'candidate_adjustment'])
+        self.__xml.connect_signals(self)
         self.__init_options()
-        self.window = self.__xml.get_widget(name)
-        self.__xml.signal_autoconnect(self)
+        self.window = self.__xml.get_object(name)
         self.window.show_all()
 
     def __init_gettext(self):
@@ -476,8 +477,6 @@ class MainWindow ():
         localedir = os.getenv("IBUS_LOCALEDIR")
         gettext.bindtextdomain(GETTEXT_PACKAGE, localedir)
         gettext.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
-        glade.bindtextdomain(GETTEXT_PACKAGE, localedir)
-        glade.textdomain(GETTEXT_PACKAGE)
 
     def __init_options(self):
         self.__fuzzy_setup = FuzzySetupDialog()
@@ -501,6 +500,8 @@ class MainWindow ():
             CheckBoxOption("Keyboard/Page/MinusEquals", False, self.__xml),
             CheckBoxOption("Keyboard/Page/Brackets", False, self.__xml),
             CheckBoxOption("Keyboard/Page/CommaPeriod", False, self.__xml),
+            CheckBoxOption("Keyboard/CancelBackspace", True, self.__xml),
+            CheckBoxOption("Keyboard/SmartPunct", True, self.__xml),
             
             RadioOption("Pinyin/Scheme", 'QuanPin', ['QuanPin', 'ShuangPin'], self.__xml),
             ComboBoxOption("Pinyin/ShuangPinType", 'MS2003', ['MS2003',
@@ -542,17 +543,17 @@ class MainWindow ():
     def __update_enabling_button(self, checkbox_name, button_name):
         """enable a setup button when checked, disable it otherwise
         """
-        checkbox = self.__xml.get_widget(checkbox_name)
+        checkbox = self.__xml.get_object(checkbox_name)
         assert checkbox is not None, "checkbox: %s not found" % checkbox_name
-        button = self.__xml.get_widget(button_name)
+        button = self.__xml.get_object(button_name)
         assert button is not None, "button: %s not found" % button_name
         button_enabled = checkbox.get_active()
         button.set_sensitive(button_enabled)
 
     def on_radio_shuangpin_toggled(self, button):
-        radio = self.__xml.get_widget("Pinyin/Scheme/ShuangPin")
+        radio = self.__xml.get_object("Pinyin/Scheme/ShuangPin")
         enabled = radio.get_active()
-        combo = self.__xml.get_widget("Pinyin/ShuangPinType")
+        combo = self.__xml.get_object("Pinyin/ShuangPinType")
         combo.set_sensitive(enabled)
         
     def on_chk_fuzzy_enabled_toggled(self, button):

@@ -161,23 +161,28 @@ public:
     virtual ~CIMIView() {}
 
     void attachIC(CIMIContext* pIC) { m_pIC = pIC; }
-    CIMIContext* getIC(void) { return m_pIC; }
+    CIMIContext* getIC(void) const { return m_pIC; }
 
     void setPySegmentor(IPySegmentor *p) { m_pPySegmentor = p; }
-    IPySegmentor* getPySegmentor() { return m_pPySegmentor; }
+    IPySegmentor* getPySegmentor() const { return m_pPySegmentor; }
 
     void attachWinHandler(CIMIWinHandler* wh) { m_pWinHandler = wh; }
-    CIMIWinHandler* getWinHandler(void) { return m_pWinHandler; }
+    CIMIWinHandler* getWinHandler(void) const { return m_pWinHandler; }
 
     void setHotkeyProfile(CHotkeyProfile *prof) { m_pHotkeyProfile = prof; }
-    void setCandiWindowSize(unsigned size) { m_candiWindowSize = size <
-                                                                 10 ? size : 10; }
+    void setCandiWindowSize(unsigned size) {
+        m_candiWindowSize = size < 10 ? size : 10;
+    }
+
     CHotkeyProfile* getHotkeyProfile() { return m_pHotkeyProfile; }
-    unsigned getCandiWindowSize() { return m_candiWindowSize; }
+    unsigned getCandiWindowSize() const { return m_candiWindowSize; }
 
     void setCancelOnBackspace(bool backspaceCancel)
     { m_backspaceCancel = backspaceCancel; }
-    bool getCancelOnBackspace() { return m_backspaceCancel; }
+    bool getCancelOnBackspace() const { return m_backspaceCancel; }
+
+    void setSmartPunct(bool smart) { m_smartPunct = smart; }
+    bool getSmartPunct() const { return m_smartPunct; }
 
     virtual unsigned clearIC(void) { m_pIC->clear(); return 0; }
     virtual bool onKeyEvent(const CKeyEvent&) { return false; }
@@ -204,6 +209,7 @@ protected:
     bool m_bFullPunct;
     bool m_bFullSymbol;
     bool m_backspaceCancel;
+    bool m_smartPunct;
 };
 
 #endif

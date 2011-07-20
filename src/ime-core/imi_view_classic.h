@@ -68,8 +68,6 @@ private:
     unsigned m_candiFrIdx;
     unsigned m_candiPageFirst;
 
-    bool m_numeric_mode;
-
     CCandidates m_candiList;
     std::vector<std::pair<int, wstring> > m_sentences;
     std::vector<std::pair<wstring, CCandidates> > m_tails;

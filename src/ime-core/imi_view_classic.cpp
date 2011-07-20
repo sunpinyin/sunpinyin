@@ -46,7 +46,7 @@
 
 CIMIClassicView::CIMIClassicView()
     : CIMIView(), m_cursorFrIdx(0), m_candiFrIdx(0),
-      m_candiPageFirst(0), m_numeric_mode(false)
+      m_candiPageFirst(0)
 {
 }
 
@@ -68,7 +68,6 @@ CIMIClassicView::clearIC(void)
 {
     if (!m_pIC->isEmpty()) {
         m_cursorFrIdx = m_candiFrIdx = m_candiPageFirst = 0;
-        m_numeric_mode = false;
 
         m_pIC->clear();
         m_pPySegmentor->clear();
@@ -252,19 +251,11 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                 changeMasks |= KEYEVENT_USED;
                 unsigned sel = (keyvalue == '0' ? 9 : keyvalue - '1');
                 _makeSelection(sel, changeMasks);
-            } else {
-                m_numeric_mode = true;
+            } else if (m_smartPunct) {
+                m_pIC->omitNextPunct();
             }
-
             goto PROCESSED;
         }
-
-        if (keyvalue == '.' && m_numeric_mode) {
-            m_numeric_mode = false;
-            goto PROCESSED;
-        }
-
-        m_numeric_mode = false;
 
         if (keyvalue > 0x60 && keyvalue < 0x7b) {
             /* islower(keyvalue) */

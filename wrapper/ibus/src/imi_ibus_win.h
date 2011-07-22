@@ -36,11 +36,11 @@
 #ifndef IMI_IBUS_WIN_H
 #define IMI_IBUS_WIN_H
 
-#include <ime-core/imi_winHandler.h>
+#include <ime-core/imi_gtkHandler.h>
 
 class SunPinyinEngine;
 
-class CIBusWinHandler : public CIMIWinHandler
+class CIBusWinHandler : public CIMIGtkHandler
 {
 public:
     CIBusWinHandler(SunPinyinEngine *);

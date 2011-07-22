@@ -44,7 +44,7 @@
 
 
 CIBusWinHandler::CIBusWinHandler(SunPinyinEngine* engine)
-  : CIMIWinHandler(), m_engine(engine)
+  : m_engine(engine)
 {
     //
 }

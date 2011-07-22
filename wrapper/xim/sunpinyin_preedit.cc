@@ -35,6 +35,7 @@
 #include <locale.h>
 
 #include <sunpinyin.h>
+#include <ime-core/imi_gtkHandler.h>
 
 #include "xim.h"
 #include "common.h"
@@ -43,7 +44,7 @@
 
 #define BUF_SIZE 4096
 
-class WindowHandler : public CIMIWinHandler
+class WindowHandler : public CIMIGtkHandler
 {
 protected:
     virtual void updatePreedit(const IPreeditString* ppd);

@@ -692,8 +692,8 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
         return;
     }
 
-    candiIdx += m_candiPageFirst;
-    if (candiIdx >= m_uiCandidateList.total()) {
+    // candiIdx += m_candiPageFirst;
+    if (candiIdx >= m_uiCandidateList.size()) {
         return;
     }
     int idx = m_uiCandidateList.getUserIndex(candiIdx);
@@ -751,7 +751,7 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
 void
 CIMIClassicView::_deleteCandidate(int candiIdx, unsigned& mask)
 {
-    candiIdx += m_candiPageFirst;
+    // candiIdx += m_candiPageFirst;
     int idx = m_uiCandidateList.getUserIndex(candiIdx);
     int type = m_uiCandidateList.getCandiTypeVec()[candiIdx];
 

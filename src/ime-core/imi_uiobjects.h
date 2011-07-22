@@ -42,6 +42,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 #include "imi_context.h"
 
@@ -138,6 +139,7 @@ public:
         BEST_WORD,
         USER_SELECTED_WORD,
         BEST_TAIL,
+        PLUGIN_TAIL,
         OTHER_BEST_TAIL
     };
 
@@ -174,8 +176,14 @@ public:
     virtual void                clear() = 0;
     virtual void                setTotal(int total) = 0;
     virtual void                setFirst(int first) = 0;
+    virtual void                setSize(int count) = 0;
 
-    virtual void                reserve(int count) = 0;
+    virtual void shrinkList() = 0;
+    virtual void pushBackCandidate(wstring wstr, int type,
+                                   int userIdx = -1) = 0;
+    virtual void insertCandidate(wstring wstr, int type, int rank,
+                                 int userIdx = -1) = 0;
+
     virtual CCandiStrings &     getCandiStrings() = 0;
     virtual CCandiTypeVec &     getCandiTypeVec() = 0;
     virtual CCharTypeVecs &     getCharTypeVecs() = 0;
@@ -206,18 +214,30 @@ public:
     virtual void                clear();
     virtual void                setTotal(int total);
     virtual void                setFirst(int first);
-    virtual void                reserve(int count);
+    virtual void                setSize(int size);
+
+    virtual void shrinkList();
+    virtual void pushBackCandidate(wstring wstr, int type, int userIdx = -1);
+    virtual void insertCandidate(wstring wstr, int type, int rank,
+                                 int userIdx = -1);
+
     virtual CCandiStrings &     getCandiStrings();
     virtual CCandiTypeVec &     getCandiTypeVec();
     virtual CCharTypeVecs &     getCharTypeVecs();
     /*@}*/
 
+    int getUserIndex(int idx) { return m_candiUserIndex[idx]; }
+
 protected:
     int m_total;
     int m_first;
+    int m_size;
     CCandiStrings m_candiStrings;
     CCandiTypeVec m_candiTypes;
+    std::vector<int> m_candiUserIndex;
     CCharTypeVecs m_candiCharTypeVecs;
+
+    std::map<wstring, int> m_candiStringsIndex;
 };
 
 #endif

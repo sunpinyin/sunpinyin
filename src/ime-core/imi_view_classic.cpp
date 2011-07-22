@@ -106,9 +106,10 @@ CIMIClassicView::updateWindows(unsigned mask)
         return;
 
     if (mask & PREEDIT_MASK) {
-        CPreEditString ps;
-        getPreeditString(ps);
-        m_pWinHandler->updatePreedit(&ps);
+        m_uiPreeditString.clear();
+        getPreeditString(m_uiPreeditString);
+        // m_pWinHandler->updatePreedit(&ps);
+        handlerUpdatePreedit(&m_uiPreeditString);
     }
 
     if ((mask & PREEDIT_MASK) || (mask & CANDIDATE_MASK)) {
@@ -146,7 +147,7 @@ CIMIClassicView::updateWindows(unsigned mask)
             unsigned word_num = m_pIC->getBestSentence(sentence, best_rank,
                                                        m_candiFrIdx);
             unsigned tail_word_num = word_num;
-            while (true) {
+            while (tail_word_num > 1) {
                 tail_word_num -= std::min(tail_word_num / 8 + 1, tail_word_num);
                 if (tail_word_num <= 1) {
                     break;
@@ -165,9 +166,11 @@ CIMIClassicView::updateWindows(unsigned mask)
     }
 
     if (mask & CANDIDATE_MASK) {
-        CCandidateList cl;
-        getCandidateList(cl, m_candiPageFirst, m_candiWindowSize);
-        m_pWinHandler->updateCandidates(&cl);
+        m_uiCandidateList.clear();
+        getCandidateList(m_uiCandidateList, m_candiPageFirst,
+                         m_candiWindowSize);
+        // m_pWinHandler->updateCandidates(&cl);
+        handlerUpdateCandidates(&m_uiPreeditString, &m_uiCandidateList);
     }
 }
 
@@ -266,7 +269,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
             changeMasks |= KEYEVENT_USED;
             if (m_pIC->isEmpty()) {
                 _insert(keyvalue, changeMasks);
-                _doCommit(0);
+                _doCommit();
                 clearIC();
             } else {
                 _insert(keyvalue, changeMasks);
@@ -290,7 +293,7 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
         } else if (keycode == IM_VK_ENTER) {
             if (!m_pIC->isEmpty()) {
                 changeMasks |= KEYEVENT_USED | CANDIDATE_MASK | PREEDIT_MASK;
-                _doCommit(0, false);
+                _doCommit(false);
                 clearIC();
             }
         } else if (keycode == IM_VK_ESCAPE) {
@@ -453,44 +456,29 @@ void
 CIMIClassicView::getCandidateList(ICandidateList& cl, int start, int size)
 {
     cl.clear();
-    cl.reserve(size);
+    cl.setSize(size);
 
     cl.setFirst(start);
     cl.setTotal(_candidateListSize());
 
-    ICandidateList::CCandiStrings& css = cl.getCandiStrings();
-    ICandidateList::CCandiTypeVec& cts = cl.getCandiTypeVec();
-    int count = 0;
-
     // sentences
     for (size_t i = 0; i < m_sentences.size(); i++) {
-        if (count >= start) {
-            css.push_back(m_sentences[i].second);
-            cts.push_back(ICandidateList::BEST_TAIL);
-        }
-        if (++count > start + size - 1) {
-            return;
-        }
+        cl.pushBackCandidate(m_sentences[i].second,
+                             ICandidateList::BEST_TAIL, i);
     }
     // possible tails
     for (size_t i = 0; i < m_tails.size(); i++) {
-        if (count >= start) {
-            css.push_back(m_tails[i].first);
-            cts.push_back(ICandidateList::OTHER_BEST_TAIL);
-        }
-        if (++count > start + size - 1) {
-            return;
-        }
+        cl.pushBackCandidate(m_tails[i].first,
+                             ICandidateList::OTHER_BEST_TAIL, i);
     }
     // word candidates
     for (size_t i = 0; i < m_candiList.size(); i++) {
-        if (count >= start) {
-            css.push_back(m_candiList[i].m_cwstr);
-            cts.push_back(i == 0 ? ICandidateList::BEST_WORD
-                          : ICandidateList::NORMAL_WORD);
-        }
-        if (++count > start + size - 1) {
-            return;
+        if (i == 0) {
+            cl.pushBackCandidate(m_candiList[i].m_cwstr,
+                                 ICandidateList::BEST_WORD, i);
+        } else {
+            cl.pushBackCandidate(m_candiList[i].m_cwstr,
+                                 ICandidateList::NORMAL_WORD, i);
         }
     }
 }
@@ -572,17 +560,17 @@ CIMIClassicView::_commitString(const wstring& wstr)
 }
 
 void
-CIMIClassicView::_doCommit(int candiIdx, bool bConvert)
+CIMIClassicView::_doCommit(bool bConvert)
 {
     wstring bs;
 
     if (bConvert) {
         m_pIC->memorize();
         m_pIC->getSelectedSentence(bs);
-        m_pWinHandler->commit(bs.c_str());
+        handlerCommit(bs.c_str());
     } else {
         bs += m_pPySegmentor->getInputBuffer();
-        m_pWinHandler->commit(bs.c_str());
+        handlerCommit(bs.c_str());
     }
 }
 
@@ -699,38 +687,44 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
         // make m_candiList empty
         // 0 or space choices should commit previous selected candidates
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        _doCommit(candiIdx);
+        _doCommit();
         clearIC();
         return;
     }
 
     candiIdx += m_candiPageFirst;
-    int sentenceIdx = candiIdx;
-    int tailIdx = candiIdx - m_sentences.size();
-    int wordIdx = candiIdx - m_sentences.size() - m_tails.size();
+    if (candiIdx >= m_uiCandidateList.total()) {
+        return;
+    }
+    int idx = m_uiCandidateList.getUserIndex(candiIdx);
+    int type = m_uiCandidateList.getCandiTypeVec()[candiIdx];
     bool selected = false;
 
-    if (candiIdx < (int) m_sentences.size()) {
+    if (type == ICandidateList::BEST_TAIL) {
         // commit the best sentence
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
-        // get the rank of that sentence
-        int rank = m_sentences[sentenceIdx].first;
-        m_pIC->selectSentence(rank);
-        _doCommit(candiIdx);
+        // get the rank of that sentence and select it
+        m_pIC->selectSentence(m_sentences[idx].first);
+        _doCommit();
         clearIC();
-    } else if (candiIdx < (int) (m_sentences.size() + m_tails.size())) {
-        CCandidates& tail = m_tails[tailIdx].second;
+    } else if (type == ICandidateList::OTHER_BEST_TAIL) {
+        CCandidates& tail = m_tails[idx].second;
         for (size_t i = 0; i < tail.size(); i++) {
             m_pIC->makeSelection(tail[i]);
         }
         m_candiFrIdx = tail.back().m_end;
         selected = true;
-    } else if (candiIdx < (int) _candidateListSize()) {
-        CCandidate& candi = m_candiList[wordIdx];
+    } else if (type == ICandidateList::BEST_WORD
+               || type == ICandidateList::NORMAL_WORD) {
+        CCandidate& candi = m_candiList[idx];
         m_pIC->makeSelection(candi);
         m_candiFrIdx = candi.m_end;
         selected = true;
+    } else if (type == ICandidateList::PLUGIN_TAIL) {
+        handlerCommit(m_uiCandidateList.getCandiStrings()[candiIdx]);
+        clearIC();
     }
+
     if (selected) {
         mask |= PREEDIT_MASK | CANDIDATE_MASK;
         if (m_cursorFrIdx < m_candiFrIdx)
@@ -745,7 +739,7 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
         }
 
         if (m_candiFrIdx == m_pIC->getLastFrIdx()) {
-            _doCommit(candiIdx);
+            _doCommit();
             clearIC();
         } else {
             m_candiPageFirst = 0;
@@ -758,16 +752,18 @@ void
 CIMIClassicView::_deleteCandidate(int candiIdx, unsigned& mask)
 {
     candiIdx += m_candiPageFirst;
-    int wordIdx = candiIdx - m_sentences.size() - m_tails.size();
+    int idx = m_uiCandidateList.getUserIndex(candiIdx);
+    int type = m_uiCandidateList.getCandiTypeVec()[candiIdx];
 
-    if (candiIdx < (int) m_sentences.size()) {
+    if (type == ICandidateList::BEST_TAIL) {
         // try to remove candidate 0 which is a calculated sentence
         std::vector<unsigned> wids;
         m_pIC->getSelectedSentence(wids, m_candiFrIdx);
         m_pIC->removeFromHistoryCache(wids);
-    } else if (candiIdx >= (int) (m_sentences.size() + m_tails.size())) {
+    } else if (type == ICandidateList::BEST_WORD
+               || type == ICandidateList::NORMAL_WORD) {
         // remove an ordinary candidate
-        CCandidate& candi = m_candiList[wordIdx];
+        CCandidate& candi = m_candiList[idx];
         m_pIC->deleteCandidate(candi);
     }
 

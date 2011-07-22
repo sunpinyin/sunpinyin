@@ -42,6 +42,8 @@
 #include "imi_view.h"
 #include "imi_view_classic.h"
 
+#include "imi_plugin.h"
+
 // #pragma setlocale("zh_CN.UTF-8")
 
 CHotkeyProfile::CHotkeyProfile()
@@ -100,4 +102,102 @@ CIMIView::getStatusAttrValue(int key)
         return (m_bFullSymbol) ? 1 : 0;
     }
     return 0;
+}
+
+void
+CIMIView::handlerUpdatePreedit(const IPreeditString* ppd)
+{
+    if (m_pWinHandler == NULL || ppd == NULL) {
+        return;
+    }
+    // nothing to do here for plugins
+    m_pWinHandler->updatePreedit(ppd);
+}
+
+void
+CIMIView::_pluginProvideCandidates(wstring preedit, ICandidateList* pcl)
+{
+    CIMIPluginManager& manager = AIMIPluginManager::instance();
+    if (preedit.size() == 0) {
+        return;
+    }
+
+    for (size_t i = 0; i < manager.getPluginSize(); i++) {
+        CIMIPlugin* plugin = manager.getPlugin(i);
+        int wait_time = -1;
+        TPluginCandidates candidates = plugin->provide_candidates(preedit,
+                                                                  &wait_time);
+        if (wait_time != 0) {
+            manager.markWaitTime(wait_time);
+            continue;
+        }
+
+        for (size_t j = 0; j < candidates.size(); j++) {
+            const TPluginCandidateItem& item = candidates[j];
+            pcl->insertCandidate(item.m_candidate, ICandidateList::PLUGIN_TAIL,
+                                 item.m_rank);
+        }
+    }
+}
+
+void
+CIMIView::_pluginTranslateCandidate(ICandidateList* pcl)
+{
+    CIMIPluginManager& manager = AIMIPluginManager::instance();
+    ICandidateList::CCandiStrings& css = pcl->getCandiStrings();
+    if (css.size() == 0) {
+        return;
+    }
+
+    for (size_t i = 0; i < css.size(); i++) {
+        for (size_t j = 0; j < manager.getPluginSize(); j++) {
+            CIMIPlugin* plugin = manager.getPlugin(j);
+            int wait_time = -1;
+            wstring result = plugin->translate_candidate(css[i], &wait_time);
+            if (wait_time != 0) {
+                manager.markWaitTime(wait_time);
+            } else {
+                css[i] = result;
+            }
+        }
+    }
+}
+
+void
+CIMIView::handlerUpdateCandidates(IPreeditString* ppd,
+                                  ICandidateList* pcl)
+{
+    if (m_pWinHandler == NULL || pcl == NULL) {
+        return;
+    }
+    CIMIPluginManager& manager = AIMIPluginManager::instance();
+    _pluginProvideCandidates(ppd->getString(), pcl);
+    pcl->shrinkList();
+    _pluginTranslateCandidate(pcl);
+
+    m_pWinHandler->updateCandidates(pcl);
+    m_pWinHandler->enableDeferedUpdate(this, manager.getWaitTime());
+    manager.resetWaitTime();
+}
+
+void
+CIMIView::handlerCommit(const wstring& wstr)
+{
+    if (m_pWinHandler == NULL) {
+        return;
+    }
+    wstring commit_result = wstr;
+    CIMIPluginManager& manager = AIMIPluginManager::instance();
+    // re-run filter again
+    for (size_t i = 0; i < manager.getPluginSize(); i++) {
+        CIMIPlugin* plugin = manager.getPlugin(i);
+        int wait_time = -1;
+        wstring result = plugin->translate_candidate(commit_result, &wait_time);
+        if (wait_time != 0) {
+            continue;
+        }
+        commit_result = result;
+    }
+    m_pWinHandler->commit(commit_result.c_str());
+    m_pWinHandler->disableDeferedUpdate();
 }

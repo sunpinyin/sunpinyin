@@ -68,6 +68,9 @@ private:
     unsigned m_candiFrIdx;
     unsigned m_candiPageFirst;
 
+    CCandidateList m_uiCandidateList;
+    CPreEditString m_uiPreeditString;
+
     CCandidates m_candiList;
     std::vector<std::pair<int, wstring> > m_sentences;
     std::vector<std::pair<wstring, CCandidates> > m_tails;
@@ -85,7 +88,7 @@ private:
 
     void _commitChar(TWCHAR ch);
     void _commitString(const wstring& wstr);
-    void _doCommit(int candiIdx, bool bConvert = true);
+    void _doCommit(bool bConvert = true);
 
     unsigned _moveLeft(unsigned& mask, bool searchAgain = true);
     unsigned _moveLeftSyllable(unsigned& mask, bool searchAgain = true);

@@ -189,7 +189,7 @@ public:
 
     virtual void setStatusAttrValue(int key, int value);
     virtual int  getStatusAttrValue(int key);
-    virtual void updateWindows(unsigned mask) = 0;
+    virtual void updateWindows(unsigned mask = CANDIDATE_MASK) = 0;
 
     virtual void getPreeditString(IPreeditString& ps) = 0;
     virtual void getCandidateList(ICandidateList& cl, int start, int size) = 0;
@@ -197,6 +197,13 @@ public:
     virtual int  onCandidatePageRequest(int pgno, bool relative) = 0; //pgno == -1, relative == false means last page
     virtual int  onCandidateSelectRequest(int index) = 0;
 
+    virtual void handlerUpdatePreedit(const IPreeditString* ppd);
+    virtual void handlerUpdateCandidates(IPreeditString* ppd,
+                                         ICandidateList* pcl);
+    virtual void handlerCommit(const wstring& wstr);
+private:
+    void _pluginProvideCandidates(wstring preedit, ICandidateList* pcl);
+    void _pluginTranslateCandidate(ICandidateList* pcl);
 protected:
     CIMIContext        *m_pIC;
     CIMIWinHandler     *m_pWinHandler;

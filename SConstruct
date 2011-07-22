@@ -57,7 +57,8 @@ imesource=['src/portability.cpp',
            'src/ime-core/imi_funcobjs.cpp',
            'src/ime-core/imi_options.cpp',
            'src/ime-core/imi_option_event.cpp',
-           'src/ime-core/userdict.cpp']
+           'src/ime-core/userdict.cpp',
+           'src/ime-core/imi_plugin.cpp']
 
 headers=['src/slm/ids2ngram/idngram.h',
          'src/slm/ids2ngram/idngram_merge.h',
@@ -83,6 +84,7 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/ime-core/imi_funcobjs.h',
          'src/ime-core/imi_context.h',
          'src/ime-core/imi_winHandler.h',
+         'src/ime-core/imi_gtkHandler.h',
          'src/ime-core/userdict.h',
          'src/ime-core/imi_option_event.h',
          'src/ime-core/imi_data.h',
@@ -92,6 +94,7 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/ime-core/imi_options.h',
          'src/ime-core/imi_defines.h',
          'src/ime-core/imi_view.h',
+         'src/ime-core/imi_plugin.h',
          'src/portability.h',
          'src/pinyin/segmentor.h',
          'src/pinyin/shuangpin_seg.h',
@@ -217,6 +220,15 @@ def CheckPKG(context, name):
     context.Result(ret)
     return ret
 
+def CheckPython(context):
+    context.Message('Checking for Python library...')
+    ret = context.TryAction('python-config --prefix')[0]
+    context.Result(ret)
+    if ret:
+        context.env.MergeFlags(['!python-config --includes',
+                                '!python-config --libs'])
+    return ret
+
 def AppendEndianCheck(conf):
     conf.config_h_text += r'''
 
@@ -251,7 +263,8 @@ def AppendEndianCheck(conf):
 
 conf = env.Configure(clean=False, help=False, config_h='config.h',
                      custom_tests={'CheckPKGConfig' : CheckPKGConfig,
-                                   'CheckPKG' : CheckPKG})
+                                   'CheckPKG' : CheckPKG,
+                                   'CheckPython': CheckPython})
 
 def DoConfigure():
     if GetOption('clean'):
@@ -267,6 +280,8 @@ def DoConfigure():
             Exit(1)
         if not conf.CheckPKG('sqlite3'):
             Exit(1)
+
+    conf.CheckPython()
 
     conf.Define('ENABLE_NLS', 1)
     conf.Define('GETTEXT_PACKAGE', '"sunpinyin2"')

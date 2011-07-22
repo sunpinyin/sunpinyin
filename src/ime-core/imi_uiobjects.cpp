@@ -136,7 +136,7 @@ ICandidateList::~ICandidateList()
 }
 
 CCandidateList::CCandidateList()
-    : m_total(0), m_first(0)
+    : m_total(0), m_first(0), m_size(0)
 {
 }
 
@@ -215,18 +215,18 @@ CCandidateList::candiCharTypeAt(unsigned item, unsigned idx) const
 void
 CCandidateList::clear()
 {
-    m_first = m_total = 0;
+    m_size = m_first = m_total = 0;
     m_candiStrings.clear();
     m_candiTypes.clear();
     m_candiCharTypeVecs.clear();
+    m_candiUserIndex.clear();
+    m_candiStringsIndex.clear();
 }
 
 void
-CCandidateList::reserve(int count)
+CCandidateList::setSize(int count)
 {
-    m_candiStrings.reserve(count);
-    m_candiTypes.reserve(count);
-    m_candiCharTypeVecs.reserve(count);
+    m_size = count;
 }
 
 ICandidateList::CCandiStrings &
@@ -245,4 +245,63 @@ ICandidateList::CCharTypeVecs &
 CCandidateList::getCharTypeVecs()
 {
     return m_candiCharTypeVecs;
+}
+
+void
+CCandidateList::pushBackCandidate(wstring wstr, int type, int userIdx)
+{
+    if (m_candiStringsIndex.find(wstr) == m_candiStringsIndex.end()) {
+        m_candiStringsIndex.insert(std::make_pair(wstr, m_candiStrings.size()));
+        m_candiStrings.push_back(wstr);
+        m_candiTypes.push_back(type);
+        m_candiUserIndex.push_back(userIdx);
+    }
+}
+
+void
+CCandidateList::insertCandidate(wstring wstr, int type, int rank, int userIdx)
+{
+    if (rank > m_candiStrings.size()) {
+        rank = m_candiStrings.size();
+    }
+    if (m_candiStringsIndex.find(wstr) == m_candiStringsIndex.end()) {
+        m_candiStringsIndex.insert(std::make_pair(wstr, m_candiStrings.size()));
+        m_candiStrings.insert(m_candiStrings.begin() + rank, wstr);
+        m_candiTypes.insert(m_candiTypes.begin() + rank, type);
+        m_candiUserIndex.push_back(userIdx);
+    } else {
+        int idx = m_candiStringsIndex[wstr];
+        if (rank >= idx) {
+            return;
+        }
+        m_candiStringsIndex[wstr] = rank;
+        m_candiStrings.erase(m_candiStrings.begin() + idx);
+        m_candiTypes.erase(m_candiTypes.begin() + idx);
+        m_candiUserIndex.erase(m_candiUserIndex.begin() + idx);
+        m_candiStrings.insert(m_candiStrings.begin() + rank, wstr);
+        m_candiTypes.insert(m_candiTypes.begin() + rank, type);
+        m_candiUserIndex.insert(m_candiUserIndex.begin() + rank, userIdx);
+    }
+}
+
+void
+CCandidateList::shrinkList()
+{
+    if ((int) m_candiStrings.size() > m_first) {
+        m_candiStrings.erase(m_candiStrings.begin(),
+                             m_candiStrings.begin() + m_first);
+        m_candiTypes.erase(m_candiTypes.begin(),
+                           m_candiTypes.begin() + m_first);
+        m_candiUserIndex.erase(m_candiUserIndex.begin(),
+                               m_candiUserIndex.begin() + m_first);
+    }
+
+    if ((int) m_candiStrings.size() > m_size) {
+        m_candiStrings.erase(m_candiStrings.begin() + m_size,
+                             m_candiStrings.end());
+        m_candiTypes.erase(m_candiTypes.begin() + m_size,
+                           m_candiTypes.end());
+        m_candiUserIndex.erase(m_candiUserIndex.begin() + m_size,
+                               m_candiUserIndex.end());
+    }
 }

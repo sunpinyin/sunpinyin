@@ -250,7 +250,6 @@ CIMIPluginManager::CIMIPluginManager()
     : m_hasError(false), m_waitTime(0)
 {
     InitializePython();
-    puts(__FUNCTION__);
 }
 
 CIMIPluginManager::~CIMIPluginManager()

@@ -50,12 +50,12 @@ UpdateCallback(gpointer ptr)
 }
 
 // implement gtk loop mechanism
-class CIMIGtkHandler : public CIMIWinHandler
+class CIMIGlibHandler : public CIMIWinHandler
 {
 public:
-    CIMIGtkHandler() : m_sourceId(0) {}
+    CIMIGlibHandler() : m_sourceId(0) {}
 
-    virtual ~CIMIGtkHandler() {
+    virtual ~CIMIGlibHandler() {
         disableDeferedUpdate();
     }
 

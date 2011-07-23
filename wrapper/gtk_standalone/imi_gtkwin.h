@@ -46,9 +46,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <iconv.h>
 
-#include "imi_gtkHandler.h"
+#include "imi_glibHandler.h"
 
-class CGTKWinHandler : public CIMIGtkHandler
+class CGTKWinHandler : public CIMIGlibHandler
 {
 public:
     CGTKWinHandler(CIMIView* pv);

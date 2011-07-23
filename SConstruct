@@ -84,7 +84,7 @@ headers=['src/slm/ids2ngram/idngram.h',
          'src/ime-core/imi_funcobjs.h',
          'src/ime-core/imi_context.h',
          'src/ime-core/imi_winHandler.h',
-         'src/ime-core/imi_gtkHandler.h',
+         'src/ime-core/imi_glibHandler.h',
          'src/ime-core/userdict.h',
          'src/ime-core/imi_option_event.h',
          'src/ime-core/imi_data.h',
@@ -281,7 +281,8 @@ def DoConfigure():
         if not conf.CheckPKG('sqlite3'):
             Exit(1)
 
-    conf.CheckPython()
+    if not conf.CheckPython():
+        Exit(1)
 
     conf.Define('ENABLE_NLS', 1)
     conf.Define('GETTEXT_PACKAGE', '"sunpinyin2"')

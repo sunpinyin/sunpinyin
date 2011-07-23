@@ -65,9 +65,9 @@ public:
     /*@{*/
     virtual ~CIMIWinHandler() {};
 
-    virtual void enableDeferedUpdate(CIMIView* view, int waitTime) = 0;
-    virtual void disableDeferedUpdate() = 0;
-    virtual void doneDeferedUpdate() = 0;
+    virtual void enableDeferedUpdate(CIMIView* view, int waitTime) {};
+    virtual void disableDeferedUpdate() {};
+    virtual void doneDeferedUpdate() {};
 
     /** commit a string, normally the converted result */
     virtual void commit(const TWCHAR* wstr);

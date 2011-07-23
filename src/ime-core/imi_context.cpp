@@ -39,6 +39,7 @@
 #include <config.h>
 #endif
 
+#include <assert.h>
 #include <algorithm>
 #include "imi_defines.h"
 #include "imi_context.h"
@@ -738,7 +739,11 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
                     continue;
                 if (fr.m_bestWords[i].m_start != m_candiStarts)
                     continue;
-
+                
+                /* FIXME: m_pLexiconState might be NULL when n-best enabled */
+                if (!cp.m_candi.m_pLexiconState)
+                    continue;
+                
                 TLexiconState & lxst = *(cp.m_candi.m_pLexiconState);
                 int len = lxst.m_syls.size() - lxst.m_num_of_inner_fuzzies;
                 if (0 == len) len = 1;

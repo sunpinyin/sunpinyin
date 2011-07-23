@@ -105,8 +105,8 @@ CIMIContext::printLattice()
     }
 }
 
-CIMIContext::CIMIContext ()
-    : m_tailIdx(1), m_maxBest(2), m_pModel(NULL), m_pPinyinTrie(NULL),
+CIMIContext::CIMIContext()
+    : m_tailIdx(1), m_maxBest(1), m_pModel(NULL), m_pPinyinTrie(NULL),
       m_pUserDict(NULL), m_pHistory(NULL), m_historyPower(5), m_csLevel(0),
       m_bFullSymbolForwarding(false), m_bOmitPunct(false),
       m_pGetFullSymbolOp(NULL), m_bFullPunctForwarding(true),

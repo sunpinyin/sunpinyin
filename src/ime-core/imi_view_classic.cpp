@@ -141,26 +141,18 @@ CIMIClassicView::updateWindows(unsigned mask)
             continue;
         }
         // build all possible tails with best_rank
+        std::vector<CCandidates> tails =
+            m_pIC->getBestSentenceTails(best_rank, m_candiFrIdx);
         m_tails.clear();
-        if (best_rank >= 0) {
-            CCandidates sentence;
-            unsigned word_num = m_pIC->getBestSentence(sentence, best_rank,
-                                                       m_candiFrIdx);
-            unsigned tail_word_num = word_num;
-            while (tail_word_num > 1) {
-                tail_word_num -= std::min(tail_word_num / 8 + 1, tail_word_num);
-                if (tail_word_num <= 1) {
-                    break;
-                }
-                CCandidates tail(sentence.begin(),
-                                 sentence.begin() + tail_word_num);
-                wstring tail_text;
-                for (size_t i = 0; i < tail.size(); i++) {
-                    tail_text += tail[i].m_cwstr;
-                }
-                if (!_findCandidate(tail_text)) {
-                    m_tails.push_back(std::make_pair(tail_text, tail));
-                }
+        for (size_t i = 0; i < tails.size(); i++) {
+            CCandidates& tail = tails[i];
+            wstring tail_text;
+            // translate this tail into text
+            for (size_t j = 0; j < tail.size(); j++) {
+                tail_text += tail[j].m_cwstr;
+            }
+            if (!_findCandidate(tail_text)) {
+                m_tails.push_back(std::make_pair(tail_text, tail));
             }
         }
     }

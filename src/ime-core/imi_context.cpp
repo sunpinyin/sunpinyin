@@ -106,13 +106,13 @@ CIMIContext::printLattice()
 }
 
 CIMIContext::CIMIContext()
-    : m_tailIdx(1), m_maxBest(1), m_pModel(NULL), m_pPinyinTrie(NULL),
-      m_pUserDict(NULL), m_pHistory(NULL), m_historyPower(5), m_csLevel(0),
-      m_bFullSymbolForwarding(false), m_bOmitPunct(false),
-      m_pGetFullSymbolOp(NULL), m_bFullPunctForwarding(true),
-      m_pGetFullPunctOp(NULL), m_pPySegmentor(NULL),
-      m_bNonCompleteSyllable(true), m_bDynaCandiOrder(true),
-      m_candiStarts(0), m_candiEnds(0)
+    : m_tailIdx(1), m_maxBest(1), m_maxTailCandidateNum(0), m_pModel(NULL),
+      m_pPinyinTrie(NULL), m_pUserDict(NULL), m_pHistory(NULL),
+      m_historyPower(5), m_csLevel(0), m_bFullSymbolForwarding(false),
+      m_bOmitPunct(false), m_pGetFullSymbolOp(NULL),
+      m_bFullPunctForwarding(true), m_pGetFullPunctOp(NULL),
+      m_pPySegmentor(NULL), m_bNonCompleteSyllable(true),
+      m_bDynaCandiOrder(true), m_candiStarts(0), m_candiEnds(0)
 {
     m_lattice.resize(MAX_LATTICE_LENGTH);
     m_lattice[0].m_latticeStates.add(TLatticeState(-1.0, 0));
@@ -600,6 +600,30 @@ CIMIContext::_clearPaths()
 {
     m_path.clear();
     m_segPath.clear();
+}
+
+std::vector<CCandidates>
+CIMIContext::getBestSentenceTails(int rank, unsigned start, unsigned end)
+{
+    std::vector<CCandidates> result;
+    if (rank < 0) {
+        return result;
+    }
+
+    CCandidates sentence;
+    unsigned word_num = getBestSentence(sentence, rank, start, end);
+    unsigned tail_word_num = word_num;
+
+    while (tail_word_num > 1) {
+        unsigned dec = tail_word_num / (m_maxTailCandidateNum + 1) + 1;
+        tail_word_num -= std::min(dec, tail_word_num);
+        if (tail_word_num <= 1) {
+            break;
+        }
+        CCandidates tail(sentence.begin(), sentence.begin() + tail_word_num);
+        result.push_back(tail);
+    }
+    return result;
 }
 
 unsigned

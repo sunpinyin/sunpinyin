@@ -199,7 +199,8 @@ protected:
 
 typedef std::vector<unsigned> TPath;
 
-class CIMIContext {
+class CIMIContext
+{
 public:
     CIMIContext ();
     ~CIMIContext () { clear(); }
@@ -262,6 +263,10 @@ public:
         }
     }
 
+    void setMaxTailCandidateNum(size_t maxTailCandidateNum) {
+        m_maxTailCandidateNum = maxTailCandidateNum;
+    }
+
     size_t getNBest() { return m_nBest; }
     std::vector<TPath>& getPath(int rank) { return m_path; }
     std::vector<TPath>& getSegPath(int rank) { return m_segPath; }
@@ -287,6 +292,9 @@ public:
         }
         return m_segPath[0];
     }
+
+    std::vector<CCandidates> getBestSentenceTails(int rank, unsigned start,
+                                                  unsigned end = UINT_MAX);
 
     unsigned getBestSentence(CCandidates& result, int rank,
                              unsigned start = 0, unsigned end = UINT_MAX);
@@ -344,6 +352,8 @@ protected:
 
     size_t m_nBest;
     size_t m_maxBest;
+    size_t m_maxTailCandidateNum;
+
     std::vector<TPath> m_path;
     std::vector<TPath> m_segPath;
 

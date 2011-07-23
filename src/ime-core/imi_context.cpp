@@ -735,24 +735,22 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
         cp.m_candi.m_end = frIdx;
         if (fr.m_bwType != CLatticeFrame::NO_BESTWORD) {
             for (size_t i = 0; i < m_nBest; i++) {
-                if (fr.m_bestWords.find(i) == fr.m_bestWords.end())
-                    continue;
                 if (fr.m_bestWords[i].m_start != m_candiStarts)
                     continue;
-                
-                /* FIXME: m_pLexiconState might be NULL when n-best enabled */
-                if (!cp.m_candi.m_pLexiconState)
+                if (fr.m_bestWords.find(i) == fr.m_bestWords.end())
                     continue;
-                
-                TLexiconState & lxst = *(cp.m_candi.m_pLexiconState);
+
+                CCandidate candi = fr.m_bestWords[i];
+                TLexiconState & lxst = *(candi.m_pLexiconState);
                 int len = lxst.m_syls.size() - lxst.m_num_of_inner_fuzzies;
-                if (0 == len) len = 1;
-                cp.m_candi = fr.m_bestWords[i];
+                if (len == 0) len = 1;
+
+                cp.m_candi = candi;
                 cp.m_Rank =
                     TCandiRank(fr.m_bwType & CLatticeFrame::USER_SELECTED,
                                fr.m_bwType & CLatticeFrame::BESTWORD,
-                               0, false, 0);
-                candidates_map [cp.m_candi.m_cwstr] = cp;
+                               len, false, 0);
+                candidates_map [candi.m_cwstr] = cp;
             }
         }
 

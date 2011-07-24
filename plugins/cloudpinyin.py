@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
+from __future__ import with_statement
+from re import search
 from ast import literal_eval
 from threading import Thread, Lock
 from datetime import datetime, timedelta
@@ -30,21 +31,16 @@ class _Cache(object):
 			del self._data[preedit][rank]
 
 	def lookup(self, preedit):
-		self._lock.acquire()
-		if preedit in self._data:
-			result = self._data[preedit]
-			self._lock.release()
-			return result
-		self._lock.release()
+		with self._lock:
+			return self._data.get(preedit)
 
 	def insert(self, preedit, rank, candidate):
-		self._lock.acquire()
-		self._clean()
-		if preedit not in self._data:
-			self._data[preedit] = {rank : (datetime.now(), candidate)}
-		else:
-			self._data[preedit][rank] = (datetime.now(), candidate)
-		self._lock.release()
+		with self._lock:
+			self._clean()
+			if preedit not in self._data:
+				self._data[preedit] = {rank : (datetime.now(), candidate)}
+			else:
+				self._data[preedit][rank] = (datetime.now(), candidate)
 
 _cache = _Cache()
 
@@ -69,12 +65,10 @@ class _Fetcher(object):
 				pass
 
 	def fetch(self, preedit):
-		self._fetching_lock.acquire()
-		if preedit in self._fetching:
-			self._fetching_lock.release()
-			return
-		self._fetching.add(preedit)
-		self._fetching_lock.release()
+		with self._fetching_lock:
+			if preedit in self._fetching:
+				return
+			self._fetching.add(preedit)
 
 		for retry in range(0, self._MAX_RETRY):
 			try:
@@ -86,9 +80,8 @@ class _Fetcher(object):
 			except:
 				pass
 
-		self._fetching_lock.acquire()
-		self._fetching.remove(preedit)
-		self._fetching_lock.release()
+		with self._fetching_lock:
+			self._fetching.remove(preedit)
 
 class _SogouFetcher(_Fetcher):
 	_URL = 'http://web.pinyin.sogou.com/api/py?key=%s&query=%s'
@@ -96,13 +89,13 @@ class _SogouFetcher(_Fetcher):
 
 	def _do_fetch_key(self):
 		data = urlopen(self._KEY_URL).read()
-		return re.search('"(.+)"', data).group(1)
+		return search('"(.+)"', data).group(1)
 
 	def _do_fetch(self, preedit):
 		if not self._key:
 			return
 		result = urlopen(self._URL % (self._key, preedit)).read()
-		return re.search('"(.+?)\xef\xbc\x9a', unquote(result)).group(1)
+		return search('"(.+?)\xef\xbc\x9a', unquote(result)).group(1)
 
 class _QQFetcher(_Fetcher):
 	_URL = 'http://ime.qq.com/fcgi-bin/getword?key=%s&q=%s'
@@ -134,7 +127,7 @@ class _GoogleFetcher(_Fetcher):
 			return
 		return result[1][0][1][0]
 
-_fetchers = [_SogouFetcher(0), _QQFetcher(1), _GoogleFetcher(1)]
+_fetchers = [_SogouFetcher(0), _QQFetcher(1), _GoogleFetcher(2)]
 
 def provide_candidates(preedit):
 	preedit = preedit.replace(' ', '')

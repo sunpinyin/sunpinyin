@@ -85,7 +85,6 @@
 		A422A7CF0DCD694400B41288 /* CandidateWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateWindow.h; sourceTree = "<group>"; };
 		A422A7D00DCD694400B41288 /* CandidateWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateWindow.m; sourceTree = "<group>"; };
 		A44571AB0DBF42C200F793F9 /* macos_keycode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_keycode.h; sourceTree = "<group>"; };
-		A44C703B13D9BB010026694E /* imi_gtkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_gtkHandler.h; path = "ime-core/imi_gtkHandler.h"; sourceTree = "<group>"; };
 		A44C703C13D9BB010026694E /* imi_plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imi_plugin.cpp; path = "ime-core/imi_plugin.cpp"; sourceTree = "<group>"; };
 		A44C703D13D9BB010026694E /* imi_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imi_plugin.h; path = "ime-core/imi_plugin.h"; sourceTree = "<group>"; };
 		A44C703F13D9BC750026694E /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Python.framework; sourceTree = DEVELOPER_DIR; };
@@ -268,7 +267,6 @@
 		A47C4864105E86A2006D528B /* ime-core */ = {
 			isa = PBXGroup;
 			children = (
-				A44C703B13D9BB010026694E /* imi_gtkHandler.h */,
 				A44C703C13D9BB010026694E /* imi_plugin.cpp */,
 				A44C703D13D9BB010026694E /* imi_plugin.h */,
 				A4B664FE106D051D009BA1DB /* imi_option_event.cpp */,

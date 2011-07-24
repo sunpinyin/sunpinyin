@@ -104,6 +104,14 @@ bool CSunpinyinSessionWrapper::onConfigChanged (const COptionEvent& event)
     return false;
 }
 
+void CSunpinyinSessionWrapper::windowHandlerTimerCallback()
+{
+    if (isValid()) {
+        m_wh->doneDeferedUpdate();
+        m_pv->updateWindows();
+    }
+}
+
 void CSunpinyinSessionWrapper::apply_configuration()
 {
     m_hotkey_profile->setPunctSwitchKey(CKeyEvent(IM_VK_PERIOD, IM_VK_PERIOD, IM_CTRL_MASK));    

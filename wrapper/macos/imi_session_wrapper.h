@@ -90,6 +90,8 @@ public:
     bool onConfigChanged (const COptionEvent& event);
     
     void switchInputMode (bool isEnglish, ECommitPolicies policy);
+    
+    void windowHandlerTimerCallback ();
 
 private:
     void apply_configuration();

@@ -295,6 +295,12 @@ Here are the three approaches:
     }
 }
 
+-(void)windowHandlerTimerCallback:(NSTimer*)timer
+{
+    if (timer)
+        _session->windowHandlerTimerCallback();
+}
+
 @end // SunPinyinController 
 
 

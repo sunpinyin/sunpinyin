@@ -2,7 +2,7 @@ import platform
 import os
 import sys
 
-version="2.0.3"
+version="2.0.4"
 abi_major = 3
 abi_minor = 0
 

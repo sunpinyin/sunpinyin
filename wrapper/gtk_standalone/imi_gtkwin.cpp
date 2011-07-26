@@ -216,6 +216,9 @@ CGTKWinHandler::createWindows()
     box1 = gtk_hbox_new(FALSE, 1);
     gtk_box_pack_start(GTK_BOX(box), box1, TRUE, TRUE, 1);
 
+    m_CloudSpinner = gtk_spinner_new();
+    gtk_box_pack_start(GTK_BOX(box1), m_CloudSpinner, FALSE, FALSE, 2);
+
     frame = gtk_frame_new(NULL);
     chedit = gtk_label_new("最佳整句候选结果");
     gtk_container_add(GTK_CONTAINER(frame), chedit);
@@ -245,6 +248,27 @@ CGTKWinHandler::createWindows()
     gtk_widget_show_all(m_pWin);
 
     return true;
+}
+
+void CGTKWinHandler::enableDeferedUpdate(CIMIView* view, int waitTime)
+{
+    CIMIGlibHandler::enableDeferedUpdate(view, waitTime);
+    if (waitTime > 0)
+    {
+        gtk_spinner_start(GTK_SPINNER(m_CloudSpinner));
+    }
+}
+
+void CGTKWinHandler::disableDeferedUpdate()
+{
+    CIMIGlibHandler::disableDeferedUpdate();
+    gtk_spinner_stop(GTK_SPINNER(m_CloudSpinner));
+}
+
+void CGTKWinHandler::doneDeferedUpdate()
+{
+    CIMIGlibHandler::doneDeferedUpdate();
+    gtk_spinner_stop(GTK_SPINNER(m_CloudSpinner));
 }
 
 void

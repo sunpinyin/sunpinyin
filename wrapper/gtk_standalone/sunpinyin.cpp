@@ -122,8 +122,8 @@ int main(int argc, char* argv[])
     AQuanpinSchemePolicy::instance().setFuzzySegmentation(true);
 
     // test plugin
-    // CIMIPluginManager& manager = AIMIPluginManager::instance();
-    // manager.loadPlugin("someplugin.py");
+    CIMIPluginManager& manager = AIMIPluginManager::instance();
+    manager.loadPlugin("cloudpinyin.py");
 
     //AShuangpinSchemePolicy::instance().setShuangpinType(ZIGUANG);
     CIMIView *pv = factory.createSession ();

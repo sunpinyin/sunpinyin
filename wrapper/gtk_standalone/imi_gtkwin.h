@@ -59,6 +59,10 @@ public:
     /*@{*/
     virtual ~CGTKWinHandler();
 
+    virtual void enableDeferedUpdate(CIMIView* view, int waitTime);
+    virtual void disableDeferedUpdate();
+    virtual void doneDeferedUpdate();
+
     /** Update window's preedit area using a GTK widget. */
     virtual void updatePreedit(const IPreeditString* ppd);
 
@@ -101,6 +105,9 @@ protected:
 
     /** Main window */
     GtkWidget          *m_pWin;
+
+    /** Cloud spinner */
+    GtkWidget          *m_CloudSpinner;
 
     /** Candidate window */
     GtkWidget          *m_CandidataArea;

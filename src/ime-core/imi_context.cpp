@@ -774,7 +774,7 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
                     TCandiRank(fr.m_bwType & CLatticeFrame::USER_SELECTED,
                                fr.m_bwType & CLatticeFrame::BESTWORD,
                                len, false, 0);
-                candidates_map [candi.m_cwstr] = cp;
+                candidates_map[candi.m_cwstr] = cp;
             }
         }
 
@@ -860,11 +860,11 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
          candidates_it != candidates_map.end(); ++candidates_it) {
         vec.push_back(TCandiPairPtr(&(candidates_it->second)));
     }
-    std::make_heap(vec.begin(), vec.end());
-    std::sort_heap(vec.begin(), vec.end());
 
-    for (int i = 0, sz = vec.size(); i < sz; ++i)
+    std::sort(vec.begin(), vec.end());
+    for (size_t i = 0; i < vec.size(); i++) {
         result.push_back(vec[i].m_Ptr->m_candi);
+    }
 }
 
 unsigned

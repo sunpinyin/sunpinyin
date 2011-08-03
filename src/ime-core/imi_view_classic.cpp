@@ -80,25 +80,6 @@ CIMIClassicView::clearIC(void)
     return 0;
 }
 
-bool
-CIMIClassicView::_findCandidate(wstring sentence)
-{
-    // TODO: linear search is too slow?
-    for (size_t i = 0; i < m_candiList.size(); i++) {
-        if (sentence != m_candiList[i].m_cwstr) {
-            continue;
-        }
-        // remove the word in the candidate list, this candidate will appear in
-        // the front
-        if (i < top_candidate_threshold) {
-            m_candiList.erase(m_candiList.begin() + i);
-            return false;
-        }
-        return true;
-    }
-    return false;
-}
-
 void
 CIMIClassicView::updateWindows(unsigned mask)
 {
@@ -131,7 +112,6 @@ CIMIClassicView::updateWindows(unsigned mask)
             for (size_t j = 0; j < m_sentences.size(); j++) {
                 if (sentence == m_sentences[j].second) goto pass;
             }
-            if (_findCandidate(sentence)) goto pass;
 
             if (best_rank < 0 && word_num > 1) {
                 best_rank = i;
@@ -150,9 +130,6 @@ CIMIClassicView::updateWindows(unsigned mask)
             // translate this tail into text
             for (size_t j = 0; j < tail.size(); j++) {
                 tail_text += tail[j].m_cwstr;
-            }
-            if (!_findCandidate(tail_text)) {
-                m_tails.push_back(std::make_pair(tail_text, tail));
             }
         }
     }

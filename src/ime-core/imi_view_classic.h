@@ -78,7 +78,6 @@ private:
     size_t _candidateListSize() const
     { return m_candiList.size() + m_sentences.size() + m_tails.size(); }
 
-    bool _findCandidate(wstring sentence);
     void _insert(unsigned keyvalue, unsigned& mask);
     void _erase(bool backward, unsigned& mask);
 

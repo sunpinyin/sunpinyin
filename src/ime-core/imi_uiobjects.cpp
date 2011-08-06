@@ -261,7 +261,7 @@ CCandidateList::pushBackCandidate(wstring wstr, int type, int userIdx)
 void
 CCandidateList::insertCandidate(wstring wstr, int type, int rank, int userIdx)
 {
-    if (rank > m_candiStrings.size()) {
+    if (rank > (int) m_candiStrings.size()) {
         rank = m_candiStrings.size();
     }
     if (m_candiStringsIndex.find(wstr) == m_candiStringsIndex.end()) {

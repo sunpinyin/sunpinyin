@@ -417,6 +417,9 @@ CIMIClassicView::getPreeditString(IPreeditString& ps)
         }
         last = *it;
     }
+    // segment path might be missing or incomplete, therefore append the input
+    // buffer left to wstr
+    wstr.insert(wstr.end(), pystr.begin() + last, pystr.end());
 
     ps.setCaret(caret);
 }

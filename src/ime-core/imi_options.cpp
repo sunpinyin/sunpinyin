@@ -83,7 +83,7 @@ CSimplifiedChinesePolicy::loadResources()
     }
 
     char * tmp = strdup(m_user_data_dir.c_str());
-    suc &= createDirectory(tmp);
+    createDirectory(tmp);
     free(tmp);
 
     std::string history_path = m_user_data_dir + "/history";

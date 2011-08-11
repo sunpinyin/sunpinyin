@@ -52,10 +52,6 @@ CUserDict::load(const char  *fname)
 
     m_fname = strdup(fname);
     rc = _copyDb(Load);
-    if (rc != SQLITE_OK) {
-        sqlite3_close(m_db);
-        return false;
-    }
 
     return _createTable() && _createIndexes();
 }

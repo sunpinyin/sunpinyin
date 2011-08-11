@@ -182,7 +182,7 @@ CBigramHistory::loadFromFile(const char *fname)
     bool suc = false;
     int fd = open(fname, O_CREAT, 0600);
     if (fd == -1) {
-        perror("fopen bi-gram");
+        suc = loadFromBuffer(NULL, 0);
         return suc;
     }
 

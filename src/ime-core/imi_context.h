@@ -256,6 +256,7 @@ public:
 
     bool searchFrom(unsigned from = 1);
 
+    size_t getMaxBest() const { return m_maxBest; }
     void setMaxBest(size_t maxBest) {
         m_maxBest = maxBest;
         for (int i = 0; i < MAX_LATTICE_LENGTH; i++) {
@@ -263,6 +264,7 @@ public:
         }
     }
 
+    size_t getMaxTailCandidateNum() const { return m_maxTailCandidateNum; }
     void setMaxTailCandidateNum(size_t maxTailCandidateNum) {
         m_maxTailCandidateNum = maxTailCandidateNum;
     }

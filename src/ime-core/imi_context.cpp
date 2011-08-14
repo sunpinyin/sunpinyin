@@ -759,12 +759,14 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
         cp.m_candi.m_end = frIdx;
         if (fr.m_bwType != CLatticeFrame::NO_BESTWORD) {
             for (size_t i = 0; i < m_nBest; i++) {
-                if (fr.m_bestWords[i].m_start != m_candiStarts)
-                    continue;
                 if (fr.m_bestWords.find(i) == fr.m_bestWords.end())
                     continue;
-
                 CCandidate candi = fr.m_bestWords[i];
+                if (candi.m_start != m_candiStarts)
+                    continue;
+                if (candi.m_pLexiconState == NULL)
+                    continue;
+
                 TLexiconState & lxst = *(candi.m_pLexiconState);
                 int len = lxst.m_syls.size() - lxst.m_num_of_inner_fuzzies;
                 if (len == 0) len = 1;

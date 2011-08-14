@@ -452,6 +452,11 @@ class PunctMappingSetupDialog (MultiCheckDialog):
                                   option_klass=PunctMapping)
 
 class MainWindow():
+    SPECIAL_OBJECTS = [
+        'pymodel', 'memory_adjustment', 'candidate_adjustment',
+        'max_best_adjustment', 'max_tail_candidate_adjustment',
+        ]
+
     def __init__ (self):
         self.__bus = ibus.Bus()
         self.__config = self.__bus.get_config()
@@ -466,7 +471,8 @@ class MainWindow():
         self.__init_gettext()
         xml_file = path.join(path.dirname(__file__), XML_FILE)
         self.__xml = gtk.Builder()
-        self.__xml.add_objects_from_file(xml_file, [name, 'pymodel', 'memory_adjustment', 'candidate_adjustment'])
+        self.__xml.add_objects_from_file(xml_file, self.SPECIAL_OBJECTS)
+        self.__xml.add_objects_from_file(xml_file, [name])
         self.__xml.connect_signals(self)
         self.__init_options()
         self.window = self.__xml.get_object(name)
@@ -486,6 +492,8 @@ class MainWindow():
         self.__options = [
             TrivalOption("General/MemoryPower", 3, self.__xml),
             TrivalOption("General/PageSize", 10, self.__xml),
+            TrivalOption("General/MaxBest", 1, self.__xml),
+            TrivalOption("General/MaxTailCandidate", 0, self.__xml),
             
             RadioOption("General/InitialStatus/Mode", 'Chinese', ['Chinese', 'English'], self.__xml),
             RadioOption("General/InitialStatus/Punct", 'Full', ['Full', 'Half'], self.__xml),

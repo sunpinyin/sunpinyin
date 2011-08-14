@@ -131,6 +131,7 @@ CIMIClassicView::updateWindows(unsigned mask)
             for (size_t j = 0; j < tail.size(); j++) {
                 tail_text += tail[j].m_cwstr;
             }
+            m_tails.push_back(std::make_pair(tail_text, tail));
         }
     }
 

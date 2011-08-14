@@ -244,6 +244,10 @@ SunPinyinEngine::onConfigChanged(const COptionEvent& event)
         update_cand_window_size();
     } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
         update_charset_level();
+    } else if (event.name == CONFIG_GENERAL_MAX_BEST) {
+        update_max_best();
+    } else if (event.name == CONFIG_GENERAL_MAX_TAIL_CANDIDATE) {
+        update_max_tail_candidate();
     } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH) {
         update_mode_key();
     } else if (event.name == CONFIG_KEYBOARD_PUNCT_SWITCH) {
@@ -270,6 +274,8 @@ SunPinyinEngine::update_config()
 {
     update_history_power();
     update_cand_window_size();
+    update_max_best();
+    update_max_tail_candidate();
     update_charset_level();
     update_page_key_minus();
     update_page_key_comma();
@@ -350,7 +356,7 @@ SunPinyinEngine::update_preedit_string(const IPreeditString& preedit)
 
         ibus_engine_update_preedit_text(m_engine,
                                         ibus_text_new_from_ucs4(embed_cstr),
-                                        preedit.caret() - embed_pos, TRUE);
+                                        preedit.caret(), TRUE);
 
     } else {
         ibus_engine_hide_auxiliary_text(m_engine);
@@ -485,6 +491,27 @@ void
 SunPinyinEngine::update_smart_punc()
 {
     m_pv->setSmartPunct(m_config.get(CONFIG_KEYBOARD_SMARK_PUNCT, true));
+}
+
+void
+SunPinyinEngine::update_max_best()
+{
+    if (m_pv->getIC() == NULL) {
+        return;
+    }
+    int oldval = (int) m_pv->getIC()->getMaxBest();
+    m_pv->getIC()->setMaxBest(m_config.get(CONFIG_GENERAL_MAX_BEST, oldval));
+}
+
+void
+SunPinyinEngine::update_max_tail_candidate()
+{
+    if (m_pv->getIC() == NULL) {
+        return;
+    }
+    int oldval = (int) m_pv->getIC()->getMaxTailCandidateNum();
+    m_pv->getIC()->setMaxTailCandidateNum(
+        m_config.get(CONFIG_GENERAL_MAX_TAIL_CANDIDATE, oldval));
 }
 
 string_pairs parse_pairs(const std::vector<std::string>& strings)

@@ -183,6 +183,8 @@ public:
                                    int userIdx = -1) = 0;
     virtual void insertCandidate(wstring wstr, int type, int rank,
                                  int userIdx = -1) = 0;
+    virtual void insertCandidateNoDedup(wstring wstr, int type, int rank,
+                                        int userIdx = -1) = 0;
 
     virtual CCandiStrings &     getCandiStrings() = 0;
     virtual CCandiTypeVec &     getCandiTypeVec() = 0;
@@ -220,6 +222,8 @@ public:
     virtual void pushBackCandidate(wstring wstr, int type, int userIdx = -1);
     virtual void insertCandidate(wstring wstr, int type, int rank,
                                  int userIdx = -1);
+    virtual void insertCandidateNoDedup(wstring wstr, int type, int rank,
+                                        int userIdx = -1);
 
     virtual CCandiStrings &     getCandiStrings();
     virtual CCandiTypeVec &     getCandiTypeVec();

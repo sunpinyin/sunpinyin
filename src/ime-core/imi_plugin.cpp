@@ -156,6 +156,26 @@ PyUnicode_AsWString(PyObject* obj)
     return res;
 }
 
+static void
+ExtractSequence(TPluginCandidates& result, PyObject* py_seq)
+{
+    Py_ssize_t len = PySequence_Length(py_seq);
+    for (Py_ssize_t i = 0; i < len; i++) {
+        PyObject* tuple_item_obj = PySequence_GetItem(py_seq, i);
+        if (!PyTuple_Check(tuple_item_obj)) {
+            continue;
+        }
+        PyObject* rank_obj = PyTuple_GetItem(tuple_item_obj, 0);
+        PyObject* candi_obj = PyTuple_GetItem(tuple_item_obj, 1);
+        if (rank_obj == NULL || !PyInt_Check(rank_obj) || candi_obj == NULL
+            || !PyUnicode_Check(candi_obj)) {
+            continue;
+        }
+
+        result.push_back(TPluginCandidateItem((int) PyInt_AsLong(rank_obj),
+                                              PyUnicode_AsWString(candi_obj)));
+    }
+}
 
 TPluginCandidates
 CIMIPythonPlugin::provide_candidates(const TPluginPreedit& str,
@@ -177,24 +197,16 @@ CIMIPythonPlugin::provide_candidates(const TPluginPreedit& str,
         *waitTime = -1;
     } else if (PyInt_Check(ret_obj)) {
         *waitTime = (int) PyInt_AsLong(ret_obj);
-    } else if (PySequence_Check(ret_obj)) {
-        // extract all items inside this sequence.
-        Py_ssize_t len = PySequence_Length(ret_obj);
-        for (Py_ssize_t i = 0; i < len; i++) {
-            PyObject* tuple_item_obj = PySequence_GetItem(ret_obj, i);
-            if (!PyTuple_Check(tuple_item_obj)) {
-                continue;
-            }
-            PyObject* rank_obj = PyTuple_GetItem(tuple_item_obj, 0);
-            PyObject* candi_obj = PyTuple_GetItem(tuple_item_obj, 1);
-            if (rank_obj == NULL || !PyInt_Check(rank_obj) || candi_obj == NULL
-                || !PyUnicode_Check(candi_obj)) {
-                continue;
-            }
-
-            res.push_back(TPluginCandidateItem((int) PyInt_AsLong(rank_obj),
-                                               PyUnicode_AsWString(candi_obj)));
+    } else if (PyTuple_Check(ret_obj)) {
+        PyObject* time_obj = PyTuple_GetItem(ret_obj, 0);
+        PyObject* seq_obj = PyTuple_GetItem(ret_obj, 1);
+        if (PyInt_Check(time_obj) && PyList_Check(seq_obj)) {
+            *waitTime = (int) PyInt_AsLong(time_obj);
+            ExtractSequence(res, seq_obj);
         }
+    } else if (PyList_Check(ret_obj)) {
+        // extract all items inside this sequence.
+        ExtractSequence(res, ret_obj);
     }
     Py_XDECREF(str_obj);
     Py_XDECREF(ret_obj);

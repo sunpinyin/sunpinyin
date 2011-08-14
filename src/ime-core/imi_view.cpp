@@ -134,8 +134,9 @@ CIMIView::_pluginProvideCandidates(wstring preedit, ICandidateList* pcl)
 
         for (size_t j = 0; j < candidates.size(); j++) {
             const TPluginCandidateItem& item = candidates[j];
-            pcl->insertCandidate(item.m_candidate, ICandidateList::PLUGIN_TAIL,
-                                 item.m_rank);
+            pcl->insertCandidateNoDedup(item.m_candidate,
+                                        ICandidateList::PLUGIN_TAIL,
+                                        item.m_rank);
         }
     }
 }

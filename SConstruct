@@ -6,7 +6,7 @@ version="2.0.4"
 abi_major = 3
 abi_minor = 0
 
-cflags='-O2 -Wall -g -pipe '
+cflags='-g -Wall -pipe -DDEBUG'
 
 slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
            'src/slm/ids2ngram/idngram_merge.cpp',

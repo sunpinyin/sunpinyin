@@ -492,17 +492,17 @@ CIMIContext::_transferBetween(unsigned start, unsigned end,
     CLatticeStates::iterator it = start_fr.m_latticeStates.begin();
     CLatticeStates::iterator ite = start_fr.m_latticeStates.end();
 
-    // for 1-length lattice states, replace ending_word_id (comma)
-    // with none_word_id (recognized by CThreadSlm)
-    if (wid == ENDING_WORD_ID && it != ite && it->m_pBackTraceNode
-        && it->m_pBackTraceNode->m_frIdx == 0)
-        wid = NONE_WORD_ID;
-
     for (; it != ite; ++it) {
+        // for 1-length lattice states, replace ending_word_id (comma)
+        // with none_word_id (recognized by CThreadSlm)
+	unsigned _wid = wid;
+        if (wid == ENDING_WORD_ID && it->m_pBackTraceNode && it->m_pBackTraceNode->m_frIdx == 0)
+            _wid = NONE_WORD_ID;
+
         node.m_pBackTraceNode = &(*it);
         node.m_backTraceWordId = wid;
 
-        double ts = m_pModel->transfer(it->m_slmState, wid, node.m_slmState);
+        double ts = m_pModel->transfer(it->m_slmState, _wid, node.m_slmState);
         m_pModel->historify(node.m_slmState);
 
         // backward to psuedo root, so wid is probably a user word,
@@ -513,7 +513,7 @@ CIMIContext::_transferBetween(unsigned start, unsigned end,
             node.m_slmState.setIdx(wid);  // an psuedo unigram node state
 
         if (m_pHistory) {
-            unsigned history[2] = { m_pModel->lastWordId(it->m_slmState), wid };
+            unsigned history[2] = { m_pModel->lastWordId(it->m_slmState), _wid };
             double hpr = m_pHistory->pr(history, history + 2);
             ts = weight_s * ts + weight_h * hpr;
         }

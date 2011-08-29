@@ -96,7 +96,7 @@ void CIMKitWindowHandler::updateStatus(int key, int value)
 
 void CIMKitWindowHandler::enableDeferedUpdate(CIMIView* view, int waitTime) 
 {
-    if (_timer == 0 && waitTime > 0) {
+    if ((_timer == 0 || ![_timer isValid]) && waitTime > 0) {
         _timer = [NSTimer scheduledTimerWithTimeInterval:waitTime 
                           target:_ic 
                           selector:@selector(windowHandlerTimerCallback) 

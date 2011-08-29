@@ -57,30 +57,25 @@ class NGram:
         return "ngram: " + self.key.__str__() + " freq: " + str(self.freq)
 
 def read_ch_sentences(file):
-    nesting = 0
-    buf = ""
+    buf = []
     for line in file:
         if buf and (line[0].isspace() or len(buf) <= 40):
-            yield buf
-            buf, nesting = "", 0
+            yield ''.join(buf)
+            buf = []
 
         for ch in line:
-            if ch.isspace():
+            if ch.isspace() or ch == u'—':
                 continue
 
-            if ch in u"（“《":
-		nesting +=1
-            elif ch in u"）”》":
-		nesting -=1
-
-            if ch in u"；。！？…" and nesting == 0:
+            if ch in u"；。！？…—":
                 if buf:
-                    yield buf + ch
-                    buf, nesting = "", 0
+                    buf.append(ch)
+                    yield ''.join (buf)
+                    buf = []
             else:
-                buf += ch
+                buf.append (ch)
     if buf:
-        yield buf
+        yield ''.join (buf)
 
 def mergesort (iters):
         heap=[]

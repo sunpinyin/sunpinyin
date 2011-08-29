@@ -410,6 +410,7 @@ CIMIContext::searchFrom(unsigned idx)
             // syllables
             int maxsz = it->m_bFuzzy ? MAX_LEXICON_TRIES /
                         2 : MAX_LEXICON_TRIES;
+
             double ic = it->m_bFuzzy ? 0.5 : 1.0;
 
             int sz = (int) word_num < maxsz ? (int) word_num : maxsz;
@@ -417,7 +418,7 @@ CIMIContext::searchFrom(unsigned idx)
             while (count < sz && i < sz && (words[i].m_bSeen || count < 2)) {
                 if (m_csLevel >= words[i].m_csLevel) {
                     _transferBetween(lxst.m_start, idx, &lxst, words[i].m_id,
-                                     ic);
+                                     ic * exp2(-(words[i].m_cost)));
                     ++count;
                 }
                 i++;

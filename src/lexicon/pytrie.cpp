@@ -141,6 +141,8 @@ CPinyinTrie::print(const TNode* pRoot, std::string& prefix, FILE *fp) const
                 fprintf(fp, "[x]");
             else
                 fprintf(fp, "[o]");
+
+            fprintf(fp, "(%d)", pwids[i].m_cost);
         }
         fprintf(fp, "\n");
     }

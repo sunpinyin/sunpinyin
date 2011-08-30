@@ -372,10 +372,10 @@ CIMIContext::_forwardTail(unsigned i, unsigned j)
     fr.m_lexiconStates.push_back(TLexiconState(i, ENDING_WORD_ID));
 }
 
-double exp2_tbl[32] = {1, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.00195312, 0.000976562,
-                       0.000488281, 0.000244141, 0.00012207, 6.10352e-05, 3.05176e-05, 1.52588e-05, 7.62939e-06,
-                       3.8147e-06, 1.90735e-06, 9.53674e-07, 4.76837e-07, 2.38419e-07, 1.19209e-07, 5.96046e-08,
-                       2.98023e-08, 1.49012e-08, 7.45058e-09, 3.72529e-09, 1.86265e-09, 9.31323e-10, 4.65661e-10,};
+double exp2_tbl[32] = {exp2(0),  exp2(1),  exp2(2),  exp2(3),  exp2(4),  exp2(5),  exp2(6),  exp2(7),
+                       exp2(8),  exp2(9),  exp2(10), exp2(11), exp2(12), exp2(13), exp2(14), exp2(15),
+                       exp2(16), exp2(17), exp2(18), exp2(19), exp2(20), exp2(21), exp2(22), exp2(23),
+                       exp2(24), exp2(25), exp2(26), exp2(27), exp2(28), exp2(29), exp2(30), exp2(31),};
 
 bool
 CIMIContext::searchFrom(unsigned idx)

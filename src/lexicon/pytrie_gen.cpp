@@ -347,13 +347,12 @@ CPinyinTrieMaker::addCombinedTransfers(TNode *pnode,
 
             for (; wit != wite; ++wit) {
                 CWordSet::iterator tmp = p->m_WordIdSet.find (*wit);
+
                 if (tmp == p->m_WordIdSet.end()) {
                     p->m_WordIdSet.insert (*wit);
-                } else {
-                    if (tmp->anony.m_cost > wit->anony.m_cost) {
-                        p->m_WordIdSet.erase (tmp);
-                        p->m_WordIdSet.insert (*wit);
-                    }
+                } else if (tmp->anony.m_cost > wit->anony.m_cost) {
+                    p->m_WordIdSet.erase (tmp);
+                    p->m_WordIdSet.insert (*wit);
                 }
             }
         }

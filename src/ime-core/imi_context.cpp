@@ -969,7 +969,7 @@ CIMIContext::_saveUserDict()
         i = fr.m_selWord.m_start;
     }
 
-    if (has_user_selected && !syls.empty()) {
+    if (has_user_selected && syls.size() > 1) {
         wstring phrase;
         getSelectedSentence (phrase, 0, i);
         m_pUserDict->addWord (syls, phrase);

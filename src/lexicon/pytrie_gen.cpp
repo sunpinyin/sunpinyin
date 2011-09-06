@@ -341,9 +341,22 @@ CPinyinTrieMaker::addCombinedTransfers(TNode *pnode,
 
         CNodeSet::const_iterator it = nodes.begin();
         CNodeSet::const_iterator ite = nodes.end();
-        for (; it != ite; ++it)
-            p->m_WordIdSet.insert(
-                (*it)->m_WordIdSet.begin(), (*it)->m_WordIdSet.end());
+        for (; it != ite; ++it) {
+            CWordSet::const_iterator wit  = (*it)->m_WordIdSet.begin();
+            CWordSet::const_iterator wite = (*it)->m_WordIdSet.end();
+
+            for (; wit != wite; ++wit) {
+                CWordSet::iterator tmp = p->m_WordIdSet.find (*wit);
+                if (tmp == p->m_WordIdSet.end()) {
+                    p->m_WordIdSet.insert (*wit);
+                } else {
+                    if (tmp->anony.m_cost > wit->anony.m_cost) {
+                        p->m_WordIdSet.erase (tmp);
+                        p->m_WordIdSet.insert (*wit);
+                    }
+                }
+            }
+        }
     }
 
     pnode->m_Trans[s] = p;

@@ -101,7 +101,7 @@ m3_slm:
 	./slmbuild -n 3 -o ${RAW_LM_FILE3} -w 200000 -c 0,2,2 -d ABS,0.0005 -d ABS -d ABS -b 10 -e 9 ${IDNGRAM_FILE3}
 
 m3_prune: 
-	./slmprune ${RAW_LM_FILE3} ${SLM_FILE3} R 100000 1250000 1000000
+	./slmprune ${RAW_LM_FILE3} ${SLM_FILE3} R 100000 2500000 1000000
 
 m3_thread :
 	./slmthread ${SLM_FILE3} ${TSLM_FILE3}

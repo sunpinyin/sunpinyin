@@ -108,9 +108,6 @@ CIMIPythonPlugin::CIMIPythonPlugin(std::string filename)
     if (description != NULL && PyString_Check(description)) {
         m_description = PyString_AsString(description);
     }
-    Py_XDECREF(name);
-    Py_XDECREF(author);
-    Py_XDECREF(description);
     return;
 error:
     manager.setLastError("Error when loading Python module");
@@ -120,9 +117,6 @@ error:
 CIMIPythonPlugin::~CIMIPythonPlugin()
 {
     Py_XDECREF(m_module);
-    Py_XDECREF(m_provide_method);
-    Py_XDECREF(m_trans_method);
-
 }
 
 static PyObject*
@@ -264,6 +258,18 @@ CIMIPluginManager::CIMIPluginManager()
     : m_hasError(false), m_waitTime(0)
 {
     InitializePython();
+}
+
+CIMIPluginManager::~CIMIPluginManager()
+{
+    for (size_t i = 0;  i < m_plugins.size(); i++) {
+        delete m_plugins[i];
+    }
+}
+
+void
+CIMIPluginManager::initializePlugins()
+{
     // load configuration file which list all needed plugins
     std::string plugin_list_path = getenv("HOME");
     plugin_list_path += PLUGIN_LIST_FILE;
@@ -287,13 +293,6 @@ CIMIPluginManager::CIMIPluginManager()
         }
     }
     fclose(fp);
-}
-
-CIMIPluginManager::~CIMIPluginManager()
-{
-    for (size_t i = 0;  i < m_plugins.size(); i++) {
-        delete m_plugins[i];
-    }
 }
 
 TPluginTypeEnum
@@ -324,9 +323,9 @@ CIMIPluginManager::loadPlugin(std::string filename)
 
     for (size_t i = 0; i < m_plugins.size(); i++) {
         if (m_plugins[i]->getName() == plugin->getName()) {
-            delete plugin; // Reject duplicate plugins
             error << "Plugin " << plugin->getName() << " has already loaded!";
             setLastError(error.str());
+            delete plugin; // Reject duplicate plugins
             return NULL;
         }
     }

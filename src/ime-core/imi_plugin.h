@@ -87,6 +87,8 @@ public:
     CIMIPluginManager();
     virtual ~CIMIPluginManager();
 
+    void            initializePlugins();
+
     TPluginTypeEnum detectPluginType(std::string filename);
     CIMIPlugin*     loadPlugin(std::string filename);
     CIMIPlugin*     createPlugin(std::string filename,

@@ -96,7 +96,7 @@ TLatticeState::print(std::string prefix) const
            m_slmState.getIdx(), m_backTraceWordId, valbuf);
 }
 
-const unsigned CLatticeStates::beam_width = 64;
+const unsigned CLatticeStates::beam_width = 48;
 const TSentenceScore CLatticeStates::filter_ratio_l1 = TSentenceScore(0.12);
 const TSentenceScore CLatticeStates::filter_ratio_l2 = TSentenceScore(0.02);
 const TSentenceScore CLatticeStates::filter_threshold_exp =

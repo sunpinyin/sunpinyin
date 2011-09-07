@@ -197,7 +197,7 @@ CIMIPythonPlugin::provide_candidates(const TPluginPreedit& str,
         *waitTime = -1;
     } else if (PyInt_Check(ret_obj)) {
         *waitTime = (int) PyInt_AsLong(ret_obj);
-    } else if (PyTuple_Check(ret_obj)) {
+    } else if (PyTuple_Check(ret_obj) && PyTuple_Size(ret_obj) == 2) {
         PyObject* time_obj = PyTuple_GetItem(ret_obj, 0);
         PyObject* seq_obj = PyTuple_GetItem(ret_obj, 1);
         if (PyInt_Check(time_obj) && PyList_Check(seq_obj)) {
@@ -257,11 +257,36 @@ InitializePython()
     PyRun_SimpleString(eval_str.str().c_str());
 }
 
+#define PLUGIN_LIST_FILE "/.sunpinyin/plugins.list";
+#define PLUGIN_NAME_LEN 128
 
 CIMIPluginManager::CIMIPluginManager()
     : m_hasError(false), m_waitTime(0)
 {
     InitializePython();
+    // load configuration file which list all needed plugins
+    std::string plugin_list_path = getenv("HOME");
+    plugin_list_path += PLUGIN_LIST_FILE;
+    FILE* fp = fopen(plugin_list_path.c_str(), "r");
+    if (!fp) {
+        return;
+    }
+    while (true) {
+        char plugin_name[PLUGIN_NAME_LEN];
+        memset(plugin_name, 0, PLUGIN_NAME_LEN);
+        fgets(plugin_name, PLUGIN_NAME_LEN, fp);
+        if (strlen(plugin_name) == 0) {
+            break;
+        }
+        if (strlen(plugin_name) == 1) {
+            continue;
+        }
+        plugin_name[strlen(plugin_name) - 1] = 0; // remove the \n at the end
+        if (loadPlugin(plugin_name) == NULL) {
+            fprintf(stderr, "Error! Cannot load plugin %s\n", plugin_name);
+        }
+    }
+    fclose(fp);
 }
 
 CIMIPluginManager::~CIMIPluginManager()
@@ -274,7 +299,8 @@ CIMIPluginManager::~CIMIPluginManager()
 TPluginTypeEnum
 CIMIPluginManager::detectPluginType(std::string filename)
 {
-    if (filename.substr(filename.length() - 3) == ".py") {
+    if (filename.length() >= 3
+        && filename.substr(filename.length() - 3) == ".py") {
         return CIMI_PLUGIN_PYTHON;
     } else {
         return CIMI_PLUGIN_UNKNOWN;

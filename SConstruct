@@ -6,7 +6,7 @@ version="2.0.4"
 abi_major = 3
 abi_minor = 0
 
-cflags='-g -Wall -pipe -DDEBUG'
+cflags='-g -Wall'
 
 slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
            'src/slm/ids2ngram/idngram_merge.cpp',
@@ -195,7 +195,7 @@ envvar = [('CC', 'CC'),
 PassVariables(envvar, env)
 
 # append critical cflags
-extra_cflags=' -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
+extra_cflags=' -pipe -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
 env.Append(CFLAGS=extra_cflags)
 env.Append(CXXFLAGS=extra_cflags)
 

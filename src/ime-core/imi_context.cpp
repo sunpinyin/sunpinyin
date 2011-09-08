@@ -941,6 +941,7 @@ CIMIContext::_saveUserDict()
     CSyllables syls;
     bool has_user_selected = false;
     unsigned i = m_tailIdx - 1;
+    unsigned e_pos = 0;
 
     while (i > 0 && m_lattice[i].m_bwType == CLatticeFrame::NO_BESTWORD)
         i--;
@@ -963,15 +964,16 @@ CIMIContext::_saveUserDict()
             break;
         }
 
+	if (!e_pos) e_pos = i;
+
         has_user_selected |= (fr.m_bwType & CLatticeFrame::USER_SELECTED);
-        std::copy(state->m_syls.begin(), state->m_syls.end(),
-                  back_inserter(syls));
+        std::copy(state->m_syls.begin(), state->m_syls.end(), inserter(syls, syls.begin()));
         i = fr.m_selWord.m_start;
     }
 
     if (has_user_selected && syls.size() > 1) {
         wstring phrase;
-        getSelectedSentence (phrase, 0, i);
+        getSelectedSentence (phrase, 0, e_pos);
         m_pUserDict->addWord (syls, phrase);
     }
 }

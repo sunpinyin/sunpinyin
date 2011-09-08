@@ -131,7 +131,6 @@ CIMIView::_pluginProvideCandidates(wstring preedit, ICandidateList* pcl)
                                                                   &wait_time);
         if (wait_time != 0) {
             manager.markWaitTime(wait_time);
-            continue;
         }
 
         for (size_t j = 0; j < candidates.size(); j++) {

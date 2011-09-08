@@ -673,9 +673,8 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
     int type = m_uiCandidateList.getCandiTypeVec()[candiIdx];
     bool selected = false;
 
+    mask |= PREEDIT_MASK | CANDIDATE_MASK;
     if (type == ICandidateList::BEST_TAIL) {
-        // commit the best sentence
-        mask |= PREEDIT_MASK | CANDIDATE_MASK;
         // get the rank of that sentence and select it
         m_pIC->selectSentence(m_sentences[idx].first);
         _doCommit();
@@ -699,7 +698,6 @@ CIMIClassicView::_makeSelection(int candiIdx, unsigned& mask)
     }
 
     if (selected) {
-        mask |= PREEDIT_MASK | CANDIDATE_MASK;
         if (m_cursorFrIdx < m_candiFrIdx)
             m_cursorFrIdx = m_candiFrIdx;
 

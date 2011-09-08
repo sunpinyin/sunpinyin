@@ -243,7 +243,7 @@ InitializePython()
 
     // append plugin module path to default load path
     Py_Initialize();
-    signal(SIGTERM, SIG_DFL);
+    signal(SIGINT, SIG_DFL);
 
     PyRun_SimpleString("import sys");
     eval_str << "sys.path.append(r'" << getenv("HOME")

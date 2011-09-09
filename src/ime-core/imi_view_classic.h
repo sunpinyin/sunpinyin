@@ -61,6 +61,12 @@ public:
     virtual int  onCandidatePageRequest(int pgno, bool relative);
     virtual int  onCandidateSelectRequest(int index);
 
+    size_t candidateListSize() const
+    { return m_candiList.size() + m_sentences.size() + m_tails.size(); }
+
+    void makeSelection(int candiIdx, unsigned& mask);
+    void deleteCandidate(int candiIdx, unsigned& mask);
+
 private:
     static size_t top_candidate_threshold;
 
@@ -75,15 +81,10 @@ private:
     std::vector<std::pair<int, wstring> > m_sentences;
     std::vector<std::pair<wstring, CCandidates> > m_tails;
 
-    size_t _candidateListSize() const
-    { return m_candiList.size() + m_sentences.size() + m_tails.size(); }
-
     void _insert(unsigned keyvalue, unsigned& mask);
     void _erase(bool backward, unsigned& mask);
 
     void _getCandidates();
-    void _makeSelection(int candiIdx, unsigned& mask);
-    void _deleteCandidate(int candiIdx, unsigned& mask);
 
     void _commitChar(TWCHAR ch);
     void _commitString(const wstring& wstr);

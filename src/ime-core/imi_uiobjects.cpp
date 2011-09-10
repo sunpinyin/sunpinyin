@@ -288,7 +288,7 @@ CCandidateList::insertCandidateNoDedup(wstring wstr, int type, int rank,
 {
     m_candiStrings.insert(m_candiStrings.begin() + rank, wstr);
     m_candiTypes.insert(m_candiTypes.begin() + rank, type);
-    m_candiUserIndex.push_back(userIdx);
+    m_candiUserIndex.insert(m_candiUserIndex.begin() + rank, userIdx);
 }
 
 void

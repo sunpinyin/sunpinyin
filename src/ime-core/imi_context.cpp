@@ -436,7 +436,8 @@ CIMIContext::searchFrom(unsigned idx)
                     if (m_csLevel >= words[i].m_csLevel
                         && m_pHistory->seenBefore(words[i].m_id))
                         _transferBetween(lxst.m_start, idx, &lxst,
-                                         words[i].m_id);
+                                         words[i].m_id,
+                                         ic * exp2_tbl[-(words[i].m_cost)]);
                     i++;
                 }
             }

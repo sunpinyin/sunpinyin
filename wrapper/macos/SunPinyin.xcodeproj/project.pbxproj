@@ -527,55 +527,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		A4D8BB470DDD72680079ECF3 /* Release-ppc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					../../cmakebuild,
-					../..,
-					../../src,
-				);
-				SDKROOT = macosx;
-			};
-			name = "Release-ppc";
-		};
-		A4D8BB480DDD72680079ECF3 /* Release-ppc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = ppc;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CPLUSPLUSFLAGS = (
-					"-I/usr/include/python2.7",
-					"-DLEOPARD",
-					"-DHAVE_CONFIG_H",
-					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
-					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
-				);
-				OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1 = "-DSUNPINYIN_DATA_DIR=\\\"/Library/Input\\ Methods/SunPinyin.app/Contents/Resources\\\"";
-				OTHER_LDFLAGS = (
-					"-lsqlite3",
-					"-liconv",
-				);
-				PRODUCT_NAME = SunPinyin;
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = app;
-			};
-			name = "Release-ppc";
-		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -612,10 +563,10 @@
 			};
 			name = Debug;
 		};
-		C01FCF4C08A954540054247B /* Release-i386 */ = {
+		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -644,7 +595,7 @@
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
-			name = "Release-i386";
+			name = Release;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -660,7 +611,7 @@
 			};
 			name = Debug;
 		};
-		C01FCF5008A954540054247B /* Release-i386 */ = {
+		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release";
@@ -673,7 +624,7 @@
 				);
 				SDKROOT = macosx;
 			};
-			name = "Release-i386";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -682,21 +633,19 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
-				C01FCF4C08A954540054247B /* Release-i386 */,
-				A4D8BB480DDD72680079ECF3 /* Release-ppc */,
+				C01FCF4C08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-i386";
+			defaultConfigurationName = Release;
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SunPinyin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
-				C01FCF5008A954540054247B /* Release-i386 */,
-				A4D8BB470DDD72680079ECF3 /* Release-ppc */,
+				C01FCF5008A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-i386";
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

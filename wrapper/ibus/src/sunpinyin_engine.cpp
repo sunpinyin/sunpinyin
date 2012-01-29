@@ -322,8 +322,9 @@ SunPinyinEngine::is_valid() const
 static int
 find_embed_preedit_pos(const IPreeditString& preedit)
 {
+    int mask = IPreeditString::USER_CHOICE & IPreeditString::HANZI_CHAR;
     for (size_t i = 0; i < preedit.charTypeSize(); i++) {
-        if ((preedit.charTypeAt(i) & IPreeditString::USER_CHOICE) == 0) {
+        if ((preedit.charTypeAt(i) & mask) == 0) {
             return i;
         }
     }

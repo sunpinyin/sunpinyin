@@ -44,9 +44,10 @@ wrapper/macos/packaging/sunpinyin_appcast.xml
 
 cmakebuild/
 build/*
-swap/*
 !build/SConscript
 !build/Makefile.new
+swap/*
+data/*
 
 debian/control
 
@@ -54,5 +55,12 @@ debian/control
 *.os
 *.lo
 *.loT
+*.so
+*.a
 *.bz2
 .libs
+cscope.out
+
+.sconf_temp/*
+.sconsign.dblite
+configure.conf

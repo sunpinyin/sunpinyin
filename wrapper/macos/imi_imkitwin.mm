@@ -48,12 +48,13 @@
 #define UTF32Encoding NSUTF32LittleEndianStringEncoding
 #endif
 
-CIMKitWindowHandler::CIMKitWindowHandler (id ic) :_ic(ic) 
+CIMKitWindowHandler::CIMKitWindowHandler (id ic) :_ic(ic), _timer(0)
 {
 }
 
 CIMKitWindowHandler::~CIMKitWindowHandler()
 {
+    disableDeferedUpdate();
 }
 
 void CIMKitWindowHandler::commit(const TWCHAR* wstr)
@@ -93,3 +94,26 @@ void CIMKitWindowHandler::updateStatus(int key, int value)
     [_ic updateStatus:key withValue:value];
 }
 
+void CIMKitWindowHandler::enableDeferedUpdate(CIMIView* view, int waitTime) 
+{
+    if ((_timer == 0 || ![_timer isValid]) && waitTime > 0) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:waitTime 
+                          target:_ic 
+                          selector:@selector(windowHandlerTimerCallback) 
+                          userInfo:nil 
+                          repeats:FALSE];
+    }
+}
+
+void CIMKitWindowHandler::disableDeferedUpdate()
+{
+    if (_timer != 0) {
+        [_timer invalidate];
+        _timer = 0;
+    }
+}
+
+void CIMKitWindowHandler::doneDeferedUpdate() 
+{
+    _timer = 0;
+}

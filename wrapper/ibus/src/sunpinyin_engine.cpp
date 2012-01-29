@@ -47,8 +47,6 @@
 #include "ibus_portable.h"
 #include "sunpinyin_engine.h"
 
-using namespace std;
-
 extern ibus::Config config;
 
 SunPinyinEngine::SunPinyinEngine(IBusEngine *engine)
@@ -246,6 +244,10 @@ SunPinyinEngine::onConfigChanged(const COptionEvent& event)
         update_cand_window_size();
     } else if (event.name == CONFIG_GENERAL_CHARSET_LEVEL) {
         update_charset_level();
+    } else if (event.name == CONFIG_GENERAL_MAX_BEST) {
+        update_max_best();
+    } else if (event.name == CONFIG_GENERAL_MAX_TAIL_CANDIDATE) {
+        update_max_tail_candidate();
     } else if (event.name == CONFIG_KEYBOARD_MODE_SWITCH) {
         update_mode_key();
     } else if (event.name == CONFIG_KEYBOARD_PUNCT_SWITCH) {
@@ -272,6 +274,8 @@ SunPinyinEngine::update_config()
 {
     update_history_power();
     update_cand_window_size();
+    update_max_best();
+    update_max_tail_candidate();
     update_charset_level();
     update_page_key_minus();
     update_page_key_comma();
@@ -315,73 +319,48 @@ SunPinyinEngine::is_valid() const
     return m_pv != NULL;
 }
 
-int decorate_preedit_char(IBusText *text, const IPreeditString& preedit,
-                          int begin, int end, unsigned type,
-                          unsigned long fg_color)
+static int
+find_embed_preedit_pos(const IPreeditString& preedit)
 {
-    int i = begin;
-    while (i < end && (preedit.charTypeAt(i) & type) == type)
-        ++i;
-    end = i;
-    int len = end - begin;
-    if (len > 0) {
-        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_FOREGROUND,
-                                   fg_color, begin, end);
-    }
-    return len;
-}
-
-
-enum {ORANGE = 0xE76F00, GRAY_BLUE = 0x35556B, WHITE = 0xFFFFFF, BLACK = 0x000000};
-
-void decorate_preedit_string_using_char_type(IBusText *text, const IPreeditString& preedit)
-{
-    for (int i = 0, size = preedit.charTypeSize(); i < size; ) {
-        int len = 0;
-        if ((len = decorate_preedit_char(text, preedit, i, size, preedit.PINYIN_CHAR,
-                                         GRAY_BLUE)) > 0) {
-            i += len;
-        } else if ((len = decorate_preedit_char(text, preedit, i, size,
-                                                preedit.BOUNDARY,
-                                                GRAY_BLUE)) > 0) {
-            i += len;
-        } else {
-            ++i;
+    int mask = IPreeditString::USER_CHOICE & IPreeditString::HANZI_CHAR;
+    for (size_t i = 0; i < preedit.charTypeSize(); i++) {
+        if ((preedit.charTypeAt(i) & mask) == 0) {
+            return i;
         }
     }
+    return preedit.charTypeSize();
 }
 
-
-void decorate_preedit_string_using_caret_pos(IBusText *text, const IPreeditString& preedit, int caret)
-{
-    if (caret < preedit.size()) {
-        // add underline, otherwise gtk app won't have the same color scheme with that of x11 apps
-        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_UNDERLINE, IBUS_ATTR_UNDERLINE_SINGLE,
-                                   caret, preedit.size());
-        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_FOREGROUND, WHITE,
-                                   caret, preedit.size());
-        ibus_text_append_attribute(text, IBUS_ATTR_TYPE_BACKGROUND, GRAY_BLUE,
-                                   caret, preedit.size());
-    }
-}
+enum {ORANGE = 0xE76F00, GRAY_BLUE = 0x35556B, WHITE = 0xFFFFFF,
+      BLACK = 0x000000};
 
 void
 SunPinyinEngine::update_preedit_string(const IPreeditString& preedit)
 {
-    const int len = preedit.size();
-    if (len > 0) {
-        IBusText *text = ibus_text_new_from_ucs4((const gunichar*) preedit.string());
+    if (preedit.size() > 0) {
+        wstring wstr(preedit.string());
+        int embed_pos = find_embed_preedit_pos(preedit);
+        wstring embed_wstr = wstr.substr(0, embed_pos);
+        wstring preedit_wstr = wstr.substr(embed_pos);
+        const gunichar* embed_cstr = (const gunichar*) embed_wstr.c_str();
+        const gunichar* preedit_cstr = (const gunichar*) preedit_wstr.c_str();
+        IBusText* preedit_text = ibus_text_new_from_ucs4(preedit_cstr);
+        int caret = preedit.caret() - embed_pos;
 
-
-        const int caret = preedit.caret();
-        if (caret < len) {
-            decorate_preedit_string_using_caret_pos(text, preedit, caret);
-        } else {
-            decorate_preedit_string_using_char_type(text, preedit);
+        if (preedit.caret() < preedit.size()) {
+            ibus_text_append_attribute(preedit_text, IBUS_ATTR_TYPE_FOREGROUND,
+                                       WHITE, caret, preedit_wstr.size());
+            ibus_text_append_attribute(preedit_text, IBUS_ATTR_TYPE_BACKGROUND,
+                                       GRAY_BLUE, caret, preedit_wstr.size());
         }
+        ibus_engine_update_auxiliary_text(m_engine, preedit_text, TRUE);
 
-        ibus_engine_update_preedit_text(m_engine, text, caret, TRUE);
+        ibus_engine_update_preedit_text(m_engine,
+                                        ibus_text_new_from_ucs4(embed_cstr),
+                                        preedit.caret(), TRUE);
+
     } else {
+        ibus_engine_hide_auxiliary_text(m_engine);
         ibus_engine_hide_preedit_text(m_engine);
     }
 }
@@ -433,7 +412,7 @@ SunPinyinEngine::update_cand_window_size()
 void
 SunPinyinEngine::update_mode_key()
 {
-    string mode_switch("Shift");
+    std::string mode_switch("Shift");
     mode_switch = m_config.get(CONFIG_KEYBOARD_MODE_SWITCH, mode_switch);
 
     CKeyEvent shift_l  (IM_VK_SHIFT_L, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
@@ -457,7 +436,7 @@ SunPinyinEngine::update_mode_key()
 void
 SunPinyinEngine::update_punct_key()
 {
-    string punct_switch("ControlComma");
+    std::string punct_switch("ControlComma");
     punct_switch = m_config.get(CONFIG_KEYBOARD_PUNCT_SWITCH, punct_switch);
     if (punct_switch == "ControlComma") {
         m_hotkey_profile->setPunctSwitchKey(CKeyEvent(IM_VK_COMMA, 0, IM_CTRL_MASK));
@@ -515,10 +494,31 @@ SunPinyinEngine::update_smart_punc()
     m_pv->setSmartPunct(m_config.get(CONFIG_KEYBOARD_SMARK_PUNCT, true));
 }
 
-string_pairs parse_pairs(const vector<string>& strings)
+void
+SunPinyinEngine::update_max_best()
+{
+    if (m_pv->getIC() == NULL) {
+        return;
+    }
+    int oldval = (int) m_pv->getIC()->getMaxBest();
+    m_pv->getIC()->setMaxBest(m_config.get(CONFIG_GENERAL_MAX_BEST, oldval));
+}
+
+void
+SunPinyinEngine::update_max_tail_candidate()
+{
+    if (m_pv->getIC() == NULL) {
+        return;
+    }
+    int oldval = (int) m_pv->getIC()->getMaxTailCandidateNum();
+    m_pv->getIC()->setMaxTailCandidateNum(
+        m_config.get(CONFIG_GENERAL_MAX_TAIL_CANDIDATE, oldval));
+}
+
+string_pairs parse_pairs(const std::vector<std::string>& strings)
 {
     string_pairs pairs;
-    for (vector<string>::const_iterator pair = strings.begin();
+    for (std::vector<std::string>::const_iterator pair = strings.begin();
          pair != strings.end(); ++pair) {
 
         std::string::size_type found = pair->find(':');
@@ -537,7 +537,7 @@ string_pairs parse_pairs(const vector<string>& strings)
 string_pairs merge_pairs(const string_pairs& default_pairs,
                          const string_pairs& user_pairs)
 {
-    typedef std::map<string, int> Indexes;
+    typedef std::map<std::string, int> Indexes;
     Indexes indexes;
     int index = 0;
     for (string_pairs::const_iterator it = default_pairs.begin();
@@ -572,7 +572,7 @@ SunPinyinEngine::update_punct_mappings()
 {
     CSimplifiedChinesePolicy& policy = ASimplifiedChinesePolicy::instance();
     if (m_config.get(PINYIN_PUNCTMAPPING_ENABLED, false)) {
-        vector<string> mappings;
+        std::vector<std::string> mappings;
         mappings = m_config.get(PINYIN_PUNCTMAPPING_MAPPINGS, mappings);
         string_pairs pairs(merge_pairs(policy.getDefaultPunctMapping(),
                                        parse_pairs(mappings)));
@@ -583,7 +583,7 @@ SunPinyinEngine::update_punct_mappings()
 void
 SunPinyinEngine::update_user_data_dir()
 {
-    stringstream user_data_dir;
+    std::stringstream user_data_dir;
     user_data_dir << g_get_home_dir()
                   << G_DIR_SEPARATOR_S << ".sunpinyin";
     ASimplifiedChinesePolicy::instance().setUserDataDir(user_data_dir.str());
@@ -597,7 +597,7 @@ SunPinyinEngine::update_fuzzy_pinyins()
     AShuangpinSchemePolicy::instance().setFuzzyForwarding(enabled);
     if (!enabled)
         return;
-    vector<string> fuzzy_pinyins;
+    std::vector<std::string> fuzzy_pinyins;
     fuzzy_pinyins = m_config.get(QUANPIN_FUZZY_PINYINS, fuzzy_pinyins);
     AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(parse_pairs(fuzzy_pinyins));
     AShuangpinSchemePolicy::instance().setFuzzyPinyinPairs(parse_pairs(fuzzy_pinyins));
@@ -610,7 +610,7 @@ SunPinyinEngine::update_correction_pinyins()
     AQuanpinSchemePolicy::instance().setAutoCorrecting(enabled);
     if (!enabled)
         return;
-    vector<string> correction_pinyins;
+    std::vector<std::string> correction_pinyins;
     correction_pinyins = m_config.get(QUANPIN_AUTOCORRECTION_PINYINS, correction_pinyins);
     AQuanpinSchemePolicy::instance().setAutoCorrectionPairs(parse_pairs(correction_pinyins));
 }

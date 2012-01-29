@@ -101,6 +101,8 @@ private:
     void update_candi_delete_key();
     void update_cancel_with_backspace();
     void update_smart_punc();
+    void update_max_best();
+    void update_max_tail_candidate();
 
     void update_charset_level();
     void update_user_data_dir();

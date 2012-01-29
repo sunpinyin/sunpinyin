@@ -36,6 +36,7 @@
  */
 
 #import "imi_winHandler.h"
+#import "imi_view.h"
 
 class CIMKitWindowHandler : public CIMIWinHandler
 {
@@ -43,11 +44,16 @@ public:
     CIMKitWindowHandler (id ic);
     virtual ~CIMKitWindowHandler();
 
+    virtual void enableDeferedUpdate(CIMIView* view, int waitTime);
+    virtual void disableDeferedUpdate();
+    virtual void doneDeferedUpdate();
+
     virtual void commit(const TWCHAR* wstr);
     virtual void updatePreedit(const IPreeditString* ppd);
     virtual void updateCandidates(const ICandidateList* pcl);
     virtual void updateStatus(int key, int value);
-    
+
 private:
     id  _ic;
+    id  _timer;
 };

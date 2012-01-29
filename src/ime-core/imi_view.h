@@ -171,7 +171,7 @@ public:
 
     void setHotkeyProfile(CHotkeyProfile *prof) { m_pHotkeyProfile = prof; }
     void setCandiWindowSize(unsigned size) {
-        m_candiWindowSize = size < 10 ? size : 10;
+        m_candiWindowSize = size;
     }
 
     CHotkeyProfile* getHotkeyProfile() { return m_pHotkeyProfile; }

@@ -117,12 +117,12 @@ CGTKWinHandler::CGTKWinHandler(CIMIView* pv)
 CGTKWinHandler::~CGTKWinHandler()
 {
     iconv_close(m_iconv);
-    gtk_widget_unref(hanzi_image);
-    gtk_widget_unref(eng_image);
-    gtk_widget_unref(cnpunc_image);
-    gtk_widget_unref(enpunc_image);
-    gtk_widget_unref(fullwidth_image);
-    gtk_widget_unref(halfwidth_image);
+    g_object_unref(hanzi_image);
+    g_object_unref(eng_image);
+    g_object_unref(cnpunc_image);
+    g_object_unref(enpunc_image);
+    g_object_unref(fullwidth_image);
+    g_object_unref(halfwidth_image);
 }
 
 void
@@ -136,12 +136,12 @@ CGTKWinHandler::load_images()
         fullwidth_image = gtk_image_new_from_file(fullwidth_image_file_name);
         halfwidth_image = gtk_image_new_from_file(halfwidth_image_file_name);
     }
-    gtk_widget_ref(hanzi_image);
-    gtk_widget_ref(eng_image);
-    gtk_widget_ref(cnpunc_image);
-    gtk_widget_ref(enpunc_image);
-    gtk_widget_ref(fullwidth_image);
-    gtk_widget_ref(halfwidth_image);
+    g_object_ref(hanzi_image);
+    g_object_ref(eng_image);
+    g_object_ref(cnpunc_image);
+    g_object_ref(enpunc_image);
+    g_object_ref(fullwidth_image);
+    g_object_ref(halfwidth_image);
 }
 
 
@@ -228,20 +228,20 @@ CGTKWinHandler::createWindows()
     m_pSimbButton = button = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(button), halfwidth_image);
     gtk_box_pack_end(GTK_BOX(box1), button, FALSE, FALSE, 2);
-    gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(button_click_fullhalf_simbol), mp_view);
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(button_click_fullhalf_simbol), mp_view);
 
     m_pPuncButton = button = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(button), cnpunc_image);
     gtk_box_pack_end(GTK_BOX(box1), button, FALSE, FALSE, 2);
-    gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(button_click_fullhalf_punc), mp_view);
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(button_click_fullhalf_punc), mp_view);
 
     m_pLangButton = button = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(button), hanzi_image);
     gtk_box_pack_end(GTK_BOX(box1), button, FALSE, FALSE, 2);
-    gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(button_click_cn_en), mp_view);
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(button_click_cn_en), mp_view);
 
     gtk_window_set_decorated((GtkWindow*)window, FALSE);
-    gtk_signal_connect(GTK_OBJECT(window), "key_press_event", GTK_SIGNAL_FUNC(key_press_cb), mp_view);
+    g_signal_connect(G_OBJECT(window), "key_press_event", G_CALLBACK(key_press_cb), mp_view);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(m_pWin), "delete_event", G_CALLBACK(gtk_main_quit), NULL);
@@ -306,6 +306,6 @@ CGTKWinHandler::updateCandidates(const ICandidateList* pcl)
     char * dst = m_buf;
     size_t dstlen = sizeof(m_buf) - 1;
     iconv(m_iconv, &src, &srclen, &dst, &dstlen);
-    gtk_label_set(GTK_LABEL(m_CandidataArea), m_buf);
+    gtk_label_set_text(GTK_LABEL(m_CandidataArea), m_buf);
 }
 

@@ -58,5 +58,6 @@ class CSunpinyinSessionWrapper;
 -(void)setCaret:(int)caret andCandiStart:(int)start;
 -(void)showCandidates:(NSArray*)candidates;
 -(void)updateStatus:(int)key withValue:(int)value;
+-(void)windowHandlerTimerCallback:(NSTimer*)timer;
 
 @end

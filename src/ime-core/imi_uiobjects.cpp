@@ -261,14 +261,12 @@ CCandidateList::pushBackCandidate(wstring wstr, int type, int userIdx)
 void
 CCandidateList::insertCandidate(wstring wstr, int type, int rank, int userIdx)
 {
-    if (rank > m_candiStrings.size()) {
+    if (rank > (int) m_candiStrings.size()) {
         rank = m_candiStrings.size();
     }
     if (m_candiStringsIndex.find(wstr) == m_candiStringsIndex.end()) {
         m_candiStringsIndex.insert(std::make_pair(wstr, m_candiStrings.size()));
-        m_candiStrings.insert(m_candiStrings.begin() + rank, wstr);
-        m_candiTypes.insert(m_candiTypes.begin() + rank, type);
-        m_candiUserIndex.push_back(userIdx);
+        insertCandidateNoDedup(wstr, type, rank, userIdx);
     } else {
         int idx = m_candiStringsIndex[wstr];
         if (rank >= idx) {
@@ -282,6 +280,15 @@ CCandidateList::insertCandidate(wstring wstr, int type, int rank, int userIdx)
         m_candiTypes.insert(m_candiTypes.begin() + rank, type);
         m_candiUserIndex.insert(m_candiUserIndex.begin() + rank, userIdx);
     }
+}
+
+void
+CCandidateList::insertCandidateNoDedup(wstring wstr, int type, int rank,
+                                       int userIdx)
+{
+    m_candiStrings.insert(m_candiStrings.begin() + rank, wstr);
+    m_candiTypes.insert(m_candiTypes.begin() + rank, type);
+    m_candiUserIndex.insert(m_candiUserIndex.begin() + rank, userIdx);
 }
 
 void

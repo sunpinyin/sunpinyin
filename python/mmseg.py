@@ -110,10 +110,11 @@ def output_word(wid, word):
             word = word+'('+str(wid)+')'
         sys.stdout.write('%s ' % word.encode('UTF-8'))
     else:
-        sys.stdout.write(struct.pack('l', wid))
+        sys.stdout.write(struct.pack('I', wid))
 
 def process_file(file, dict):
     for line in read_ch_sentences(file):
+        print >> sys.stderr, line.encode('UTF-8')
         length = len(line)
         i = 0
         while (i < length):

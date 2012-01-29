@@ -62,6 +62,8 @@ CIMIView::CIMIView()
       m_candiWindowSize(10), m_bCN(true), m_bFullPunct(true),
       m_bFullSymbol(false), m_backspaceCancel(true), m_smartPunct(true)
 {
+    // load all needed plugins
+    AIMIPluginManager::instance().initializePlugins();
 }
 
 void
@@ -129,13 +131,13 @@ CIMIView::_pluginProvideCandidates(wstring preedit, ICandidateList* pcl)
                                                                   &wait_time);
         if (wait_time != 0) {
             manager.markWaitTime(wait_time);
-            continue;
         }
 
         for (size_t j = 0; j < candidates.size(); j++) {
             const TPluginCandidateItem& item = candidates[j];
-            pcl->insertCandidate(item.m_candidate, ICandidateList::PLUGIN_TAIL,
-                                 item.m_rank);
+            pcl->insertCandidateNoDedup(item.m_candidate,
+                                        ICandidateList::PLUGIN_TAIL,
+                                        item.m_rank);
         }
     }
 }

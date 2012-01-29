@@ -39,6 +39,7 @@
 #import "imi_view.h"
 #import "imi_option_keys.h"
 #import "imi_session_wrapper.h"
+#import "imi_plugin.h"
 #import "SunPinyinApplicationDelegate.h"
 #import <Sparkle/Sparkle.h>
 
@@ -149,6 +150,11 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
         string user_data_dir = [[paths objectAtIndex: 0] UTF8String];
         user_data_dir.append ("/SunPinyin");
         AOptionEventBus::instance().publishEvent(COptionEvent(USER_DATA_DIR, user_data_dir));
+        
+        /* Test Plugin */
+        CIMIPluginManager& plugin_manager = AIMIPluginManager::instance();
+        plugin_manager.loadPlugin("cloudpinyin.py");
+        NSLog (@"%s", plugin_manager.getLastError().c_str());
     }
 }
 

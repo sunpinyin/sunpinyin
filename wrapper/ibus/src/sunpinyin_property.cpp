@@ -57,10 +57,10 @@ SunPinyinProperty
 SunPinyinProperty::create_status_prop(ibus::Engine engine, bool state)
 {
     SunPinyinProperty prop(engine, PROP_STATUS);
-    prop.m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"EN");
+    prop.m_info[0].label = ibus_text_new_from_static_string("EN");
     prop.m_info[0].icon  = IBUS_SUNPINYIN_ICON_DIR"/eng.svg";
     prop.m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to Chinese input mode"));
-    prop.m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"CN");
+    prop.m_info[1].label = ibus_text_new_from_static_string((const gunichar*) L"CN");
     prop.m_info[1].icon  = IBUS_SUNPINYIN_ICON_DIR"/han.svg";
     prop.m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to English input mode"));
     prop.init(state);
@@ -72,10 +72,10 @@ SunPinyinProperty
 SunPinyinProperty::create_letter_prop(ibus::Engine engine, bool state)
 {
     SunPinyinProperty prop(engine, PROP_LETTER);
-    prop.m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L"Aa");
+    prop.m_info[0].label = ibus_text_new_from_static_string("Aa");
     prop.m_info[0].icon  = IBUS_SUNPINYIN_ICON_DIR"/halfwidth.svg";
     prop.m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to full-width letter input mode"));
-    prop.m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"Ａａ");
+    prop.m_info[1].label = ibus_text_new_from_static_string("Ａａ");
     prop.m_info[1].icon  = IBUS_SUNPINYIN_ICON_DIR"/fullwidth.svg";
     prop.m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to half-width letter input mode"));
     prop.init(state);
@@ -86,10 +86,10 @@ SunPinyinProperty
 SunPinyinProperty::create_punct_prop(ibus::Engine engine, bool state)
 {
     SunPinyinProperty prop(engine, PROP_PUNCT);
-    prop.m_info[0].label = ibus_text_new_from_ucs4((const gunichar*) L",.");
+    prop.m_info[0].label = ibus_text_new_from_static_string(",.");
     prop.m_info[0].icon  = IBUS_SUNPINYIN_ICON_DIR"/enpunc.svg";
     prop.m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to Chinese punctuation"));
-    prop.m_info[1].label = ibus_text_new_from_ucs4((const gunichar*) L"，。");
+    prop.m_info[1].label = ibus_text_new_from_static_string("，。");
     prop.m_info[1].icon  = IBUS_SUNPINYIN_ICON_DIR"/cnpunc.svg";
     prop.m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to English punctuation"));
     prop.init(state);
@@ -163,7 +163,7 @@ SetupLauncher::SetupLauncher()
                           NULL)),
       m_name("setup")
 {
-    m_info.label   = ibus_text_new_from_ucs4((const gunichar*) L"Preference");
+    m_info.label   = ibus_text_new_from_static_string(_("Preference"));
     m_info.tooltip = ibus_text_new_from_static_string(_("Preference"));
     m_info.icon    = IBUS_SUNPINYIN_ICON_DIR"/setup.svg";
     init();

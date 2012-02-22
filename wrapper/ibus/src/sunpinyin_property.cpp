@@ -60,7 +60,7 @@ SunPinyinProperty::create_status_prop(ibus::Engine engine, bool state)
     prop.m_info[0].label = ibus_text_new_from_static_string("EN");
     prop.m_info[0].icon  = IBUS_SUNPINYIN_ICON_DIR"/eng.svg";
     prop.m_info[0].tooltip = ibus_text_new_from_static_string(_("Switch to Chinese input mode"));
-    prop.m_info[1].label = ibus_text_new_from_static_string((const gunichar*) L"CN");
+    prop.m_info[1].label = ibus_text_new_from_static_string("CN");
     prop.m_info[1].icon  = IBUS_SUNPINYIN_ICON_DIR"/han.svg";
     prop.m_info[1].tooltip = ibus_text_new_from_static_string(_("Switch to English input mode"));
     prop.init(state);

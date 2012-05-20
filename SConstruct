@@ -357,6 +357,8 @@ DoConfigure()
 #
 #==============================compile==============================
 #
+env.Command('src/pinyin/quanpin_trie.h', 'python/pinyin_data.py',
+            './pinyin_data.py > /dev/null', chdir = 'python')
 env.Object(slmsource)
 
 SConscript(['build/SConscript'], exports='env')

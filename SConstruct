@@ -313,8 +313,7 @@ def DoConfigure():
     conf.CheckCHeader('sys/param.h')
     conf.CheckCHeader('sys/stat.h')
     conf.CheckCHeader('sys/types.h')
-    if conf.CheckCHeader('unistd.h'):
-        conf.Define('DHAVE_UNISTD_H', 1)
+    conf.CheckCHeader('unistd.h')
     conf.CheckCHeader('wchar.h')
 
     # add essential package requirements

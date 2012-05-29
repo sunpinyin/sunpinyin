@@ -44,14 +44,14 @@
 #include <string>
 #include <cstring>
 
-#if defined(HAVE_UNISTD_H)
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #ifdef __cplusplus
 #include <algorithm>
 #else
 #include <sys/ddi.h>
 #endif //__cpluscplus
-#endif //defined(HAVE_UNISTD_H)
+#endif //ifdef HAVE_UNISTD_H
 
 #ifndef HOST_OS_GNUC_2
     #if defined(DEBUG) && !defined(NDEBUG)

@@ -130,6 +130,7 @@ int main(int argc, char* argv[])
 
     CGTKWinHandler *pwh = new CGTKWinHandler(pv);
     pv->attachWinHandler(pwh);
+    pv->getIC()->setMaxBest(3);
 
     pwh->createWindows();
     gtk_main();

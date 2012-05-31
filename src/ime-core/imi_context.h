@@ -320,6 +320,8 @@ public:
     void removeFromHistoryCache(std::vector<unsigned>& wids);
     void printLattice();
 
+    CUserDict* getUserDict() { return m_pUserDict; }
+
 protected:
     void _clearFrom(unsigned from);
 

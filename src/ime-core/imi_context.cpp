@@ -372,10 +372,13 @@ CIMIContext::_forwardTail(unsigned i, unsigned j)
     fr.m_lexiconStates.push_back(TLexiconState(i, ENDING_WORD_ID));
 }
 
-double exp2_tbl[32] = {exp2(0),  exp2(1),  exp2(2),  exp2(3),  exp2(4),  exp2(5),  exp2(6),  exp2(7),
-                       exp2(8),  exp2(9),  exp2(10), exp2(11), exp2(12), exp2(13), exp2(14), exp2(15),
-                       exp2(16), exp2(17), exp2(18), exp2(19), exp2(20), exp2(21), exp2(22), exp2(23),
-                       exp2(24), exp2(25), exp2(26), exp2(27), exp2(28), exp2(29), exp2(30), exp2(31),};
+static double exp2_tbl[32] = {
+    exp2(-0), exp2(-1), exp2(-2), exp2(-3), exp2(-4), exp2(-5), exp2(-6), exp2(-7),
+    exp2(-8), exp2(-9), exp2(-10), exp2(-11), exp2(-12), exp2(-13), exp2(-14),
+    exp2(-15), exp2(-16), exp2(-17), exp2(-18), exp2(-19), exp2(-20), exp2(-21),
+    exp2(-22), exp2(-23), exp2(-24), exp2(-25), exp2(-26), exp2(-27), exp2(-28),
+    exp2(-29), exp2(-30), exp2(-31)
+};
 
 bool
 CIMIContext::searchFrom(unsigned idx)
@@ -423,8 +426,9 @@ CIMIContext::searchFrom(unsigned idx)
 
             while (count < sz && i < sz && (words[i].m_bSeen || count < 2)) {
                 if (m_csLevel >= words[i].m_csLevel) {
+                    // printf("cost %d\n", words[i].m_cost);
                     _transferBetween(lxst.m_start, idx, &lxst, words[i].m_id,
-                                     ic * exp2_tbl[-(words[i].m_cost)]);
+                                     ic * exp2_tbl[words[i].m_cost]);
                     ++count;
                 }
                 i++;
@@ -434,10 +438,12 @@ CIMIContext::searchFrom(unsigned idx)
             if (m_pHistory) {
                 while (i < (int) word_num) {
                     if (m_csLevel >= words[i].m_csLevel
-                        && m_pHistory->seenBefore(words[i].m_id))
+                        && m_pHistory->seenBefore(words[i].m_id)) {
+                        // printf("history cost %d\n", words[i].m_cost);
                         _transferBetween(lxst.m_start, idx, &lxst,
                                          words[i].m_id,
-                                         ic * exp2_tbl[-(words[i].m_cost)]);
+                                         ic * exp2_tbl[words[i].m_cost]);
+                    }
                     i++;
                 }
             }
@@ -527,6 +533,11 @@ CIMIContext::_transferBetween(unsigned start, unsigned end,
         }
 
         node.m_score = it->m_score * efic * TSentenceScore(ts);
+        // std::string buf;
+        // node.m_score.toString(buf);
+        // printf("node score %s ts=%lf ", buf.c_str(), ts);
+        // it->m_score.toString(buf);
+        // printf("%s ic=%lf\n", buf.c_str(), ic);
         end_fr.m_latticeStates.add(node);
     }
 }
@@ -822,8 +833,9 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
                 candidates_it = candidates_map.find(cp.m_candi.m_cwstr);
                 if (candidates_it == candidates_map.end()
                     || cp.m_Rank < candidates_it->second.m_Rank
-                    || cp.m_candi.m_wordId > INI_USRDEF_WID)
+                    || cp.m_candi.m_wordId > INI_USRDEF_WID) {
                     candidates_map[cp.m_candi.m_cwstr] = cp;
+                }
             }
         }
 
@@ -832,6 +844,7 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
         if (m_bDynaCandiOrder) {
             CLatticeStates::iterator it = fr.m_latticeStates.begin();
             CLatticeStates::iterator ite = fr.m_latticeStates.end();
+            // printf("adjusting ");
             for (; it != ite; ++it) {
                 TLatticeState & ltst = *it;
 
@@ -855,9 +868,17 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
                 candidates_it = candidates_map.find(cp.m_candi.m_cwstr);
                 if (candidates_it == candidates_map.end()
                     || cp.m_Rank < candidates_it->second.m_Rank
-                    || cp.m_candi.m_wordId > INI_USRDEF_WID)
+                    || cp.m_candi.m_wordId > INI_USRDEF_WID) {
+                    // print_wide(cp.m_candi.m_cwstr);
+                    // std::string buf;
+                    // ltst.m_score.toString(buf);
+                    // printf(" %s", buf.c_str());
+                    // ltst.m_pBackTraceNode->m_score.toString(buf);
+                    // printf("%s ", buf.c_str());
                     candidates_map[cp.m_candi.m_cwstr] = cp;
+                }
             }
+            // puts("");
         }
 
         m_candiEnds = frIdx;

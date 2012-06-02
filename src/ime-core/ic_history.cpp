@@ -42,6 +42,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <unistd.h>
 #include <cassert>
 #include <arpa/inet.h>
 #include <sys/stat.h>

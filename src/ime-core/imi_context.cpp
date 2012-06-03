@@ -1029,11 +1029,16 @@ void
 CIMIContext::deleteCandidate(CCandidate &candi)
 {
     unsigned wid = candi.m_wordId;
+    deleteCandidateByWID(wid);
+}
 
+void
+CIMIContext::deleteCandidateByWID(unsigned wid)
+{
     if (wid > INI_USRDEF_WID) {
         m_pHistory->forget(wid);
         m_pUserDict->removeWord(wid);
-        _buildLattice(m_pPySegmentor->getSegments(), candi.m_start + 1);
+        _buildLattice(m_pPySegmentor->getSegments());
     }
 }
 

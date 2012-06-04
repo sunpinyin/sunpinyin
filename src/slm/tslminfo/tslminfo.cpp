@@ -86,7 +86,8 @@ public:
     bool
     isEnd(iterator& it)
     {
-        return(((it.back().getIdx()) + 1) == getLevelSize(it.back().getLevel()));
+        return (int) ((it.back().getIdx()) + 1)
+            == getLevelSize(it.back().getLevel());
     }
 
     void*
@@ -148,8 +149,8 @@ CIterateThreadSlm::adjustIterator(iterator& it)
     for (int lvl = it.size() - 2; lvl >= 0; --lvl) {
         int sz = getLevelSize(lvl);
         unsigned child = (it[lvl + 1]).getIdx();
-        while ((it[lvl].getIdx() < (sz - 1)) &&
-               ((((TNode*)getNodePtr(it[lvl])) + 1)->ch() <= child)) {
+        while ((int) it[lvl].getIdx() < (sz - 1) &&
+               (((TNode*)getNodePtr(it[lvl])) + 1)->ch() <= child) {
             ++(it[lvl]);
         }
     }

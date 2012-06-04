@@ -6,107 +6,121 @@ version="2.0.4"
 abi_major = 3
 abi_minor = 0
 
-cflags='-g -Wall'
+cflags = '-g -Wall'
 
-slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
-           'src/slm/ids2ngram/idngram_merge.cpp',
-           'src/slm/mmseg/mmseg.cpp',
-           'src/slm/tslminfo/tslminfo.cpp',
-           'src/slm/tslmpack/arpa_slm.cpp',
-           'src/slm/tslmpack/arpa_conv.cpp',
-           'src/slm/tslmpack/slmpack.cpp',
-           'src/slm/slm.cpp',
-           'src/slm/slminfo/slminfo.cpp',
-           'src/slm/sim_sen.cpp',
-           'src/slm/sim_slm.cpp',
-           'src/slm/getWordFreq/getWordFreq.cpp',
-           'src/slm/slmseg/slmseg.cpp',
-           'src/slm/thread/slmthread.cpp',
-           'src/slm/thread/test_vc.cpp',
-           'src/slm/thread/ValueCompress.cpp',
-           'src/slm/slmbuild/slmbuild.cpp',
-           'src/slm/slmprune/slmprune.cpp',
-           'src/slm/sim_slmbuilder.cpp',
-           'src/slm/tslmendian/slm_endian.cpp',
-           'src/slm/tslmendian/writer.cpp',
-           'src/slm/tslmendian/slm_file.cpp',
-           'src/slm/sim_dict.cpp',
-           'src/portability.cpp',
-           'src/lexicon/trie_writer.cpp',
-           'src/lexicon/genPYT.cpp',
-           'src/lexicon/pytrie_gen.cpp',
-           'src/lexicon/pytrie.cpp',
-           'src/pinyin/pinyin_data.cpp']
+slmsource = [
+    'src/slm/ids2ngram/ids2ngram.cpp',
+    'src/slm/ids2ngram/idngram_merge.cpp',
+    'src/slm/mmseg/mmseg.cpp',
+    'src/slm/tslminfo/tslminfo.cpp',
+    'src/slm/tslmpack/arpa_slm.cpp',
+    'src/slm/tslmpack/arpa_conv.cpp',
+    'src/slm/tslmpack/slmpack.cpp',
+    'src/slm/slm.cpp',
+    'src/slm/slminfo/slminfo.cpp',
+    'src/slm/sim_sen.cpp',
+    'src/slm/sim_slm.cpp',
+    'src/slm/getWordFreq/getWordFreq.cpp',
+    'src/slm/slmseg/slmseg.cpp',
+    'src/slm/thread/slmthread.cpp',
+    'src/slm/thread/test_vc.cpp',
+    'src/slm/thread/ValueCompress.cpp',
+    'src/slm/slmbuild/slmbuild.cpp',
+    'src/slm/slmprune/slmprune.cpp',
+    'src/slm/sim_slmbuilder.cpp',
+    'src/slm/tslmendian/slm_endian.cpp',
+    'src/slm/tslmendian/writer.cpp',
+    'src/slm/tslmendian/slm_file.cpp',
+    'src/slm/sim_dict.cpp',
+    'src/portability.cpp',
+    'src/lexicon/trie_writer.cpp',
+    'src/lexicon/genPYT.cpp',
+    'src/lexicon/pytrie_gen.cpp',
+    'src/lexicon/pytrie.cpp',
+    'src/pinyin/pinyin_data.cpp',
+    ]
 
-imesource=['src/portability.cpp',
-           'src/slm/slm.cpp',
-           'src/lexicon/pytrie.cpp',
-           'src/pinyin/pinyin_data.cpp',
-           'src/pinyin/pinyin_seg.cpp',
-           'src/pinyin/shuangpin_data.cpp',
-           'src/pinyin/shuangpin_seg.cpp',
-           'src/pinyin/hunpin_seg.cpp',
-           'src/ime-core/imi_context.cpp',
-           'src/ime-core/imi_data.cpp',
-           'src/ime-core/lattice_states.cpp',
-           'src/ime-core/imi_view.cpp',
-           'src/ime-core/imi_uiobjects.cpp',
-           'src/ime-core/imi_view_classic.cpp',
-           'src/ime-core/imi_winHandler.cpp',
-           'src/ime-core/ic_history.cpp',
-           'src/ime-core/imi_funcobjs.cpp',
-           'src/ime-core/imi_options.cpp',
-           'src/ime-core/imi_option_event.cpp',
-           'src/ime-core/userdict.cpp',
-           'src/ime-core/imi_plugin.cpp']
+imesource = [
+    'src/portability.cpp',
+    'src/slm/slm.cpp',
+    'src/lexicon/pytrie.cpp',
+    'src/pinyin/pinyin_data.cpp',
+    'src/pinyin/pinyin_seg.cpp',
+    'src/pinyin/shuangpin_data.cpp',
+    'src/pinyin/shuangpin_seg.cpp',
+    'src/pinyin/hunpin_seg.cpp',
+    'src/ime-core/imi_context.cpp',
+    'src/ime-core/imi_data.cpp',
+    'src/ime-core/lattice_states.cpp',
+    'src/ime-core/imi_view.cpp',
+    'src/ime-core/imi_uiobjects.cpp',
+    'src/ime-core/imi_view_classic.cpp',
+    'src/ime-core/imi_winHandler.cpp',
+    'src/ime-core/ic_history.cpp',
+    'src/ime-core/imi_funcobjs.cpp',
+    'src/ime-core/imi_options.cpp',
+    'src/ime-core/imi_option_event.cpp',
+    'src/ime-core/userdict.cpp',
+    ]
 
-headers=['src/slm/ids2ngram/idngram.h',
-         'src/slm/ids2ngram/idngram_merge.h',
-         'src/slm/slm.h',
-         'src/slm/tslmpack/arpa_slm.h',
-         'src/slm/tslmpack/common.h',
-         'src/slm/tslmpack/arpa_conv.h',
-         'src/slm/sim_dict.h',
-         'src/slm/sim_sen.h',
-         'src/slm/sim_slm.h',
-         'src/slm/thread/ValueCompress.h',
-         'src/slm/sim_fmerge.h',
-         'src/slm/sim_slmbuilder.h',
-         'src/slm/tslmendian/slm_file.h',
-         'src/slm/tslmendian/writer.h',
-         'src/lexicon/pytrie_gen.h',
-         'src/lexicon/trie_writer.h',
-         'src/lexicon/pytrie.h',
-         'src/ime-core/imi_view_classic.h',
-         'src/ime-core/imi_uiobjects.h',
-         'src/ime-core/lattice_states.h',
-         'src/ime-core/ic_history.h',
-         'src/ime-core/imi_funcobjs.h',
-         'src/ime-core/imi_context.h',
-         'src/ime-core/imi_winHandler.h',
-         'src/ime-core/imi_glibHandler.h',
-         'src/ime-core/userdict.h',
-         'src/ime-core/imi_option_event.h',
-         'src/ime-core/imi_data.h',
-         'src/ime-core/utils.h',
-         'src/ime-core/imi_keys.h',
-         'src/ime-core/imi_option_keys.h',
-         'src/ime-core/imi_options.h',
-         'src/ime-core/imi_defines.h',
-         'src/ime-core/imi_view.h',
-         'src/ime-core/imi_plugin.h',
-         'src/portability.h',
-         'src/pinyin/segmentor.h',
-         'src/pinyin/shuangpin_seg.h',
-         'src/pinyin/datrie.h',
-         'src/pinyin/quanpin_trie.h',
-         'src/pinyin/pinyin_seg.h',
-         'src/pinyin/pinyin_data.h',
-         'src/pinyin/syllable.h',
-         'src/pinyin/shuangpin_data.h',
-         'src/pinyin/hunpin_seg.h',
-         'src/pinyin/datrie_impl.h',
-         'src/sunpinyin.h']
+headers = [
+    'src/slm/ids2ngram/idngram.h',
+    'src/slm/ids2ngram/idngram_merge.h',
+    'src/slm/slm.h',
+    'src/slm/tslmpack/arpa_slm.h',
+    'src/slm/tslmpack/common.h',
+    'src/slm/tslmpack/arpa_conv.h',
+    'src/slm/sim_dict.h',
+    'src/slm/sim_sen.h',
+    'src/slm/sim_slm.h',
+    'src/slm/thread/ValueCompress.h',
+    'src/slm/sim_fmerge.h',
+    'src/slm/sim_slmbuilder.h',
+    'src/slm/tslmendian/slm_file.h',
+    'src/slm/tslmendian/writer.h',
+    'src/lexicon/pytrie_gen.h',
+    'src/lexicon/trie_writer.h',
+    'src/lexicon/pytrie.h',
+    'src/ime-core/imi_view_classic.h',
+    'src/ime-core/imi_uiobjects.h',
+    'src/ime-core/lattice_states.h',
+    'src/ime-core/ic_history.h',
+    'src/ime-core/imi_funcobjs.h',
+    'src/ime-core/imi_context.h',
+    'src/ime-core/imi_winHandler.h',
+    'src/ime-core/imi_glibHandler.h',
+    'src/ime-core/userdict.h',
+    'src/ime-core/imi_option_event.h',
+    'src/ime-core/imi_data.h',
+    'src/ime-core/utils.h',
+    'src/ime-core/imi_keys.h',
+    'src/ime-core/imi_option_keys.h',
+    'src/ime-core/imi_options.h',
+    'src/ime-core/imi_defines.h',
+    'src/ime-core/imi_view.h',
+    'src/portability.h',
+    'src/pinyin/segmentor.h',
+    'src/pinyin/shuangpin_seg.h',
+    'src/pinyin/datrie.h',
+    'src/pinyin/quanpin_trie.h',
+    'src/pinyin/pinyin_seg.h',
+    'src/pinyin/pinyin_data.h',
+    'src/pinyin/syllable.h',
+    'src/pinyin/shuangpin_data.h',
+    'src/pinyin/hunpin_seg.h',
+    'src/pinyin/datrie_impl.h',
+    'src/sunpinyin.h',
+    ]
+
+# source of plugin module, it's off by default
+# and this module depends on Python
+imesource_plugin = [
+    'src/ime-core/imi_plugin.cpp',
+    ]
+
+headers_plugin = [
+    'src/ime-core/imi_plugin.h',
+    ]
 
 # options
 AddOption('--prefix', dest='prefix', metavar='DIR',
@@ -121,11 +135,18 @@ AddOption('--libdatadir', dest='libdatadir', metavar='DIR',
 AddOption('--rpath', dest='rpath', metavar='DIR',
           help='encode rpath in the executables')
 
+AddOption('--enable-plugins', dest='enable_plugins', action='store_true',
+          default=False, help='enable plugin mechanism at libsunpinyin layer')
+
+AddOption('--disable-plugins', dest='enable_plugins', action='store_false',
+          default=False, help='disable plugin mechanism at libsunpinyin layer')
+
 # save the options
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
 opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('LIBDATADIR', default='/usr/local/lib')
+opts.Add('ENABLE_PLUGINS', default=False)
 
 #
 #==============================environment==============================
@@ -177,6 +198,8 @@ if GetOption('libdir') is not None:
 if GetOption('libdatadir') is not None:
     env['LIBDATADIR'] = GetOption('libdatadir')
 
+env['ENABLE_PLUGINS'] = GetOption('enable_plugins')
+
 opts.Save('configure.conf', env)
 
 libdir = env['LIBDIR']
@@ -193,6 +216,11 @@ envvar = [('CC', 'CC'),
           ('MAKE', 'MAKE'),
           ('WGET', 'WGET')]
 PassVariables(envvar, env)
+
+# append the source and headers
+if env['ENABLE_PLUGINS']:
+    imesource += imesource_plugin
+    headers += headers_plugin
 
 # append critical cflags
 extra_cflags=' -pipe -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
@@ -267,9 +295,6 @@ conf = env.Configure(clean=False, help=False, config_h='config.h',
                                    'CheckPython': CheckPython})
 
 def DoConfigure():
-    if GetOption('clean'):
-        return
-
     if GetOS() == 'Darwin':
         if not conf.CheckLibWithHeader('sqlite3', 'sqlite3.h', 'C'):
             Exit(1)
@@ -281,8 +306,10 @@ def DoConfigure():
         if not conf.CheckPKG('sqlite3'):
             Exit(1)
 
-    if not conf.CheckPython():
-        Exit(1)
+    if conf.env['ENABLE_PLUGINS']:
+        if not conf.CheckPython():
+            Exit(1)
+        conf.Define('ENABLE_PLUGINS')
 
     conf.Define('ENABLE_NLS', 1)
     conf.Define('GETTEXT_PACKAGE', '"sunpinyin2"')
@@ -351,7 +378,8 @@ def DoConfigure():
     if GetOS() != 'Darwin':
         env.ParseConfig('pkg-config sqlite3 --libs --cflags')
 
-DoConfigure()
+if not GetOption('clean') and not GetOption('help'):
+    DoConfigure()
 
 #
 #==============================compile==============================
@@ -413,4 +441,3 @@ def DoInstall():
 
 DoInstall()
 env.Alias('install', ['install-lib', 'install-libdata', 'install-headers'])
-

@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /*
  *  hunpin_seg.h
  *  FIT

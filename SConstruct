@@ -174,16 +174,21 @@ def CreateEnvironment():
         tar = 'gtar'
         make = 'gmake'
 
-    return Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
-                       TAR=tar, MAKE=make, WGET=wget,
-                       CPPPATH=['.'] + allinc())
+    ln_builder = Builder(action='ln -s ${SOURCE} ${TARGET}', chdir=True)
+
+    env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
+                      TAR=tar, MAKE=make, WGET=wget,
+                      CPPPATH=['.'] + allinc(),
+                      tools=['default', 'textfile'])
+    env.Append(BUILDERS={'Symlink': ln_builder})
+    return env
 
 def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
             env[y] = os.environ[x]
-    
+
 env = CreateEnvironment()
 opts.Update(env)
 
@@ -222,28 +227,24 @@ if env['ENABLE_PLUGINS']:
     imesource += imesource_plugin
     headers += headers_plugin
 
-# append critical cflags
-extra_cflags=' -pipe -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
-env.Append(CFLAGS=extra_cflags)
-env.Append(CXXFLAGS=extra_cflags)
-
-if GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=' -Wl,-soname=libsunpinyin.so.%d' % abi_major)
+# merge some of critical compile flags
+env.MergeFlags(['-pipe -DHAVE_CONFIG_H',
+                '-DSUNPINYIN_DATA_DIR=\\\'\\"%s\\"\\\'' % libdatadir])
 
 if GetOption('rpath') is not None and GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
+    env.MergeFlags('-Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================
 #
 def CheckPKGConfig(context, version='0.12.0'):
-    context.Message( 'Checking for pkg-config... ' )
+    context.Message('Checking for pkg-config... ')
     ret = context.TryAction('pkg-config --atleast-pkgconfig-version=%s' % version)[0]
     context.Result(ret)
     return ret
 
 def CheckPKG(context, name):
-    context.Message( 'Checking for %s... ' % name )
+    context.Message('Checking for %s... ' % name)
     ret = context.TryAction('pkg-config --exists \'%s\'' % name)[0]
     context.Result(ret)
     return ret
@@ -353,27 +354,16 @@ def DoConfigure():
 
     # append endianness checking defines
     AppendEndianCheck(conf)
-
     env = conf.Finish()
     # generate sunpinyin.pc
-    f = file('sunpinyin-2.0.pc', 'w')
-    content = (
-        'prefix='+env['PREFIX'],
-        'exec_prefix=${prefix}',
-        'libdir=' + libdir,
-        'includedir=${exec_prefix}/include/sunpinyin-2.0',
-        '',
-        'Name: libsunpinyin',
-        'Description: IME library based on Statistical Language Model',
-        'Version: %s' % version,
-        'Requires: sqlite3',
-        'Libs: -L${libdir} -lsunpinyin',
-        'Cflags: ' + reduce(lambda a, b: a + ' ' + b,
-                            map(lambda x: '-I${includedir}' + x[3:],
-                                allinc()))
-        )
-    f.write(reduce(lambda a, b: a + '\n' + b, content))
-    f.close()
+    env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
+            '@PREFIX@': env['PREFIX'],
+            '@LIBDIR@': env['LIBDIR'],
+            '@VERSION@': version,
+            '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
+                               map(lambda x: '-I$${includedir}' + x[3:],
+                                   allinc())),
+            })
 
     if GetOS() != 'Darwin':
         env.ParseConfig('pkg-config sqlite3 --libs --cflags')
@@ -391,9 +381,13 @@ SConscript(['build/SConscript'], exports='env')
 libname = 'libsunpinyin.so.%d.%d' % (abi_major, abi_minor)
 libname_soname = 'libsunpinyin.so.%d' % abi_major
 libname_link = 'libsunpinyin.so'
+libname_linkflags = ''
+
+if GetOS() != 'Darwin':
+    liibname_linkflags = '-Wl,-soname=%s' % libname_soname
 
 lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
-                        source=imesource)
+                        source=imesource, parse_flags=libname_linkflags)
 
 env.Command('rawlm', 'build/tslmpack',
             '$MAKE -C raw WGET="$WGET" TAR="$TAR"')
@@ -408,8 +402,8 @@ if GetOption('clean'):
     os.system('$MAKE -C data clean WGET="$WGET" TAR="$TAR"')
 
 def DoInstall():
-    if not 'install' in COMMAND_LINE_TARGETS:
-        return
+    # if not 'install' in COMMAND_LINE_TARGETS:
+    #     return
 
     lib_target = None
     if GetOS() == 'Darwin':
@@ -419,12 +413,8 @@ def DoInstall():
         install_path = os.path.dirname(str(lib_target_bin[0])) + '/'
         lib_target = [
             lib_target_bin,
-            env.Command(install_path + libname_soname, lib_target_bin,
-                        'cd %s && ln -sf %s %s' %
-                        (install_path, libname, libname_soname)),
-            env.Command(install_path + libname_link, lib_target_bin,
-                        'cd %s && ln -sf %s %s' %
-                        (install_path, libname, libname_link))
+            env.Symlink(install_path + libname_soname, lib_target_bin),
+            env.Symlink(install_path + libname_link, lib_target_bin),
             ]
 
     lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',

@@ -1,5 +1,4 @@
 import os
-import SCons.Tool.textfile
 
 sources = ['src/debug.cpp',
            'src/engine.cpp',
@@ -42,7 +41,8 @@ def PassVariables(envvar, env):
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags, 
-                  CPPPATH=['.'], SUBSTFILESUFFIX='.in')
+                  CPPPATH=['.'],
+                  tools=['default', 'textfile'])
 opts.Update(env)
 
 if GetOption('prefix') is not None:
@@ -125,9 +125,6 @@ for locale in locales:
     mo = 'po/%s.mo' % (locale,)
     env.Command(mo, [], 'msgfmt po/%s.po -o %s' % (locale, mo))
 
-# bug of scons...
-# it doesn't include textfile builders by default?
-SCons.Tool.textfile.generate(env)
 sub = {'@LIBEXEC_DIR@': bin_dir,
        '@DATA_DIR@' : data_dir,
        '@ICON_DIR@': icons_dir,

@@ -1,0 +1,11 @@
+prefix=@PREFIX@
+exec_prefix=${prefix}
+libdir=@LIBDIR@
+includedir=${exec_prefix}/include/sunpinyin-2.0
+
+Name: libsunpinyin
+Description: IME library based on Statistical Language Model
+Version: @VERSION@
+Requires: sqlite3
+Libs: -L${libdir} -lsunpinyin
+Cflags: @CFLAGS@

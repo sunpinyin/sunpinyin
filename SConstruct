@@ -413,8 +413,12 @@ def DoInstall():
         install_path = os.path.dirname(str(lib_target_bin[0])) + '/'
         lib_target = [
             lib_target_bin,
-            env.Symlink(install_path + libname_soname, lib_target_bin),
-            env.Symlink(install_path + libname_link, lib_target_bin),
+            env.Command(install_path + libname_soname, lib_target_bin,
+                        'cd %s && ln -sf %s %s' %
+                        (install_path, libname, libname_soname)),
+            env.Command(install_path + libname_link, lib_target_bin,
+                        'cd %s && ln -sf %s %s' %
+                        (install_path, libname, libname_link))
             ]
 
     lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',

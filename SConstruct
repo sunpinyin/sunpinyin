@@ -174,13 +174,13 @@ def CreateEnvironment():
         tar = 'gtar'
         make = 'gmake'
 
-    ln_builder = Builder(action='ln -s ${SOURCE} ${TARGET}', chdir=True)
-
+    libln_builder = Builder(action='ln -s ${SOURCE.name} ${TARGET.name}',
+                            chdir=True)
     env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                       TAR=tar, MAKE=make, WGET=wget,
                       CPPPATH=['.'] + allinc(),
                       tools=['default', 'textfile'])
-    env.Append(BUILDERS={'Symlink': ln_builder})
+    env.Append(BUILDERS={'InstallAsSymlink': libln_builder})
     return env
 
 def PassVariables(envvar, env):
@@ -194,8 +194,8 @@ opts.Update(env)
 
 if GetOption('prefix') is not None:
     env['PREFIX'] = GetOption('prefix')
-    env['LIBDATADIR'] = env['PREFIX'] + '/lib'
-    env['LIBDIR'] = env['PREFIX'] + '/lib'
+    env['LIBDATADIR'] = os.path.join(env['PREFIX'], 'lib')
+    env['LIBDIR'] = os.path.join(env['PREFIX'], 'lib')
 
 if GetOption('libdir') is not None:
     env['LIBDIR'] = GetOption('libdir')
@@ -208,8 +208,8 @@ env['ENABLE_PLUGINS'] = GetOption('enable_plugins')
 opts.Save('configure.conf', env)
 
 libdir = env['LIBDIR']
-libdatadir = env['LIBDATADIR'] + '/sunpinyin/data'
-headersdir = env['PREFIX'] + '/include/sunpinyin-2.0'
+libdatadir = os.path.join(env['LIBDATADIR'], 'sunpinyin/data')
+headersdir = os.path.join(env['PREFIX'], 'include/sunpinyin-2.0')
 
 # pass through environmental variables
 envvar = [('CC', 'CC'),
@@ -378,16 +378,19 @@ env.Object(slmsource)
 
 SConscript(['build/SConscript'], exports='env')
 
-libname = 'libsunpinyin.so.%d.%d' % (abi_major, abi_minor)
-libname_soname = 'libsunpinyin.so.%d' % abi_major
-libname_link = 'libsunpinyin.so'
-libname_linkflags = ''
+libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
+                                     env.subst('${SHLIBSUFFIX}'))
+libname_link = libname_default
+libname_soname = '%s.%d' % (libname_link, abi_major)
+libname = '%s.%d' % (libname_soname, abi_minor)
+lib = None
 
 if GetOS() != 'Darwin':
-    liibname_linkflags = '-Wl,-soname=%s' % libname_soname
-
-lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
-                        source=imesource, parse_flags=libname_linkflags)
+    lib = env.SharedLibrary(libname, SHLIBSUFFIX='', source=imesource,
+                            parse_flags='-Wl,-soname=%s' % libname_soname)
+else:
+    # TODO: add install_name on Darwin?
+    lib = env.SharedLibrary('sunpinyin', source=imesource)
 
 env.Command('rawlm', 'build/tslmpack',
             '$MAKE -C raw WGET="$WGET" TAR="$TAR"')
@@ -402,26 +405,22 @@ if GetOption('clean'):
     os.system('$MAKE -C data clean WGET="$WGET" TAR="$TAR"')
 
 def DoInstall():
-    # if not 'install' in COMMAND_LINE_TARGETS:
-    #     return
-
     lib_target = None
     if GetOS() == 'Darwin':
         lib_target = env.Install(libdir, lib)
     else:
-        lib_target_bin = env.InstallAs(libdir + '/' + libname, lib)
-        install_path = os.path.dirname(str(lib_target_bin[0])) + '/'
+        lib_target_bin = env.Install(libdir, lib)
+        # where does it goes
+        install_path = os.path.dirname(str(lib_target_bin[0]))
         lib_target = [
             lib_target_bin,
-            env.Command(install_path + libname_soname, lib_target_bin,
-                        'cd %s && ln -sf %s %s' %
-                        (install_path, libname, libname_soname)),
-            env.Command(install_path + libname_link, lib_target_bin,
-                        'cd %s && ln -sf %s %s' %
-                        (install_path, libname, libname_link))
+            env.InstallAsSymlink(os.path.join(install_path, libname_soname),
+                                 lib_target_bin),
+            env.InstallAsSymlink(os.path.join(install_path, libname_link),
+                                 lib_target_bin),
             ]
 
-    lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',
+    lib_pkgconfig_target = env.Install(os.path.join(libdir, 'pkgconfig'),
                                        ['sunpinyin-2.0.pc'])
     libdata_target = env.Install(libdatadir,
                                  ['data/lm_sc.t3g',

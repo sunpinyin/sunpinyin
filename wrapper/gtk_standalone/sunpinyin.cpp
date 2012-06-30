@@ -120,6 +120,7 @@ int main(int argc, char* argv[])
     AQuanpinSchemePolicy::instance().setFuzzyForwarding(false, true);
     AQuanpinSchemePolicy::instance().setFuzzyPinyinPairs(fuzzy_pairs, false);
     AQuanpinSchemePolicy::instance().setFuzzySegmentation(true);
+    AQuanpinSchemePolicy::instance().setInnerFuzzySegmentation(true);
 
     // test plugin
     // CIMIPluginManager& manager = AIMIPluginManager::instance();

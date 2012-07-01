@@ -104,14 +104,13 @@ public:
      * @return false on error
      * call with buf_ptr with NULL value would clear the context memory
      */
-    virtual bool
-    loadFromBuffer(void* buf_ptr, size_t sz) = 0;
+    virtual bool loadFromBuffer(void* buf_ptr, size_t sz) = 0;
+    virtual bool loadFromFile(const char *fname) = 0;
+    virtual bool saveToFile(const char *fname = NULL) = 0;
 
-    virtual void
-    addStopWords(const std::set<uint32_t>& stopWords) = 0;
+    virtual void addStopWords(const std::set<uint32_t>& stopWords) = 0;
 
-    virtual void
-    initStopWords() = 0;
+    virtual void initStopWords() = 0;
 };
 
 class CBigramHistory : public CICHistory {
@@ -146,17 +145,11 @@ public:
                       uint32_t* ite_wid,
                       uint32_t wid);
 
-    virtual bool
-    bufferize(void** buf_ptr, size_t* sz);
+    virtual bool bufferize(void** buf_ptr, size_t* sz);
 
-    virtual bool
-    loadFromBuffer(void* buf_ptr, size_t sz);
-
-    bool
-    loadFromFile(const char *fname);
-
-    bool
-    saveToFile(const char *fname = NULL);
+    virtual bool loadFromBuffer(void* buf_ptr, size_t sz);
+    virtual bool loadFromFile(const char *fname);
+    virtual bool saveToFile(const char *fname = NULL);
 
     virtual void addStopWords(const std::set<uint32_t>& stopWords);
     virtual void initStopWords();

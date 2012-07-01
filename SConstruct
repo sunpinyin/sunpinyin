@@ -431,6 +431,7 @@ def DoInstall():
     env.Alias('install-headers', header_targets)
     env.Alias('install-lib', lib_target + [lib_pkgconfig_target])
     env.Alias('install-libdata', libdata_target)
+    env.Depends('install-libdata', 'install-lib')
 
 DoInstall()
 env.Alias('install', ['install-lib', 'install-libdata', 'install-headers'])

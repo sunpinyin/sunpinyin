@@ -110,6 +110,7 @@ CUserDict::addWord(CSyllables &syllables, const wstring& word)
                    0;
 
     sqlite3_finalize(stmt);
+    _copyDb(Save);
     return ret;
 }
 

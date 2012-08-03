@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -201,9 +202,13 @@ public:
     virtual void handlerUpdateCandidates(IPreeditString* ppd,
                                          ICandidateList* pcl);
     virtual void handlerCommit(const wstring& wstr);
+
+#ifdef ENABLE_PLUGINS
 private:
     void _pluginProvideCandidates(wstring preedit, ICandidateList* pcl);
     void _pluginTranslateCandidate(ICandidateList* pcl);
+#endif // ENABLE_PLUGINS
+
 protected:
     CIMIContext        *m_pIC;
     CIMIWinHandler     *m_pWinHandler;

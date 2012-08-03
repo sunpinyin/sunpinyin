@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 #ifndef _IMI_OPTION_KEYS_H
 #define _IMI_OPTION_KEYS_H
 

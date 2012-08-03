@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 #ifndef __SUNPINYIN_PYTRIE_WRITER_H__
 #define __SUNPINYIN_PYTRIE_WRITER_H__
 

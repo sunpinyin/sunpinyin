@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 #ifndef _SUNPINYIN_PYTRIE_GEN_H__
 #define _SUNPINYIN_PYTRIE_GEN_H__
 

@@ -652,7 +652,6 @@ static const TPyTabEntry
     { "xun", 0x0e1c0 },
     { "y", 0x16000 },
     { "ya", 0x16010 },
-    { "yai", 0x16040 },
     { "yan", 0x16080 },
     { "yang", 0x160a0 },
     { "yao", 0x16060 },

@@ -6,107 +6,121 @@ version="2.0.4"
 abi_major = 3
 abi_minor = 0
 
-cflags='-g -Wall'
+cflags = '-g -Wall'
 
-slmsource=['src/slm/ids2ngram/ids2ngram.cpp',
-           'src/slm/ids2ngram/idngram_merge.cpp',
-           'src/slm/mmseg/mmseg.cpp',
-           'src/slm/tslminfo/tslminfo.cpp',
-           'src/slm/tslmpack/arpa_slm.cpp',
-           'src/slm/tslmpack/arpa_conv.cpp',
-           'src/slm/tslmpack/slmpack.cpp',
-           'src/slm/slm.cpp',
-           'src/slm/slminfo/slminfo.cpp',
-           'src/slm/sim_sen.cpp',
-           'src/slm/sim_slm.cpp',
-           'src/slm/getWordFreq/getWordFreq.cpp',
-           'src/slm/slmseg/slmseg.cpp',
-           'src/slm/thread/slmthread.cpp',
-           'src/slm/thread/test_vc.cpp',
-           'src/slm/thread/ValueCompress.cpp',
-           'src/slm/slmbuild/slmbuild.cpp',
-           'src/slm/slmprune/slmprune.cpp',
-           'src/slm/sim_slmbuilder.cpp',
-           'src/slm/tslmendian/slm_endian.cpp',
-           'src/slm/tslmendian/writer.cpp',
-           'src/slm/tslmendian/slm_file.cpp',
-           'src/slm/sim_dict.cpp',
-           'src/portability.cpp',
-           'src/lexicon/trie_writer.cpp',
-           'src/lexicon/genPYT.cpp',
-           'src/lexicon/pytrie_gen.cpp',
-           'src/lexicon/pytrie.cpp',
-           'src/pinyin/pinyin_data.cpp']
+slmsource = [
+    'src/slm/ids2ngram/ids2ngram.cpp',
+    'src/slm/ids2ngram/idngram_merge.cpp',
+    'src/slm/mmseg/mmseg.cpp',
+    'src/slm/tslminfo/tslminfo.cpp',
+    'src/slm/tslmpack/arpa_slm.cpp',
+    'src/slm/tslmpack/arpa_conv.cpp',
+    'src/slm/tslmpack/slmpack.cpp',
+    'src/slm/slm.cpp',
+    'src/slm/slminfo/slminfo.cpp',
+    'src/slm/sim_sen.cpp',
+    'src/slm/sim_slm.cpp',
+    'src/slm/getWordFreq/getWordFreq.cpp',
+    'src/slm/slmseg/slmseg.cpp',
+    'src/slm/thread/slmthread.cpp',
+    'src/slm/thread/test_vc.cpp',
+    'src/slm/thread/ValueCompress.cpp',
+    'src/slm/slmbuild/slmbuild.cpp',
+    'src/slm/slmprune/slmprune.cpp',
+    'src/slm/sim_slmbuilder.cpp',
+    'src/slm/tslmendian/slm_endian.cpp',
+    'src/slm/tslmendian/writer.cpp',
+    'src/slm/tslmendian/slm_file.cpp',
+    'src/slm/sim_dict.cpp',
+    'src/portability.cpp',
+    'src/lexicon/trie_writer.cpp',
+    'src/lexicon/genPYT.cpp',
+    'src/lexicon/pytrie_gen.cpp',
+    'src/lexicon/pytrie.cpp',
+    'src/pinyin/pinyin_data.cpp',
+    ]
 
-imesource=['src/portability.cpp',
-           'src/slm/slm.cpp',
-           'src/lexicon/pytrie.cpp',
-           'src/pinyin/pinyin_data.cpp',
-           'src/pinyin/pinyin_seg.cpp',
-           'src/pinyin/shuangpin_data.cpp',
-           'src/pinyin/shuangpin_seg.cpp',
-           'src/pinyin/hunpin_seg.cpp',
-           'src/ime-core/imi_context.cpp',
-           'src/ime-core/imi_data.cpp',
-           'src/ime-core/lattice_states.cpp',
-           'src/ime-core/imi_view.cpp',
-           'src/ime-core/imi_uiobjects.cpp',
-           'src/ime-core/imi_view_classic.cpp',
-           'src/ime-core/imi_winHandler.cpp',
-           'src/ime-core/ic_history.cpp',
-           'src/ime-core/imi_funcobjs.cpp',
-           'src/ime-core/imi_options.cpp',
-           'src/ime-core/imi_option_event.cpp',
-           'src/ime-core/userdict.cpp',
-           'src/ime-core/imi_plugin.cpp']
+imesource = [
+    'src/portability.cpp',
+    'src/slm/slm.cpp',
+    'src/lexicon/pytrie.cpp',
+    'src/pinyin/pinyin_data.cpp',
+    'src/pinyin/pinyin_seg.cpp',
+    'src/pinyin/shuangpin_data.cpp',
+    'src/pinyin/shuangpin_seg.cpp',
+    'src/pinyin/hunpin_seg.cpp',
+    'src/ime-core/imi_context.cpp',
+    'src/ime-core/imi_data.cpp',
+    'src/ime-core/lattice_states.cpp',
+    'src/ime-core/imi_view.cpp',
+    'src/ime-core/imi_uiobjects.cpp',
+    'src/ime-core/imi_view_classic.cpp',
+    'src/ime-core/imi_winHandler.cpp',
+    'src/ime-core/ic_history.cpp',
+    'src/ime-core/imi_funcobjs.cpp',
+    'src/ime-core/imi_options.cpp',
+    'src/ime-core/imi_option_event.cpp',
+    'src/ime-core/userdict.cpp',
+    ]
 
-headers=['src/slm/ids2ngram/idngram.h',
-         'src/slm/ids2ngram/idngram_merge.h',
-         'src/slm/slm.h',
-         'src/slm/tslmpack/arpa_slm.h',
-         'src/slm/tslmpack/common.h',
-         'src/slm/tslmpack/arpa_conv.h',
-         'src/slm/sim_dict.h',
-         'src/slm/sim_sen.h',
-         'src/slm/sim_slm.h',
-         'src/slm/thread/ValueCompress.h',
-         'src/slm/sim_fmerge.h',
-         'src/slm/sim_slmbuilder.h',
-         'src/slm/tslmendian/slm_file.h',
-         'src/slm/tslmendian/writer.h',
-         'src/lexicon/pytrie_gen.h',
-         'src/lexicon/trie_writer.h',
-         'src/lexicon/pytrie.h',
-         'src/ime-core/imi_view_classic.h',
-         'src/ime-core/imi_uiobjects.h',
-         'src/ime-core/lattice_states.h',
-         'src/ime-core/ic_history.h',
-         'src/ime-core/imi_funcobjs.h',
-         'src/ime-core/imi_context.h',
-         'src/ime-core/imi_winHandler.h',
-         'src/ime-core/imi_glibHandler.h',
-         'src/ime-core/userdict.h',
-         'src/ime-core/imi_option_event.h',
-         'src/ime-core/imi_data.h',
-         'src/ime-core/utils.h',
-         'src/ime-core/imi_keys.h',
-         'src/ime-core/imi_option_keys.h',
-         'src/ime-core/imi_options.h',
-         'src/ime-core/imi_defines.h',
-         'src/ime-core/imi_view.h',
-         'src/ime-core/imi_plugin.h',
-         'src/portability.h',
-         'src/pinyin/segmentor.h',
-         'src/pinyin/shuangpin_seg.h',
-         'src/pinyin/datrie.h',
-         'src/pinyin/quanpin_trie.h',
-         'src/pinyin/pinyin_seg.h',
-         'src/pinyin/pinyin_data.h',
-         'src/pinyin/syllable.h',
-         'src/pinyin/shuangpin_data.h',
-         'src/pinyin/hunpin_seg.h',
-         'src/pinyin/datrie_impl.h',
-         'src/sunpinyin.h']
+headers = [
+    'src/slm/ids2ngram/idngram.h',
+    'src/slm/ids2ngram/idngram_merge.h',
+    'src/slm/slm.h',
+    'src/slm/tslmpack/arpa_slm.h',
+    'src/slm/tslmpack/common.h',
+    'src/slm/tslmpack/arpa_conv.h',
+    'src/slm/sim_dict.h',
+    'src/slm/sim_sen.h',
+    'src/slm/sim_slm.h',
+    'src/slm/thread/ValueCompress.h',
+    'src/slm/sim_fmerge.h',
+    'src/slm/sim_slmbuilder.h',
+    'src/slm/tslmendian/slm_file.h',
+    'src/slm/tslmendian/writer.h',
+    'src/lexicon/pytrie_gen.h',
+    'src/lexicon/trie_writer.h',
+    'src/lexicon/pytrie.h',
+    'src/ime-core/imi_view_classic.h',
+    'src/ime-core/imi_uiobjects.h',
+    'src/ime-core/lattice_states.h',
+    'src/ime-core/ic_history.h',
+    'src/ime-core/imi_funcobjs.h',
+    'src/ime-core/imi_context.h',
+    'src/ime-core/imi_winHandler.h',
+    'src/ime-core/imi_glibHandler.h',
+    'src/ime-core/userdict.h',
+    'src/ime-core/imi_option_event.h',
+    'src/ime-core/imi_data.h',
+    'src/ime-core/utils.h',
+    'src/ime-core/imi_keys.h',
+    'src/ime-core/imi_option_keys.h',
+    'src/ime-core/imi_options.h',
+    'src/ime-core/imi_defines.h',
+    'src/ime-core/imi_view.h',
+    'src/portability.h',
+    'src/pinyin/segmentor.h',
+    'src/pinyin/shuangpin_seg.h',
+    'src/pinyin/datrie.h',
+    'src/pinyin/quanpin_trie.h',
+    'src/pinyin/pinyin_seg.h',
+    'src/pinyin/pinyin_data.h',
+    'src/pinyin/syllable.h',
+    'src/pinyin/shuangpin_data.h',
+    'src/pinyin/hunpin_seg.h',
+    'src/pinyin/datrie_impl.h',
+    'src/sunpinyin.h',
+    ]
+
+# source of plugin module, it's off by default
+# and this module depends on Python
+imesource_plugin = [
+    'src/ime-core/imi_plugin.cpp',
+    ]
+
+headers_plugin = [
+    'src/ime-core/imi_plugin.h',
+    ]
 
 # options
 AddOption('--prefix', dest='prefix', metavar='DIR',
@@ -121,11 +135,18 @@ AddOption('--libdatadir', dest='libdatadir', metavar='DIR',
 AddOption('--rpath', dest='rpath', metavar='DIR',
           help='encode rpath in the executables')
 
+AddOption('--enable-plugins', dest='enable_plugins', action='store_true',
+          default=False, help='enable plugin mechanism at libsunpinyin layer')
+
+AddOption('--disable-plugins', dest='enable_plugins', action='store_false',
+          default=False, help='disable plugin mechanism at libsunpinyin layer')
+
 # save the options
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
 opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('LIBDATADIR', default='/usr/local/lib')
+opts.Add('ENABLE_PLUGINS', default=False)
 
 #
 #==============================environment==============================
@@ -153,23 +174,28 @@ def CreateEnvironment():
         tar = 'gtar'
         make = 'gmake'
 
-    return Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
-                       TAR=tar, MAKE=make, WGET=wget,
-                       CPPPATH=['.'] + allinc())
+    libln_builder = Builder(action='ln -s ${SOURCE.name} ${TARGET.name}',
+                            chdir=True)
+    env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
+                      TAR=tar, MAKE=make, WGET=wget,
+                      CPPPATH=['.'] + allinc(),
+                      tools=['default', 'textfile'])
+    env.Append(BUILDERS={'InstallAsSymlink': libln_builder})
+    return env
 
 def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print 'Warning: you\'ve set %s in the environmental variable!' % x
             env[y] = os.environ[x]
-    
+
 env = CreateEnvironment()
 opts.Update(env)
 
 if GetOption('prefix') is not None:
     env['PREFIX'] = GetOption('prefix')
-    env['LIBDATADIR'] = env['PREFIX'] + '/lib'
-    env['LIBDIR'] = env['PREFIX'] + '/lib'
+    env['LIBDATADIR'] = os.path.join(env['PREFIX'], 'lib')
+    env['LIBDIR'] = os.path.join(env['PREFIX'], 'lib')
 
 if GetOption('libdir') is not None:
     env['LIBDIR'] = GetOption('libdir')
@@ -177,11 +203,13 @@ if GetOption('libdir') is not None:
 if GetOption('libdatadir') is not None:
     env['LIBDATADIR'] = GetOption('libdatadir')
 
+env['ENABLE_PLUGINS'] = GetOption('enable_plugins')
+
 opts.Save('configure.conf', env)
 
 libdir = env['LIBDIR']
-libdatadir = env['LIBDATADIR'] + '/sunpinyin/data'
-headersdir = env['PREFIX'] + '/include/sunpinyin-2.0'
+libdatadir = os.path.join(env['LIBDATADIR'], 'sunpinyin/data')
+headersdir = os.path.join(env['PREFIX'], 'include/sunpinyin-2.0')
 
 # pass through environmental variables
 envvar = [('CC', 'CC'),
@@ -194,28 +222,29 @@ envvar = [('CC', 'CC'),
           ('WGET', 'WGET')]
 PassVariables(envvar, env)
 
-# append critical cflags
-extra_cflags=' -pipe -DHAVE_CONFIG_H -DSUNPINYIN_DATA_DIR=\'"%s"\'' % libdatadir
-env.Append(CFLAGS=extra_cflags)
-env.Append(CXXFLAGS=extra_cflags)
+# append the source and headers
+if env['ENABLE_PLUGINS']:
+    imesource += imesource_plugin
+    headers += headers_plugin
 
-if GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=' -Wl,-soname=libsunpinyin.so.%d' % abi_major)
+# merge some of critical compile flags
+env.MergeFlags(['-pipe -DHAVE_CONFIG_H',
+                '-DSUNPINYIN_DATA_DIR=\\\'\\"%s\\"\\\'' % libdatadir])
 
 if GetOption('rpath') is not None and GetOS() != 'Darwin':
-    env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
+    env.MergeFlags('-Wl,-R -Wl,%s' % GetOption('rpath'))
 
 #
 #==============================configure================================
 #
 def CheckPKGConfig(context, version='0.12.0'):
-    context.Message( 'Checking for pkg-config... ' )
+    context.Message('Checking for pkg-config... ')
     ret = context.TryAction('pkg-config --atleast-pkgconfig-version=%s' % version)[0]
     context.Result(ret)
     return ret
 
 def CheckPKG(context, name):
-    context.Message( 'Checking for %s... ' % name )
+    context.Message('Checking for %s... ' % name)
     ret = context.TryAction('pkg-config --exists \'%s\'' % name)[0]
     context.Result(ret)
     return ret
@@ -267,9 +296,6 @@ conf = env.Configure(clean=False, help=False, config_h='config.h',
                                    'CheckPython': CheckPython})
 
 def DoConfigure():
-    if GetOption('clean'):
-        return
-
     if GetOS() == 'Darwin':
         if not conf.CheckLibWithHeader('sqlite3', 'sqlite3.h', 'C'):
             Exit(1)
@@ -281,8 +307,10 @@ def DoConfigure():
         if not conf.CheckPKG('sqlite3'):
             Exit(1)
 
-    if not conf.CheckPython():
-        Exit(1)
+    if conf.env['ENABLE_PLUGINS']:
+        if not conf.CheckPython():
+            Exit(1)
+        conf.Define('ENABLE_PLUGINS')
 
     conf.Define('ENABLE_NLS', 1)
     conf.Define('GETTEXT_PACKAGE', '"sunpinyin2"')
@@ -326,32 +354,22 @@ def DoConfigure():
 
     # append endianness checking defines
     AppendEndianCheck(conf)
-
     env = conf.Finish()
     # generate sunpinyin.pc
-    f = file('sunpinyin-2.0.pc', 'w')
-    content = (
-        'prefix='+env['PREFIX'],
-        'exec_prefix=${prefix}',
-        'libdir=' + libdir,
-        'includedir=${exec_prefix}/include/sunpinyin-2.0',
-        '',
-        'Name: libsunpinyin',
-        'Description: IME library based on Statistical Language Model',
-        'Version: %s' % version,
-        'Requires: sqlite3',
-        'Libs: -L${libdir} -lsunpinyin',
-        'Cflags: ' + reduce(lambda a, b: a + ' ' + b,
-                            map(lambda x: '-I${includedir}' + x[3:],
-                                allinc()))
-        )
-    f.write(reduce(lambda a, b: a + '\n' + b, content))
-    f.close()
+    env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
+            '@PREFIX@': env['PREFIX'],
+            '@LIBDIR@': env['LIBDIR'],
+            '@VERSION@': version,
+            '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
+                               map(lambda x: '-I$${includedir}' + x[3:],
+                                   allinc())),
+            })
 
     if GetOS() != 'Darwin':
         env.ParseConfig('pkg-config sqlite3 --libs --cflags')
 
-DoConfigure()
+if not GetOption('clean') and not GetOption('help'):
+    DoConfigure()
 
 #
 #==============================compile==============================
@@ -362,12 +380,19 @@ env.Object(slmsource)
 
 SConscript(['build/SConscript'], exports='env')
 
-libname = 'libsunpinyin.so.%d.%d' % (abi_major, abi_minor)
-libname_soname = 'libsunpinyin.so.%d' % abi_major
-libname_link = 'libsunpinyin.so'
+libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
+                                     env.subst('${SHLIBSUFFIX}'))
+libname_link = libname_default
+libname_soname = '%s.%d' % (libname_link, abi_major)
+libname = '%s.%d' % (libname_soname, abi_minor)
+lib = None
 
-lib = env.SharedLibrary('sunpinyin-%d.%d' % (abi_major, abi_minor),
-                        source=imesource)
+if GetOS() != 'Darwin':
+    lib = env.SharedLibrary(libname, SHLIBSUFFIX='', source=imesource,
+                            parse_flags='-Wl,-soname=%s' % libname_soname)
+else:
+    # TODO: add install_name on Darwin?
+    lib = env.SharedLibrary('sunpinyin', source=imesource)
 
 env.Command('rawlm', 'build/tslmpack',
             '$MAKE -C raw WGET="$WGET" TAR="$TAR"')
@@ -382,26 +407,22 @@ if GetOption('clean'):
     os.system('$MAKE -C data clean WGET="$WGET" TAR="$TAR"')
 
 def DoInstall():
-    if not 'install' in COMMAND_LINE_TARGETS:
-        return
-
     lib_target = None
     if GetOS() == 'Darwin':
         lib_target = env.Install(libdir, lib)
     else:
-        lib_target_bin = env.InstallAs(libdir + '/' + libname, lib)
-        install_path = os.path.dirname(str(lib_target_bin[0])) + '/'
+        lib_target_bin = env.Install(libdir, lib)
+        # where does it goes
+        install_path = os.path.dirname(str(lib_target_bin[0]))
         lib_target = [
             lib_target_bin,
-            env.Command(install_path + libname_soname, lib_target_bin,
-                        'cd %s && ln -sf %s %s' %
-                        (install_path, libname, libname_soname)),
-            env.Command(install_path + libname_link, lib_target_bin,
-                        'cd %s && ln -sf %s %s' %
-                        (install_path, libname, libname_link))
+            env.InstallAsSymlink(os.path.join(install_path, libname_soname),
+                                 lib_target_bin),
+            env.InstallAsSymlink(os.path.join(install_path, libname_link),
+                                 lib_target_bin),
             ]
 
-    lib_pkgconfig_target = env.Install(libdir+'/pkgconfig',
+    lib_pkgconfig_target = env.Install(os.path.join(libdir, 'pkgconfig'),
                                        ['sunpinyin-2.0.pc'])
     libdata_target = env.Install(libdatadir,
                                  ['data/lm_sc.t3g',
@@ -412,7 +433,7 @@ def DoInstall():
     env.Alias('install-headers', header_targets)
     env.Alias('install-lib', lib_target + [lib_pkgconfig_target])
     env.Alias('install-libdata', libdata_target)
+    env.Depends('install-libdata', 'install-lib')
 
 DoInstall()
 env.Alias('install', ['install-lib', 'install-libdata', 'install-headers'])
-

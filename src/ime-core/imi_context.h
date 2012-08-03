@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -314,6 +315,7 @@ public:
     unsigned cancelSelection(unsigned frIdx, bool doSearch = true);
     void makeSelection(CCandidate &candi, bool doSearch = true);
     void deleteCandidate(CCandidate &candi);
+    void deleteCandidateByWID(unsigned wid);
     void selectSentence(int idx);
 
     void memorize();

@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -111,6 +112,7 @@ private:
 
 class CSlmDiscounter {
 public:
+    virtual ~CSlmDiscounter() {}
     // n is array size, nr is FREQ_TYPE[n], nr[0] is corpuse size,or sigma r*nr;
     // nr[1] is number of ngram items with freq 1, ...
     virtual void init(int n, CSlmBuilder::FREQ_TYPE *nr) = 0;

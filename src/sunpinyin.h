@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 #ifndef ___SUNPINYIN_H___
 #define ___SUNPINYIN_H___
 

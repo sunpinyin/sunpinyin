@@ -731,6 +731,12 @@ CIMIClassicView::deleteCandidate(int candiIdx, unsigned& mask)
         std::vector<unsigned> wids;
         m_pIC->getSelectedSentence(wids, m_candiFrIdx);
         m_pIC->removeFromHistoryCache(wids);
+
+        /* if the sentence wid length is 1, also delete this word */
+        if (wids.size() == 1) {
+            unsigned wid = wids[0];
+            m_pIC->deleteCandidateByWID(wid);
+        }
     } else if (type == ICandidateList::BEST_WORD
                || type == ICandidateList::NORMAL_WORD) {
         // remove an ordinary candidate

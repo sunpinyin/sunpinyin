@@ -835,8 +835,11 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
                     || cp.m_Rank < candidates_it->second.m_Rank
                     || cp.m_candi.m_wordId > INI_USRDEF_WID) {
                     candidates_map[cp.m_candi.m_cwstr] = cp;
+                    // print_wide(cp.m_candi.m_cwstr);
+                    // printf(" ");
                 }
             }
+            // puts("");
         }
 
         if (!found) continue;  // FIXME: need better solution later
@@ -872,7 +875,7 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
                     // print_wide(cp.m_candi.m_cwstr);
                     // std::string buf;
                     // ltst.m_score.toString(buf);
-                    // printf(" %s", buf.c_str());
+                    // printf("len:%d %s", len, buf.c_str());
                     // ltst.m_pBackTraceNode->m_score.toString(buf);
                     // printf("%s ", buf.c_str());
                     candidates_map[cp.m_candi.m_cwstr] = cp;
@@ -894,8 +897,11 @@ CIMIContext::getCandidates(unsigned frIdx, CCandidates& result)
 
     std::sort(vec.begin(), vec.end());
     for (size_t i = 0; i < vec.size(); i++) {
+        // print_wide(vec[i].m_Ptr->m_candi.m_cwstr);
+        // printf(" ");
         result.push_back(vec[i].m_Ptr->m_candi);
     }
+    // puts("");
 }
 
 unsigned
@@ -1021,19 +1027,26 @@ CIMIContext::_saveHistoryCache()
         i = fr.m_selWord.m_start;
     }
 
-    if (!result.empty())
+    if (!result.empty()) {
         m_pHistory->memorize(&(result[0]), &(result[0]) + result.size());
+        m_pHistory->saveToFile();
+    }
 }
 
 void
 CIMIContext::deleteCandidate(CCandidate &candi)
 {
     unsigned wid = candi.m_wordId;
+    deleteCandidateByWID(wid);
+}
 
+void
+CIMIContext::deleteCandidateByWID(unsigned wid)
+{
     if (wid > INI_USRDEF_WID) {
         m_pHistory->forget(wid);
         m_pUserDict->removeWord(wid);
-        _buildLattice(m_pPySegmentor->getSegments(), candi.m_start + 1);
+        _buildLattice(m_pPySegmentor->getSegments());
     }
 }
 

@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /*
  * Copyright (c) 2009 Kov Chai <tchaikov@gmail.com>
  *

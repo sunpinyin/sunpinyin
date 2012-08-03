@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 #ifndef _IMI_SESSION_H
 #define _IMI_SESSION_H
 

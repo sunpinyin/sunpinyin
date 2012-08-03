@@ -42,7 +42,9 @@
 #include "imi_view.h"
 #include "imi_view_classic.h"
 
+#ifdef ENABLE_PLUGINS
 #include "imi_plugin.h"
+#endif
 
 // #pragma setlocale("zh_CN.UTF-8")
 
@@ -62,8 +64,10 @@ CIMIView::CIMIView()
       m_candiWindowSize(10), m_bCN(true), m_bFullPunct(true),
       m_bFullSymbol(false), m_backspaceCancel(true), m_smartPunct(true)
 {
+#ifdef ENABLE_PLUGINS
     // load all needed plugins
     AIMIPluginManager::instance().initializePlugins();
+#endif
 }
 
 void
@@ -116,6 +120,9 @@ CIMIView::handlerUpdatePreedit(const IPreeditString* ppd)
     m_pWinHandler->updatePreedit(ppd);
 }
 
+// only build these with plugins support
+#ifdef ENABLE_PLUGINS
+
 void
 CIMIView::_pluginProvideCandidates(wstring preedit, ICandidateList* pcl)
 {
@@ -165,6 +172,8 @@ CIMIView::_pluginTranslateCandidate(ICandidateList* pcl)
     }
 }
 
+#endif // ENABLE_PLUGINS
+
 void
 CIMIView::handlerUpdateCandidates(IPreeditString* ppd,
                                   ICandidateList* pcl)
@@ -172,14 +181,19 @@ CIMIView::handlerUpdateCandidates(IPreeditString* ppd,
     if (m_pWinHandler == NULL || pcl == NULL) {
         return;
     }
-    CIMIPluginManager& manager = AIMIPluginManager::instance();
+#ifdef ENABLE_PLUGINS
     _pluginProvideCandidates(ppd->getString(), pcl);
     pcl->shrinkList();
     _pluginTranslateCandidate(pcl);
 
     m_pWinHandler->updateCandidates(pcl);
+    CIMIPluginManager& manager = AIMIPluginManager::instance();
     m_pWinHandler->enableDeferedUpdate(this, manager.getWaitTime());
     manager.resetWaitTime();
+#else
+    pcl->shrinkList();
+    m_pWinHandler->updateCandidates(pcl);
+#endif
 }
 
 void
@@ -188,6 +202,7 @@ CIMIView::handlerCommit(const wstring& wstr)
     if (m_pWinHandler == NULL) {
         return;
     }
+#ifdef ENABLE_PLUGINS
     wstring commit_result = wstr;
     CIMIPluginManager& manager = AIMIPluginManager::instance();
     // re-run filter again
@@ -202,4 +217,7 @@ CIMIView::handlerCommit(const wstring& wstr)
     }
     m_pWinHandler->commit(commit_result.c_str());
     m_pWinHandler->disableDeferedUpdate();
+#else
+    m_pWinHandler->commit(wstr.c_str());
+#endif
 }

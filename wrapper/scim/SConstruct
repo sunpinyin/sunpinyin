@@ -107,11 +107,11 @@ def DoConfigure():
     if not conf.CheckPKG('sunpinyin-2.0'):
         Exit(1)
 
-    if not conf.CheckPKG('gtk+-2.0'):
+    if not conf.CheckPKG('scim-gtkutils'):
         Exit(1)
     
     env = conf.Finish()
-    env.ParseConfig('pkg-config scim sunpinyin-2.0 gtk+-2.0 --libs --cflags')
+    env.ParseConfig('pkg-config scim sunpinyin-2.0 scim-gtkutils --libs --cflags')
 
 DoConfigure()
 

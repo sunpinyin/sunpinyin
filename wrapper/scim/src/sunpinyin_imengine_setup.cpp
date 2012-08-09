@@ -46,6 +46,18 @@
 
 using namespace scim;
 
+#if !GTK_CHECK_VERSION(2, 12, 0)
+    #define SUNPINYIN_USE_GTK_TOOLTIPS
+#endif
+
+#if GTK_CHECK_VERSION(2, 24, 0)
+    #define SUNPINYIN_USE_GTK_COMBO_BOX_TEXT
+#endif
+
+#if GTK_CHECK_VERSION(3, 0, 0)
+    #define SUNPINYIN_USE_GTK_BOX
+#endif
+
 #define scim_module_init sunpinyin_imengine_setup_LTX_scim_module_init
 #define scim_module_exit sunpinyin_imengine_setup_LTX_scim_module_exit
 
@@ -130,13 +142,22 @@ on_value_changed(GtkWidget *  widget,
 }
 
 static GtkWidget *
+#ifdef SUNPINYIN_USE_GTK_TOOLTIPS
 create_options_page(GtkTooltips *tooltips)
+#else
+create_options_page()
+#endif
 {
     GtkWidget *vbox;
     GtkWidget *label;
     GtkWidget *button;
 
+#ifdef SUNPINYIN_USE_GTK_BOX
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+#else
     vbox = gtk_vbox_new (FALSE, 12);
+#endif
+
     gtk_container_set_border_width(GTK_CONTAINER(vbox), 12);
 
     GtkWidget *table = gtk_table_new (2, 2, FALSE);
@@ -149,17 +170,35 @@ create_options_page(GtkTooltips *tooltips)
                       (GtkAttachOptions) (GTK_FILL), 4, 4);
 
 
+#ifdef SUNPINYIN_USE_GTK_COMBO_BOX_TEXT
+    GtkWidget *combo_box = gtk_combo_box_text_new();
+#else
     GtkWidget *combo_box = gtk_combo_box_new_text();
+#endif
+
     gtk_table_attach (GTK_TABLE (table), combo_box, 1, 2, 0, 1,
                       (GtkAttachOptions) (GTK_FILL),
                       (GtkAttachOptions) (GTK_FILL), 4, 4);
+
+#ifdef SUNPINYIN_USE_GTK_COMBO_BOX_TEXT
+    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _("Classic Style"));
+    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _("Instant Style"));
+#else
     gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), _("Classic Style"));
     gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), _("Instant Style"));
-    gtk_tooltips_set_tip(tooltips, combo_box, _("You may feel more comfortable in classic style, "
-                                                "if you are used to input methods like scim-pinyin."
-                                                " In instant style, the most possible candidate "
-                                                "word will show up in the preedit area right after "
-                                                "its pinyin is input."), NULL);
+#endif
+
+    const gchar *input_style_tooltip = _("You may feel more comfortable in classic style, "
+                                         "if you are used to input methods like scim-pinyin."
+                                         " In instant style, the most possible candidate "
+                                         "word will show up in the preedit area right after "
+                                         "its pinyin is input.");
+#ifdef SUNPINYIN_USE_GTK_TOOLTIPS
+    gtk_tooltips_set_tip(tooltips, combo_box, input_style_tooltip, NULL);
+#else
+    gtk_widget_set_tooltip_text(combo_box, input_style_tooltip);
+#endif
+
     g_signal_connect(G_OBJECT(combo_box), "changed",
                      G_CALLBACK(on_value_changed), NULL);
     input_style_combo = combo_box;
@@ -170,15 +209,33 @@ create_options_page(GtkTooltips *tooltips)
                       (GtkAttachOptions) (GTK_FILL),
                       (GtkAttachOptions) (GTK_FILL), 4, 4);
 
+#ifdef SUNPINYIN_USE_GTK_COMBO_BOX_TEXT
+    combo_box = gtk_combo_box_text_new();
+#else
     combo_box = gtk_combo_box_new_text();
+#endif
+
     gtk_table_attach (GTK_TABLE (table), combo_box, 1, 2, 1, 2,
                       (GtkAttachOptions) (GTK_FILL),
                       (GtkAttachOptions) (GTK_FILL), 4, 4);
+
+#ifdef SUNPINYIN_USE_GTK_COMBO_BOX_TEXT
+    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _("GB2312"));
+    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _("GBK"));
+#else
     gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), _("GB2312"));
     gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), _("GBK"));
-    gtk_tooltips_set_tip(tooltips, combo_box, _("Choosing GBK over GB2312 will trade some speed "
-                                                "with a larger charset in which I search candidate "
-                                                "words/characters for you."), NULL);
+#endif
+
+    const gchar *charset_tooltip = _("Choosing GBK over GB2312 will trade some speed "
+                                     "with a larger charset in which I search candidate "
+                                     "words/characters for you.");
+#ifdef SUNPINYIN_USE_GTK_TOOLTIPS
+    gtk_tooltips_set_tip(tooltips, combo_box, charset_tooltip, NULL);
+#else
+    gtk_widget_set_tooltip_text(combo_box, charset_tooltip);
+#endif
+
     g_signal_connect(G_OBJECT(combo_box), "changed",
                      G_CALLBACK(on_value_changed), NULL);
     charset_combo = combo_box;
@@ -203,7 +260,13 @@ create_options_page(GtkTooltips *tooltips)
 
     // MemoryPower
     GtkWidget *hbox;
+
+#ifdef SUNPINYIN_USE_GTK_BOX
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#else
     hbox = gtk_hbox_new (FALSE, 0);
+#endif
+
     gtk_widget_show (hbox);
     gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
@@ -215,8 +278,15 @@ create_options_page(GtkTooltips *tooltips)
     gtk_misc_set_padding (GTK_MISC (label), 2, 0);
 
     button = gtk_spin_button_new_with_range (0, 10, 1);
-    gtk_tooltips_set_tip(tooltips, button, _("The larger this number is, the faster I "
-                                             "memorize/forget new words."), NULL);
+
+    const gchar *memory_power_tooltip =  _("The larger this number is, the faster I "
+                                           "memorize/forget new words.");
+#ifdef SUNPINYIN_USE_GTK_TOOLTIPS
+    gtk_tooltips_set_tip(tooltips, button, memory_power_tooltip, NULL);
+#else
+    gtk_widget_set_tooltip_text(button, memory_power_tooltip);
+#endif
+
     g_signal_connect (G_OBJECT(button), "value_changed",
                       G_CALLBACK(on_value_changed), NULL);
     gtk_widget_show (button);
@@ -236,15 +306,21 @@ create_setup_window ()
     GtkWidget *notebook;
     GtkWidget *label;
     GtkWidget *page;
+#ifdef SUNPINYIN_USE_GTK_TOOLTIPS
     GtkTooltips *tooltips;
 
     // Create the shared tooltips.
     tooltips = gtk_tooltips_new ();
+#endif
 
     notebook = gtk_notebook_new ();
 
     // Create the option page. 
+#ifdef SUNPINYIN_USE_GTK_TOOLTIPS
     page = create_options_page(tooltips);
+#else
+    page = create_options_page();
+#endif
     label = gtk_label_new (_("Options"));
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), page, label);
 

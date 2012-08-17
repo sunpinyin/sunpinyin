@@ -37,8 +37,8 @@ env.Program('genpyt', ['portability.o', 'slm/slm.o', 'slm/tslmendian/writer.o',
                    'lexicon/pytrie.o', 'lexicon/pytrie_gen.o',
                    'pinyin/pinyin_data.o'])
 
-env.Program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
-
 env.Program('getwordfreq', ['portability.o', 'slm/slm.o',
                         'slm/getwordfreq/getwordfreq.o'])
+
+env.Program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
 

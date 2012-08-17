@@ -113,6 +113,7 @@ slm_bigram2: slm2_ids tslm2_info
 slm_bigram3: slm3_ids tslm2_info
 slm_trigram2: slm2_ids tslm3_info
 slm_trigram3: slm3_ids tslm3_info
+data_bin: tslm3_pack lexicon3
 
 bootstrap2:
 	make mmseg_bigram

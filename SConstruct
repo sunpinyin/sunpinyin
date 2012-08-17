@@ -122,6 +122,42 @@ headers_plugin = [
     'src/ime-core/imi_plugin.h',
     ]
 
+bins = [
+    'src/mmseg',
+    'src/slmseg',
+    'src/ids2ngram',
+    'src/idngram_merge',
+    'src/slmbuild',
+    'src/slmprune',
+    'src/slminfo',
+    'src/slmthread',
+    'src/tslmendian',
+    'src/tslminfo',
+    'src/tslmpack',
+    'src/genpyt',
+    'src/getwordfreq',
+    ]
+
+mans = [
+    'man/mmseg.1',
+    'man/slmseg.1',
+    'man/ids2ngram.1',
+    'man/idngram_merge.1',
+    'man/slmbuild.1',
+    'man/slmprune.1',
+    'man/slminfo.1',
+    'man/slmthread.1',
+    'man/tslmendian.1',
+    'man/tslminfo.1',
+    'man/tslmpack.1',
+    'man/genpyt.1',
+    'man/getwordfreq.1',
+    ]
+
+docs = [
+    'doc/SLM.mk',
+    ]
+
 # options
 AddOption('--prefix', dest='prefix', metavar='DIR',
           help='installation prefix')
@@ -129,8 +165,8 @@ AddOption('--prefix', dest='prefix', metavar='DIR',
 AddOption('--libdir', dest='libdir', metavar='DIR',
           help='installation libdir')
 
-AddOption('--libdatadir', dest='libdatadir', metavar='DIR',
-          help='installation libdata dir')
+AddOption('--datadir', dest='datadir', metavar='DIR',
+          help='installation data dir')
 
 AddOption('--rpath', dest='rpath', metavar='DIR',
           help='encode rpath in the executables')
@@ -145,7 +181,7 @@ AddOption('--disable-plugins', dest='enable_plugins', action='store_false',
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
 opts.Add('LIBDIR', default='/usr/local/lib')
-opts.Add('LIBDATADIR', default='/usr/local/lib')
+opts.Add('DATADIR', default='/usr/local/share')
 opts.Add('ENABLE_PLUGINS', default=False)
 
 #
@@ -194,22 +230,25 @@ opts.Update(env)
 
 if GetOption('prefix') is not None:
     env['PREFIX'] = GetOption('prefix')
-    env['LIBDATADIR'] = os.path.join(env['PREFIX'], 'lib')
     env['LIBDIR'] = os.path.join(env['PREFIX'], 'lib')
+    env['DATADIR'] = os.path.join(env['PREFIX'], 'share')
 
 if GetOption('libdir') is not None:
     env['LIBDIR'] = GetOption('libdir')
 
-if GetOption('libdatadir') is not None:
-    env['LIBDATADIR'] = GetOption('libdatadir')
+if GetOption('datadir') is not None:
+    env['DATADIR'] = GetOption('datadir')
 
 env['ENABLE_PLUGINS'] = GetOption('enable_plugins')
 
 opts.Save('configure.conf', env)
 
-libdir = env['LIBDIR']
-libdatadir = os.path.join(env['LIBDATADIR'], 'sunpinyin/data')
+bindir = os.path.join(env['PREFIX'], 'bin')
+mandir = os.path.join(env['PREFIX'], 'share/man')
+docdir = os.path.join(env['PREFIX'], 'share/doc/sunpinyin')
 headersdir = os.path.join(env['PREFIX'], 'include/sunpinyin-2.0')
+datadir = os.path.join(env['DATADIR'], 'sunpinyin')
+libdir = env['LIBDIR']
 
 # pass through environmental variables
 envvar = [('CC', 'CC'),
@@ -229,7 +268,7 @@ if env['ENABLE_PLUGINS']:
 
 # merge some of critical compile flags
 env.MergeFlags(['-pipe -DHAVE_CONFIG_H',
-                '-DSUNPINYIN_DATA_DIR=\\\'\\"%s\\"\\\'' % libdatadir])
+                '-DSUNPINYIN_DATA_DIR=\\\'\\"%s\\"\\\'' % datadir])
 
 if GetOption('rpath') is not None and GetOS() != 'Darwin':
     env.MergeFlags('-Wl,-R -Wl,%s' % GetOption('rpath'))
@@ -379,6 +418,7 @@ env.Command('src/pinyin/quanpin_trie.h', 'python/pinyin_data.py',
 env.Object(slmsource)
 
 SConscript(['src/SConscript'], exports='env')
+SConscript(['man/SConscript'], exports='env')
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
                                      env.subst('${SHLIBSUFFIX}'))
@@ -412,16 +452,19 @@ def DoInstall():
 
     lib_pkgconfig_target = env.Install(os.path.join(libdir, 'pkgconfig'),
                                        ['sunpinyin-2.0.pc'])
-    libdata_target = env.Install(libdatadir,
-                                 ['data/lm_sc.t3g',
-                                  'data/pydict_sc.bin'])
+    bin_target = env.Install(bindir, bins)
+    man_target = env.Install(mandir, mans)
+    doc_target = env.Install(docdir, docs)
     header_targets = []
     for header in headers:
         header_targets.append(env.InstallAs(headersdir + header[3:], header))
+    env.Alias('install-bin', bin_target)
+    env.Alias('install-man', man_target)
+    env.Alias('install-doc', doc_target)
     env.Alias('install-headers', header_targets)
     env.Alias('install-lib', lib_target + [lib_pkgconfig_target])
-    env.Alias('install-libdata', libdata_target)
-    env.Depends('install-libdata', 'install-lib')
+    Mkdir(datadir)
 
 DoInstall()
-env.Alias('install', ['install-lib', 'install-libdata', 'install-headers'])
+env.Alias('install', ['install-bin', 'install-lib', 'install-headers'])
+

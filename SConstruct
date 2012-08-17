@@ -20,7 +20,7 @@ slmsource = [
     'src/slm/slminfo/slminfo.cpp',
     'src/slm/sim_sen.cpp',
     'src/slm/sim_slm.cpp',
-    'src/slm/getWordFreq/getWordFreq.cpp',
+    'src/slm/getwordfreq/getwordfreq.cpp',
     'src/slm/slmseg/slmseg.cpp',
     'src/slm/thread/slmthread.cpp',
     'src/slm/thread/test_vc.cpp',

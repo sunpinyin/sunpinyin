@@ -39,6 +39,6 @@ env.Program('genpyt', ['portability.o', 'slm/slm.o', 'slm/tslmendian/writer.o',
 
 env.Program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
 
-env.Program('getWordFreq', ['portability.o', 'slm/slm.o',
-                        'slm/getWordFreq/getWordFreq.o'])
+env.Program('getwordfreq', ['portability.o', 'slm/slm.o',
+                        'slm/getwordfreq/getwordfreq.o'])
 

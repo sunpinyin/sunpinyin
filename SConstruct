@@ -378,7 +378,7 @@ env.Command('src/pinyin/quanpin_trie.h', 'python/pinyin_data.py',
             './pinyin_data.py > /dev/null', chdir = 'python')
 env.Object(slmsource)
 
-SConscript(['build/SConscript'], exports='env')
+SConscript(['src/SConscript'], exports='env')
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
                                      env.subst('${SHLIBSUFFIX}'))
@@ -393,18 +393,6 @@ if GetOS() != 'Darwin':
 else:
     # TODO: add install_name on Darwin?
     lib = env.SharedLibrary('sunpinyin', source=imesource)
-
-env.Command('rawlm', 'build/tslmpack',
-            '$MAKE -C raw WGET="$WGET" TAR="$TAR"')
-
-env.Command('lm', 'rawlm',
-            '$MAKE -C data WGET="$WGET" TAR="$TAR"')
-
-if GetOption('clean'):
-    os.environ['TAR'] = env['TAR']
-    os.environ['MAKE'] = env['MAKE']
-    os.system('$MAKE -C raw clean WGET="$WGET" TAR="$TAR"')
-    os.system('$MAKE -C data clean WGET="$WGET" TAR="$TAR"')
 
 def DoInstall():
     lib_target = None

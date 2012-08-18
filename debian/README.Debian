@@ -40,14 +40,14 @@ binary format for storing the lexicon and language model data.
 So, to make sunpinyin usable, you may need to download the lexicon and
 language data file from open-gram website [2]. Two files are
 necessary for sunpinyin to work: 
- - lm_sc.t3g, pydict_sc.bin
+ - lm_sc.t3g, pydict3_sc.bin
 
 And we prepare two file for each of them: 
- - slm_sc.t3g.{be,le}, pydict_sc.bin.{be, le}
+ - slm_sc.t3g.{be,le}, pydict3_sc.bin.{be, le}
 
 The `be' and `le' stand for `Big Endian' and `Little Endian'. Download
 the right ones according to your computer's byte order, rename
-them to lm_sc.t3g and pydict_sc.bin respectively, then put them to
+them to lm_sc.t3g and pydict3_sc.bin respectively, then put them to
 /usr/share/sunpinyin/data. 
 
 
@@ -84,13 +84,13 @@ home page [1].)
    frequency are stored.
 
    There are two sets of lexicon used in SunPinyin: dict.utf8 and
-   pydict_sc.bin.
+   pydict3_sc.bin.
 
 *** dict.utf8
     The word frequency in dict.utf8 which are used in the first
     iteration of segmentation of the raw corpus.
 
-*** pydict_sc.bin 
+*** pydict3_sc.bin 
     This data file is a trie presentation of the syllables and
     corresponding Chinese words, so that we can lookup the Chinese
     words with incomplete pinyin-prefix. This lexicon is also sorted

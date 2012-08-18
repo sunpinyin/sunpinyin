@@ -1,0 +1,20 @@
+import os
+Import('env')
+
+pod2man = Builder(action = 'pod2man < $SOURCE > $TARGET')
+env.Append(BUILDERS = {'Man': pod2man})
+
+env.Man('mmseg.1', 'mmseg.pod')
+env.Man('slmseg.1', 'slmseg.pod')
+env.Man('ids2ngram.1', 'ids2ngram.pod')
+env.Man('idngram_merge.1', 'idngram_merge.pod')
+env.Man('slmbuild.1', 'slmbuild.pod')
+env.Man('slmprune.1', 'slmprune.pod')
+env.Man('slminfo.1', 'slminfo.pod')
+env.Man('slmthread.1', 'slmthread.pod')
+env.Man('tslmendian.1', 'tslmendian.pod')
+env.Man('tslminfo.1', 'tslminfo.pod')
+env.Man('tslmpack.1', 'tslmpack.pod')
+env.Man('genpyt.1', 'genpyt.pod')
+env.Man('getwordfreq.1', 'getwordfreq.pod')
+

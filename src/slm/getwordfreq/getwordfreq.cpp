@@ -56,7 +56,7 @@ static void
 showUsage()
 {
     cerr << "Usage:\n";
-    cerr << "getWordFreq [-s corpus_size] [-v] [-e] -m slm_file -l lexicon\n";
+    cerr << "getwordfreq [-s corpus_size] [-v] [-e] -m slm_file -l lexicon\n";
     cerr << "    default corpus_size is 300000000 if not given\n";
     cerr <<
     "    -v means output other information after word and freq for each line\n";

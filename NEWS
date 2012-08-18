@@ -16,7 +16,7 @@ libsunpinyin
 
 * New LOGO!
 * History cache focus more on recent commits.
-* Supports --libdir and --libdatadir as configuration arguments.
+* Supports --libdir and --datadir as configuration arguments.
 * Hunpin support. (Contributed by Hanjie Xu)
 * Fixed weird behavior of history with a single character.
 * Fixed a potential issue for candidate ranking.

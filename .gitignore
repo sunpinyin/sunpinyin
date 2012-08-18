@@ -19,12 +19,6 @@ Makefile.in.in
 .deps
 src/host_os.h
 
-data/lm_sc.t3g*
-data/pydict_sc.bin*
-
-raw/dict.utf8
-raw/lm_sc.t3g.arpa
-
 po/POTFILES
 po/stamp-it
 po/Makefile.in.in
@@ -43,12 +37,6 @@ wrapper/macos/packaging/SunPinyin/build/
 wrapper/macos/packaging/sunpinyin_appcast.xml
 
 cmakebuild/
-build/*
-!build/SConscript
-!build/Makefile.new
-swap/*
-data/*
-
 debian/control
 
 *.pc
@@ -66,3 +54,4 @@ cscope.out
 .sconf_temp/*
 .sconsign.dblite
 configure.conf
+

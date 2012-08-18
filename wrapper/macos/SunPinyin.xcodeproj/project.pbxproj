@@ -45,7 +45,7 @@
 		A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E640DBDD9D600472176 /* portability.cpp */; };
 		A4DA4E750DBDD9D600472176 /* slm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E670DBDD9D600472176 /* slm.cpp */; };
 		A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */; };
-		A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */; };
+		A4DA4ED30DBDFA0800472176 /* pydict3_sc.bin in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED10DBDFA0800472176 /* pydict3_sc.bin */; };
 		A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4FC48C90F6530EF0069BE81 /* Localizable.strings */; };
 		E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93074B60A5C264700470842 /* InputMethodKit.framework */; };
 		E93074E20A5C2F1200470842 /* SunPinyinInputController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */; };
@@ -147,7 +147,7 @@
 		A4DA4E670DBDD9D600472176 /* slm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slm.cpp; sourceTree = "<group>"; };
 		A4DA4E680DBDD9D600472176 /* slm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slm.h; sourceTree = "<group>"; };
 		A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */ = {isa = PBXFileReference; lastKnownFileType = file; name = lm_sc.t3g; path = ../../data/lm_sc.t3g; sourceTree = SOURCE_ROOT; };
-		A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict_sc.bin; path = ../../data/pydict_sc.bin; sourceTree = "<group>"; };
+		A4DA4ED10DBDFA0800472176 /* pydict3_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict3_sc.bin; path = ../../data/pydict3_sc.bin; sourceTree = "<group>"; };
 		A4FC48CA0F6530EF0069BE81 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A4FC48CC0F6531110069BE81 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E93074B60A5C264700470842 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = /System/Library/Frameworks/InputMethodKit.framework; sourceTree = "<absolute>"; };
@@ -244,7 +244,7 @@
 				0752CBF10F9C723600C7096E /* dsa_pub.pem */,
 				A412C8570F7942DB006B10AD /* SunPinyin.icns */,
 				A4FC48C90F6530EF0069BE81 /* Localizable.strings */,
-				A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */,
+				A4DA4ED10DBDFA0800472176 /* pydict3_sc.bin */,
 				A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -424,7 +424,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				E99A79200BFAA07E00935A00 /* preferences.plist in Resources */,
 				A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */,
-				A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */,
+				A4DA4ED30DBDFA0800472176 /* pydict3_sc.bin in Resources */,
 				A45578F51146A75200592C6E /* MainMenu.xib in Resources */,
 				A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */,
 				A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */,

@@ -1,0 +1,44 @@
+import os
+Import('env')
+
+env.Program('mmseg', ['portability.o', 'slm/sim_dict.o', 'slm/sim_sen.o',
+                  'slm/mmseg/mmseg.o'])
+
+env.Program('slmseg', ['portability.o', 'slm/sim_dict.o', 'slm/sim_sen.o',
+                   'slm/slm.o', 'slm/slmseg/slmseg.o'])
+
+env.Program('ids2ngram', ['portability.o', 'slm/ids2ngram/ids2ngram.o'])
+
+env.Program('idngram_merge', ['portability.o', 'slm/ids2ngram/idngram_merge.o'])
+
+env.Program('slmbuild', ['portability.o', 'slm/sim_slmbuilder.o',
+                     'slm/slmbuild/slmbuild.o'])
+
+env.Program('slmprune', ['portability.o', 'slm/sim_slm.o',
+                     'slm/slmprune/slmprune.o'])
+
+env.Program('slminfo', ['portability.o', 'slm/slminfo/slminfo.o'])
+
+env.Program('slmthread', ['portability.o', 'slm/sim_slm.o',
+                      'slm/thread/ValueCompress.o', 'slm/thread/slmthread.o'])
+
+env.Program('tslmendian', ['slm/tslmendian/slm_file.o',
+                       'slm/tslmendian/slm_endian.o',
+                       'slm/tslmendian/writer.o'])
+
+env.Program('tslminfo', ['portability.o', 'slm/slm.o', 'slm/tslminfo/tslminfo.o'])
+
+env.Program('tslmpack', ['portability.o', 'slm/slm.o',
+                     'slm/thread/ValueCompress.o', 'slm/tslmpack/slmpack.o',
+                     'slm/tslmpack/arpa_conv.o', 'slm/tslmpack/arpa_slm.o'])
+
+env.Program('genpyt', ['portability.o', 'slm/slm.o', 'slm/tslmendian/writer.o',
+                   'lexicon/trie_writer.o', 'lexicon/genPYT.o',
+                   'lexicon/pytrie.o', 'lexicon/pytrie_gen.o',
+                   'pinyin/pinyin_data.o'])
+
+env.Program('getwordfreq', ['portability.o', 'slm/slm.o',
+                        'slm/getwordfreq/getwordfreq.o'])
+
+env.Program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
+

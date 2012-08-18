@@ -41,13 +41,13 @@ DEB_DH_MAKESHLIBS_ARGS := -n
 DEB_DH_GENCONTROL_ARGS := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
 
 binary-fixup/sunpinyin-data-le::
-	for f in pydict_sc.bin lm_sc.t3g ; do                                 \
+	for f in pydict3_sc.bin lm_sc.t3g ; do                                 \
 	    cp -f $(CURDIR)/data/$$f.le                                       \
 	       $(CURDIR)/debian/sunpinyin-data-le/usr/lib/sunpinyin/data/$$f; \
 	done
 
 binary-fixup/sunpinyin-data-be::
-	for f in pydict_sc.bin lm_sc.t3g ; do                                 \
+	for f in pydict3_sc.bin lm_sc.t3g ; do                                 \
 	    cp -f $(CURDIR)/data/$$f.be                                       \
 	       $(CURDIR)/debian/sunpinyin-data-be/usr/lib/sunpinyin/data/$$f; \
 	done

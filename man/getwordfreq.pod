@@ -1,14 +1,14 @@
 =head1 NAME
 
-getWordFreq - print word freq information from language model
+getwordfreq - print word freq information from language model
 
 =head1 SYNOPSIS
 
-B<getWordFreq> [I<option>]... B<-m> I<slm-file> B<-l> I<lexicon>
+B<getwordfreq> [I<option>]... B<-m> I<slm-file> B<-l> I<lexicon>
 
 =head1 DESCRIPTION
 
-B<getWordFreq> prints out the word string and its freq of all words in a language model.
+B<getwordfreq> prints out the word string and its freq of all words in a language model.
 
 =head1 OPTIONS
 

@@ -2,7 +2,7 @@ Package SunPinyin for Mac OS X release
 ======================================
 
 SunPinyin for Mac OS X has been updated to support automatic
-self-update and automatic data files (lm_sg.t3g, pydict_sc.bin)
+self-update and automatic data files (lm_sg.t3g, pydict3_sc.bin)
 fetching.
 
 1. After you update data files (../../../data/*.t3g.{be,le},

@@ -30,7 +30,7 @@ def test_pyslm ():
 
 def test_pytrie ():
     trie = PinyinTrie()
-    if not trie.load ("../data/pydict_sc.bin"):
+    if not trie.load ("../data/pydict3_sc.bin"):
         return
 
     root = trie.get_root_node ()

@@ -1,0 +1,11 @@
+wrapper/macos/build/
+wrapper/macos/zh_CN.lproj/MainMenu.xib
+wrapper/macos/zh_CN.lproj/MainMenu.nib
+wrapper/macos/packaging/SunPinyin-MacOS-2.0.zip
+wrapper/macos/packaging/SunPinyin/DownloadDataFiles/build/
+wrapper/macos/packaging/SunPinyin/build/
+wrapper/macos/packaging/sunpinyin_appcast.xml
+wrapper/macos/SunPinyin.xcodeproj/*.mode1v3
+wrapper/macos/SunPinyin.xcodeproj/*.pbxuser
+wrapper/macos/SunPinyin.xcodeproj/*.perspectivev3
+

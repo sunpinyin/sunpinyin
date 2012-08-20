@@ -1,0 +1,14 @@
+How to install data files for sunpinyin
+=======================================
+
+Get `lm_sc.t3g.arpa.tar.bz2' and `dict.utf8.tar.bz2' from [1],
+unpack them into some directory, and issue the following command in that
+directory:
+
+	make -f /path/to/SLM.mk data_bin
+
+Then copy generated `lm_sc.t3g' and `pydict3_sc.bin' to sunpinyin's data
+directory, usually /usr/share/sunpinyin/, and you are done.
+
+[1] https://code.google.com/p/open-gram/downloads
+

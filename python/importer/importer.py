@@ -25,13 +25,13 @@ def get_userdict_path ():
 def get_sysdict_path ():
     if sys.platform == "darwin":
         homedir = os.environ.get("HOME")
-        sysdict_path = "/Library/Input Methods/SunPinyin.app/Contents/Resources/pydict_sc.bin"
+        sysdict_path = "/Library/Input Methods/SunPinyin.app/Contents/Resources/pydict3_sc.bin"
         if os.path.exists (homedir + sysdict_path):
             return homedir + sysdict_path
         else:
             return sysdict_path
 
-    return "/usr/lib/sunpinyin/data/pydict_sc.bin"
+    return "/usr/lib/sunpinyin/data/pydict3_sc.bin"
 
 def load_system_dict ():
     sysdict_path = get_sysdict_path ()

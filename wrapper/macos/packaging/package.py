@@ -41,7 +41,7 @@ def remove_if_exists(file):
 print "[PACK] Remove temporary files..."
 
 #remove_if_exists("%s/lm_sc.t3g" % resource_dir)
-#remove_if_exists("%s/pydict_sc.bin" % resource_dir)
+#remove_if_exists("%s/pydict3_sc.bin" % resource_dir)
 
 print "[PACK] Building %s..." % pkg
 

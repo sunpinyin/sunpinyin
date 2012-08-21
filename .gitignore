@@ -16,16 +16,6 @@ Makefile
 Makefile.in
 Makefile.in.in 
 
-.deps
-src/host_os.h
-
-po/POTFILES
-po/stamp-it
-po/Makefile.in.in
-
-cmakebuild/
-debian/control
-
 *.pc
 *.pyc
 *.o

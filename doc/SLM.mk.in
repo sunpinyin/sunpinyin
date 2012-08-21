@@ -25,6 +25,8 @@ PYTRIE2_LOG_FILE = pydict2_sc.log
 PYTRIE3_FILE = pydict3_sc.bin
 PYTRIE3_LOG_FILE = pydict3_sc.log
 
+SYSTEM_DATA_DIR = @DATADIR@/sunpinyin
+
 all: bootstrap3
 
 mmseg_ids: ${DICT_FILE} ${CORPUS_FILE}
@@ -113,7 +115,6 @@ slm_bigram2: slm2_ids tslm2_info
 slm_bigram3: slm3_ids tslm2_info
 slm_trigram2: slm2_ids tslm3_info
 slm_trigram3: slm3_ids tslm3_info
-data_bin: tslm3_pack lexicon3
 
 bootstrap2:
 	make mmseg_bigram
@@ -124,4 +125,8 @@ bootstrap3:
 	make mmseg_trigram
 	make slm_trigram3
 	make lexicon3
+
+slm_bin: tslm3_pack lexicon3
+slm_bin_install: ${TSLM3_FILE} ${PYTRIE3_FILE}
+	cp $^ ${SYSTEM_DATA_DIR}
 

@@ -417,8 +417,7 @@ env.Command('src/pinyin/quanpin_trie.h', 'python/pinyin_data.py',
             './pinyin_data.py > /dev/null', chdir = 'python')
 env.Object(slmsource)
 
-SConscript(['src/SConscript'], exports='env')
-SConscript(['man/SConscript'], exports='env')
+SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
                                      env.subst('${SHLIBSUFFIX}'))

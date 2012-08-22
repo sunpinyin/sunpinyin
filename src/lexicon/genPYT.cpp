@@ -130,6 +130,7 @@ main(int argc, char* argv[])
             break;
         case 'o':
             result_file = optarg;
+			break;
         case 'l':
             log_file = optarg;
             break;

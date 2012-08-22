@@ -1,4 +1,4 @@
-# Sample Makefile for SLM training.
+# Sample Makefile for lexicon generation and installation.
 
 DICT_FILE = dict.utf8
 

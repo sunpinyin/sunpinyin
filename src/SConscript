@@ -33,7 +33,7 @@ env.Program('tslmpack', ['portability.o', 'slm/slm.o',
                      'slm/tslmpack/arpa_conv.o', 'slm/tslmpack/arpa_slm.o'])
 
 env.Program('genpyt', ['portability.o', 'slm/slm.o', 'slm/tslmendian/writer.o',
-                   'lexicon/trie_writer.o', 'lexicon/genPYT.o',
+                   'lexicon/trie_writer.o', 'lexicon/genpyt.o',
                    'lexicon/pytrie.o', 'lexicon/pytrie_gen.o',
                    'pinyin/pinyin_data.o'])
 

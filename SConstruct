@@ -34,7 +34,7 @@ slmsource = [
     'src/slm/sim_dict.cpp',
     'src/portability.cpp',
     'src/lexicon/trie_writer.cpp',
-    'src/lexicon/genPYT.cpp',
+    'src/lexicon/genpyt.cpp',
     'src/lexicon/pytrie_gen.cpp',
     'src/lexicon/pytrie.cpp',
     'src/pinyin/pinyin_data.cpp',

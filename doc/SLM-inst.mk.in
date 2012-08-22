@@ -1,0 +1,44 @@
+# Sample Makefile for SLM training.
+
+DICT_FILE = dict.utf8
+
+SLM_TARGET = lm_sc
+TSLM2_FILE = ${SLM_TARGET}.t2g
+TSLM2_TEXT_FILE = ${SLM_TARGET}.t2g.arpa
+TSLM3_FILE = ${SLM_TARGET}.t3g
+TSLM3_TEXT_FILE = ${SLM_TARGET}.t3g.arpa
+
+PYTRIE2_FILE = pydict2_sc.bin
+PYTRIE2_LOG_FILE = pydict2_sc.log
+PYTRIE3_FILE = pydict3_sc.bin
+PYTRIE3_LOG_FILE = pydict3_sc.log
+
+SYSTEM_DATA_DIR = @DATADIR@/sunpinyin
+
+all: slm3_bin
+install: slm3_bin_install
+
+tslm2_pack: ${TSLM2_FILE}
+${TSLM2_FILE}: ${DICT_FILE} ${TSLM2_TEXT_FILE}
+	tslmpack ${TSLM2_TEXT_FILE} ${DICT_FILE} ${TSLM2_FILE}
+
+lexicon2: ${PYTRIE2_FILE}
+${PYTRIE2_FILE}: ${DICT_FILE} ${TSLM2_FILE}
+	genpyt -i ${DICT_FILE} -s ${TSLM2_FILE} -l ${PYTRIE2_LOG_FILE} -o $@
+
+tslm3_pack: ${TSLM3_FILE}
+${TSLM3_FILE}: ${DICT_FILE} ${TSLM3_TEXT_FILE}
+	tslmpack ${TSLM3_TEXT_FILE} ${DICT_FILE} ${TSLM3_FILE}
+
+lexicon3: ${PYTRIE3_FILE}
+${PYTRIE3_FILE}: ${DICT_FILE} ${TSLM3_FILE}
+	genpyt -i ${DICT_FILE} -s ${TSLM3_FILE} -l ${PYTRIE3_LOG_FILE} -o $@
+
+slm2_bin: tslm2_pack lexicon2
+slm2_bin_install: ${TSLM2_FILE} ${PYTRIE2_FILE}
+	cp $^ ${SYSTEM_DATA_DIR}
+
+slm3_bin: tslm3_pack lexicon3
+slm3_bin_install: ${TSLM3_FILE} ${PYTRIE3_FILE}
+	cp $^ ${SYSTEM_DATA_DIR}
+

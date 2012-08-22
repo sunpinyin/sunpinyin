@@ -6,9 +6,9 @@ unpack them into some directory, and issue the following commands in
 that directory:
 
 	# Generate the SLM and lexicon files.
-	make -f /path/to/SLM.mk slm_bin
+	make -f /path/to/SLM-inst.mk slm_bin
 	# Install the generated data files.
-	make -f /path/to/SLM.mk slm_install
+	make -f /path/to/SLM-inst.mk slm_install
 
 [1] https://code.google.com/p/open-gram/downloads
 

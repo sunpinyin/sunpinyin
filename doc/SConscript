@@ -1,5 +1,5 @@
 import os
 Import('env')
 
-env.Substfile('SLM.mk.in', SUBST_DICT={'@DATADIR@': env['DATADIR']})
+env.Substfile('SLM-inst.mk.in', SUBST_DICT={'@DATADIR@': env['DATADIR']})
 

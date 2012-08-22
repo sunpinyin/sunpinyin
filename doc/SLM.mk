@@ -25,8 +25,6 @@ PYTRIE2_LOG_FILE = pydict2_sc.log
 PYTRIE3_FILE = pydict3_sc.bin
 PYTRIE3_LOG_FILE = pydict3_sc.log
 
-SYSTEM_DATA_DIR = @DATADIR@/sunpinyin
-
 all: bootstrap3
 
 mmseg_ids: ${DICT_FILE} ${CORPUS_FILE}
@@ -57,10 +55,6 @@ tslm2: ${TSLM2_FILE}
 ${TSLM2_FILE}:${SLM2_FILE}
 	slmthread $< $@
 
-lexicon2: ${PYTRIE2_FILE}
-${PYTRIE2_FILE}: ${DICT_FILE} ${TSLM_FILE2}
-	genpyt -i ${DICT_FILE} -s ${TSLM_FILE2} -l ${PYTRIE2_LOG_FILE} -o $@
-
 slm2_info: ${SLM2_TEXT_FILE}
 ${SLM2_TEXT_FILE}: ${DICT_FILE} ${SLM2_FILE}
 	slminfo -p -v -l ${DICT_FILE} ${SLM2_FILE} > $@
@@ -69,8 +63,9 @@ tslm2_info: ${TSLM2_TEXT_FILE}
 ${TSLM2_TEXT_FILE}: ${DICT_FILE} ${TSLM2_FILE}
 	tslminfo -v -l ${DICT_FILE} ${TSLM2_FILE} > $@
 
-tslm2_pack: ${DICT_FILE} ${TSLM2_TEXT_FILE}
-	tslmpack ${TSLM2_TEXT_FILE} ${DICT_FILE} ${TSLM2_FILE}
+lexicon2: ${PYTRIE2_FILE}
+${PYTRIE2_FILE}: ${DICT_FILE} ${TSLM2_FILE}
+	genpyt -i ${DICT_FILE} -s ${TSLM2_FILE} -l ${PYTRIE2_LOG_FILE} -o $@
 
 trigram_stat: ${TRIGRAM_STAT_FILE}
 ${TRIGRAM_STAT_FILE}: ${IDS_FILE}
@@ -97,12 +92,9 @@ tslm3_info: ${TSLM3_TEXT_FILE}
 ${TSLM3_TEXT_FILE}: ${DICT_FILE} ${TSLM3_FILE}
 	tslminfo -p -v -l ${DICT_FILE} ${TSLM3_FILE} > $@
 
-tslm3_pack: ${DICT_FILE} ${TSLM3_TEXT_FILE}
-	tslmpack ${TSLM3_TEXT_FILE} ${DICT_FILE} ${TSLM3_FILE}
-
 lexicon3: ${PYTRIE3_FILE}
-${PYTRIE3_FILE}: ${DICT_FILE} ${TSLM_FILE3}
-	genpyt -i ${DICT_FILE} -s ${TSLM_FILE3} -l ${PYTRIE3_LOG_FILE} -o $@
+${PYTRIE3_FILE}: ${DICT_FILE} ${TSLM3_FILE}
+	genpyt -i ${DICT_FILE} -s ${TSLM3_FILE} -l ${PYTRIE3_LOG_FILE} -o $@
 
 tmp_clean:
 	rm -f *.tmp ${IDS_FILE}
@@ -125,8 +117,4 @@ bootstrap3:
 	make mmseg_trigram
 	make slm_trigram3
 	make lexicon3
-
-slm_bin: tslm3_pack lexicon3
-slm_bin_install: ${TSLM3_FILE} ${PYTRIE3_FILE}
-	cp $^ ${SYSTEM_DATA_DIR}
 

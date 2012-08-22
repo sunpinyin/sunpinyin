@@ -37,9 +37,9 @@
 
 initials = ["", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w", ]
 
-finals = ["", "a", "o", "e", "ai", "ei", "ao", "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ue", "iong", ]
+finals = ["", "a", "o", "e", "ai", "ei", "ao", "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ve", "ue", "iong", ]
 
-inner_fuzzy_finals = ['ia', 'iao', 'ian', 'iang', 'ie', 'ua', 'uai', 'uan', 'uang', 'ue']
+inner_fuzzy_finals = ['ia', 'iao', 'ian', 'iang', 'ie', 'ua', 'uai', 'uan', 'uang', 'ue', 've']
 
 fuzzy_pairs = [
     ('z',       'zh'), 
@@ -216,11 +216,11 @@ valid_syllables = {
     "jie":      0x0c0f0,
     "jin":      0x0c130,
     "jing":     0x0c150,
-    "jiong":    0x0c210,
+    "jiong":    0x0c220,
     "jiu":      0x0c110,
     "ju":       0x0c160,
     "juan":     0x0c1b0,
-    "jue":      0x0c200,
+    "jue":      0x0c210,
     "jun":      0x0c1c0,
     "k":        0x0a000,
     "ka":       0x0a010,
@@ -265,10 +265,10 @@ valid_syllables = {
     "lou":      0x08070,
     "lu":       0x08160,
     "luan":     0x081b0,
-    "lue":      0x08200,
     "lun":      0x081c0,
     "luo":      0x08180,
     "lv":       0x081f0,
+    "lve":      0x08200,
     "m":        0x03000,
     "ma":       0x03010,
     "mai":      0x03040,
@@ -311,10 +311,10 @@ valid_syllables = {
     "nou":      0x07070,
     "nu":       0x07160,
     "nuan":     0x071b0,
-    "nue":      0x07200,
     "nun":      0x071c0,
     "nuo":      0x07180,
     "nv":       0x071f0,
+    "nve":      0x07200,
     "o":        0x00020,
     "ou":       0x00070,
     "p":        0x02000,
@@ -344,11 +344,11 @@ valid_syllables = {
     "qie":      0x0d0f0,
     "qin":      0x0d130,
     "qing":     0x0d150,
-    "qiong":    0x0d210,
+    "qiong":    0x0d220,
     "qiu":      0x0d110,
     "qu":       0x0d160,
     "quan":     0x0d1b0,
-    "que":      0x0d200,
+    "que":      0x0d210,
     "qun":      0x0d1c0,
     "r":        0x12000,
     "ran":      0x12080,
@@ -442,11 +442,11 @@ valid_syllables = {
     "xie":      0x0e0f0,
     "xin":      0x0e130,
     "xing":     0x0e150,
-    "xiong":    0x0e210,
+    "xiong":    0x0e220,
     "xiu":      0x0e110,
     "xu":       0x0e160,
     "xuan":     0x0e1b0,
-    "xue":      0x0e200,
+    "xue":      0x0e210,
     "xun":      0x0e1c0,
     "y":        0x16000,
     "ya":       0x16010,
@@ -462,7 +462,7 @@ valid_syllables = {
     "you":      0x16070,
     "yu":       0x16160,
     "yuan":     0x161b0,
-    "yue":      0x16200,
+    "yue":      0x16210,
     "yun":      0x161c0,
     "z":        0x13000,
     "za":       0x13010,

@@ -155,7 +155,9 @@ mans = [
     ]
 
 docs = [
-    'doc/SLM.mk',
+    'doc/README',
+    'doc/SLM-train.mk',
+    'doc/SLM-inst.mk',
     ]
 
 # options

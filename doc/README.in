@@ -5,10 +5,12 @@ Get `lm_sc.t3g.arpa.tar.bz2' and `dict.utf8.tar.bz2' from [1],
 unpack them into some directory, and issue the following commands in
 that directory:
 
+	# Copy the installation Makefile to the temporary directory.
+	cp @PREFIX@/share/doc/sunpinyin/SLM-inst.mk Makefile
 	# Generate the SLM and lexicon files.
-	make -f /path/to/SLM-inst.mk slm_bin
-	# Install the generated data files.
-	make -f /path/to/SLM-inst.mk slm_install
+	make
+	# Install the generated data files (requires root permission).
+	make install
 
 [1] https://code.google.com/p/open-gram/downloads
 

@@ -13,7 +13,7 @@ PYTRIE2_LOG_FILE = pydict2_sc.log
 PYTRIE3_FILE = pydict3_sc.bin
 PYTRIE3_LOG_FILE = pydict3_sc.log
 
-SYSTEM_DATA_DIR = @DATADIR@/sunpinyin
+SYSTEM_DATA_DIR = ${DESTDIR}@DATADIR@/sunpinyin
 
 all: slm3_bin
 install: slm3_bin_install
@@ -36,9 +36,11 @@ ${PYTRIE3_FILE}: ${DICT_FILE} ${TSLM3_FILE}
 
 slm2_bin: tslm2_pack lexicon2
 slm2_bin_install: ${TSLM2_FILE} ${PYTRIE2_FILE}
+	install -d ${SYSTEM_DATA_DIR}
 	install -Dm644 $^ ${SYSTEM_DATA_DIR}
 
 slm3_bin: tslm3_pack lexicon3
 slm3_bin_install: ${TSLM3_FILE} ${PYTRIE3_FILE}
+	install -d ${SYSTEM_DATA_DIR}
 	install -Dm644 $^ ${SYSTEM_DATA_DIR}
 

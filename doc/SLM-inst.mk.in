@@ -36,9 +36,9 @@ ${PYTRIE3_FILE}: ${DICT_FILE} ${TSLM3_FILE}
 
 slm2_bin: tslm2_pack lexicon2
 slm2_bin_install: ${TSLM2_FILE} ${PYTRIE2_FILE}
-	cp $^ ${SYSTEM_DATA_DIR}
+	install -Dm644 $^ ${SYSTEM_DATA_DIR}
 
 slm3_bin: tslm3_pack lexicon3
 slm3_bin_install: ${TSLM3_FILE} ${PYTRIE3_FILE}
-	cp $^ ${SYSTEM_DATA_DIR}
+	install -Dm644 $^ ${SYSTEM_DATA_DIR}
 

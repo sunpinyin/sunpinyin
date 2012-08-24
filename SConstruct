@@ -467,5 +467,7 @@ def DoInstall():
     Mkdir(datadir)
 
 DoInstall()
-env.Alias('install', ['install-bin', 'install-lib', 'install-headers'])
+env.Alias('install', [
+	'install-bin', 'install-man', 'install-doc', 'install-headers', 'install-lib'
+])
 

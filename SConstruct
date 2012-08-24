@@ -138,7 +138,7 @@ bins = [
     'src/getwordfreq',
     ]
 
-mans = [
+man1s = [
     'man/mmseg.1',
     'man/slmseg.1',
     'man/ids2ngram.1',
@@ -247,6 +247,7 @@ opts.Save('configure.conf', env)
 
 bindir = os.path.join(env['PREFIX'], 'bin')
 mandir = os.path.join(env['PREFIX'], 'share/man')
+man1dir = os.path.join(mandir, 'man1')
 docdir = os.path.join(env['PREFIX'], 'share/doc/sunpinyin')
 headersdir = os.path.join(env['PREFIX'], 'include/sunpinyin-2.0')
 datadir = os.path.join(env['DATADIR'], 'sunpinyin')
@@ -454,13 +455,13 @@ def DoInstall():
     lib_pkgconfig_target = env.Install(os.path.join(libdir, 'pkgconfig'),
                                        ['sunpinyin-2.0.pc'])
     bin_target = env.Install(bindir, bins)
-    man_target = env.Install(mandir, mans)
+    man1_target = env.Install(man1dir, man1s)
     doc_target = env.Install(docdir, docs)
     header_targets = []
     for header in headers:
         header_targets.append(env.InstallAs(headersdir + header[3:], header))
     env.Alias('install-bin', bin_target)
-    env.Alias('install-man', man_target)
+    env.Alias('install-man1', man1_target)
     env.Alias('install-doc', doc_target)
     env.Alias('install-headers', header_targets)
     env.Alias('install-lib', lib_target + [lib_pkgconfig_target])
@@ -468,6 +469,6 @@ def DoInstall():
 
 DoInstall()
 env.Alias('install', [
-	'install-bin', 'install-man', 'install-doc', 'install-headers', 'install-lib'
+	'install-bin', 'install-man1', 'install-doc', 'install-headers', 'install-lib'
 ])
 

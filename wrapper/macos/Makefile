@@ -1,3 +1,6 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; indent-tabs-mode: t -*- vim:noet:ts=4
+
 all: debug
 
 release:
@@ -20,5 +23,4 @@ install-release:
 
 clean:
 	rm -rf build
-
 

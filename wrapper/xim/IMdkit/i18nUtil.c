@@ -56,19 +56,19 @@ Xi18nClient *_Xi18nNewClient(Xi18n i18n_core)
     {
         client = i18n_core->address.free_clients;
         i18n_core->address.free_clients = client->next;
-	new_connect_id = client->connect_id;
+        new_connect_id = client->connect_id;
     }
     else
     {
         client = (Xi18nClient *) malloc (sizeof (Xi18nClient));
-	new_connect_id = ++connect_id;
+        new_connect_id = ++connect_id;
     }
     /*endif*/
     memset (client, 0, sizeof (Xi18nClient));
     client->connect_id = new_connect_id;
     client->pending = (XIMPending *) NULL;
     client->sync = False;
-    client->byte_order = '?'; 	/* initial value */
+    client->byte_order = '?';   /* initial value */
     memset (&client->pending, 0, sizeof (XIMPending *));
     client->property_offset = 0;
     client->next = i18n_core->address.clients;
@@ -260,8 +260,8 @@ void _Xi18nSetEventMask (XIMS ims,
     memset (reply, 0, total_size);
     FrameMgrSetBuffer (fm, reply);
 
-    FrameMgrPutToken (fm, im_id); 	/* input-method-id */
-    FrameMgrPutToken (fm, ic_id); 	/* input-context-id */
+    FrameMgrPutToken (fm, im_id);       /* input-method-id */
+    FrameMgrPutToken (fm, ic_id);       /* input-context-id */
     FrameMgrPutToken (fm, forward_mask);
     FrameMgrPutToken (fm, sync_mask);
 
@@ -275,3 +275,5 @@ void _Xi18nSetEventMask (XIMS ims,
     FrameMgrFree (fm);
     XFree(reply);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

@@ -265,3 +265,5 @@ CHunpinSchemePolicy::CHunpinSchemePolicy()
     : m_shuangpinType(MS2003)
 {
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

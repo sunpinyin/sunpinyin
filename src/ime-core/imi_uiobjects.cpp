@@ -312,3 +312,5 @@ CCandidateList::shrinkList()
                                m_candiUserIndex.end());
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

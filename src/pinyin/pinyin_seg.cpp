@@ -500,3 +500,5 @@ CQuanpinSegmentor::_updateWith(const std::string& new_pystr, unsigned from)
     }
     return minUpdatedFrom;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

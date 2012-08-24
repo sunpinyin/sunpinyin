@@ -83,7 +83,7 @@ init ()
     }
     
     g_signal_connect (bus, "disconnected", G_CALLBACK (ibus_disconnected_cb), NULL);
-	
+    
     IBusConfig* config = ibus_bus_get_config(bus);
     g_object_ref_sink(config);
     
@@ -139,3 +139,5 @@ int main(int argc, char *argv[])
     sighold(SIGTERM);
     init ();
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

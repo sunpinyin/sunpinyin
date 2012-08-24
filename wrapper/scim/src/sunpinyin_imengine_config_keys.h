@@ -63,3 +63,5 @@
 #define SCIM_CONFIG_IMENGINE_SUNPINYIN_AMBIGUITY_InIng                  "/IMEngine/SunPinyin/Ambiguity/InIng"
 
 #endif//SUNPINYIN_IMENGINE_CONFIG_KEYS_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

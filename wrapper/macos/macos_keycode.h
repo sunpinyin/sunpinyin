@@ -78,3 +78,5 @@
 extern CKeyEvent osx_keyevent_to_ime_keyevent (unsigned, unsigned, unsigned);
 
 #endif /* _MACOS_KEYCODE_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

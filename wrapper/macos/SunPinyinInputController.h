@@ -61,3 +61,5 @@ class CSunpinyinSessionWrapper;
 -(void)windowHandlerTimerCallback:(NSTimer*)timer;
 
 @end
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

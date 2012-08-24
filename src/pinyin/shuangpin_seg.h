@@ -87,3 +87,5 @@ private:
 };
 
 #endif /* SUNPY_SHUANGPIN_SEG_H */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

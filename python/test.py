@@ -46,3 +46,5 @@ def test_pytrie ():
 
 test_pyslm()
 test_pytrie()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

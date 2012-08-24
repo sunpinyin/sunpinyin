@@ -103,3 +103,5 @@ private:
 typedef SingletonHolder<COptionEventBus> AOptionEventBus;
 
 #endif // _IMI_SESSION_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

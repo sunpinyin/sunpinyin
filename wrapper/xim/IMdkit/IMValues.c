@@ -44,8 +44,8 @@ static void _IMCountVaList (va_list var, int *total_count)
 
     for (attr = va_arg (var, char *);  attr;  attr = va_arg (var, char *))
     {
-	(void)va_arg (var, XIMArg *);
-	++(*total_count);
+        (void)va_arg (var, XIMArg *);
+        ++(*total_count);
     }
     /*endfor*/
 }
@@ -57,8 +57,8 @@ static void _IMVaToNestedList (va_list var, int max_count, XIMArg **args_return)
 
     if (max_count <= 0)
     {
-	*args_return = (XIMArg *) NULL;
-	return;
+        *args_return = (XIMArg *) NULL;
+        return;
     }
     /*endif*/
 
@@ -69,9 +69,9 @@ static void _IMVaToNestedList (va_list var, int max_count, XIMArg **args_return)
     /*endif*/
     for (attr = va_arg (var, char *);  attr;  attr = va_arg (var, char *))
     {
-	args->name = attr;
-	args->value = va_arg (var, XPointer);
-	args++;
+        args->name = attr;
+        args->value = va_arg (var, XPointer);
+        args++;
     }
     /*endfor*/
     args->name = (char *) NULL;
@@ -122,3 +122,5 @@ char *IMSetIMValues (XIMS ims, ...)
     /*endif*/
     return ret;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

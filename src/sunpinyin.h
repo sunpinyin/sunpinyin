@@ -11,3 +11,5 @@
 #include <ime-core/imi_uiobjects.h>
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

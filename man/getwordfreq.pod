@@ -48,3 +48,5 @@ Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
 
 B<slmthread>(1).
 
+=for comment
+-*- indent-tabs-mode: nil -*- vim:et:ts=4

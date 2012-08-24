@@ -386,3 +386,5 @@ xim_commit_preedit(XIMHandle* handle, const char* result_str)
     IMCommitString(handle, (XPointer) &cs);
     XFree(tp.value);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

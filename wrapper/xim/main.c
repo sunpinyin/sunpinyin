@@ -117,3 +117,5 @@ main(int argc, char* argv[])
 
     return 0;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

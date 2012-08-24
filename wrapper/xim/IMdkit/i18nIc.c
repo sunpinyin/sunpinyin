@@ -370,7 +370,7 @@ static int ReadICValue (Xi18n i18n_core,
                                 + (INT16) attribute_length
                                 + IMPAD (attribute_length);
             }
-	    /*endwhile*/
+            /*endwhile*/
             return ic_len;
         }
 
@@ -400,8 +400,8 @@ static int ReadICValue (Xi18n i18n_core,
 #if 0
     case XimType_XIMHotKeyTriggers:
         SetHotKeyAttribute (value_ret, p, ic_attr, value_length, need_swap, value_buf);
-	*number_ret = (CARD16) 1;
-	return *number_ret;
+        *number_ret = (CARD16) 1;
+        return *number_ret;
 #endif
     }
     /*endswitch*/
@@ -539,7 +539,7 @@ static int GetICValue (Xi18n i18n_core,
                     attr_ret[n].attribute_id = xic_attr[j].attribute_id;
                     attr_ret[n].name_length = xic_attr[j].length;
                     attr_ret[n].name = malloc (xic_attr[j].length + 1);
-		    strcpy(attr_ret[n].name, xic_attr[j].name);
+                    strcpy(attr_ret[n].name, xic_attr[j].name);
                     attr_ret[n].type = xic_attr[j].type;
                     n++;
                     i++;
@@ -560,7 +560,7 @@ static int GetICValue (Xi18n i18n_core,
                 attr_ret[n].attribute_id = xic_attr[j].attribute_id;
                 attr_ret[n].name_length = xic_attr[j].length;
                 attr_ret[n].name = malloc (xic_attr[j].length + 1);
-		strcpy(attr_ret[n].name, xic_attr[j].name);
+                strcpy(attr_ret[n].name, xic_attr[j].name);
                 attr_ret[n].type = xic_attr[j].type;
                 n++;
                 break;
@@ -574,7 +574,7 @@ static int GetICValue (Xi18n i18n_core,
 }
 
 static void SwapAttributes (XICAttribute *list,
-			   int number){
+                           int number){
     FrameMgr fm;
     CARD16 c16;
     extern XimFrameRec short_fr[];
@@ -587,37 +587,37 @@ static void SwapAttributes (XICAttribute *list,
     int i;
 
     for (i = 0; i < number; ++i, ++list) {
-	if (list->value == NULL)
-	    continue;
-	switch (list->type) {
-	case XimType_CARD16:
-	    fm = FrameMgrInit (short_fr, (char *)list->value, 1);
-	    FrameMgrGetToken (fm, c16);
-	    memmove(list->value, &c16, sizeof(CARD16));
-	    FrameMgrFree (fm);
-	    break;
-	case XimType_CARD32:
-	case XimType_Window:
-	    fm = FrameMgrInit (long_fr, (char *)list->value, 1);
-	    FrameMgrGetToken (fm, c32);
-	    memmove(list->value, &c32, sizeof(CARD32));
-	    FrameMgrFree (fm);
-	    break;
-	case XimType_XRectangle:
-	    fm = FrameMgrInit (xrectangle_fr, (char *)list->value, 1);
-	    FrameMgrGetToken (fm, xrect);
-	    memmove(list->value, &xrect, sizeof(XRectangle));
-	    FrameMgrFree (fm);
-	    break;
-	case XimType_XPoint:
-	    fm = FrameMgrInit (xpoint_fr, (char *)list->value, 1);
-	    FrameMgrGetToken (fm, xpoint);
-	    memmove(list->value, &xpoint, sizeof(XPoint));
-	    FrameMgrFree (fm);
-	    break;
-	default:
-	    break;
-	}
+        if (list->value == NULL)
+            continue;
+        switch (list->type) {
+        case XimType_CARD16:
+            fm = FrameMgrInit (short_fr, (char *)list->value, 1);
+            FrameMgrGetToken (fm, c16);
+            memmove(list->value, &c16, sizeof(CARD16));
+            FrameMgrFree (fm);
+            break;
+        case XimType_CARD32:
+        case XimType_Window:
+            fm = FrameMgrInit (long_fr, (char *)list->value, 1);
+            FrameMgrGetToken (fm, c32);
+            memmove(list->value, &c32, sizeof(CARD32));
+            FrameMgrFree (fm);
+            break;
+        case XimType_XRectangle:
+            fm = FrameMgrInit (xrectangle_fr, (char *)list->value, 1);
+            FrameMgrGetToken (fm, xrect);
+            memmove(list->value, &xrect, sizeof(XRectangle));
+            FrameMgrFree (fm);
+            break;
+        case XimType_XPoint:
+            fm = FrameMgrInit (xpoint_fr, (char *)list->value, 1);
+            FrameMgrGetToken (fm, xpoint);
+            memmove(list->value, &xpoint, sizeof(XPoint));
+            FrameMgrFree (fm);
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -701,7 +701,7 @@ void _Xi18nChangeIC (XIMS ims,
         FrameMgrGetToken (fm, value);
         attrib_list[attrib_num].value = (void *) malloc (value_length + 1);
         memmove (attrib_list[attrib_num].value, value, value_length);
-	((char *)attrib_list[attrib_num].value)[value_length] = '\0';
+        ((char *)attrib_list[attrib_num].value)[value_length] = '\0';
         attrib_num++;
         total_value_length += (value_length + 1);
     }
@@ -978,8 +978,8 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
         if (!(i18n_core->address.improto (ims, call_data)))
             return;
         /*endif*/
-	if (_Xi18nNeedSwap (i18n_core, connect_id))
-	  SwapAttributes(getic->ic_attr, getic->ic_attr_num);
+        if (_Xi18nNeedSwap (i18n_core, connect_id))
+          SwapAttributes(getic->ic_attr, getic->ic_attr_num);
     }
     /*endif*/
     iter_count = getic->ic_attr_num;
@@ -1063,9 +1063,9 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
 
     for (i = 0;  i < (int) getic->ic_attr_num;  i++)
     {
-	if (getic->ic_attr[i].name)
-	    XFree (getic->ic_attr[i].name);
-	/*endif*/
+        if (getic->ic_attr[i].name)
+            XFree (getic->ic_attr[i].name);
+        /*endif*/
         if (getic->ic_attr[i].value)
             XFree (getic->ic_attr[i].value);
         /*endif*/
@@ -1073,22 +1073,22 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
     /*endfor*/
     for (i = 0;  i < (int) getic->preedit_attr_num;  i++)
     {
-	if (getic->preedit_attr[i].name)
-	    XFree (getic->preedit_attr[i].name);
-	/*endif*/
-	if (getic->preedit_attr[i].value)
-	    XFree (getic->preedit_attr[i].value);
-	/*endif*/
+        if (getic->preedit_attr[i].name)
+            XFree (getic->preedit_attr[i].name);
+        /*endif*/
+        if (getic->preedit_attr[i].value)
+            XFree (getic->preedit_attr[i].value);
+        /*endif*/
     }
     /*endfor*/
     for (i = 0;  i < (int) getic->status_attr_num;  i++)
     {
-	if (getic->status_attr[i].name)
-	    XFree (getic->status_attr[i].name);
-	/*endif*/
-	if (getic->status_attr[i].value)
-	    XFree (getic->status_attr[i].value);
-	/*endif*/
+        if (getic->status_attr[i].name)
+            XFree (getic->status_attr[i].name);
+        /*endif*/
+        if (getic->status_attr[i].value)
+            XFree (getic->status_attr[i].value);
+        /*endif*/
     }
     /*endfor*/
     
@@ -1106,3 +1106,5 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
     /*endif*/
     FrameMgrFree (fm);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

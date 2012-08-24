@@ -157,3 +157,5 @@ void             skin_label_set_text(skin_label_t* label, const char* text);
 __END_DECLS
 
 #endif /* _SKIN_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

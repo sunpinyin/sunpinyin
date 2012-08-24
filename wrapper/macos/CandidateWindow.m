@@ -268,3 +268,5 @@ FOUND_SCREEN:;
                             cursorRect.origin.y + cursorRect.size.height + 2:
                             min_y;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

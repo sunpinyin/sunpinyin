@@ -158,3 +158,5 @@ CPinyinTrie::print(const TNode* pRoot, std::string& prefix, FILE *fp) const
         prefix.resize(prefix.size() - strlen(str) - 1);
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -4,3 +4,4 @@ Import('env')
 env.Substfile('README.in', SUBST_DICT={'@PREFIX@': env['PREFIX']})
 env.Substfile('SLM-inst.mk.in', SUBST_DICT={'@DATADIR@': env['DATADIR']})
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

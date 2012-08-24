@@ -1,4 +1,4 @@
-sunpinyin for Debian                                -*- rst -*-
+sunpinyin for Debian
 --------------------
 
 SunPinyin is an SLM (Statistical Language Model) based input method
@@ -24,10 +24,10 @@ some default shortcut key bindings not changeable. They are listed as
 following:
 
 ctrl-backquote  switch between classic/instant style.
-		    only take effects while in Chinese input mode.
+                only take effects while in Chinese input mode.
 ctrl-k          switch between gbk/gb2312 charset.
-shift		switch between Chinese/English input mode.
-escape		dismiss un-committed preedit string.
+shift           switch between Chinese/English input mode.
+escape          dismiss un-committed preedit string.
 
 data files
 ----------
@@ -130,7 +130,7 @@ home page [1].)
     
 **** In the second round
      With the help of trained LM, we can get a better segmentation by:
-     ./slmseg -d ${DICTFILE} -f bin -s 10 -m ${TSLM_FILE} ${CORPUSFILE} >${IDS_FILE}	
+     ./slmseg -d ${DICTFILE} -f bin -s 10 -m ${TSLM_FILE} ${CORPUSFILE} >${IDS_FILE}
 
 *** Calculate the 3-gram
     The number of all occurrence of 3-words tuple are calculated and
@@ -165,3 +165,5 @@ home page [1].)
 [2] http://code.google.com/p/open-gram/downloads/list
 
  -- Kov Chai <tchaikov@gmail.com>  Sun, 21 Mar 2010 01:48:32 +0800
+
+-*- mode: rst; indent-tabs-mode: nil -*- vim:et:ts=4

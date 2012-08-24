@@ -36,6 +36,9 @@
  * to such option by the copyright holder.
  */
 
+#ifndef _SUNPINYIN_IMI_GLIB_HANDLER_H
+#define _SUNPINYIN_IMI_GLIB_HANDLER_H
+
 #include <glib.h>
 #include "imi_winHandler.h"
 #include "imi_view.h"
@@ -79,3 +82,7 @@ public:
 private:
     guint m_sourceId;
 };
+
+#endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -446,3 +446,5 @@ SunPinyinConfig::on_config_value_changed(IBusConfig *config,
     AOptionEventBus::instance().publishEvent(event);
 }
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

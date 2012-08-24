@@ -109,3 +109,5 @@ private:
 };
 
 #endif //_ARPA_SLM_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

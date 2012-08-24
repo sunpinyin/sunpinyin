@@ -160,3 +160,5 @@ CSIMSlm::getPrDirect(int n, TSIMWordId* hw)
         return ((TLeaf*)pstate)->pr;  // as we derive TNode from TLeaf
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -47,3 +47,5 @@ void ibus_sunpinyin_init(IBusBus *bus);
 void ibus_sunpinyin_exit();
 
 #endif  /* __ENGINE_H__ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

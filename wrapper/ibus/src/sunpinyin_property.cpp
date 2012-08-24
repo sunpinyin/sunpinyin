@@ -176,16 +176,16 @@ SetupLauncher::launch(const std::string& name)
     
     GError *error = NULL;
     gchar *argv[2] = { NULL, };
-	gchar *path;
-	const char* libexecdir;
+    gchar *path;
+    const char* libexecdir;
     
-	libexecdir = g_getenv("LIBEXECDIR");
-	if (libexecdir == NULL)
-	    libexecdir = LIBEXECDIR;
+    libexecdir = g_getenv("LIBEXECDIR");
+    if (libexecdir == NULL)
+        libexecdir = LIBEXECDIR;
     
-	path = g_build_filename(libexecdir, "ibus-setup-sunpinyin", NULL);
-	argv[0] = path;
-	argv[1] = NULL;
+    path = g_build_filename(libexecdir, "ibus-setup-sunpinyin", NULL);
+    argv[0] = path;
+    argv[1] = NULL;
     gboolean success;
     success = g_spawn_async (NULL, argv, NULL,
                              G_SPAWN_SEARCH_PATH,
@@ -204,3 +204,5 @@ SetupLauncher::init()
     ibus_property_set_tooltip (*this, m_info.tooltip);
     ibus_property_set_visible (*this, TRUE);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

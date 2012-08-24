@@ -392,3 +392,5 @@ query_changed ()
 {
     return __have_changed;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

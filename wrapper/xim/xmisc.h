@@ -57,3 +57,5 @@ extern Display* dpy;
 __END_DECLS
 
 #endif /* _XMISC_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

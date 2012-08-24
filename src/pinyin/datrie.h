@@ -86,3 +86,5 @@ protected:
 #include "datrie_impl.h"
 
 #endif /* SUNPY_DATRIE_H */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

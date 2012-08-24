@@ -59,3 +59,5 @@ typedef std::map<std::string, unsigned int> TLexicon; // map word to wid
 #define OriginalBow(b)  (float((usingLogPr) ? (-log((b))) : ((b))))
 
 #endif //_SLM_PACK_COMMON_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

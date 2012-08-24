@@ -65,3 +65,5 @@ using namespace scim;
 #define IM_VK_K              SCIM_KEY_k
 
 #endif//SUNPINYIN_KEYCODE_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

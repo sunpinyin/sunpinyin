@@ -98,3 +98,5 @@ adjust_position(int* x, int* y, int width, int height)
     *x = in_range(*x, 0, screen_width - width);
     *y = in_range(*y, 0, screen_height - height);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

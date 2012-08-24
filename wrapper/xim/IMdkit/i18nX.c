@@ -522,3 +522,5 @@ static Bool WaitXIMProtocol (Display *dpy,
     /*endif*/
     return False;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

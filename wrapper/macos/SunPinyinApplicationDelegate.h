@@ -87,3 +87,5 @@ typedef enum {
 -(NSDictionary *)registrationDictionaryForGrowl;
 -(void)messageNotify:(NSString*)msg;
 @end
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -346,3 +346,5 @@
 #define GROWL_POSITION_PREFERENCE_KEY			@"GrowlSelectedPosition"
 
 #endif //ndef _GROWLDEFINES_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

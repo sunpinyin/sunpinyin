@@ -28,3 +28,5 @@ def main ():
 
 if __name__ == "__main__":
     main()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

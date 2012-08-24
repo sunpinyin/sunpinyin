@@ -539,3 +539,5 @@ CPinyinTrieMaker::write(FILE *fp, CWordEvaluator* psrt, bool revert_endian)
     }
     return suc;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

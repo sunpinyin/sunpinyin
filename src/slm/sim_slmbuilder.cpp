@@ -631,3 +631,4 @@ CSlmBuilder::Close(void)
     nlevel = 0;
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

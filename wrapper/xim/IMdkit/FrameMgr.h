@@ -50,7 +50,7 @@ typedef enum
     BIT8     = 0x1,       /* {CARD8* | INT8*}   */
     BIT16    = 0x2,       /* {CARD16* | INT16*} */
     BIT32    = 0x3,       /* {CARD32* | INT32*} */
-    BIT64    = 0x4,	  /* {CARD64* | INT64*} */
+    BIT64    = 0x4,       /* {CARD64* | INT64*} */
     BARRAY   = 0x5,       /* int*, void*        */
     ITER     = 0x6,       /* int*               */
     POINTER  = 0x7,       /* specifies next item is a PTR_ITEM */
@@ -62,8 +62,8 @@ typedef enum
      *   should also modify the logic in FrameMgr program.
      */
     PADDING  = 0x9,       /* specifies that a padding is needed.
-		           * This requires extra data in data field.
-		           */
+                           * This requires extra data in data field.
+                           */
     EOL      = 0xA,       /* specifies the end of list */
 
     COUNTER_BIT8  = COUNTER_MASK | 0x1,
@@ -111,7 +111,7 @@ typedef struct _FrameMgr *FrameMgr;
 
 FrameMgr FrameMgrInit(XimFrame frame, char* area, Bool byte_swap);
 void FrameMgrInitWithData(FrameMgr fm, XimFrame frame, void* area,
-			  Bool byte_swap);
+                          Bool byte_swap);
 void FrameMgrFree(FrameMgr fm);
 FmStatus FrameMgrSetBuffer(FrameMgr, void*);
 FmStatus _FrameMgrPutToken(FrameMgr, void*, int);
@@ -129,3 +129,5 @@ Bool FrameMgrIsIterLoopEnd(FrameMgr, FmStatus*);
 #define FrameMgrGetToken(fm, obj) _FrameMgrGetToken((fm), &(obj), sizeof(obj))
 
 #endif /* FRAMEMGR_H */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

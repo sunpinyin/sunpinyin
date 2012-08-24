@@ -97,3 +97,4 @@ macro(libfind_library PREFIX basename)
   )
 endmacro(libfind_library)
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

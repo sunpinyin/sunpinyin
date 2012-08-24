@@ -331,3 +331,5 @@ extern "C" char *strndup(const char *s, size_t n);
 #endif //HAVE_STRNDUP
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

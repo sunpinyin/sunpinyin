@@ -54,3 +54,5 @@
 #endif
 
 #endif //SUNPINYIN_PRIVATE_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

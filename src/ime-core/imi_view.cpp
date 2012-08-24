@@ -221,3 +221,5 @@ CIMIView::handlerCommit(const wstring& wstr)
     m_pWinHandler->commit(wstr.c_str());
 #endif
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

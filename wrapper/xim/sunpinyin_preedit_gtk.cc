@@ -142,3 +142,4 @@ GtkPreeditUI::update_candidates_string(const char* utf_str)
     move(x, y);
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

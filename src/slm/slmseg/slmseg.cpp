@@ -485,3 +485,5 @@ main(int argc, char *argv[])
     s_dict = NULL;
     return 0;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

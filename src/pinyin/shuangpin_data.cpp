@@ -384,3 +384,5 @@ CShuangpinData::_genKeyboardMap(EShuangpinType shyType)
         break;
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

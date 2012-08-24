@@ -160,3 +160,5 @@ private:
 };
 
 #endif /* SUNPY_PINYIN_SEG_H */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

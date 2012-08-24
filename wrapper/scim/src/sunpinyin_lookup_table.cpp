@@ -211,3 +211,5 @@ SunLookupTable::append_candidate(const ICandidateList& cl, int i, int begin)
     }
     return len;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -15,12 +15,12 @@
 @interface SUUpdater : NSObject
 {
 @private
-	NSTimer *checkTimer;
-	SUUpdateDriver *driver;
+    NSTimer *checkTimer;
+    SUUpdateDriver *driver;
 
-	NSString *customUserAgentString;
-	SUHost *host;
-	IBOutlet id delegate;
+    NSString *customUserAgentString;
+    SUHost *host;
+    IBOutlet id delegate;
 }
 
 + (SUUpdater *)sharedUpdater;
@@ -124,3 +124,5 @@
 #endif
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -241,3 +241,5 @@ CArpaSlm::find_1st_child(unsigned lvl, const TNode& node, int last_child)
         return distance(level.begin(), found);
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

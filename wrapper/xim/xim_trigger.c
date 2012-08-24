@@ -163,3 +163,5 @@ _xim_forward_event(XIMHandle* handle, IMForwardEventStruct* proto)
     }
     return 1;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

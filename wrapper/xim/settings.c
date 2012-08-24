@@ -436,3 +436,5 @@ settings_set(setting_key_t key, void* data)
     }
     memcpy(setting_data[key], data, setting_size[key]);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

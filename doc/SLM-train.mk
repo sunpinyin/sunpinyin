@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; indent-tabs-mode: t -*- vim:noet:ts=4
 # Sample Makefile for SLM training.
 
 DICT_FILE = dict.utf8

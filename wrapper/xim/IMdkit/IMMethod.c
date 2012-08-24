@@ -63,3 +63,5 @@ int IMSyncXlib(XIMS ims, XPointer call_data)
     ims->sync = True;
     return (ims->methods->syncXlib) (ims, call_data);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

@@ -133,3 +133,5 @@ private:
 };
 
 #endif // SUNPINYIN_ENGINE_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

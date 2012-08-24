@@ -48,3 +48,5 @@ namespace ibus {
     typedef Pointer<IBusComponent> Component;
     typedef Pointer<IBusFactory> Factory;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

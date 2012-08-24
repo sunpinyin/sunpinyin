@@ -237,3 +237,5 @@ ui_skin_destroy(skin_info_t* info)
     free_button_info(&(info->full_btn));
     free_button_info(&(info->punc_btn));
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

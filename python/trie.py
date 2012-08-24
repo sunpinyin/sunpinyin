@@ -277,3 +277,5 @@ def test ():
 
 if __name__ == "__main__":
     test ()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

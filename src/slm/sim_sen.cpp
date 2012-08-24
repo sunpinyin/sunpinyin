@@ -86,3 +86,5 @@ SIMCharReaderIterator::operator+(int i)
 {
     return SIMCharReaderIterator(reader, idx + i);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

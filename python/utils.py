@@ -208,3 +208,5 @@ class MMArray:
     def truncate(self, tsize):
         if self.__realsize >= tsize:
             self.__realsize = tsize
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

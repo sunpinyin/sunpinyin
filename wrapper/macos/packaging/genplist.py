@@ -33,3 +33,4 @@ plistlib.writePlist(files, plist_file)
 
 print "Done, written to %s." % plist_file
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -62,3 +62,5 @@
 @property (retain, nonatomic) NSColor *hlColor;
 
 @end
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

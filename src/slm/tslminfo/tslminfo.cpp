@@ -323,3 +323,5 @@ main(int argc, char* argv[])
     }
     return 100;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

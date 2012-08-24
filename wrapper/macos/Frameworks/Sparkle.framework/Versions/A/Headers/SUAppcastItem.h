@@ -12,22 +12,22 @@
 @interface SUAppcastItem : NSObject
 {
 @private
-	NSString *title;
-	NSDate *date;
-	NSString *itemDescription;
-	
-	NSURL *releaseNotesURL;
-	
-	NSString *DSASignature;	
-	NSString *minimumSystemVersion;
-	
-	NSURL *fileURL;
-	NSString *versionString;
-	NSString *displayVersionString;
+    NSString *title;
+    NSDate *date;
+    NSString *itemDescription;
+    
+    NSURL *releaseNotesURL;
+    
+    NSString *DSASignature; 
+    NSString *minimumSystemVersion;
+    
+    NSURL *fileURL;
+    NSString *versionString;
+    NSString *displayVersionString;
 
-	NSDictionary *deltaUpdates;
+    NSDictionary *deltaUpdates;
 
-	NSDictionary *propertiesDictionary;
+    NSDictionary *propertiesDictionary;
 }
 
 // Initializes with data from a dictionary provided by the RSS class.
@@ -52,3 +52,5 @@
 @end
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

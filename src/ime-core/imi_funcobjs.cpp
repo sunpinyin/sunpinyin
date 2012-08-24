@@ -124,3 +124,5 @@ CGetFullPunctOp::operator ()(unsigned ch)
 
     return ret;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

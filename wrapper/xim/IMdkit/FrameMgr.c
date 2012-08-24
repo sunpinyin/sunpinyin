@@ -66,9 +66,9 @@ typedef struct _FrameInst *FrameInst;
 
 typedef union
 {
-    int num; 		/* For BARRAY */
-    FrameInst fi; 	/* For POINTER */
-    Iter iter; 		/* For ITER */
+    int num;            /* For BARRAY */
+    FrameInst fi;       /* For POINTER */
+    Iter iter;          /* For ITER */
 } ExtraDataRec, *ExtraData;
 
 typedef struct _Chain
@@ -194,12 +194,12 @@ NO_VALUE : (it)->max_count)
 {                                       \
     Chain tmp;                          \
     Chain cur = (cm)->top;              \
-					\
+                                        \
     while (cur)                         \
     {                                   \
         tmp = cur->next;                \
         Xfree (cur);                    \
-	cur = tmp;                      \
+        cur = tmp;                      \
     }                                   \
 }
 
@@ -327,8 +327,8 @@ FmStatus _FrameMgrPutToken (FrameMgr fm, void *data, int data_size)
             fm->idx += 8;
             break;
 #endif
-	default:
-	    break;
+        default:
+            break;
         }
         /*endswitch*/
         _FrameMgrPutToken(fm, data, data_size);
@@ -481,7 +481,7 @@ FmStatus _FrameMgrPutToken (FrameMgr fm, void *data, int data_size)
     case EOL:
         return FmEOD;
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return (FmStatus) NULL;  /* Should never be reached */
@@ -524,8 +524,8 @@ FmStatus _FrameMgrGetToken (FrameMgr fm , void* data, int data_size)
             end = Swap64 (fm, *(CARD64 *) (fm->area + fm->idx));
             break;
 #endif
-	default:
-	    break;
+        default:
+            break;
         }
         /*endswitch*/
         
@@ -700,12 +700,12 @@ FmStatus _FrameMgrGetToken (FrameMgr fm , void* data, int data_size)
         return _FrameMgrGetToken (fm, data, data_size);
 
     case ITER:
-        return FmInvalidCall; 	/* if comes here, it's a bug! */
+        return FmInvalidCall;   /* if comes here, it's a bug! */
 
     case EOL:
         return FmEOD;
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return (FmStatus) NULL;  /* Should never be reached */
@@ -800,8 +800,8 @@ FmStatus FrameMgrSkipToken (FrameMgr fm, int skip_count)
             
         case EOL:
             return FmEOD;
-	default:
-	    break;
+        default:
+            break;
         }
         /*endswitch*/
     }
@@ -1052,7 +1052,7 @@ static XimFrameType FrameInstGetNextType(FrameInst fi, XimFrameTypeInfo info)
         }
         break;
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return ret_type;
@@ -1080,7 +1080,7 @@ static XimFrameType FrameInstPeekNextType (FrameInst fi, XimFrameTypeInfo info)
         if (info)
         {
             register int offset;
-	    register int iter_idx;
+            register int iter_idx;
 
             info->counter.is_byte_len =
                 (((long) fi->template[fi->cur_no].data) & 0xFF) == FmCounterByte;
@@ -1186,8 +1186,8 @@ static XimFrameType FrameInstPeekNextType (FrameInst fi, XimFrameTypeInfo info)
             else
                 ret_type = sub_type;
             /*endif*/
-	default:
-	    break;
+        default:
+            break;
         }
         break;
     }
@@ -1352,8 +1352,8 @@ static FmStatus FrameInstSetSize (FrameInst fi, int num)
                 return FmSuccess;
             /*endif*/
             break;
-	default:
-	    break;
+        default:
+            break;
         }
         /*endswitch*/
         i = _FrameInstIncrement(fi->template, i);
@@ -1406,8 +1406,8 @@ static int FrameInstGetSize (FrameInst fi)
                 return ret_size;
             /*endif*/
             break;
-	default:
-	    break;
+        default:
+            break;
         }
         /*endswitch*/
         i = _FrameInstIncrement (fi->template, i);
@@ -1453,8 +1453,8 @@ static FmStatus FrameInstSetIterCount (FrameInst fi, int num)
             /*endif*/
             break;
 
-	default:
-	    break;
+        default:
+            break;
         }
         /*endswitch*/
         i = _FrameInstIncrement (fi->template, i);
@@ -1597,7 +1597,7 @@ static void IterFree (Iter it)
         break;
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     Xfree (it);
@@ -1724,7 +1724,7 @@ static XimFrameType IterGetNextType (Iter it, XimFrameTypeInfo info)
                 ret_type = IterGetNextType (it, info);
             }
             /*endif*/
-	    return ret_type;
+            return ret_type;
         }
 
     case POINTER:
@@ -1747,11 +1747,11 @@ static XimFrameType IterGetNextType (Iter it, XimFrameTypeInfo info)
                 ret_type = IterGetNextType (it, info);
             }
             /*endif*/
-	    return ret_type;
+            return ret_type;
         }
 
     default:
-	return (XimFrameType) NULL;
+        return (XimFrameType) NULL;
     }
     /*endswitch*/
     return (XimFrameType) NULL;  /* This should never occur */
@@ -1828,7 +1828,7 @@ static XimFrameType IterPeekNextType (Iter it, XimFrameTypeInfo info)
         }
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     /* Reaching here is a bug! */
@@ -1951,7 +1951,7 @@ static FmStatus IterSetSize (Iter it, int num)
         return FmNoMoreData;
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return FmNoMoreData;
@@ -2014,7 +2014,7 @@ static int IterGetSize (Iter it)
         return NO_VALID_FIELD;
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return NO_VALID_FIELD;
@@ -2102,7 +2102,7 @@ static FmStatus IterSetIterCount (Iter it, int num)
         break;
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return FmNoMoreData;
@@ -2197,7 +2197,7 @@ static int IterGetTotalSize (Iter it)
         break;
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return  size;
@@ -2228,7 +2228,7 @@ static void IterReset (Iter it)
         break;
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     it->cur_no = 0;
@@ -2319,7 +2319,7 @@ static int _FrameInstIncrement (XimFrame frame, int count)
     case ITER:
         return _FrameInstIncrement (frame, count + 1);
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return - 1;    /* Error */
@@ -2365,7 +2365,7 @@ static int _FrameInstDecrement (XimFrame frame, int count)
         /*endwhile*/
         return 0;
     default:
-	break;
+        break;
     }
     /*enswitch*/
     return - 1;    /* Error */
@@ -2459,8 +2459,10 @@ static int _FrameInstGetItemSize (FrameInst fi, int cur_no)
         }
 
     default:
-	break;
+        break;
     }
     /*endswitch*/
     return NO_VALUE;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

@@ -98,3 +98,5 @@ private:
 
 
 #endif // WRITER_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

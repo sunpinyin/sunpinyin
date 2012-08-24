@@ -185,3 +185,5 @@ CSIMDict::InnerPrint(FILE* fp, wstring & wstr, const TState* pnode)
         }
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

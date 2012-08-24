@@ -48,3 +48,5 @@ WideString wstr_to_widestr(const TWCHAR* wstr);
 WideString wstr_to_widestr(const TWCHAR* wstr, size_t);
 
 #endif// SUNPINYIN_UTIL_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

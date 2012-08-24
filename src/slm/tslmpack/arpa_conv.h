@@ -55,3 +55,5 @@ void compress(const CArpaSlm& slm,
               TNodeLevels& nodeLevels, CThreadSlm::TLeaf*& leafLevel);
 
 #endif //_SLM_PACK_ARPA_CONV_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

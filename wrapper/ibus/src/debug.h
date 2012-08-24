@@ -1,5 +1,5 @@
-#ifndef SUNPINYIN_DEBUG_H
-#define SUNPINYIN_DEBUG_H
+#ifndef IBUS_SUNPINYIN_DEBUG_H
+#define IBUS_SUNPINYIN_DEBUG_H
 
 #include <iostream>
 #include <iomanip>
@@ -20,4 +20,6 @@ using std::endl;
         cout << "  "#val" = " << val << endl;   \
     } while (0)
  
-#endif // SUNPINYIN_DEBUG_H
+#endif // IBUS_SUNPINYIN_DEBUG_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

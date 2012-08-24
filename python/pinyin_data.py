@@ -569,3 +569,5 @@ if __name__ == "__main__":
     gen_suffix_trie ("../src/pinyin/quanpin_trie.h")
     gen_inner_fuzzy_syllable_tables ()
     gen_fuzzy_syllable_pairs_tables ()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

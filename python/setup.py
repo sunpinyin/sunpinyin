@@ -32,3 +32,5 @@ setup(
     ],
     cmdclass = {'build_ext': build_ext}
 )
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

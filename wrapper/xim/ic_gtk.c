@@ -233,3 +233,5 @@ IC_UI icmgr_gtk = {
     .refresh = icmgr_gtk_refresh,
     .dispose = icmgr_gtk_dispose,
 };
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

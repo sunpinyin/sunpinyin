@@ -65,8 +65,10 @@ void _Xi18nSetEventMask (XIMS ims, CARD16 connect_id, CARD16 im_id,
 
 /* Xlib internal */
 void _XRegisterFilterByType(Display*, Window, int, int,
-		Bool (*filter)(Display*, Window, XEvent*, XPointer), XPointer);
+                Bool (*filter)(Display*, Window, XEvent*, XPointer), XPointer);
 void _XUnregisterFilter(Display*, Window, 
-		Bool (*filter)(Display*, Window, XEvent*, XPointer), XPointer);
+                Bool (*filter)(Display*, Window, XEvent*, XPointer), XPointer);
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

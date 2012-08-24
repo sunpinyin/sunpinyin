@@ -320,3 +320,5 @@ CLatticeStates::iterator::operator->()
 {
     return m_childIt.operator->();
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

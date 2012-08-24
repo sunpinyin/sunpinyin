@@ -142,3 +142,5 @@ int IMSyncXlib (XIMS, XPointer);
 #endif
 
 #endif /* IMdkit_h */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; indent-tabs-mode: t -*- vim:noet:ts=4
 # Sample Makefile for lexicon generation and installation.
 
 DICT_FILE = dict.utf8

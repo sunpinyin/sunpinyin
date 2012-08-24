@@ -59,3 +59,5 @@ Currently maintained by Kov.Chai E<lt>tchaikov@gmail.comE<gt>.
 
 B<mmseg>(1), B<ids2ngram> (1).
 
+=for comment
+-*- indent-tabs-mode: nil -*- vim:et:ts=4

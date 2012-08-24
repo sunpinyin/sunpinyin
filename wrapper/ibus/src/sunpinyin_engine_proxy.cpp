@@ -129,3 +129,4 @@ IMPL_WITH(page_down)
 IMPL_WITH(cursor_up)
 IMPL_WITH(cursor_down)
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

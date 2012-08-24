@@ -72,3 +72,4 @@ output.close()
 
 print "Done! Please:\n  1. Publish %s to %s\n  2. Publish %s to %s\n  3. Update the release note for version %s at %s." % (appcast, appcast_url, zip, file_url, version, releasenotes_url)
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

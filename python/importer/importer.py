@@ -134,3 +134,5 @@ def export_sunpinyin_user_dict (userdict_path=''):
         
 if __name__ == "__main__":
     export_sunpinyin_user_dict ()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

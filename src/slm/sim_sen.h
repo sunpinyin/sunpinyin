@@ -118,3 +118,5 @@ bool ReadSentence(wstring& wstr, iterator& first, bool bIgnoreCRLF = false){
 }
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

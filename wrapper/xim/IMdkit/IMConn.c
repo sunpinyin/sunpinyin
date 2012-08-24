@@ -45,8 +45,8 @@ static void _IMCountVaList(va_list var, int *total_count)
 
     for (attr = va_arg (var, char*);  attr;  attr = va_arg (var, char*))
     {
-	(void)va_arg (var, XIMArg *);
-	++(*total_count);
+        (void)va_arg (var, XIMArg *);
+        ++(*total_count);
     }
     /*endfor*/
 }
@@ -58,8 +58,8 @@ static void _IMVaToNestedList(va_list var, int max_count, XIMArg **args_return)
 
     if (max_count <= 0)
     {
-	*args_return = (XIMArg *) NULL;
-	return;
+        *args_return = (XIMArg *) NULL;
+        return;
     }
     /*endif*/
 
@@ -71,9 +71,9 @@ static void _IMVaToNestedList(va_list var, int max_count, XIMArg **args_return)
 
     for (attr = va_arg (var, char*);  attr;  attr = va_arg (var, char *))
     {
-	args->name = attr;
-	args->value = va_arg (var, XPointer);
-	args++;
+        args->name = attr;
+        args->value = va_arg (var, XPointer);
+        args++;
     }
     /*endfor*/
     args->name = (char*)NULL;
@@ -85,16 +85,16 @@ static char *_FindModifiers (XIMArg *args)
 
     while (args->name)
     {
-	if (strcmp (args->name, IMModifiers) == 0)
-	{
-	    modifiers = args->value;
-	    return modifiers;
-	}
-	else
-	{
-	    args++;
-	}
-	/*endif*/
+        if (strcmp (args->name, IMModifiers) == 0)
+        {
+            modifiers = args->value;
+            return modifiers;
+        }
+        else
+        {
+            args++;
+        }
+        /*endif*/
     }
     /*endwhile*/
     return NULL;
@@ -106,18 +106,18 @@ XIMS _GetIMS (char *modifiers)
     extern IMMethodsRec Xi18n_im_methods;
 
     if ((ims = (XIMS) malloc (sizeof (XIMProtocolRec))) == (XIMS) NULL)
-	return ((XIMS) NULL);
+        return ((XIMS) NULL);
     /*endif*/
     memset ((void *) ims, 0, sizeof (XIMProtocolRec));
 
     if (modifiers == NULL
-	||
-	modifiers[0] == '\0'
-	||
-	strcmp (modifiers, "Xi18n") == 0)
+        ||
+        modifiers[0] == '\0'
+        ||
+        strcmp (modifiers, "Xi18n") == 0)
     {
-	ims->methods = &Xi18n_im_methods;
-	return ims;
+        ims->methods = &Xi18n_im_methods;
+        return ims;
     }
     /*endif*/
     XFree (ims);
@@ -154,15 +154,15 @@ XIMS IMOpenIM (Display *display, ...)
     XFree (args);
     if (ims->protocol == (void *) NULL)
     {
-	XFree (ims);
-	return (XIMS) NULL;
+        XFree (ims);
+        return (XIMS) NULL;
     }
     /*endif*/
     ret = (ims->methods->openIM) (ims);
     if (ret == False)
     {
-	XFree (ims);
-	return (XIMS) NULL;
+        XFree (ims);
+        return (XIMS) NULL;
     }
     /*endif*/
     return (XIMS) ims;
@@ -174,3 +174,5 @@ Status IMCloseIM (XIMS ims)
     XFree (ims);
     return True;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

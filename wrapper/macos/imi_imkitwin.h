@@ -57,3 +57,5 @@ private:
     id  _ic;
     id  _timer;
 };
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

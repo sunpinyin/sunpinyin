@@ -511,3 +511,5 @@ int _Xi18nStringConversionCallback (XIMS ims, IMProtocol *call_data)
     /*endif*/
     return True;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

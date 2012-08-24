@@ -418,3 +418,5 @@ CBigramHistory::initStopWords()
     m_stopWords.insert(0);     //unknown world
     m_stopWords.insert(DCWID); //seperator word id used by history memory interanlly
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

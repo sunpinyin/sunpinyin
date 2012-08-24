@@ -100,3 +100,5 @@ double settings_get_double(setting_key_t key);
 __END_DECLS
 
 #endif /* _SETTINGS_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

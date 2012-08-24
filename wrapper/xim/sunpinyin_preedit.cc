@@ -391,3 +391,4 @@ preedit_omit_next_punct()
     view->getIC()->omitNextPunct();
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

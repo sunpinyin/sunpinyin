@@ -38,3 +38,5 @@ endian2str(int endian)
     }
     return NULL;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

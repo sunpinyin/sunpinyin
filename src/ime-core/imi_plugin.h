@@ -36,6 +36,9 @@
  * to such option by the copyright holder.
  */
 
+#ifndef _SUNPINYIN_IMI_PLUGIN_H
+#define _SUNPINYIN_IMI_PLUGIN_H
+
 #include <string>
 #include <vector>
 
@@ -113,3 +116,7 @@ private:
 };
 
 typedef SingletonHolder<CIMIPluginManager> AIMIPluginManager;
+
+#endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

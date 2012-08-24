@@ -285,3 +285,4 @@ CGTKWinHandler::updateCandidates(const ICandidateList* pcl)
     gtk_label_set_text(GTK_LABEL(m_CandidataArea), m_buf);
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

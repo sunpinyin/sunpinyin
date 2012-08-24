@@ -158,3 +158,5 @@ int CDATrie<T, encoder>::match_longest(InputIterator first,
 
     return ret_v;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

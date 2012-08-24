@@ -144,3 +144,5 @@ cdef class PinyinTrie:
     def is_valid (self, node, allowNonComplete=True, csLevel=0):
         cdef CPinyinTrie_TNode *pnode = (<PinyinTrieNode>node).pnode
         return self.thisptr.isValid (pnode, allowNonComplete, csLevel)
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

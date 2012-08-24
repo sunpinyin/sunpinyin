@@ -102,3 +102,5 @@ CIMIWinHandler::updateStatus(int key, int value)
     printf("%d\n", value);
     fflush(stdout);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

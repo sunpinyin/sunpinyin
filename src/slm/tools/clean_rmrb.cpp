@@ -92,3 +92,5 @@ main(int argc, char *argv[])
         printf("\n");
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

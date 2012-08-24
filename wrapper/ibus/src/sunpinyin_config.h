@@ -118,3 +118,5 @@ private:
 };
 
 #endif // SUNPINYIN_CONFIG_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

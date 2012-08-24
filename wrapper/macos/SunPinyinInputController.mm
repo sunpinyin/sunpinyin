@@ -319,3 +319,5 @@ Here are the three approaches:
     _session = nil;
 }
 @end // SunPinyinController(Private)
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

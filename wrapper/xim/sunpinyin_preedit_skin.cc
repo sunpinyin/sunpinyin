@@ -146,3 +146,5 @@ SkinPreeditUI::adjust_size()
         internal_move(x, y);
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

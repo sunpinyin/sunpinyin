@@ -170,3 +170,5 @@ def DoInstall():
 
 DoInstall()
 env.Alias('install', ['install-libexec', 'install-data', 'install-locale'])
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -74,19 +74,19 @@ class CSunpinyinSessionWrapper : public IConfigurable, private CNonCopyable
 public:
      CSunpinyinSessionWrapper (id ic);
     ~CSunpinyinSessionWrapper ();
-	
-	bool isValid () const 
-	    {return m_pv != NULL;}
-	
-	unsigned clear(void)
-	    {return isValid()? m_pv->clearIC(): 0;}
-	
-	bool onKeyEvent(const CKeyEvent& event)
-	    {return isValid()? m_pv->onKeyEvent(event): false;}	
+
+    bool isValid () const 
+        {return m_pv != NULL;}
+
+    unsigned clear(void)
+        {return isValid()? m_pv->clearIC(): 0;}
+
+    bool onKeyEvent(const CKeyEvent& event)
+        {return isValid()? m_pv->onKeyEvent(event): false;}
     
     void setStatusAttrValue(int key, int value)
         {if (m_pv) m_pv->setStatusAttrValue(key, value);}
-	
+
     bool onConfigChanged (const COptionEvent& event);
     
     void switchInputMode (bool isEnglish, ECommitPolicies policy);
@@ -108,6 +108,8 @@ private:
 private:
     id                   m_ic;
     CIMIView            *m_pv;
-    CIMKitWindowHandler	*m_wh;
+    CIMKitWindowHandler *m_wh;
     CHotkeyProfile      *m_hotkey_profile;
 };
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

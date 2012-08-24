@@ -79,3 +79,5 @@ void      preedit_omit_next_punct();
 __END_DECLS
 
 #endif /* _XIM_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

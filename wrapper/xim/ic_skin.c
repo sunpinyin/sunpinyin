@@ -182,3 +182,4 @@ IC_UI icmgr_skin = {
     .dispose = icmgr_skin_dispose,
 };
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -80,3 +80,5 @@ void          ui_skin_destroy    (skin_info_t* info);
 __END_DECLS
 
 #endif /* _UI_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

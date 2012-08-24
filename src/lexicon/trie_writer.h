@@ -103,3 +103,5 @@ bool revert_write<CPinyinTrie::TTransUnit> (const CPinyinTrie::TTransUnit& t,
                                             FILE *fp);
 
 #endif //__SUNPINYIN_PYTRIE_WRITER_H__
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

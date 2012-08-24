@@ -317,3 +317,5 @@ CUserDict::_createIndexes()
 
     return true;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

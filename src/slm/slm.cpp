@@ -306,3 +306,5 @@ CThreadSlm::historify(TState& st)
     }
     return st;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

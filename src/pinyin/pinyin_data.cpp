@@ -800,3 +800,5 @@ CPinyinData::getFuzzyPreProSyllables(const unsigned **pre_syls,
     *pre_syls = fuzzy_pre_syllables;
     *pro_syls = fuzzy_pro_syllables;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

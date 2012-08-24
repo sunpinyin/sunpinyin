@@ -77,3 +77,5 @@ private:
 };
 
 #endif//SUNPINYIN_LOOKUP_TABLE_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -311,7 +311,4 @@ CValueCompressor::operator()(std::map<float, float>& eff2val,
  */
 }
 
-
-
-
-
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

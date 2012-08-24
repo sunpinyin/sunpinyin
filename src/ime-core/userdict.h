@@ -81,3 +81,5 @@ private:
 };
 
 #endif /* SUNPY_USERDICT_H */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

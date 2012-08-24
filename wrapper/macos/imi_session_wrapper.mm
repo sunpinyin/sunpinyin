@@ -167,3 +167,5 @@ void CSunpinyinSessionWrapper::update_charset_level(unsigned charset)
     // charset can only be 0,1,2 or 3
     m_pv->getIC()->setCharsetLevel(charset & 3);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

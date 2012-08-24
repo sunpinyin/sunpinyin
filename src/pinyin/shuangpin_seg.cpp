@@ -355,3 +355,4 @@ CShuangpinSegmentor::_addFuzzySyllables(TSegment& seg)
     }
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

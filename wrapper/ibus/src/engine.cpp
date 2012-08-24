@@ -107,3 +107,4 @@ ibus_sunpinyin_engine_class_init (IBusSunPinyinEngineClass *klass)
     engine_class->candidate_clicked = ibus_sunpinyin_engine_candidate_clicked;
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

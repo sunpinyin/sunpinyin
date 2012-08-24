@@ -51,3 +51,5 @@ class IMDict (Trie):
                 word, id= line.split(' ')[0:2]
                 self.add(word, int(id))
         file.close()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

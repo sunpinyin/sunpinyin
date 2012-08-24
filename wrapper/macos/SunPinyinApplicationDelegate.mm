@@ -434,4 +434,4 @@ void updateKeyProfileSettings(NSUserDefaults* pref)
     CSessionConfigStore::instance().m_cancel_on_backspace    = cancel_on_backspace;
 }
 
-
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

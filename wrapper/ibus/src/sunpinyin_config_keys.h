@@ -80,3 +80,5 @@
 #define CONFIG_KEYBOARD_SMARK_PUNCT      "Keyboard/SmartPunct"
 
 #endif // SUNPINYIN_CONFIG_KEYS_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

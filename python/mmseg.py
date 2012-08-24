@@ -142,3 +142,5 @@ if __name__ == "__main__":
 
     process_file (file, dict)
     file.close()
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -747,3 +747,5 @@ CIMIClassicView::deleteCandidate(int candiIdx, unsigned& mask)
     _getCandidates();
     mask |= PREEDIT_MASK | CANDIDATE_MASK;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

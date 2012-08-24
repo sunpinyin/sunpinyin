@@ -50,3 +50,5 @@ void ibus_property_set_tooltip (IBusProperty  *prop,
 #endif // WITH_IBUS_1_1_0
 
 #endif // IBUS_COMPABILITY_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

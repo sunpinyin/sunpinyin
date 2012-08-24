@@ -173,3 +173,5 @@ compress(const CArpaSlm& slm,
     nodeLevels = node_levels;
     leafLevel = leaf_level;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

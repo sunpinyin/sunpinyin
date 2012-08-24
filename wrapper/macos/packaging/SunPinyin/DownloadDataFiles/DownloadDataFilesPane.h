@@ -64,3 +64,5 @@
 - (IBAction) startDownload: (id) sender;
 
 @end
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

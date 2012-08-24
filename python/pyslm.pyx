@@ -123,3 +123,5 @@ cdef class Slm:
         cdef CThreadSlm_TState st
         pystate_to_cstate (state, &st)
         return self.thisptr.lastWordId(st)
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

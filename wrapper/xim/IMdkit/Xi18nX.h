@@ -50,3 +50,5 @@ typedef struct
 } XSpecRec;
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

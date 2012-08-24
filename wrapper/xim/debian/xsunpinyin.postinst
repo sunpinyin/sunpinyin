@@ -9,7 +9,6 @@ case "$1" in
         ;;
 
     abort-upgrade | abort-remove | abort-deconfigure)
-
         ;;
 
     *)
@@ -19,3 +18,5 @@ case "$1" in
 esac
 
 exit 0
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

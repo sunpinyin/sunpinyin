@@ -110,3 +110,5 @@ CIMIData::clear()
     m_pPinyinTrie = NULL;
     m_pLM = NULL;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

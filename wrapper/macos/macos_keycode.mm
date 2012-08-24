@@ -148,3 +148,4 @@ CKeyEvent osx_keyevent_to_ime_keyevent (unsigned keyCode, unsigned keyChar, unsi
     return CKeyEvent (value, keyChar, mod);
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

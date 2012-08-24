@@ -62,18 +62,18 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
     // Dummy candidates are inserted when they are not in the current page.
     // Maybe we can share these candidates (but what if someone else changes the attributes?)
     for (; cur_total < page_start; ++cur_total)
-	ibus_lookup_table_append_candidate(*this, ibus_text_new_from_static_string(""));
+    ibus_lookup_table_append_candidate(*this, ibus_text_new_from_static_string(""));
     for (int i = 0; i < size; ++i) {
-	const TWCHAR* cand = cl.candiString(i);
-	if (cand && cl.candiSize(i)) {
-	    ibus::Text text(ibus_text_new_from_ucs4(cand));
-	    decorate_candidate(text, cl.candiType(i));
-	    ibus_lookup_table_append_candidate(*this, text);
-	    ++cur_total;
-	} else break; // I think this shouldn't happen...
+    const TWCHAR* cand = cl.candiString(i);
+    if (cand && cl.candiSize(i)) {
+        ibus::Text text(ibus_text_new_from_ucs4(cand));
+        decorate_candidate(text, cl.candiType(i));
+        ibus_lookup_table_append_candidate(*this, text);
+        ++cur_total;
+    } else break; // I think this shouldn't happen...
     }
     for (; cur_total < total; ++cur_total)
-	ibus_lookup_table_append_candidate(*this, ibus_text_new_from_static_string(""));
+    ibus_lookup_table_append_candidate(*this, ibus_text_new_from_static_string(""));
 
     return size;
     //ibus_lookup_table_set_cursor_pos (m_lookup_table, index);
@@ -123,3 +123,5 @@ SunPinyinLookupTable::get_current_page_start() const
     guint cursor_in_page = ibus_lookup_table_get_cursor_in_page(*this);
     return cursor - cursor_in_page;
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

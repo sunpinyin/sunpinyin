@@ -112,7 +112,7 @@ translate_key(guint key_val, guint /*key_code*/, guint modifiers)
 {
     // XXX: may need to move this logic into CKeyEvent
     if (key_val > 0x20 && key_val < 0x7f // isprint(key_val) && !isspace(key_val)
-	&& !(modifiers & IM_CTRL_MASK)) {
+    && !(modifiers & IM_CTRL_MASK)) {
         // we only care about key_val here
         return CKeyEvent(key_val, key_val, modifiers);
     } else {
@@ -638,3 +638,5 @@ SunPinyinEngine::update_candi_delete_key()
     /* FIXME: need to get candi_delete_key from user's configuration */
     m_hotkey_profile->setCandiDeleteKey(CKeyEvent(0, 0, IM_ALT_MASK));
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

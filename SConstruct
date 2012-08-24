@@ -469,6 +469,7 @@ def DoInstall():
 
 DoInstall()
 env.Alias('install', [
-	'install-bin', 'install-man1', 'install-doc', 'install-headers', 'install-lib'
+    'install-bin', 'install-man1', 'install-doc', 'install-headers', 'install-lib'
 ])
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -32,3 +32,4 @@ set(SunPinyin_PROCESS_INCLUDES SunPinyin_INCLUDE_DIR)
 set(SunPinyin_PROCESS_LIBS SunPinyin_LIBRARY)
 libfind_process(SunPinyin)
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -163,3 +163,5 @@ protected:
 };
 
 #endif /* __SUNPINYIN_PYTRIE_H__*/
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

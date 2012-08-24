@@ -24,3 +24,5 @@ target_link_libraries(ibus-engine-sunpinyin ${LIBS})
 
 install(TARGETS ibus-engine-sunpinyin
     RUNTIME DESTINATION ${LIBEXEC_DIR})
+
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

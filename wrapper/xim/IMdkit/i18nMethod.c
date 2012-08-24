@@ -96,7 +96,7 @@ static Bool GetInputStyles (Xi18n i18n_core, XIMStyles **p_style)
 {
     Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
     XIMStyles *p;
-    int	i;
+    int i;
 
     p = &address->input_styles;
     if ((*p_style = (XIMStyles *) malloc (sizeof (XIMStyles)
@@ -118,7 +118,7 @@ static Bool GetOnOffKeys (Xi18n i18n_core, long mask, XIMTriggerKeys **p_key)
 {
     Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
     XIMTriggerKeys *p;
-    int	i;
+    int i;
 
     if (mask & I18N_ON_KEYS)
         p = &address->on_keys;
@@ -149,7 +149,7 @@ static Bool GetEncodings(Xi18n i18n_core, XIMEncodings **p_encoding)
 {
     Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
     XIMEncodings *p;
-    int	i;
+    int i;
 
     p = &address->encoding_list;
 
@@ -561,9 +561,9 @@ static int SetXi18nSelectionOwner(Xi18n i18n_core)
                          1);
     }
     else {
-	/*
-	 * We always need to generate the PropertyNotify to the Root Window
-	 */
+        /*
+         * We always need to generate the PropertyNotify to the Root Window
+         */
         XChangeProperty (dpy,
                          root,
                          XIM_Servers,
@@ -817,7 +817,7 @@ static char *xi18n_getIMValues (XIMS ims, XIMArg *args)
 }
 
 static void EventToWireEvent (XEvent *ev, xEvent *event,
-			      CARD16 *serial, Bool byte_swap)
+                              CARD16 *serial, Bool byte_swap)
 {
     FrameMgr fm;
     extern XimFrameRec wire_keyevent_fr[];
@@ -830,35 +830,35 @@ static void EventToWireEvent (XEvent *ev, xEvent *event,
     switch (ev->type) {
       case KeyPress:
       case KeyRelease:
-	{
-	    XKeyEvent *kev = (XKeyEvent*)ev;
-	    /* create FrameMgr */
-	    fm = FrameMgrInit(wire_keyevent_fr, (char *)(&(event->u)), byte_swap);
+        {
+            XKeyEvent *kev = (XKeyEvent*)ev;
+            /* create FrameMgr */
+            fm = FrameMgrInit(wire_keyevent_fr, (char *)(&(event->u)), byte_swap);
 
-	    /* set values */
-	    b = (BYTE)kev->type;          FrameMgrPutToken(fm, b);
-	    b = (BYTE)kev->keycode;       FrameMgrPutToken(fm, b);
-	    c16 = (CARD16)(kev->serial & (unsigned long)0xffff);
-					  FrameMgrPutToken(fm, c16);
-	    c32 = (CARD32)kev->time;      FrameMgrPutToken(fm, c32);
-	    c32 = (CARD32)kev->root;      FrameMgrPutToken(fm, c32);
-	    c32 = (CARD32)kev->window;    FrameMgrPutToken(fm, c32);
-	    c32 = (CARD32)kev->subwindow; FrameMgrPutToken(fm, c32);
-	    c16 = (CARD16)kev->x_root;    FrameMgrPutToken(fm, c16);
-	    c16 = (CARD16)kev->y_root;    FrameMgrPutToken(fm, c16);
-	    c16 = (CARD16)kev->x;         FrameMgrPutToken(fm, c16);
-	    c16 = (CARD16)kev->y;         FrameMgrPutToken(fm, c16);
-	    c16 = (CARD16)kev->state;     FrameMgrPutToken(fm, c16);
-	    b = (BYTE)kev->same_screen;   FrameMgrPutToken(fm, b);
-	}
-	break;
+            /* set values */
+            b = (BYTE)kev->type;          FrameMgrPutToken(fm, b);
+            b = (BYTE)kev->keycode;       FrameMgrPutToken(fm, b);
+            c16 = (CARD16)(kev->serial & (unsigned long)0xffff);
+                                          FrameMgrPutToken(fm, c16);
+            c32 = (CARD32)kev->time;      FrameMgrPutToken(fm, c32);
+            c32 = (CARD32)kev->root;      FrameMgrPutToken(fm, c32);
+            c32 = (CARD32)kev->window;    FrameMgrPutToken(fm, c32);
+            c32 = (CARD32)kev->subwindow; FrameMgrPutToken(fm, c32);
+            c16 = (CARD16)kev->x_root;    FrameMgrPutToken(fm, c16);
+            c16 = (CARD16)kev->y_root;    FrameMgrPutToken(fm, c16);
+            c16 = (CARD16)kev->x;         FrameMgrPutToken(fm, c16);
+            c16 = (CARD16)kev->y;         FrameMgrPutToken(fm, c16);
+            c16 = (CARD16)kev->state;     FrameMgrPutToken(fm, c16);
+            b = (BYTE)kev->same_screen;   FrameMgrPutToken(fm, b);
+        }
+        break;
       default:
-	  /* create FrameMgr */
-	  fm = FrameMgrInit(short_fr, (char *)(&(event->u.u.sequenceNumber)),
-			    byte_swap);
-	  c16 = (CARD16)(ev->xany.serial & (unsigned long)0xffff);
-	  FrameMgrPutToken(fm, c16);
-	  break;
+          /* create FrameMgr */
+          fm = FrameMgrInit(short_fr, (char *)(&(event->u.u.sequenceNumber)),
+                            byte_swap);
+          c16 = (CARD16)(ev->xany.serial & (unsigned long)0xffff);
+          FrameMgrPutToken(fm, c16);
+          break;
     }
     /* free FrameMgr */
     FrameMgrFree(fm);
@@ -902,7 +902,7 @@ static Status xi18n_forwardEvent (XIMS ims, XPointer xp)
     FrameMgrSetBuffer (fm, reply);
     replyp = reply;
 
-    call_data->sync_bit = 1; 	/* always sync */
+    call_data->sync_bit = 1;    /* always sync */
     client->sync = True;
 
     FrameMgrPutToken (fm, call_data->connect_id);
@@ -1149,3 +1149,4 @@ static int xi18n_syncXlib (XIMS ims, XPointer xp)
     return True;
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=8

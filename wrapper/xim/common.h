@@ -87,3 +87,5 @@
 
 
 #endif /* _COMMON_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

@@ -157,6 +157,4 @@ main(int argc, char*argv[])
     }
 }
 
-
-
-
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

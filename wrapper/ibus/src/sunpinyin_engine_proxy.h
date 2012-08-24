@@ -67,3 +67,5 @@ void ibus_sunpinyin_engine_candidate_clicked(IBusEngine *engine,
 };
 
 #endif // SUNPINYIN_ENGINE_PROXY_H
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

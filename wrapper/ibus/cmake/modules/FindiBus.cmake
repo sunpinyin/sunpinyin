@@ -32,3 +32,4 @@ set(iBus_PROCESS_INCLUDES iBus_INCLUDE_DIR)
 set(iBus_PROCESS_LIBS iBus_LIBRARY)
 libfind_process(iBus)
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

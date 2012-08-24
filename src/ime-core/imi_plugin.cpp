@@ -377,3 +377,5 @@ CIMIPluginManager::markWaitTime(int waitTime)
         m_waitTime = waitTime;
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

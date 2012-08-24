@@ -53,7 +53,7 @@ IF (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
 ELSE (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE)
     SET(GETTEXT_FOUND FALSE)
     IF (GetText_REQUIRED)
-	MESSAGE(FATAL_ERROR "GetText not found")
+    MESSAGE(FATAL_ERROR "GetText not found")
     ENDIF (GetText_REQUIRED)
 ENDIF (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
 
@@ -70,92 +70,91 @@ ENDIF(NOT DEFINED XGETTEXT_OPTIONS)
 
 IF(XGETTEXT_FOUND)
     MACRO(GETTEXT_CREATE_POT _potFile _pot_options )
-	SET(_xgettext_options_list)
-	SET(_src_list)
-	SET(_src_list_abs)
-	SET(_stage "SRC")
-	FOREACH(_pot_option ${_pot_options} ${ARGN})
-	    IF(_pot_option STREQUAL "OPTION")
-		SET(_stage "OPTION")
-	    ELSEIF(_pot_option STREQUAL "SRC")
-		SET(_stage "SRC")
-	    ELSE(_pot_option STREQUAL "OPTION")
-		IF(_stage STREQUAL "OPTION")
-		    SET(_xgettext_options_list ${_xgettext_options_list} ${_pot_option})
-		ELSE(_stage STREQUAL "OPTION")
-		    FILE(RELATIVE_PATH _relFile ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${_pot_option})
-		    GET_FILENAME_COMPONENT(_absFile ${_pot_option} ABSOLUTE)
-		    SET(_src_list ${_src_list} ${_relFile})
-		    SET(_src_list_abs ${_src_list_abs} ${_absFile})
-		ENDIF(_stage STREQUAL "OPTION")
-	    ENDIF(_pot_option STREQUAL "OPTION")
-	ENDFOREACH(_pot_option ${_pot_options} ${ARGN})
+    SET(_xgettext_options_list)
+    SET(_src_list)
+    SET(_src_list_abs)
+    SET(_stage "SRC")
+    FOREACH(_pot_option ${_pot_options} ${ARGN})
+        IF(_pot_option STREQUAL "OPTION")
+        SET(_stage "OPTION")
+        ELSEIF(_pot_option STREQUAL "SRC")
+        SET(_stage "SRC")
+        ELSE(_pot_option STREQUAL "OPTION")
+        IF(_stage STREQUAL "OPTION")
+            SET(_xgettext_options_list ${_xgettext_options_list} ${_pot_option})
+        ELSE(_stage STREQUAL "OPTION")
+            FILE(RELATIVE_PATH _relFile ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${_pot_option})
+            GET_FILENAME_COMPONENT(_absFile ${_pot_option} ABSOLUTE)
+            SET(_src_list ${_src_list} ${_relFile})
+            SET(_src_list_abs ${_src_list_abs} ${_absFile})
+        ENDIF(_stage STREQUAL "OPTION")
+        ENDIF(_pot_option STREQUAL "OPTION")
+    ENDFOREACH(_pot_option ${_pot_options} ${ARGN})
 
-	IF (_xgettext_options_list)
-	    SET(_xgettext_options ${_xgettext_options_list})
-	ELSE(_xgettext_options_list)
-	    SET(_xgettext_options ${XGETTEXT_OPTIONS})
-	ENDIF(_xgettext_options_list)
+    IF (_xgettext_options_list)
+        SET(_xgettext_options ${_xgettext_options_list})
+    ELSE(_xgettext_options_list)
+        SET(_xgettext_options ${XGETTEXT_OPTIONS})
+    ENDIF(_xgettext_options_list)
 
-	#MESSAGE("${XGETTEXT_EXECUTABLE} ${_xgettext_options_list} -o ${_potFile} ${_src_list}")
-	ADD_CUSTOM_COMMAND(OUTPUT ${_potFile}
-	    COMMAND ${XGETTEXT_EXECUTABLE} ${_xgettext_options} -o ${_potFile} ${_src_list}
-	    DEPENDS ${_src_list_abs}
-	    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-	    )
+    #MESSAGE("${XGETTEXT_EXECUTABLE} ${_xgettext_options_list} -o ${_potFile} ${_src_list}")
+    ADD_CUSTOM_COMMAND(OUTPUT ${_potFile}
+        COMMAND ${XGETTEXT_EXECUTABLE} ${_xgettext_options} -o ${_potFile} ${_src_list}
+        DEPENDS ${_src_list_abs}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
 
-	ADD_CUSTOM_TARGET(pot_file
-	    COMMAND ${XGETTEXT_EXECUTABLE} ${_xgettext_options_list} -o ${_potFile} ${_src_list}
-	    DEPENDS ${_src_list_abs}
-	    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-	    COMMENT "Extract translatable messages to ${_potFile}"
-	    )
+    ADD_CUSTOM_TARGET(pot_file
+        COMMAND ${XGETTEXT_EXECUTABLE} ${_xgettext_options_list} -o ${_potFile} ${_src_list}
+        DEPENDS ${_src_list_abs}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Extract translatable messages to ${_potFile}"
+        )
     ENDMACRO(GETTEXT_CREATE_POT _potFile _pot_options)
 
 
     MACRO(GETTEXT_CREATE_TRANSLATIONS _potFile _firstLang)
-	SET(_gmoFiles)
-	GET_FILENAME_COMPONENT(_potBasename ${_potFile} NAME_WE)
-	GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
+    SET(_gmoFiles)
+    GET_FILENAME_COMPONENT(_potBasename ${_potFile} NAME_WE)
+    GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
 
-	SET(_addToAll)
-	SET(_is_comment FALSE)
+    SET(_addToAll)
+    SET(_is_comment FALSE)
 
-	FOREACH (_currentLang ${_firstLang} ${ARGN})
-	    IF(_currentLang STREQUAL "ALL")
-		SET(_addToAll "ALL")
-	    ELSEIF(_currentLang STREQUAL "COMMENT")
-		SET(_is_comment TRUE)
-	    ELSEIF(_is_comment)
-		SET(_is_comment FALSE)
-		SET(_comment ${_currentLang})
-	    ELSE()
-		SET(_lang ${_currentLang})
-		GET_FILENAME_COMPONENT(_absFile ${_currentLang}.po ABSOLUTE)
-		GET_FILENAME_COMPONENT(_abs_PATH ${_absFile} PATH)
-		SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo)
+    FOREACH (_currentLang ${_firstLang} ${ARGN})
+        IF(_currentLang STREQUAL "ALL")
+        SET(_addToAll "ALL")
+        ELSEIF(_currentLang STREQUAL "COMMENT")
+        SET(_is_comment TRUE)
+        ELSEIF(_is_comment)
+        SET(_is_comment FALSE)
+        SET(_comment ${_currentLang})
+        ELSE()
+        SET(_lang ${_currentLang})
+        GET_FILENAME_COMPONENT(_absFile ${_currentLang}.po ABSOLUTE)
+        GET_FILENAME_COMPONENT(_abs_PATH ${_absFile} PATH)
+        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo)
 
-		#MESSAGE("_absFile=${_absFile} _abs_PATH=${_abs_PATH} _lang=${_lang} curr_bin=${CMAKE_CURRENT_BINARY_DIR}")
-		ADD_CUSTOM_COMMAND(
-		    OUTPUT ${_gmoFile}
-		    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --quiet --update --backup=none -s ${_absFile} ${_absPotFile}
-		    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} -o ${_gmoFile} ${_absFile}
-		    DEPENDS ${_absPotFile} ${_absFile}
-		    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-		    )
+        #MESSAGE("_absFile=${_absFile} _abs_PATH=${_abs_PATH} _lang=${_lang} curr_bin=${CMAKE_CURRENT_BINARY_DIR}")
+        ADD_CUSTOM_COMMAND(
+            OUTPUT ${_gmoFile}
+            COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --quiet --update --backup=none -s ${_absFile} ${_absPotFile}
+            COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} -o ${_gmoFile} ${_absFile}
+            DEPENDS ${_absPotFile} ${_absFile}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            )
 
-		INSTALL(FILES ${_gmoFile} DESTINATION share/locale/${_lang}/LC_MESSAGES RENAME ${_potBasename}.mo)
-		SET(_gmoFiles ${_gmoFiles} ${_gmoFile})
-	    ENDIF()
-	ENDFOREACH (_currentLang )
+        INSTALL(FILES ${_gmoFile} DESTINATION share/locale/${_lang}/LC_MESSAGES RENAME ${_potBasename}.mo)
+        SET(_gmoFiles ${_gmoFiles} ${_gmoFile})
+        ENDIF()
+    ENDFOREACH (_currentLang )
 
-	IF(DEFINED _comment)
-	    ADD_CUSTOM_TARGET(translations ${_addToAll} DEPENDS ${_gmoFiles} COMMENT ${_comment})
-	ELSE(DEFINED _comment)
-	    ADD_CUSTOM_TARGET(translations ${_addToAll} DEPENDS ${_gmoFiles})
-	ENDIF(DEFINED _comment)
+    IF(DEFINED _comment)
+        ADD_CUSTOM_TARGET(translations ${_addToAll} DEPENDS ${_gmoFiles} COMMENT ${_comment})
+    ELSE(DEFINED _comment)
+        ADD_CUSTOM_TARGET(translations ${_addToAll} DEPENDS ${_gmoFiles})
+    ENDIF(DEFINED _comment)
     ENDMACRO(GETTEXT_CREATE_TRANSLATIONS )
 ENDIF(XGETTEXT_FOUND)
 
-
-
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

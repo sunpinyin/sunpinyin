@@ -115,14 +115,14 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
 
 - (NSString *) title
 {
-	return [[NSBundle bundleForClass: [self class]] localizedStringForKey: @"PaneTitle"
+    return [[NSBundle bundleForClass: [self class]] localizedStringForKey: @"PaneTitle"
                                                                     value: nil
                                                                     table: nil];
 }
 
 - (id) objectForKeyInBundle: (NSString *) key
 {
-	return [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey: key];
+    return [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey: key];
 }
 
 - (void) finishDownload
@@ -201,20 +201,20 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
 
 - (NSString *) _humanReadableSizeFromDouble: (double) value
 {
-	if (value < 1024)
-		return [NSString stringWithFormat:@"%.0lf %@", value,
+    if (value < 1024)
+        return [NSString stringWithFormat:@"%.0lf %@", value,
                 JJLocalizedString(@"B", @"the unit for bytes")];
-	
-	if (value < 1024 * 1024)
-		return [NSString stringWithFormat:@"%.0lf %@", value / 1024.0,
+    
+    if (value < 1024 * 1024)
+        return [NSString stringWithFormat:@"%.0lf %@", value / 1024.0,
                 JJLocalizedString(@"KB", @"the unit for kilobytes")];
-	
-	if (value < 1024 * 1024 * 1024)
-		return [NSString stringWithFormat:@"%.1lf %@", value / 1024.0 / 1024.0,
+    
+    if (value < 1024 * 1024 * 1024)
+        return [NSString stringWithFormat:@"%.1lf %@", value / 1024.0 / 1024.0,
                 JJLocalizedString(@"MB", @"the unit for megabytes")];
-	
-	return [NSString stringWithFormat:@"%.2lf %@", value / 1024.0 / 1024.0 / 1024.0,
-            JJLocalizedString(@"GB", @"the unit for gigabytes")];	
+    
+    return [NSString stringWithFormat:@"%.2lf %@", value / 1024.0 / 1024.0 / 1024.0,
+            JJLocalizedString(@"GB", @"the unit for gigabytes")];
 }
 
 - (IBAction) stopDownload: (id) sender
@@ -432,7 +432,7 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
     [filesToDownload release];
     filesToDownload = nil;
 
-	return YES;
+    return YES;
 }
 
 - (SFAuthorization *) prepareAuthorization
@@ -490,3 +490,5 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
 }
 
 @end
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

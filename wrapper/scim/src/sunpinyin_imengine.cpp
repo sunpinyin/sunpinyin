@@ -598,3 +598,5 @@ SunPyInstance::reload_config(const ConfigPointer &config)
         m_factory->load_user_config();
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

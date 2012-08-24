@@ -321,3 +321,4 @@ CThreadSlmFile::getHostEndian()
     return htons(0x0001) == 0x0100 ? LITTLE_ENDIAN : BIG_ENDIAN;
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

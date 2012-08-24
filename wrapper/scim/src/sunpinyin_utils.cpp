@@ -54,3 +54,4 @@ wstr_to_widestr(const TWCHAR* wstr, size_t len)
     return wide_str;
 }
 
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

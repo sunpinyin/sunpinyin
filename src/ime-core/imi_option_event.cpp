@@ -106,3 +106,5 @@ COptionEventBus::publishEvent(const COptionEvent& event)
             break;
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

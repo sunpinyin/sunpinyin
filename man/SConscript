@@ -18,3 +18,4 @@ env.Man('tslmpack.1', 'tslmpack.pod')
 env.Man('genpyt.1', 'genpyt.pod')
 env.Man('getwordfreq.1', 'getwordfreq.pod')
 
+# -*- indent-tabs-mode: nil -*- vim:et:ts=4

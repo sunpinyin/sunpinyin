@@ -509,7 +509,7 @@ CIMIContext::_transferBetween(unsigned start, unsigned end,
     for (; it != ite; ++it) {
         // for 1-length lattice states, replace ending_word_id (comma)
         // with none_word_id (recognized by CThreadSlm)
-	unsigned _wid = wid;
+    unsigned _wid = wid;
         if (wid == ENDING_WORD_ID && it->m_pBackTraceNode && it->m_pBackTraceNode->m_frIdx == 0)
             _wid = NONE_WORD_ID;
 
@@ -992,7 +992,7 @@ CIMIContext::_saveUserDict()
             break;
         }
 
-	if (!e_pos) e_pos = i;
+    if (!e_pos) e_pos = i;
 
         has_user_selected |= (fr.m_bwType & CLatticeFrame::USER_SELECTED);
         std::copy(state->m_syls.begin(), state->m_syls.end(), inserter(syls, syls.begin()));
@@ -1059,3 +1059,5 @@ CIMIContext::removeFromHistoryCache(std::vector<unsigned>& wids)
     m_pHistory->forget(&(wids[0]), &(wids[0]) + wids.size());
     buildLattice(m_pPySegmentor);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

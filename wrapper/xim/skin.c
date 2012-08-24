@@ -592,3 +592,5 @@ SET_CB_IMPL(window, release);
 SET_CB_IMPL(window, motion);
 SET_CB_IMPL(button, press);
 SET_CB_IMPL(button, release);
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

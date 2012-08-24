@@ -125,3 +125,5 @@ CScimWinHandler::updateStatus(int key, int value)
         break;
     }
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

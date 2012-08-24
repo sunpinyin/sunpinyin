@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
+# -*- mode: makefile; indent-tabs-mode: t -*- vim:noet:ts=4
 
 #export DH_VERBOSE=1
 
@@ -14,7 +14,7 @@ ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 endif
 
 LITTLE_ENDIAN_ARCHS := "alpha amd64 arm hurd-i386 i386 ia64 mipsel sh3 sh4"
-BIG_ENDIAN_ARCHS    := "hppa m68k mips powerpc ppc64 sparc s390"
+BIG_ENDIAN_ARCHS := "hppa m68k mips powerpc ppc64 sparc s390"
 
 ifneq (,$(findstring $(DEB_BUILD_ARCH), $(LITTLE_ENDIAN_ARCHS)))
 	BUILD_ENDIANNESS := le
@@ -41,13 +41,14 @@ DEB_DH_MAKESHLIBS_ARGS := -n
 DEB_DH_GENCONTROL_ARGS := -u'-Vsunpinyin-data-depends=$(SUNPINYIN_DATA_DEPENDS)'
 
 binary-fixup/sunpinyin-data-le::
-	for f in pydict3_sc.bin lm_sc.t3g ; do                                 \
-	    cp -f $(CURDIR)/data/$$f.le                                       \
-	       $(CURDIR)/debian/sunpinyin-data-le/usr/lib/sunpinyin/data/$$f; \
+	for f in pydict3_sc.bin lm_sc.t3g ; do \
+		cp -f $(CURDIR)/data/$$f.le \
+		$(CURDIR)/debian/sunpinyin-data-le/usr/lib/sunpinyin/data/$$f; \
 	done
 
 binary-fixup/sunpinyin-data-be::
-	for f in pydict3_sc.bin lm_sc.t3g ; do                                 \
-	    cp -f $(CURDIR)/data/$$f.be                                       \
-	       $(CURDIR)/debian/sunpinyin-data-be/usr/lib/sunpinyin/data/$$f; \
+	for f in pydict3_sc.bin lm_sc.t3g ; do \
+		cp -f $(CURDIR)/data/$$f.be \
+		$(CURDIR)/debian/sunpinyin-data-be/usr/lib/sunpinyin/data/$$f; \
 	done
+

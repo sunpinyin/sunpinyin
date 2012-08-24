@@ -6,3 +6,5 @@ bool revert_write<CPinyinTrie::TTransUnit
 {
     return revert_write(t.m_Syllable, fp) && revert_write(t.m_Offset, fp);
 }
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

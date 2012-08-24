@@ -94,3 +94,5 @@ void icmgr_ui_refresh   (void);
 __END_DECLS
 
 #endif /* _IC_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

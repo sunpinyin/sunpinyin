@@ -123,3 +123,5 @@ inline PreeditUI* create_preedit_ui(std::string name)
 }
 
 #endif /* _SUNPINYIN_PREEDIT_H_ */
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

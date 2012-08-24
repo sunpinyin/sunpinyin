@@ -95,3 +95,5 @@ struct IPySegmentor {
 };
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

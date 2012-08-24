@@ -13,11 +13,11 @@
 @interface SUAppcast : NSObject
 {
 @private
-	NSArray *items;
-	NSString *userAgentString;
-	id delegate;
-	NSString *downloadFilename;
-	NSURLDownload *download;
+    NSArray *items;
+    NSString *userAgentString;
+    id delegate;
+    NSString *downloadFilename;
+    NSURLDownload *download;
 }
 
 - (void)fetchAppcastFromURL:(NSURL *)url;
@@ -34,3 +34,5 @@
 @end
 
 #endif
+
+// -*- indent-tabs-mode: nil -*- vim:et:ts=4

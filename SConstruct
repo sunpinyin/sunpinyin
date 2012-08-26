@@ -416,9 +416,11 @@ if not GetOption('clean') and not GetOption('help'):
 #
 #==============================compile==============================
 #
-env.Command('src/pinyin/quanpin_trie.h', 'python/pinyin_data.py',
-            './pinyin_data.py > /dev/null', chdir = 'python')
 env.Object(slmsource)
+env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
+            './quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h', chdir = 'python')
+env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
+            './pinyin_info_gen.py > ../src/pinyin/pinyin_info.h', chdir = 'python')
 
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 

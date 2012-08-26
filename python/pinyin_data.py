@@ -89,73 +89,28 @@ valid_init_fin_pairs = [
     (["w"],     ["", "a", "ai", "an", "ang", "ei", "en", "eng", "o", "u"]),
 ]
 
-def encode_syllable (init, fin):
-    return (initials.index(init) << 12) + (finals.index(fin) << 4)
+valid_syllables = {i + f: (initials.index(i) << 12) + (finals.index(f) << 4) for (ii, ff) in valid_init_fin_pairs for i in ii for f in ff}
+
+fuzzy_map = {}
+for i, j in fuzzy_pairs:
+    fuzzy_map.setdefault (i, []).append(j)
+    fuzzy_map.setdefault (j, []).append(i)
+
+fuzzy_pro_syllables = [s for s in valid_syllables if s[1:] in valid_syllables and s[0] in initials and s not in initials]
+fuzzy_pre_syllables = [s for s in valid_syllables if s[:-1] in valid_syllables and s[-1] in initials and s not in initials]
+initial_sets = {s[0] for s in fuzzy_pro_syllables} & {s[-1] for s in fuzzy_pre_syllables}
+fuzzy_pro_syllables  = [s for s in fuzzy_pro_syllables if s[0] in initial_sets]
+fuzzy_pre_syllables  = [s for s in fuzzy_pre_syllables if s[-1] in initial_sets]
 
 def decode_syllable (s):
-    return initials[(s>>12)], finals[(s&0x00ff0)>>4]
-
-def init_fuzzy_map (fuzzy_pairs):
-    fuzzy_map = {}
-    for i, j in fuzzy_pairs:
-        fuzzy_map.setdefault (i, []).append (j)
-        fuzzy_map.setdefault (j, []).append (i)
-
-    return fuzzy_map
-
-valid_syllables = {init + fin: encode_syllable(init, fin) for (inits, fins) in valid_init_fin_pairs for init in inits for fin in fins}
-fuzzy_map = init_fuzzy_map (fuzzy_pairs)
+    return initials[(s >> 12)], finals[(s & 0x00ff0) >> 4]
 
 def get_fuzzy_syllables (syllable):
     i, f = decode_syllable (syllable)
-    iset = fuzzy_map.setdefault(i, []) + [i]
-    fset = fuzzy_map.setdefault(f, []) + [f]
-    sset = [valid_syllables[i+f] for i in iset for f in fset if i+f in valid_syllables]
+    ii = fuzzy_map.setdefault (i, []) + [i]
+    ff = fuzzy_map.setdefault (f, []) + [f]
+    sset = [valid_syllables[init + fin] for i in ii for f in ff if i + f in valid_syllables]
     sset.remove (syllable)
     return sset
-
-def gen_suffix_trie (fname):
-    from trie import Trie, DATrie
-    
-    trie = Trie ()
-    pytrie = DATrie ()
-
-    for s in valid_syllables:
-        trie.add (s[::-1], valid_syllables[s])
-    
-    pytrie.construct_from_trie (trie)
-    pytrie.output_static_c_arrays (fname)
-
-def gen_fuzzy_syllable_pairs_tables ():
-    fuzzy_pro_syllables = [s for s in valid_syllables if s[1:] in valid_syllables and s[0] in initials and s not in initials]
-    fuzzy_pre_syllables = [s for s in valid_syllables if s[:-1] in valid_syllables and s[-1] in initials and s not in initials]
-
-    initial_sets = set([s[0] for s in fuzzy_pro_syllables]) & set([s[-1] for s in fuzzy_pre_syllables])
-
-    fuzzy_pro_syllables  = [s for s in fuzzy_pro_syllables if s[0] in initial_sets]
-    fuzzy_pre_syllables  = [s for s in fuzzy_pre_syllables if s[-1] in initial_sets]
-
-    print "static const unsigned fuzzy_pre_syllables [] = {"
-    for s in fuzzy_pre_syllables:
-        print "    %-12s %-12s %-12s /* %s */" % ("0x%05x," % valid_syllables[s[:-1]], "'%s'," % s[-1], "0x%05x," % valid_syllables[s], s)
-    print "    0x0,"
-    print "};\n"
-
-    print "static const unsigned fuzzy_pro_syllables [] = {"
-    for s in fuzzy_pro_syllables:
-        print "    %-12s %-12s %-12s /* %s */" % ("0x%05x," % valid_syllables[s], "'%s'," % s[0], "0x%05x," % valid_syllables[s[1:]], s)
-    print "    0x0,"
-    print "};\n"
-
-def gen_inner_fuzzy_syllable_tables ():
-    print "static const unsigned fuzzy_finals_map[] = {"
-    for s in inner_fuzzy_finals:
-        print "    %-12s %-12s %-12s /* %-4s -> %-4s len %d */" % ("0x%02x," % finals.index(s), "0x%02x," % valid_syllables[s[1:]], "%d," % (len(s)-1,),  s, s[1:], len(s)-1)
-    print "};\n"
-
-if __name__ == "__main__":
-    gen_suffix_trie ("../src/pinyin/quanpin_trie.h")
-    gen_inner_fuzzy_syllable_tables ()
-    gen_fuzzy_syllable_pairs_tables ()
 
 # -*- indent-tabs-mode: nil -*- vim:et:ts=4

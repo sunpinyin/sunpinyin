@@ -35,9 +35,9 @@
 # Version 2 license, then the option applies only if the new code is made subject
 # to such option by the copyright holder. 
 
-initials = ["", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w", ]
+initials = ["", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w", "hm", ]
 
-finals = ["", "a", "o", "e", "ai", "ei", "ao", "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ve", "ue", "iong", ]
+finals = ["", "a", "o", "e", "ai", "ei", "ao", "ou", "an", "en", "ang", "eng", "er", "i", "ia", "ie", "iao", "iu", "ian", "in", "iang", "ing", "u", "ua", "uo", "uai", "ui", "uan", "un", "uang", "ong", "v", "ve", "ue", "iong", "ng" ]
 
 inner_fuzzy_finals = ['ia', 'iao', 'ian', 'iang', 'ie', 'ua', 'uai', 'uan', 'uang', 'ue', 've']
 
@@ -67,7 +67,7 @@ auto_correction_pairs = {
 }
 
 valid_init_fin_pairs = [
-    ([""],      ["a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "er", "o", "ou"]),
+    ([""],      ["a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "er", "o", "ou", "ng"]),
     (["b"],     ["", "a", "ai", "an", "ang", "ao", "ei", "en", "eng", "i", "ian", "iao", "ie", "in", "ing", "o", "u"]),
     (["p"],     ["", "a", "ai", "an", "ang", "ao", "ei", "en", "eng", "i", "ian", "iao", "ie", "in", "ing", "o", "ou", "u"]),
     (["m"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ian", "iao", "ie", "in", "ing", "iu", "o", "ou", "u"]),
@@ -81,12 +81,13 @@ valid_init_fin_pairs = [
     (["zh"],    ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ong", "ou", "u", "ua", "uai", "uan", "uang", "ui", "un", "uo"]),
     (["ch"],    ["", "a", "ai", "an", "ang", "ao", "e", "en", "eng", "i", "ong", "ou", "u", "ua", "uai", "uan", "uang", "ui", "un", "uo"]),
     (["sh"],    ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ou", "u", "ua", "uai", "uan", "uang", "ui", "un", "uo"]),
-    (["r"],     ["", "an", "ang", "ao", "e", "en", "eng", "i", "ong", "ou", "u", "uan", "ui", "un", "uo"]),
+    (["r"],     ["", "an", "ang", "ao", "e", "en", "eng", "i", "ong", "ou", "u", "ua", "uan", "ui", "un", "uo"]),
     (["z"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ong", "ou", "u", "uan", "ui", "un", "uo"]),
     (["c"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ong", "ou", "u", "uan", "ui", "un", "uo"]),
     (["s"],     ["", "a", "ai", "an", "ang", "ao", "e", "en", "eng", "i", "ong", "ou", "u", "uan", "ui", "un", "uo"]),
     (["y"],     ["", "a", "an", "ang", "ao", "e", "i", "in", "ing", "o", "ong", "ou", "u", "uan", "ue", "un"]),
     (["w"],     ["", "a", "ai", "an", "ang", "ei", "en", "eng", "o", "u"]),
+    (["hm"],    [""]),
 ]
 
 valid_syllables = {i + f: (initials.index(i) << 12) + (finals.index(f) << 4) for (ii, ff) in valid_init_fin_pairs for i in ii for f in ff}

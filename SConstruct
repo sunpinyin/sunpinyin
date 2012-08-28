@@ -212,8 +212,7 @@ def CreateEnvironment():
         tar = 'gtar'
         make = 'gmake'
 
-    libln_builder = Builder(action='ln -s ${SOURCE.name} ${TARGET.name}',
-                            chdir=True)
+    libln_builder = Builder(action='cd ${TARGET.dir} && ln -s ${SOURCE.name} ${TARGET.name}')
     env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
                       TAR=tar, MAKE=make, WGET=wget,
                       CPPPATH=['.'] + allinc(),
@@ -418,9 +417,9 @@ if not GetOption('clean') and not GetOption('help'):
 #
 env.Object(slmsource)
 env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
-            './quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h', chdir = 'python')
+            'cd ${SOURCE.dir} && ./quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h')
 env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
-            './pinyin_info_gen.py > ../src/pinyin/pinyin_info.h', chdir = 'python')
+            'cd ${SOURCE.dir} && ./pinyin_info_gen.py > ../src/pinyin/pinyin_info.h')
 
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 

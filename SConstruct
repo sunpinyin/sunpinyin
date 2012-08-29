@@ -396,15 +396,6 @@ def DoConfigure():
     # append endianness checking defines
     AppendEndianCheck(conf)
     env = conf.Finish()
-    # generate sunpinyin.pc
-    env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
-            '@PREFIX@': env['PREFIX'],
-            '@LIBDIR@': env['LIBDIR'],
-            '@VERSION@': version,
-            '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
-                               map(lambda x: '-I$${includedir}' + x[3:],
-                                   allinc())),
-            })
 
     if GetOS() != 'Darwin':
         env.ParseConfig('pkg-config sqlite3 --libs --cflags')
@@ -422,6 +413,15 @@ env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
             'cd ${SOURCE.dir} && ./pinyin_info_gen.py > ../src/pinyin/pinyin_info.h')
 
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
+
+env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
+        '@PREFIX@': env['PREFIX'],
+        '@LIBDIR@': env['LIBDIR'],
+        '@VERSION@': version,
+        '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
+                           map(lambda x: '-I$${includedir}' + x[3:],
+                               allinc())),
+        })
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
                                      env.subst('${SHLIBSUFFIX}'))

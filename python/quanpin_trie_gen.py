@@ -37,6 +37,7 @@
 
 import pinyin_data
 import trie
+import sys
 
 orig_trie = trie.Trie ()
 pytrie = trie.DATrie ()
@@ -45,5 +46,5 @@ for syllable, hex_syllable in pinyin_data.valid_syllables.items():
     orig_trie.add(syllable[::-1], hex_syllable)
 
 pytrie.construct_from_trie (orig_trie)
-pytrie.output_static_c_arrays ("/dev/stdout")
+pytrie.output_static_c_arrays (sys.stdout)
 

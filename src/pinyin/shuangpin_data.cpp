@@ -59,7 +59,7 @@ static const char *finals[FINAL_NUM] = { "", "a", "o", "e", "ai", "ei", "ao",
                                          "i", "ia", "ie", "iao", "iu", "ian",
                                          "in", "iang", "ing", "u",
                                          "ua", "uo", "uai", "ui", "uan", "un",
-                                         "uang", "ong", "v", "ue", "iong", };
+                                         "uang", "ong", "v", "ve", "iong", };
 
 
 //MS2003 shuangpin plan map table

@@ -136,6 +136,7 @@ bins = [
     'src/tslmpack',
     'src/genpyt',
     'src/getwordfreq',
+    'src/sunpinyin-dictgen',
     ]
 
 man1s = [
@@ -200,24 +201,24 @@ def GetOS():
     return platform.uname()[0]
 
 def CreateEnvironment():
-    tar = 'tar'
     make = 'make'
     wget = 'wget'
+    tar = 'tar'
     if GetOS() == 'Darwin':
         wget = 'curl -O'
     elif GetOS() == 'FreeBSD':
+        make = 'gmake'
         wget = 'fetch'
-        make = 'gmake'
     elif GetOS() == 'SunOS':
-        tar = 'gtar'
         make = 'gmake'
-
+        tar = 'gtar'
     libln_builder = Builder(action='cd ${TARGET.dir} && ln -s ${SOURCE.name} ${TARGET.name}')
-    env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS=cflags,
-                      TAR=tar, MAKE=make, WGET=wget,
-                      CPPPATH=['.'] + allinc(),
-                      tools=['default', 'textfile'])
-    env.Append(BUILDERS={'InstallAsSymlink': libln_builder})
+    env = Environment(ENV = os.environ, CFLAGS = cflags, CXXFLAGS = cflags,
+                      MAKE = make, WGET = wget, TAR = tar,
+                      CPPPATH = ['.'] + allinc(),
+                      tools = ['default', 'textfile'])
+    env.Append(BUILDERS = {'InstallAsSymlink': libln_builder})
+    env['ENDIANNESS'] = "be" if sys.byteorder == "big" else "le"
     return env
 
 def PassVariables(envvar, env):

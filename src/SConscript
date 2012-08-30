@@ -42,4 +42,16 @@ env.Program('getwordfreq', ['portability.o', 'slm/slm.o',
 
 env.Program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
 
+env.Substfile('sunpinyin-dictgen.mk.in', SUBST_DICT = {
+    '@MAKE@': env['MAKE'],
+    '@TAR@': env['TAR'],
+    '@WGET@': env['WGET'],
+    '@DATADIR@': env['DATADIR'],
+    '@ENDIANNESS@': env['ENDIANNESS'],
+    })
+env.Command('sunpinyin-dictgen', 'sunpinyin-dictgen.mk', [
+        Copy("$TARGET", "$SOURCE"),
+        Chmod("$TARGET", 0755),
+    ])
+
 # -*- indent-tabs-mode: nil -*- vim:et:ts=4

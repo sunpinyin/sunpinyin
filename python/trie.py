@@ -187,8 +187,7 @@ class DATrie (object):
 
         f.close()
 
-    def output_static_c_arrays (self, fname):
-        f = open(fname, 'w+')
+    def output_static_c_arrays (self, f):
         l = len (self.base)
 
         c_type = "int" if l > 2**15 else "short"

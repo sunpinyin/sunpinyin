@@ -4,9 +4,8 @@
 
 # Little endian platforms: alpha amd64 arm hurd-i386 i386 ia64 mipsel sh3 sh4
 # Big endian platforms: hppa m68k mips powerpc ppc64 sparc s390
-# Considering popularity of desktop platforms, here we default to le.
 ifndef ENDIANNESS
-	ENDIANNESS = le
+	ENDIANNESS = @ENDIANNESS@
 endif
 
 DICT_FILE = dict.utf8

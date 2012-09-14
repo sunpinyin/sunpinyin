@@ -278,7 +278,7 @@ class MultiCheckDialog (object):
     def __init_ui(self):
         dlg_name = self.get_setup_name()
         self.__xml = gtk.Builder()
-        self.__xml.add_objects_from_file(XML_FILE, dlg_name)
+        self.__xml.add_objects_from_file(XML_FILE, [dlg_name])
         self.__dlg = self.__xml.get_object(dlg_name)
         assert self.__dlg is not None, "dialog %s not found in %s" % (dlg_name, XML_FILE)
         handlers = {'_'.join(["on", self.ui_name, "select_all_clicked"]) : self.on_button_check_all_clicked,

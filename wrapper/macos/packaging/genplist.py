@@ -3,7 +3,7 @@
 import plistlib, hashlib, os, sys
 
 dir = "../../../data"
-filenames = [ "lm_sc.t3g.be", "lm_sc.t3g.le", "pydict3_sc.bin.be", "pydict3_sc.bin.le" ]
+filenames = [ "lm_sc.t3g.le", "pydict3_sc.bin.le" ]
 files = []
 plist_file = "SunpinyinDataFiles.xml"
 

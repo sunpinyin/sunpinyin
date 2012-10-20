@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.3.0525</string>
+	<string>2.0.4.1020</string>
 	<key>InputMethodConnectionName</key>
 	<string>SunPinyin_1_Connection</string>
 	<key>InputMethodServerControllerClass</key>
@@ -35,7 +35,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>http://release.sunpinyin.googlecode.com/hg/SunpinyinAppcast.xml</string>
+	<string>http://release.sunpinyin.googlecode.com/git/SunpinyinAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUScheduledCheckInterval</key>

@@ -1,19 +1,19 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Package SunPinyin for release
 
-import sys, os, commands, time, plistlib
+import sys, os, subprocess, time, plistlib
 
 try:
     from jinja2 import Environment, FileSystemLoader
 except:
-    print "Install jinja2 first."
+    print("Install jinja2 first.")
     sys.exit(1)
 
 env = Environment(loader=FileSystemLoader('.'))
 plist = plistlib.readPlist("../build/SunPinyin.app/Contents/Info.plist")
 
 url_base = "http://sunpinyin.googlecode.com/files/"
-xml_url_base = "http://release.sunpinyin.googlecode.com/hg/"
+xml_url_base = "http://release.sunpinyin.googlecode.com/git/"
 appcast_url = xml_url_base + "SunpinyinAppcast.xml"
 
 pack_proj = "SunPinyin/SunPinyin.packproj"
@@ -38,24 +38,24 @@ def remove_if_exists(file):
     if os.path.isfile(file):
         os.remove(file)
 
-print "[PACK] Remove temporary files..."
+print("[PACK] Remove temporary files...")
 
 #remove_if_exists("%s/lm_sc.t3g" % resource_dir)
 #remove_if_exists("%s/pydict3_sc.bin" % resource_dir)
 
-print "[PACK] Building %s..." % pkg
+print("[PACK] Building %s..." % pkg)
 
 os.system("freeze -v %s" % pack_proj)
 
-print "[PACK] Compressing %s..." % zip
+print("[PACK] Compressing %s..." % zip)
 os.chdir("SunPinyin/build")
 os.system("zip -y -r ../../%s SunPinyin.pkg" % zip)
 os.chdir("../..")
 
-print "[PACK] Signing %s..." % zip
-signed = commands.getoutput('openssl dgst -sha1 -binary < "%s" | openssl dgst -dss1 -sign "%s" | openssl enc -base64' % (zip, priv_key))
+print("[PACK] Signing %s..." % zip)
+signed = subprocess.getoutput('openssl dgst -sha1 -binary < "%s" | openssl dgst -dss1 -sign "%s" | openssl enc -base64' % (zip, priv_key))
 
-print "[PACK] Generating %s..." % appcast
+print("[PACK] Generating %s..." % appcast)
 template = env.get_template(appcast_template)
 
 output = open(appcast, "w")
@@ -66,10 +66,10 @@ output.write(template.render(link=appcast_url,
         date=date,
         version=version,
         length=os.path.getsize(zip),
-        signed=signed).encode("utf-8"))
+        signed=signed))
 
 output.close()
 
-print "Done! Please:\n  1. Publish %s to %s\n  2. Publish %s to %s\n  3. Update the release note for version %s at %s." % (appcast, appcast_url, zip, file_url, version, releasenotes_url)
+print("Done! Please:\n  1. Publish %s to %s\n  2. Publish %s to %s\n  3. Update the release note for version %s at %s." % (appcast, appcast_url, zip, file_url, version, releasenotes_url))
 
 # -*- indent-tabs-mode: nil -*- vim:et:ts=4

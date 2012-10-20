@@ -22,10 +22,8 @@ SLM3_TEXT_FILE = ${SLM_TARGET}.3gm.arpa
 TSLM3_FILE = ${SLM_TARGET}.t3g
 TSLM3_TEXT_FILE = ${SLM_TARGET}.t3g.arpa
 
-PYTRIE2_FILE = pydict2_sc.bin
-PYTRIE2_LOG_FILE = pydict2_sc.log
-PYTRIE3_FILE = pydict3_sc.bin
-PYTRIE3_LOG_FILE = pydict3_sc.log
+PYTRIE_FILE = pydict_sc.bin
+PYTRIE_LOG_FILE = pydict_sc.log
 
 all: bootstrap3
 
@@ -65,9 +63,9 @@ tslm2_info: ${TSLM2_TEXT_FILE}
 ${TSLM2_TEXT_FILE}: ${DICT_FILE} ${TSLM2_FILE}
 	tslminfo -v -l ${DICT_FILE} ${TSLM2_FILE} > $@
 
-lexicon2: ${PYTRIE2_FILE}
-${PYTRIE2_FILE}: ${DICT_FILE} ${TSLM2_FILE}
-	genpyt -i ${DICT_FILE} -s ${TSLM2_FILE} -l ${PYTRIE2_LOG_FILE} -o $@
+lexicon2: ${DICT_FILE} ${TSLM2_FILE}
+	genpyt -i ${DICT_FILE} -s ${TSLM2_FILE} \
+		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_LOG_FILE}
 
 trigram_stat: ${TRIGRAM_STAT_FILE}
 ${TRIGRAM_STAT_FILE}: ${IDS_FILE}
@@ -94,9 +92,9 @@ tslm3_info: ${TSLM3_TEXT_FILE}
 ${TSLM3_TEXT_FILE}: ${DICT_FILE} ${TSLM3_FILE}
 	tslminfo -p -v -l ${DICT_FILE} ${TSLM3_FILE} > $@
 
-lexicon3: ${PYTRIE3_FILE}
-${PYTRIE3_FILE}: ${DICT_FILE} ${TSLM3_FILE}
-	genpyt -i ${DICT_FILE} -s ${TSLM3_FILE} -l ${PYTRIE3_LOG_FILE} -o $@
+lexicon3: ${DICT_FILE} ${TSLM3_FILE}
+	genpyt -i ${DICT_FILE} -s ${TSLM3_FILE} \
+		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_LOG_FILE}
 
 tmp_clean:
 	rm -f *.tmp ${IDS_FILE}

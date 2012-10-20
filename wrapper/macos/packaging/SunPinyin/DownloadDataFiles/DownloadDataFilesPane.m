@@ -378,7 +378,7 @@ NSDictionary *findInSpec(NSArray *specArray, NSString *file)
         return;
     }
 
-    NSArray *files = [NSArray arrayWithObjects: @"lm_sc.t3g", @"pydict3_sc.bin", nil];
+    NSArray *files = [NSArray arrayWithObjects: @"lm_sc.t3g", @"pydict_sc.bin", nil];
 
     if (! filesToDownload)
         filesToDownload = [[NSMutableArray alloc] initWithCapacity: 2];

@@ -34,15 +34,15 @@ lm_sc.t3g.orig: dict.utf8 lm_sc.t3g.arpa
 lm_sc.t3g: lm_sc.t3g.orig
 	tslmendian -e ${ENDIANNESS} -i $^ -o $@
 
-pydict3_sc.bin: dict.utf8 lm_sc.t3g
+pydict_sc.bin: dict.utf8 lm_sc.t3g
 	genpyt -e ${ENDIANNESS} -i dict.utf8 -s lm_sc.t3g \
 		-l lm_sc.t3g.log -o $@
 
-install: lm_sc.t3g pydict3_sc.bin
+install: lm_sc.t3g pydict_sc.bin
 	install -d ${DATA_DIR}
 	install -Dm644 $^ ${DATA_DIR}
 
 clean:
 	rm -rf ${DICT_AR} ${TSLM_AR} dict.utf8 lm_sc.t3g.arpa \
-		lm_sc.t3g.orig lm_sc.t3g lm_sc.t3g.log pydict3_sc.bin
+		lm_sc.t3g.orig lm_sc.t3g lm_sc.t3g.log pydict_sc.bin
 

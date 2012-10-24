@@ -65,7 +65,7 @@ ${TSLM2_TEXT_FILE}: ${DICT_FILE} ${TSLM2_FILE}
 
 lexicon2: ${DICT_FILE} ${TSLM2_FILE}
 	genpyt -i ${DICT_FILE} -s ${TSLM2_FILE} \
-		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_LOG_FILE}
+		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_FILE}
 
 trigram_stat: ${TRIGRAM_STAT_FILE}
 ${TRIGRAM_STAT_FILE}: ${IDS_FILE}
@@ -94,7 +94,7 @@ ${TSLM3_TEXT_FILE}: ${DICT_FILE} ${TSLM3_FILE}
 
 lexicon3: ${DICT_FILE} ${TSLM3_FILE}
 	genpyt -i ${DICT_FILE} -s ${TSLM3_FILE} \
-		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_LOG_FILE}
+		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_FILE}
 
 tmp_clean:
 	rm -f *.tmp ${IDS_FILE}
@@ -103,18 +103,18 @@ tmp_clean:
 
 mmseg_bigram: mmseg_ids tslm2_info
 mmseg_trigram: mmseg_ids tslm3_info
-slm_bigram2: slm2_ids tslm2_info
-slm_bigram3: slm3_ids tslm2_info
-slm_trigram2: slm2_ids tslm3_info
-slm_trigram3: slm3_ids tslm3_info
+slm_bigram: slm2_ids tslm2_info
+slm_trigram: slm3_ids tslm3_info
 
 bootstrap2:
 	make mmseg_bigram
-	make slm_bigram2
+	make slm_bigram
+	make slm_bigram
 	make lexicon2
 
 bootstrap3:
 	make mmseg_trigram
-	make slm_trigram3
+	make slm_trigram
+	make slm_trigram
 	make lexicon3
 

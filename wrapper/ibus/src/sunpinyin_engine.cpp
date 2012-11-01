@@ -395,11 +395,19 @@ SunPinyinEngine::update_history_power()
 void
 SunPinyinEngine::update_charset_level()
 {
-    unsigned charset = m_config.get(CONFIG_GENERAL_CHARSET_LEVEL, GBK);
+    std::string charset("GBK");
+    charset = m_config.get(CONFIG_GENERAL_CHARSET_LEVEL, charset);
+    //printf("charset is %s.\n", charset.c_str());
     CIMIContext* ic = m_pv->getIC();
     assert(ic);
-    charset &= 3;               // charset can only be 0,1,2 or 3
-    ic->setCharsetLevel(charset);
+    if (charset == "GB2312") {
+        ic->setCharsetLevel(0);
+    } else if (charset == "GBK") {
+        ic->setCharsetLevel(1);
+    }   
+    else {
+        ic->setCharsetLevel(2);
+    }
 }
 
 void

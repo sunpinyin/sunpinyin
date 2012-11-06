@@ -74,8 +74,8 @@ valid_init_fin_pairs = [
     (["f"],     ["", "a", "an", "ang", "ei", "en", "eng", "iao", "o", "ou", "u"]),
     (["d"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ia", "ian", "iao", "ie", "ing", "iu", "ong", "ou", "u", "uan", "ui", "un", "uo"]),
     (["t"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "eng", "i", "ian", "iao", "ie", "ing", "ong", "ou", "u", "uan", "ui", "un", "uo"]),
-    (["n"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ian", "iang", "iao", "ie", "in", "ing", "iu", "ong", "ou", "u", "uan", "un", "uo", "v", "ve"]),
-    (["l"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "eng", "i", "ia", "ian", "iang", "iao", "ie", "in", "ing", "iu", "o", "ong", "ou", "u", "uan", "un", "uo", "v", "ve"]),
+    (["n"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ian", "iang", "iao", "ie", "in", "ing", "iu", "ong", "ou", "u", "uan", "un", "uo", "v", "ve|ue"]),
+    (["l"],     ["", "a", "ai", "an", "ang", "ao", "e", "ei", "eng", "i", "ia", "ian", "iang", "iao", "ie", "in", "ing", "iu", "o", "ong", "ou", "u", "uan", "un", "uo", "v", "ve|ue"]),
     (["g", "k", "h"],   ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "ong", "ou", "u", "ua", "uai", "uan", "uang", "ui", "un", "uo"]),
     (["j", "q", "x"],    ["", "i", "ia", "ian", "iang", "iao", "ie", "in", "ing", "iong", "iu", "u", "uan", "ue", "un"]),
     (["zh"],    ["", "a", "ai", "an", "ang", "ao", "e", "ei", "en", "eng", "i", "ong", "ou", "u", "ua", "uai", "uan", "uang", "ui", "un", "uo"]),
@@ -90,7 +90,14 @@ valid_init_fin_pairs = [
     (["hm"],    [""]),
 ]
 
-valid_syllables = {i + f: (initials.index(i) << 12) + (finals.index(f) << 4) for (ii, ff) in valid_init_fin_pairs for i in ii for f in ff}
+valid_syllables = {}
+
+for (ii, ff) in valid_init_fin_pairs:
+    for i in ii:
+	for f in ff:
+	    fv = f.split('|')
+	    for fi in fv:
+	        valid_syllables[i+fi] = (initials.index(i) << 12) + (finals.index(fv[0]) << 4)
 
 fuzzy_map = {}
 for i, j in fuzzy_pairs:

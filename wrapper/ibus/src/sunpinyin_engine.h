@@ -130,6 +130,20 @@ private:
     CHotkeyProfile  *m_hotkey_profile;
 
     SunPinyinConfig  m_config;
+
+    /// Hacks for GNOME 3.6 above, where there is no notion of trigger an
+    /// engine. In GNOME 3.6 triggering only means switch the language/engine
+    /// it is engine's task to simulate this trigger behavior if they need.
+    ///
+    /// This is necessary to do rather than switch back and forth the actual
+    /// language mapping is because some applications (Emacs) explicitly tell
+    /// ibus "there is no context", please don't trigger. While GNOME's
+    /// language switch behavior does not listen to that. It's more of a global
+    /// keybinding switch rather than per-application input context style
+    /// switch.
+    ///
+    /// - Mike Qin
+    bool             m_hard_forward;
 };
 
 #endif // SUNPINYIN_ENGINE_H

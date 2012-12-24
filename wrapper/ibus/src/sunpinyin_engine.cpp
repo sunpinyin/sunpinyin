@@ -56,7 +56,8 @@ SunPinyinEngine::SunPinyinEngine(IBusEngine *engine)
       m_punct_prop(SunPinyinProperty::create_punct_prop(engine)),
       m_wh(NULL),
       m_pv(NULL),
-      m_hotkey_profile(NULL)
+      m_hotkey_profile(NULL),
+      m_hard_forward(false)
 {
     CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
 
@@ -127,6 +128,17 @@ SunPinyinEngine::process_key_event (guint key_val,
                                     guint modifiers)
 {
     CKeyEvent key = translate_key(key_val, key_code, modifiers);
+
+    if (getenv("DISABLE_HARD_FORWARD") == NULL) {
+        // Ctrl+<space> is pressed. let's just hard code these.
+        // it looks rediculous, but on what else do you need to do this hack?
+        if (key.code == 0x20 && key.modifiers == IM_CTRL_MASK) {
+            m_hard_forward = !m_hard_forward;
+            return TRUE;
+        } else if (m_hard_forward) {
+            return FALSE;
+        }
+    }
 
     if (!m_pv->getStatusAttrValue(CIBusWinHandler::STATUS_ID_CN)) {
         // we are in English input mode

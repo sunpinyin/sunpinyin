@@ -151,10 +151,12 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
         user_data_dir.append ("/SunPinyin");
         AOptionEventBus::instance().publishEvent(COptionEvent(USER_DATA_DIR, user_data_dir));
         
+#ifdef ENABLE_PLUGINS
         /* Test Plugin */
         CIMIPluginManager& plugin_manager = AIMIPluginManager::instance();
         plugin_manager.loadPlugin("cloudpinyin.py");
         NSLog (@"%s", plugin_manager.getLastError().c_str());
+#endif
     }
 }
 

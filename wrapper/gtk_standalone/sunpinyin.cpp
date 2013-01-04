@@ -51,7 +51,10 @@
 
 #include "imi_options.h"
 #include "imi_gtkwin.h"
+
+#ifdef ENABLE_PLUGINS
 #include "imi_plugin.h"
+#endif
 
 using namespace std;
 

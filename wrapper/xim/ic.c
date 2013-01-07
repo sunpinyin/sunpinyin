@@ -143,7 +143,7 @@ __reset_ic(IC* ic)
     int id = ic->icid;
     memset(ic, 0, sizeof(IC));
     ic->icid = id;
-    ic->is_chn_punc = true;
+    ic->is_chn_punc = !((bool) settings_get_int(INIT_PUNC_TYPE));
 }
 
 void

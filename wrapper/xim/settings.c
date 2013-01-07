@@ -66,6 +66,7 @@ static const char* setting_names[] = {
     "smart_punct",
     "skin_name",
     "hide_icbar",
+    "init_punc_type",
     NULL
 };
 
@@ -267,6 +268,9 @@ __init_default_values()
 
     /* whether hide icbar */
     settings_set_int(HIDE_ICBAR, 0);
+
+    /* init punc type */
+    settings_set_int(INIT_PUNC_TYPE, 0);
 }
 
 #define REGISTER(k, type, efunc, dfunc)               \
@@ -301,6 +305,7 @@ settings_init()
     REGISTER(SMART_PUNCT, int, __int_enc, __int_dec);
     REGISTER(SKIN_NAME, varchar, __varchar_enc, __varchar_dec);
     REGISTER(HIDE_ICBAR, int, __int_enc, __int_dec);
+    REGISTER(INIT_PUNC_TYPE, int, __int_enc, __int_dec);
 
     __init_default_values();
 }

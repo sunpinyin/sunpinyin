@@ -43,32 +43,6 @@
     <property name="page_size">0.01</property>
     <signal name="value-changed" handler="state_changed" swapped="no"/>
   </object>
-  <object class="GtkListStore" id="shuangpin_scheme">
-    <columns>
-      <!-- column-name text -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">MS2003</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ABC</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ZiRanMa</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">PinYin++</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ZiGuang</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">XiaoHe</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkListStore" id="skin_list">
     <columns>
       <!-- column-name text -->
@@ -900,15 +874,6 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                   <placeholder/>
                 </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <object class="GtkLabel" id="label19">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -931,54 +896,6 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                   <placeholder/>
                 </child>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="layout_style">spread</property>
-                    <child>
-                      <object class="GtkRadioButton" id="lang_english">
-                        <property name="label" translatable="yes">English</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkRadioButton" id="lang_chinese">
-                        <property name="label" translatable="yes">Chinese</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
-                        <property name="group">lang_english</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
                   <placeholder/>
                 </child>
                 <child>
@@ -990,54 +907,6 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                     <property name="label" translatable="yes">Width:</property>
                   </object>
                   <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="layout_style">spread</property>
-                    <child>
-                      <object class="GtkRadioButton" id="case_half">
-                        <property name="label" translatable="yes">Half</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkRadioButton" id="case_full">
-                        <property name="label" translatable="yes">Full</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
-                        <property name="group">case_half</property>
-                        <signal name="toggled" handler="state_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">3</property>
                     <property name="bottom_attach">4</property>
                   </packing>
@@ -1056,10 +925,19 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox3">
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox12">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="layout_style">spread</property>
+                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkRadioButton" id="punc_english">
                         <property name="label" translatable="yes">English</property>
@@ -1072,8 +950,8 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                         <signal name="toggled" handler="state_changed" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -1090,8 +968,8 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                         <signal name="toggled" handler="state_changed" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1101,6 +979,102 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">5</property>
                     <property name="bottom_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkRadioButton" id="case_full">
+                        <property name="label" translatable="yes">Full</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="case_half">
+                        <property name="label" translatable="yes">Half</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">case_full</property>
+                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkRadioButton" id="lang_english">
+                        <property name="label" translatable="yes">English</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="lang_chinese">
+                        <property name="label" translatable="yes">Chinese</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">lang_english</property>
+                        <signal name="toggled" handler="state_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1137,5 +1111,31 @@ requires restart or relogin to take effect,&lt;/i&gt;</property>
     <action-widgets>
       <action-widget response="0">button2</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkListStore" id="shuangpin_scheme">
+    <columns>
+      <!-- column-name text -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">MS2003</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ABC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ZiRanMa</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">PinYin++</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ZiGuang</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">XiaoHe</col>
+      </row>
+    </data>
   </object>
 </interface>

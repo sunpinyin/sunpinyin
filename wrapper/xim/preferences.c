@@ -73,7 +73,7 @@ static GtkToggleButton* shuangpin_check = NULL;
 static GtkComboBox* shuangpin_combo = NULL;
 static GtkComboBox* skin_combo = NULL;
 static GtkToggleButton* hide_icbar_check = NULL;
-static GtkTogglebutton* punc_english = NULL;
+static GtkToggleButton* punc_english = NULL;
 
 #define RETRIEVE(name, macro)                                   \
     name = macro(gtk_builder_get_object(builder, # name))

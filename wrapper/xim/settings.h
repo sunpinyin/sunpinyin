@@ -77,7 +77,9 @@ typedef enum {
     SMART_PUNCT,
     SKIN_NAME,
     HIDE_ICBAR,
-    INIT_PUNC_TYPE
+    INIT_PUNC_TYPE,
+    INIT_WIDTH,
+    INIT_LANGUAGE
 } setting_key_t;
 
 #define MAX_KEY 0xFF

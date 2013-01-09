@@ -5,3 +5,7 @@ preedit_opacity=1.00
 preedit_color=#FFFFB3
 preedit_font=Sans 10
 preedit_font_color=#000000
+init_punc_type=0
+init_width=1
+init_language=0
+

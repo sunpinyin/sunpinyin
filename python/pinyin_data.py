@@ -94,10 +94,10 @@ valid_syllables = {}
 
 for (ii, ff) in valid_init_fin_pairs:
     for i in ii:
-	for f in ff:
-	    fv = f.split('|')
-	    for fi in fv:
-	        valid_syllables[i+fi] = (initials.index(i) << 12) + (finals.index(fv[0]) << 4)
+    for f in ff:
+        fv = f.split('|')
+        for fi in fv:
+            valid_syllables[i+fi] = (initials.index(i) << 12) + (finals.index(fv[0]) << 4)
 
 fuzzy_map = {}
 for i, j in fuzzy_pairs:

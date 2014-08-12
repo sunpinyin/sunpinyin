@@ -56,7 +56,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "../sim_slmbuilder.h"
+#include "sim_slmbuilder.h"
 
 static struct option long_options[] =
 {

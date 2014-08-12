@@ -39,7 +39,7 @@
 #ifndef _SIM_SLM_BUILDER_H
 #define _SIM_SLM_BUILDER_H
 
-#include "../portability.h"
+#include "../../portability.h"
 
 #include "sim_slm.h"
 

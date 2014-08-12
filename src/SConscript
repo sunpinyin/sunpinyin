@@ -11,7 +11,7 @@ env.Program('ids2ngram', ['portability.o', 'slm/ids2ngram/ids2ngram.o'])
 
 env.Program('idngram_merge', ['portability.o', 'slm/ids2ngram/idngram_merge.o'])
 
-env.Program('slmbuild', ['portability.o', 'slm/sim_slmbuilder.o',
+env.Program('slmbuild', ['portability.o', 'slm/slmbuild/sim_slmbuilder.o',
                          'slm/slmbuild/slmbuild.o'])
 
 env.Program('slmprune', ['portability.o', 'slm/sim_slm.o',

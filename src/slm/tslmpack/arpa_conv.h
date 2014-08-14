@@ -37,8 +37,7 @@
 #define _SLM_PACK_ARPA_CONV_H
 
 #include "common.h"
-
-class CArpaSlm;
+#include "arpa_slm.h"
 
 //
 // slm [in]

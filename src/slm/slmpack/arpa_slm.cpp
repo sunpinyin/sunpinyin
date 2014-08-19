@@ -40,28 +40,6 @@
 
 using namespace std;
 
-/**
- * the GNU extension is not always available, so we invent another wheel.
- */
-size_t
-getline(char *buf, size_t n, FILE* stream)
-{
-    char* p;
-    char* end = buf + n;
-    for (p = buf; p != end; ++p) {
-        int c = fgetc(stream);
-        if (c == '\n' || c == EOF)
-            break;
-        *p = c;
-        --n;
-    }
-    if (p != end)
-        *p = 0;
-    else
-        *(p - 1) = 0;
-    return p - buf;
-}
-
 char*
 getwords(char* buf, char** next)
 {

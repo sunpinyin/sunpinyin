@@ -8,16 +8,19 @@ ifndef ENDIANNESS
 	ENDIANNESS = @ENDIANNESS@
 endif
 
-DICT_FILE = dict.utf8
-
 SLM_TARGET = lm_sc
-TSLM2_TEXT_FILE = ${SLM_TARGET}.t2g.arpa
+
+SLM2_TEXT_FILE = ${SLM_TARGET}.2gm.arpa
+SLM2_FILE = ${SLM_TARGET}.2gm
 TSLM2_ORIG_FILE = ${SLM_TARGET}.t2g.orig
 TSLM2_DIST_FILE = ${SLM_TARGET}.t2g
-TSLM3_TEXT_FILE = ${SLM_TARGET}.t3g.arpa
+
+SLM3_TEXT_FILE = ${SLM_TARGET}.3gm.arpa
+SLM3_FILE = ${SLM_TARGET}.3gm
 TSLM3_ORIG_FILE = ${SLM_TARGET}.t3g.orig
 TSLM3_DIST_FILE = ${SLM_TARGET}.t3g
 
+DICT_FILE = dict.utf8
 PYTRIE_FILE = pydict_sc.bin
 PYTRIE_LOG_FILE = pydict_sc.log
 
@@ -26,9 +29,13 @@ SYSTEM_DATA_DIR = ${DESTDIR}@DATADIR@/sunpinyin
 all: slm3_dist
 install: slm3_install
 
+slm2: ${SLM2_FILE}
+${SLM2_FILE}: ${SLM2_TEXT_FILE} ${DICT_FILE}
+	slmpack $^ $@
+
 tslm2_orig: ${TSLM2_ORIG_FILE}
-${TSLM2_ORIG_FILE}: ${DICT_FILE} ${TSLM2_TEXT_FILE}
-	tslmpack ${TSLM2_TEXT_FILE} ${DICT_FILE} $@
+${TSLM2_ORIG_FILE}: ${SLM2_FILE}
+	slmthread $^ $@
 
 tslm2_dist: ${TSLM2_DIST_FILE}
 ${TSLM2_DIST_FILE}: ${TSLM2_ORIG_FILE}
@@ -38,9 +45,13 @@ lexicon2: ${DICT_FILE} ${TSLM2_ORIG_FILE}
 	genpyt -e ${ENDIANNESS} -i ${DICT_FILE} -s ${TSLM2_ORIG_FILE} \
 		-l ${PYTRIE_LOG_FILE} -o ${PYTRIE_FILE}
 
+slm3: ${SLM3_FILE}
+${SLM3_FILE}: ${SLM3_TEXT_FILE} ${DICT_FILE}
+	slmpack $^ $@
+
 tslm3_orig: ${TSLM3_ORIG_FILE}
-${TSLM3_ORIG_FILE}: ${DICT_FILE} ${TSLM3_TEXT_FILE}
-	tslmpack ${TSLM3_TEXT_FILE} ${DICT_FILE} $@
+${TSLM3_ORIG_FILE}: ${SLM3_FILE}
+	slmthread $^ $@
 
 tslm3_dist: ${TSLM3_DIST_FILE}
 ${TSLM3_DIST_FILE}: ${TSLM3_ORIG_FILE}

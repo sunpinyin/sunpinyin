@@ -148,7 +148,7 @@ man1s = [
     'man/slmthread.1',
     'man/tslmendian.1',
     'man/tslminfo.1',
-    'man/tslmpack.1',
+    'man/slmpack.1',
     'man/genpyt.1',
     'man/getwordfreq.1',
     ]

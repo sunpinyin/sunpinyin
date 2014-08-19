@@ -155,9 +155,9 @@ PrintARPALevel(int lvl, FILE* fp, TReverseLexicon* plexicon, bool output_log_pr)
         }
     }
 
-    printf("/%d-gram:%d/\n", lvl, sz[lvl] - 1);
+    printf("\\%d-gram\\%d\n", lvl, sz[lvl] - 1);
     while (idx[lvl] < sz[lvl] - 1) {
-        for (int i = lvl - 1; i > 0; --i) {
+        if (lvl > 0) for (int i = lvl - 1; i > 0; --i) {
             bool change = false;
             while (nodes[i][1].child <= idx[i + 1]) {
                 change = true;
@@ -180,25 +180,25 @@ PrintARPALevel(int lvl, FILE* fp, TReverseLexicon* plexicon, bool output_log_pr)
         }
         if (bLogPrFile) {
             if (output_log_pr)
-                printf("%20.17lf ", double(nodes[lvl][0].pr));
+                printf("%20.17lf", double(nodes[lvl][0].pr));
             else
-                printf("%20.17lf ", exp(-double(nodes[lvl][0].pr)));
+                printf("%20.17lf", exp(-double(nodes[lvl][0].pr)));
             if (lvl != N) {
                 if (output_log_pr)
-                    printf("%20.17lf", double(nodes[lvl][0].bow));
+                    printf(" %20.17lf", double(nodes[lvl][0].bow));
                 else
-                    printf("%20.17lf", exp(-double(nodes[lvl][0].bow)));
+                    printf(" %20.17lf", exp(-double(nodes[lvl][0].bow)));
             }
         } else {
             if (output_log_pr)
-                printf("%20.17lf ", -log(double(nodes[lvl][0].pr)));
+                printf("%20.17lf", -log(double(nodes[lvl][0].pr)));
             else
-                printf("%20.17lf ", double(nodes[lvl][0].pr));
+                printf("%20.17lf", double(nodes[lvl][0].pr));
             if (lvl != N) {
                 if (output_log_pr)
-                    printf("%20.17lf", -log(double(nodes[lvl][0].bow)));
+                    printf(" %20.17lf", -log(double(nodes[lvl][0].bow)));
                 else
-                    printf("%20.17lf", double(nodes[lvl][0].bow));
+                    printf(" %20.17lf", double(nodes[lvl][0].bow));
             }
         }
         printf("\n");
@@ -249,7 +249,7 @@ PrintARPA(FILE* fp, const char* lexicon_filename, bool output_log_pr)
     }
     fseek(fp, 0, SEEK_SET);
     fread(&N, sizeof(N), 1, fp);
-    for (int lvl = 1; lvl <= N; ++lvl)
+    for (int lvl = 0; lvl <= N; ++lvl)
         PrintARPALevel(lvl, fp, plexicon, output_log_pr);
 }
 

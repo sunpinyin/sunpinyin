@@ -47,16 +47,7 @@
 typedef std::vector<CThreadSlm::TNode> TNodeLevel;
 typedef std::vector<CThreadSlm::TLeaf> TLeafLevel;
 typedef std::vector<CThreadSlm::TNode*> TNodeLevels;
-typedef std::map<float, float> EffRealMap;  // map from efficient values to the real ones
-typedef std::map<float, int> FreqMap;       // how often the efficient value appears
-typedef std::vector<float> CompressedTable; // array of real values, the index is stored in RealIndexMap
-typedef std::map<float, int> RealIndexMap;  // map real values to their indices
 typedef std::map<std::string, unsigned int> TLexicon; // map word to wid
-
-#define EffectivePr(a)  (float((usingLogPr) ? ((a) / log(2.0)) : (-log2((a)))))
-#define OriginalPr(b)   (float((usingLogPr) ? ((b) * log(2.0)) : (exp2(-(b)))))
-#define EffectiveBow(a) (float((usingLogPr) ? (exp(-(a))) : ((a))))
-#define OriginalBow(b)  (float((usingLogPr) ? (-log((b))) : ((b))))
 
 #endif //_SLM_PACK_COMMON_H
 

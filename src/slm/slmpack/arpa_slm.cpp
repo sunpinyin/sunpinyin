@@ -117,8 +117,7 @@ CArpaSlm::TLeaf::load(istream& is, const TLexicon& lexicon)
     char* next = 0;
     char* words = getwords(buf, &next);
     load_words(words, lexicon);
-    sscanf(next, "%f (%1u, %u)",
-           &pr, &bol, &bon);
+    sscanf(next, "%f", &pr);
 }
 
 void
@@ -129,8 +128,7 @@ CArpaSlm::TNode::load(istream& is, const TLexicon& lexicon)
     char* next = 0;
     char* words = getwords(buf, &next);
     load_words(words, lexicon);
-    sscanf(next, "%f %f (%1u, %u)",
-           &pr, &bow, &bol, &bon);
+    sscanf(next, "%f %f", &pr, &bow);
 }
 
 void
@@ -139,8 +137,7 @@ CArpaSlm::TNode::load_level0(istream& is)
     hw[0] = 0;
     char buf[1024];
     is.getline(buf, sizeof(buf));
-    sscanf(buf, "%f %f (%1u, %u)",
-           &pr, &bow, &bol, &bon);
+    sscanf(buf, "%f %f", &pr, &bow);
     wid = 0;
 }
 
@@ -207,11 +204,11 @@ struct CompareNode {
 };
 
 void
-CArpaSlm::threading()
+CArpaSlm::initChild()
 {
     {
         TNode& node = m_levels[0][0];
-        node.ch = 0;
+        node.child = 0;
     }
     for (unsigned lvl = 1; lvl < m_N; ++lvl) {
         TNodeLevel& level = m_levels[lvl];
@@ -219,7 +216,7 @@ CArpaSlm::threading()
         for (TNodeLevel::iterator node = level.begin();
              node != level.end();
              ++node) {
-            node->ch = last_child = find_1st_child(lvl, *node, last_child);
+            node->child = last_child = find_1st_child(lvl, *node, last_child);
         }
     }
 }

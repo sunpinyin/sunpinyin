@@ -51,15 +51,13 @@ public:
         TSIMWordId hw[N_GRAM];
         TSIMWordId wid;
         float pr;
-        unsigned ch;
-        unsigned bon;
-        unsigned bol;
         void load(istream&, const TLexicon&);
         int load_words(char* buf, const TLexicon& lexicon);
-        TLeaf() : wid(0), pr(.0), ch(0), bon(0), bol(0) {}
+        TLeaf() : wid(0), pr(.0) {}
     };
 
     struct TNode : public TLeaf {
+        int child;
         float bow;
         void load(istream&, const TLexicon&);
         void load_level0(istream&);
@@ -91,10 +89,7 @@ public:
             return m_lastLevel.size();
         }
     }
-    /**
-     * initialize the `ch' and `wid' fields of each node in levels
-     */
-    void threading();
+    void initChild();
     void load(const char* filename, const TLexicon& lexicon);
 
 private:

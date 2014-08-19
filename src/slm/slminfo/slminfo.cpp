@@ -116,6 +116,12 @@ getParameters(int argc, char* argv[])
 
 typedef std::map<TSIMWordId, std::string> TReverseLexicon;
 
+double log_conv(double input, bool input_log, bool output_log) {
+    if (!(input_log ^ output_log)) return input;
+    else if (input_log) return exp(-input);
+    else return -log(input);
+}
+
 void
 PrintARPALevel(int lvl, FILE* fp, TReverseLexicon* plexicon, bool output_log_pr)
 {
@@ -178,29 +184,10 @@ PrintARPALevel(int lvl, FILE* fp, TReverseLexicon* plexicon, bool output_log_pr)
             else
                 printf("%d ", int(word_id));
         }
-        if (bLogPrFile) {
-            if (output_log_pr)
-                printf("%20.17lf", double(nodes[lvl][0].pr));
-            else
-                printf("%20.17lf", exp(-double(nodes[lvl][0].pr)));
-            if (lvl != N) {
-                if (output_log_pr)
-                    printf(" %20.17lf", double(nodes[lvl][0].bow));
-                else
-                    printf(" %20.17lf", exp(-double(nodes[lvl][0].bow)));
-            }
-        } else {
-            if (output_log_pr)
-                printf("%20.17lf", -log(double(nodes[lvl][0].pr)));
-            else
-                printf("%20.17lf", double(nodes[lvl][0].pr));
-            if (lvl != N) {
-                if (output_log_pr)
-                    printf(" %20.17lf", -log(double(nodes[lvl][0].bow)));
-                else
-                    printf(" %20.17lf", double(nodes[lvl][0].bow));
-            }
-        }
+        printf("%20.17lf",
+                log_conv(nodes[lvl][0].pr, bLogPrFile, output_log_pr));
+        if (lvl != N) printf(" %20.17lf",
+                log_conv(nodes[lvl][0].bow, bLogPrFile, output_log_pr));
         printf("\n");
 
         ++idx[lvl];

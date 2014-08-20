@@ -6,8 +6,8 @@ TAR = @TAR@
 ENDIANNESS = @ENDIANNESS@
 DATA_DIR = '@DATADIR@/sunpinyin'
 
-DL_LIST = 'http://code.google.com/p/open-gram/downloads/list'
-DL_ROOT = 'http://open-gram.googlecode.com/files/'
+DL_LIST = 'https://open-gram.googlecode.com/git/'
+DL_ROOT = 'https://open-gram.googlecode.com/git/'
 DICT_PAT = 'dict\.utf8-[0-9]\+.tar.bz2'
 SLM_PAT = 'lm_sc\.3gm\.arpa-[0-9]\+.tar.bz2'
 

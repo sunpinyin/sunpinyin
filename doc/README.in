@@ -9,7 +9,7 @@ In a temporary directory, run `sunpinyin-dictgen' as root.
 For developers and expert users
 -------------------------------
 
-Get `lm_sc.t3g.arpa.tar.bz2' and `dict.utf8.tar.bz2' from [1],
+Get `lm_sc.3gm.arpa.tar.bz2' and `dict.utf8.tar.bz2' from [1],
 unpack them into some directory, and issue the following commands in
 that directory:
 
@@ -20,6 +20,6 @@ that directory:
     # Install the generated data files (requires root permission).
     make install
 
-[1] https://code.google.com/p/open-gram/downloads
+[1] https://open-gram.googlecode.com/git/
 
 -*- indent-tabs-mode: nil -*- vim:et:ts=4

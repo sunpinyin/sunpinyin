@@ -33,9 +33,9 @@
 WGET = @WGET@
 TAR = @TAR@
 ENDIANNESS = @ENDIANNESS@
-DATA_DIR = '@DATADIR@/sunpinyin'
+DATA_DIR = @DATADIR@/sunpinyin
 
-DL_LIST = 'https://open-gram.googlecode.com/git/'
+DL_LIST = https://open-gram.googlecode.com/git/
 DL_HOST = http://heanet.dl.sourceforge.net
 DL_ROOT = ${DL_HOST}/open-gram
 DICT_PAT = 'dict\.utf8-[0-9]\+.tar.bz2'

@@ -32,7 +32,7 @@ lm_sc.3gm: lm_sc.3gm.arpa dict.utf8
 	slmpack $^ $@
 
 lm_sc.t3g.orig: lm_sc.3gm
-	tslmthread $^ $@
+	slmthread $^ $@
 
 lm_sc.t3g: lm_sc.t3g.orig
 	tslmendian -e ${ENDIANNESS} -i $^ -o $@

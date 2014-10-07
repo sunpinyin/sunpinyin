@@ -265,27 +265,4 @@ WCSLEN(const TWCHAR* pwcs)
     return sz;
 }
 
-#if !defined (HAVE_STRNDUP)
-extern "C" char *
-strndup(const char *s, size_t n)
-{
-    size_t nMost;
-    char *p = NULL;
-
-    if (!s)
-        return NULL;
-
-#ifdef __cplusplus
-    nMost = std::min(strlen(s) + 1, n + 1);
-#else
-    nMost = min(strlen(s) + 1, n + 1);
-#endif
-    p = (char*)malloc(nMost);
-    memcpy(p, s, nMost);
-    p[nMost - 1] = '\0';
-
-    return p;
-}
-#endif //HAVE_STRNDUP
-
 // -*- indent-tabs-mode: nil -*- vim:et:ts=4

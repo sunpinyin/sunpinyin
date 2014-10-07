@@ -378,7 +378,6 @@ def DoConfigure():
     conf.CheckFunc('mmap')
     conf.CheckFunc('munmap')
     conf.CheckFunc('setlocale')
-    conf.CheckFunc('strndup')
     conf.CheckCHeader('sys/mman.h')
     conf.CheckCHeader('sys/param.h')
     conf.CheckCHeader('sys/stat.h')

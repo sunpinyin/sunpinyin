@@ -1,0 +1,8 @@
+language: cpp
+script: scons
+branches:
+  only:
+    - master
+compiler:
+  - clang
+  - gcc

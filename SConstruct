@@ -359,7 +359,6 @@ def DoConfigure():
     conf.CheckCHeader('assert.h')
     conf.CheckFunc('bind_textdomain_codeset')
     conf.CheckFunc('dcgettext')
-    conf.CheckCHeader('dlfcn.h')
     conf.CheckFunc('exp2')
     conf.CheckCHeader('fcntl.h')
     conf.CheckCHeader('getopt.h')

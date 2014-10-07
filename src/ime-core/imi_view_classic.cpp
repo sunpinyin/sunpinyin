@@ -194,8 +194,11 @@ CIMIClassicView::onKeyEvent(const CKeyEvent& key)
                && !m_pIC->isEmpty()) {
         changeMasks |= KEYEVENT_USED;
         if (m_candiPageFirst > 0) {
-            m_candiPageFirst -= m_candiWindowSize;
-            if (m_candiPageFirst < 0) m_candiPageFirst = 0;
+            if (m_candiPageFirst > m_candiWindowSize) {
+                m_candiPageFirst -= m_candiWindowSize;
+            } else {
+                m_candiPageFirst = 0;
+            }
             changeMasks |= CANDIDATE_MASK;
         }
     } else if (((modifiers == 0 && keycode == IM_VK_PAGE_DOWN)

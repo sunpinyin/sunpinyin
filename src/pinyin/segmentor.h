@@ -62,7 +62,7 @@ struct IPySegmentor {
                 return true;
 
             if (m_start == other.m_start)
-                return m_len < m_len;
+                return m_len < other.m_len;
 
             return false;
         }

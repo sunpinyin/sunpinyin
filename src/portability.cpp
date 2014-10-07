@@ -194,7 +194,7 @@ MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
     const unsigned char *src = (const unsigned char*)s;
     TWCHAR* dst = pwcs;
 
-    while (dst - pwcs < n) {
+    while (dst - pwcs < (ssize_t)n) {
         if (*src < 0xc0 || *src >= 0xfe) {
             if (*src < 0x80) *dst++ = *src;
             if (*src++ == 0) break;

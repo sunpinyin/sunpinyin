@@ -173,7 +173,7 @@ Here are the three approaches:
     [[SunPinyinApplicationDelegate fromApp].candiWin hideCandidates];
 
     NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if (string && [string length])
+    if (string.length)
         [self commitString:string];
     _session->clear();
 }
@@ -196,7 +196,7 @@ Here are the three approaches:
         return;
 
     NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if (string && [string length])
+    if (string.length)
         [self commitString:string];
     _session->clear();
 }

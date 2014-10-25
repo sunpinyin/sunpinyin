@@ -84,7 +84,7 @@ Here are the three approaches:
 
 -(BOOL)handleEvent:(NSEvent*)event client:(id)sender
 {
-    // Return YES to indicate the the key input was received and dealt with.  
+    // Return YES to indicate the the key input was received and dealt with.
     // Key processing will not continue in that case.  In other words the 
     // system will not deliver a key down event to the application.
     // Returning NO means the original key down will be passed on to the client.
@@ -93,8 +93,9 @@ Here are the three approaches:
     _currentClient = sender;
     bool handled = NO;
     NSUInteger modifiers = [event modifierFlags];
-    SwitchingPolicies switchPolicy = [[NSApp delegate] switchingPolicy];
-    CommitPolicies commitPolicy = [[NSApp delegate] commitPolicy];
+    SunPinyinApplicationDelegate *pinyinDelegate = [SunPinyinApplicationDelegate fromApp];
+    SwitchingPolicies switchPolicy = pinyinDelegate.switchingPolicy;
+    CommitPolicies commitPolicy = pinyinDelegate.commitPolicy;
 
     if (SWITCH_BY_CAPS == switchPolicy) {
         _englishMode = (modifiers & NSAlphaShiftKeyMask);
@@ -114,8 +115,10 @@ Here are the three approaches:
                 _englishMode = !_englishMode;
                 _session->switchInputMode(_englishMode, commitPolicy);
 
-                if (_englishMode)
-                    [[NSApp delegate] messageNotify:NSLocalizedString(@"Switched to English mode", nil)];
+                if (_englishMode) {
+                    SunPinyinApplicationDelegate *delegate = [SunPinyinApplicationDelegate fromApp];
+                    [delegate messageNotify:NSLocalizedString(@"Switched to English mode", nil)];
+                }
             }
             break;
         case NSKeyDown:
@@ -131,7 +134,6 @@ Here are the three approaches:
                 }
                 break;
             }
-            
             // translate osx keyevents to ime keyevents
             CKeyEvent key_event = osx_keyevent_to_ime_keyevent (keyCode, keyChar, modifiers);
             handled = _session->onKeyEvent (key_event);
@@ -154,7 +156,7 @@ Here are the three approaches:
 
 -(void)activateServer:(id)sender
 {
-    if ([[NSApp delegate] usingUSKbLayout])
+    if ([SunPinyinApplicationDelegate fromApp].usingUSKbLayout)
         [sender overrideKeyboardWithKeyboardNamed:@"com.apple.keylayout.US"];
 }
 
@@ -168,7 +170,7 @@ Here are the three approaches:
 
 -(void)deactivateServer:(id)sender
 {
-    [[[NSApp delegate] candiWin] hideCandidates];
+    [[SunPinyinApplicationDelegate fromApp].candiWin hideCandidates];
 
     NSString *string = [_preeditString stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (string && [string length])
@@ -189,7 +191,7 @@ Here are the three approaches:
 
 -(void)commitComposition:(id)sender 
 {
-    // FIXME: chrome's address bar issues this callback when showing suggestions. 
+    // FIXME: chrome's address bar issues this callback when showing suggestions.
     if ([[sender bundleIdentifier] isEqualToString:@"com.google.Chrome"])
         return;
 
@@ -201,26 +203,26 @@ Here are the three approaches:
 
 -(NSMenu*)menu
 {
-    return [[NSApp delegate] menu];
+    return [SunPinyinApplicationDelegate fromApp].menu;
 }
 
 -(void)showPrefPanel:(id)sender
 {
-    [[NSApp delegate] showPrefPanel:sender];
+    [[SunPinyinApplicationDelegate fromApp] showPrefPanel:sender];
 }
 
 -(void)toggleChinesePuncts:(id)sender
 {
-    [[NSApp delegate] toggleChinesePuncts:sender];
+    [[SunPinyinApplicationDelegate fromApp] toggleChinesePuncts:sender];
     _session->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLPUNC,
-                                 [[NSApp delegate] inputChinesePuncts]);      
+                                 [SunPinyinApplicationDelegate fromApp].inputChinesePuncts);
 }
 
 -(void)toggleFullSymbols:(id)sender
 {
-    [[NSApp delegate] toggleFullSymbols:sender];
+    [[SunPinyinApplicationDelegate fromApp] toggleFullSymbols:sender];
     _session->setStatusAttrValue(CIMIWinHandler::STATUS_ID_FULLSYMBOL,
-                                 [[NSApp delegate] inputFullSymbols]);    
+                                 [SunPinyinApplicationDelegate fromApp].inputFullSymbols);
 }
 
 -(void)dealloc 
@@ -241,7 +243,7 @@ Here are the three approaches:
     [_preeditString release];
     _preeditString = nil;
 
-    [[[NSApp delegate] candiWin] hideCandidates];
+    [[SunPinyinApplicationDelegate fromApp].candiWin hideCandidates];
 }
 
 // firefox would call 'commitComposition:' when preedit is emptied
@@ -276,18 +278,18 @@ Here are the three approaches:
     NSRect cursorRect;
     int curIdx = _candiStart;
     [_currentClient attributesForCharacterIndex:curIdx lineHeightRectangle:&cursorRect];
-    [[[NSApp delegate] candiWin] showCandidates:candidates around:cursorRect];
+    [[SunPinyinApplicationDelegate fromApp].candiWin showCandidates:candidates around:cursorRect];
 }
 
 -(void)updateStatus:(int)key withValue:(int)value
 {
     switch (key) {
     case CIMIWinHandler::STATUS_ID_FULLPUNC:
-        if (value != [[NSApp delegate] inputChinesePuncts])
+        if (value != [SunPinyinApplicationDelegate fromApp].inputChinesePuncts)
             [self toggleChinesePuncts:nil];
         break;
     case CIMIWinHandler::STATUS_ID_FULLSYMBOL:
-        if (value != [[NSApp delegate] inputFullSymbols])
+        if (value != [SunPinyinApplicationDelegate fromApp].inputFullSymbols)
             [self toggleFullSymbols:nil];
         break;
     default:

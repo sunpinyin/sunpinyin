@@ -35,7 +35,12 @@
  * to such option by the copyright holder.
  */
 
+#ifdef MACOSX
+#include <Python/Python.h>
+#else
 #include <Python.h>
+#endif
+
 #include <signal.h>
 #include <sstream>
 

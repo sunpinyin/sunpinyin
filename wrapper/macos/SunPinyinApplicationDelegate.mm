@@ -53,6 +53,11 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
 
 @implementation SunPinyinApplicationDelegate
 
++(instancetype)fromApp
+{
+    return (SunPinyinApplicationDelegate *)[NSApp delegate];
+}
+
 //this method is added so that our controllers can access the shared NSMenu.
 -(NSMenu*)menu
 {

@@ -14,10 +14,10 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		9444C8A019FB628700764DB5 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9444C89F19FB628700764DB5 /* Python.framework */; };
 		A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */ = {isa = PBXBuildFile; fileRef = A412C8570F7942DB006B10AD /* SunPinyin.icns */; };
 		A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A422A7D00DCD694400B41288 /* CandidateWindow.m */; };
 		A44C703E13D9BB010026694E /* imi_plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A44C703C13D9BB010026694E /* imi_plugin.cpp */; };
-		A44C704013D9BC750026694E /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A44C703F13D9BC750026694E /* Python.framework */; };
 		A45578F51146A75200592C6E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45578F41146A75200592C6E /* MainMenu.xib */; };
 		A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
 		A464E3740F65261800148227 /* Growl.framework in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
@@ -81,6 +81,7 @@
 		3F32A46C1275172C007FFD4D /* hunpin_seg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hunpin_seg.h; path = pinyin/hunpin_seg.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SunPinyin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunPinyin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9444C89F19FB628700764DB5 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		A412C8570F7942DB006B10AD /* SunPinyin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SunPinyin.icns; sourceTree = "<group>"; };
 		A422A7CF0DCD694400B41288 /* CandidateWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandidateWindow.h; sourceTree = "<group>"; };
 		A422A7D00DCD694400B41288 /* CandidateWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandidateWindow.m; sourceTree = "<group>"; };
@@ -159,7 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A44C704013D9BC750026694E /* Python.framework in Frameworks */,
+				9444C8A019FB628700764DB5 /* Python.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */,
 				A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */,
@@ -254,6 +255,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9444C89F19FB628700764DB5 /* Python.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -529,8 +531,7 @@
 				INSTALL_PATH = "\"$(LOCAL_LIBRARY_DIR)/Input Methods/\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CPLUSPLUSFLAGS = (
-					"-I/usr/include/python2.7",
-					"-DLEOPARD",
+					"-DMACOSX",
 					"-DHAVE_CONFIG_H",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",
@@ -564,8 +565,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CPLUSPLUSFLAGS = (
-					"-I/usr/include/python2.7",
-					"-DLEOPARD",
+					"-DMACOSX",
 					"-DHAVE_CONFIG_H",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_1)",
 					"$(OTHER_CPLUSPLUSFLAGS_QUOTED_FOR_TARGET_2)",

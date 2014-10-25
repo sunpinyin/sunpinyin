@@ -69,6 +69,8 @@ typedef enum {
     CBigramHistory*             _history;
 }
 
++(instancetype)fromApp;
+
 -(NSMenu*)menu;
 -(CandidateWindow*)candiWin;
 

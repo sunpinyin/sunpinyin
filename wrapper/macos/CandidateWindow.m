@@ -106,7 +106,7 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 
 -(id)init
 {
-    _font = [[NSFont fontWithName:@"Hei" size:16] retain];
+    _font = [[NSFont systemFontOfSize:16] retain];
     _fgColor = [[NSColor whiteColor] retain];
     _hlColor = [[NSColor blueColor] retain];
 

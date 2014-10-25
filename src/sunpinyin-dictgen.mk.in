@@ -32,6 +32,7 @@
 
 WGET = @WGET@
 TAR = @TAR@
+W3M = @W3M@
 ENDIANNESS = @ENDIANNESS@
 DATA_DIR = @DATADIR@/sunpinyin
 
@@ -41,8 +42,8 @@ DL_ROOT = ${DL_HOST}/open-gram
 DICT_PAT = 'dict\.utf8-[0-9]\+.tar.bz2'
 SLM_PAT = 'lm_sc\.3gm\.arpa-[0-9]\+.tar.bz2'
 
-DICT_AR = $(shell w3m -dump ${DL_LIST} | grep -o ${DICT_PAT} | sort | tail -n 1)
-SLM_AR = $(shell w3m -dump ${DL_LIST} | grep -o ${SLM_PAT} | sort | tail -n 1)
+DICT_AR = $(shell ${W3M} ${DL_LIST} | grep -o ${DICT_PAT} | sort | tail -n 1)
+SLM_AR = $(shell ${W3M} ${DL_LIST} | grep -o ${SLM_PAT} | sort | tail -n 1)
 
 all: install
 
@@ -72,10 +73,9 @@ pydict_sc.bin: dict.utf8 lm_sc.t3g
 		-l pydict_sc.log -o $@
 
 install: lm_sc.t3g pydict_sc.bin
-	install -d ${DATA_DIR}
-	install -Dm644 $^ ${DATA_DIR}
+	install -d -m644 ${DATA_DIR}
+	install -m644 $^ ${DATA_DIR}
 
 clean:
 	rm -rf ${DICT_AR} ${SLM_AR} dict.utf8 lm_sc.3gm.arpa lm_sc.3gm \
 		lm_sc.t3g.orig lm_sc.t3g pydict_sc.log pydict_sc.bin
-

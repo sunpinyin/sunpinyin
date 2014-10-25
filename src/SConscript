@@ -1,11 +1,13 @@
 import os
+
+
 Import('env')
 
 env.Program('mmseg', ['portability.o', 'slm/sim_dict.o', 'slm/sim_sen.o',
                       'slm/mmseg/mmseg.o'])
 
 env.Program('slmseg', ['portability.o', 'slm/sim_dict.o', 'slm/sim_sen.o',
-                      'slm/slm.o', 'slm/slmseg/slmseg.o'])
+                       'slm/slm.o', 'slm/slmseg/slmseg.o'])
 
 env.Program('ids2ngram', ['portability.o', 'slm/ids2ngram/ids2ngram.o'])
 
@@ -20,7 +22,7 @@ env.Program('slmprune', ['portability.o', 'slm/sim_slm.o',
 env.Program('slminfo', ['portability.o', 'slm/slminfo/slminfo.o'])
 
 env.Program('slmpack', ['portability.o', 'slm/sim_slm.o', 'slm/slmpack/slmpack.o',
-                         'slm/slmpack/arpa_slm.o'])
+                        'slm/slmpack/arpa_slm.o'])
 
 env.Program('slmthread', ['portability.o', 'slm/sim_slm.o',
                           'slm/thread/ValueCompress.o', 'slm/thread/slmthread.o'])
@@ -41,16 +43,17 @@ env.Program('getwordfreq', ['portability.o', 'slm/slm.o',
 
 env.Program('testvc', ['slm/thread/ValueCompress.o', 'slm/thread/test_vc.o'])
 
-env.Substfile('sunpinyin-dictgen.mk.in', SUBST_DICT = {
+env.Substfile('sunpinyin-dictgen.mk.in', SUBST_DICT={
     '@MAKE@': env['MAKE'],
     '@TAR@': env['TAR'],
     '@WGET@': env['WGET'],
+    '@W3M@': env['W3M'],
     '@DATADIR@': env['DATADIR'],
     '@ENDIANNESS@': env['ENDIANNESS'],
-    })
+})
 env.Command('sunpinyin-dictgen', 'sunpinyin-dictgen.mk', [
-        Copy("$TARGET", "$SOURCE"),
-        Chmod("$TARGET", 0755),
-    ])
+    Copy("$TARGET", "$SOURCE"),
+    Chmod("$TARGET", 0755),
+])
 
 # -*- indent-tabs-mode: nil -*- vim:et:ts=4

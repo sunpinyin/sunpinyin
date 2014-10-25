@@ -2,7 +2,8 @@ import platform
 import os
 import sys
 
-version="2.0.4"
+
+version = "2.0.4"
 abi_major = 3
 abi_minor = 0
 
@@ -185,39 +186,43 @@ opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('DATADIR', default='/usr/local/share')
 opts.Add('ENABLE_PLUGINS', default=False)
 
+
 #
-#==============================environment==============================
+# ==============================environment==============================
 #
 #
 def allinc():
-    inc=[]
-    for root, dirs, files in os.walk('src'):
-        inc.append(root)
-    return inc
+    return [root for root, _, _ in os.walk('src')]
+
 
 def GetOS():
     return platform.uname()[0]
 
+
 def CreateEnvironment():
     make = 'make'
     wget = 'wget'
+    w3m = 'wget -q -O -'
     tar = 'tar'
     if GetOS() == 'Darwin':
         wget = 'curl -O'
+        w3m = 'curl -s'
     elif GetOS() == 'FreeBSD':
         make = 'gmake'
         wget = 'fetch'
+        w3m = 'fetch -o -'
     elif GetOS() == 'SunOS':
         make = 'gmake'
         tar = 'gtar'
     libln_builder = Builder(action='cd ${TARGET.dir} && ln -s ${SOURCE.name} ${TARGET.name}')
-    env = Environment(ENV = os.environ, CFLAGS = cflags, CXXFLAGS = cflags,
-                      MAKE = make, WGET = wget, TAR = tar,
-                      CPPPATH = ['.'] + allinc(),
-                      tools = ['default', 'textfile'])
-    env.Append(BUILDERS = {'InstallAsSymlink': libln_builder})
+    env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS='',
+                      MAKE=make, WGET=wget, W3M=w3m, TAR=tar,
+                      CPPPATH=['.'] + allinc(),
+                      tools=['default', 'textfile'])
+    env.Append(BUILDERS={'InstallAsSymlink': libln_builder})
     env['ENDIANNESS'] = "be" if sys.byteorder == "big" else "le"
     return env
+
 
 def PassVariables(envvar, env):
     for (x, y) in envvar:
@@ -274,8 +279,9 @@ env.MergeFlags(['-pipe -DHAVE_CONFIG_H',
 if GetOption('rpath') is not None and GetOS() != 'Darwin':
     env.MergeFlags('-Wl,-R -Wl,%s' % GetOption('rpath'))
 
+
 #
-#==============================configure================================
+# ==============================configure================================
 #
 def CheckPKGConfig(context, version='0.12.0'):
     context.Message('Checking for pkg-config... ')
@@ -283,11 +289,13 @@ def CheckPKGConfig(context, version='0.12.0'):
     context.Result(ret)
     return ret
 
+
 def CheckPKG(context, name):
     context.Message('Checking for %s... ' % name)
     ret = context.TryAction('pkg-config --exists \'%s\'' % name)[0]
     context.Result(ret)
     return ret
+
 
 def CheckPython(context):
     context.Message('Checking for Python library...')
@@ -297,6 +305,7 @@ def CheckPython(context):
         context.env.MergeFlags(['!python-config --includes',
                                 '!python-config --libs'])
     return ret
+
 
 def AppendEndianCheck(conf):
     conf.config_h_text += r'''
@@ -333,9 +342,10 @@ def AppendEndianCheck(conf):
 '''
 
 conf = env.Configure(clean=False, help=False, config_h='config.h',
-                     custom_tests={'CheckPKGConfig' : CheckPKGConfig,
-                                   'CheckPKG' : CheckPKG,
+                     custom_tests={'CheckPKGConfig': CheckPKGConfig,
+                                   'CheckPKG': CheckPKG,
                                    'CheckPython': CheckPython})
+
 
 def DoConfigure():
     if GetOS() == 'Darwin':
@@ -403,7 +413,7 @@ if not GetOption('clean') and not GetOption('help'):
     DoConfigure()
 
 #
-#==============================compile==============================
+# ==============================compile==============================
 #
 env.Object(slmsource)
 env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
@@ -414,13 +424,13 @@ env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 
 env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
-        '@PREFIX@': env['PREFIX'],
-        '@LIBDIR@': env['LIBDIR'],
-        '@VERSION@': version,
-        '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
-                           map(lambda x: '-I$${includedir}' + x[3:],
-                               allinc())),
-        })
+    '@PREFIX@': env['PREFIX'],
+    '@LIBDIR@': env['LIBDIR'],
+    '@VERSION@': version,
+    '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
+                       map(lambda x: '-I$${includedir}' + x[3:],
+                           allinc())),
+})
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),
                                      env.subst('${SHLIBSUFFIX}'))
@@ -435,6 +445,7 @@ if GetOS() != 'Darwin':
 else:
     # TODO: add install_name on Darwin?
     lib = env.SharedLibrary('sunpinyin', source=imesource)
+
 
 def DoInstall():
     lib_target = None

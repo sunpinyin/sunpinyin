@@ -44,7 +44,6 @@ const NSString *kConnectionName = @"SunPinyin_1_Connection";
 
 int main(int argc, char *argv[])
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     IMKServer *server;
 
     // find the bundle identifier and then initialize the input method server
@@ -60,8 +59,6 @@ int main(int argc, char *argv[])
     // finally run everything
     [[NSApplication sharedApplication] run];
 
-    [server release];    
-    [pool release];
     return 0;
 }
 

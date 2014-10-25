@@ -261,7 +261,6 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
     delete _data;
     delete _history;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super dealloc];
 }
 
 -(NSDictionary *)registrationDictionaryForGrowl

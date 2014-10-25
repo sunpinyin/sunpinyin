@@ -59,8 +59,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 
 -(void)setAttributedString:(NSAttributedString *)str
 {
-    [str retain];
-    [_string release];
     _string = str;
     [self setNeedsDisplay:YES];
 }
@@ -90,13 +88,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     [_string drawAtPoint:stringOrigin];
 }
 
-- (void) dealloc 
-{
-    [_string release];
-    [_bgColor release];
-    [super dealloc];
-}
-
 @end
 
 @implementation CandidateWindow
@@ -106,9 +97,9 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 
 -(id)init
 {
-    _font = [[NSFont systemFontOfSize:16] retain];
-    _fgColor = [[NSColor whiteColor] retain];
-    _hlColor = [[NSColor blueColor] retain];
+    _font = [NSFont systemFontOfSize:16];
+    _fgColor = [NSColor whiteColor];
+    _hlColor = [NSColor blueColor];
 
     _attr = [[NSMutableDictionary alloc] init];
     [_attr setObject:_fgColor forKey:NSForegroundColorAttributeName];
@@ -137,8 +128,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 
 -(void)setFont:(NSFont*)font
 {
-    [font retain];
-    [_font release];
     _font = font;
     [_attr setObject:_font forKey:NSFontAttributeName];
 }
@@ -172,7 +161,7 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
     for (i=0; i<[candiArray count]; i++) {
         NSString *str = [NSString stringWithFormat:@"%d.%@ ", i+1, [candiArray objectAtIndex:i]];
-        NSAttributedString *astr = [[[NSAttributedString alloc] initWithString:str attributes:_attr] autorelease];
+        NSAttributedString *astr = [[NSAttributedString alloc] initWithString:str attributes:_attr];
         [string appendAttributedString:astr];
         
         if (i==0)
@@ -187,7 +176,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
     tuningFrameForScreen (&winRect, strSize, cursorRect);
     
     [(CandidateView*)_view setAttributedString:string];
-    [string release];
 
     [_window setFrame:winRect display:YES animate:NO];
     [_window orderFront:nil];
@@ -196,17 +184,6 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 -(void)hideCandidates
 {
     [_window orderOut:self];
-}
-
-- (void) dealloc 
-{
-    [_font release];
-    [_fgColor release];
-    [_hlColor release];
-    [_attr release];
-    [_view release];
-    [_window release];
-    [super dealloc];
 }
 
 @end

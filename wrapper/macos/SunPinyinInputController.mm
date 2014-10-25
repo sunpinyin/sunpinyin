@@ -228,19 +228,16 @@ Here are the three approaches:
 -(void)dealloc 
 {
     [self destroySession];
-    [super dealloc];
 }
 
 -(void)commitString:(NSString*)string
 {
     // fixed that IME does not work with M$ powerpoint 2008
     _caret = [string length];
-    [self showPreeditString:[string retain]];
+    [self showPreeditString:string];
 
     [_currentClient insertText:string 
                     replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
-
-    [_preeditString release];
     _preeditString = nil;
 
     [[SunPinyinApplicationDelegate fromApp].candiWin hideCandidates];
@@ -250,8 +247,7 @@ Here are the three approaches:
 -(void)showPreeditString:(NSString*)string
 {
     // cache the preedit string
-    [_preeditString release];
-    _preeditString = [string retain];
+    _preeditString = string;
 
     NSDictionary*       attrs;
     NSAttributedString* attrString;
@@ -263,8 +259,6 @@ Here are the three approaches:
     [_currentClient setMarkedText:attrString
                     selectionRange:NSMakeRange(_caret, 0) 
                     replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
-
-    [attrString release];
 }
 
 -(void)setCaret:(int)caret andCandiStart:(int)start

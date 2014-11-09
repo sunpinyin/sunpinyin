@@ -71,23 +71,28 @@ typedef enum {
 
 +(instancetype)fromApp;
 
--(NSMenu*)menu;
--(CandidateWindow*)candiWin;
 
 -(IBAction)showPrefPanel:(id)sender;
 -(IBAction)showFontPanel:(id)sender;
 
 -(IBAction)toggleChinesePuncts:(id)sender;
--(bool)inputChinesePuncts;
 -(IBAction)toggleFullSymbols:(id)sender;
--(bool)inputFullSymbols;
 
--(SwitchingPolicies)switchingPolicy;
--(CommitPolicies)commitPolicy;
--(bool)usingUSKbLayout;
 
 -(NSDictionary *)registrationDictionaryForGrowl;
 -(void)messageNotify:(NSString*)msg;
+
+// so our controllers can access the shared NSMenu.
+@property (readonly, nonatomic) NSMenu *menu;
+@property (readonly, nonatomic) CandidateWindow *candiWin;
+
+@property (readonly, nonatomic) bool inputChinesePuncts;
+@property (readonly, nonatomic) bool inputFullSymbols;
+@property (readonly, nonatomic) SwitchingPolicies switchingPolicy;
+@property (readonly, nonatomic) CommitPolicies commitPolicy;
+@property (readonly, nonatomic) bool usingUSKbLayout;
+
+
 @end
 
 // -*- indent-tabs-mode: nil -*- vim:et:ts=4

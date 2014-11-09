@@ -53,20 +53,17 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
 
 @implementation SunPinyinApplicationDelegate
 
+@synthesize menu = _menu;
+@synthesize candiWin = _candiWin;
+@synthesize inputChinesePuncts = _inputChinesePuncts;
+@synthesize inputFullSymbols = _inputFullSymbols;
+@synthesize switchingPolicy = _switchingPolicy;
+@synthesize commitPolicy = _commitPolicy;
+@synthesize usingUSKbLayout = _usingUSKbLayout;
+
 +(instancetype)fromApp
 {
     return (SunPinyinApplicationDelegate *)[NSApp delegate];
-}
-
-//this method is added so that our controllers can access the shared NSMenu.
--(NSMenu*)menu
-{
-    return _menu;
-}
-
--(CandidateWindow*)candiWin
-{
-    return _candiWin;
 }
 
 -(void)updateUISettings
@@ -223,11 +220,6 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
                                            forKey:@"inputChinesePuncts"];
 }
 
--(bool)inputChinesePuncts
-{
-    return _inputChinesePuncts;
-}
-
 -(IBAction)toggleFullSymbols:(id)sender
 {
     NSMenuItem *item = [_menu itemWithTag:1];
@@ -236,27 +228,7 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
                                            forKey:@"inputFullSymbols"];
 }
 
--(bool)inputFullSymbols
-{
-    return _inputFullSymbols;
-}
-
--(SwitchingPolicies)switchingPolicy
-{
-    return _switchingPolicy;
-}
-
--(CommitPolicies)commitPolicy
-{
-    return _commitPolicy;
-}
-
--(bool)usingUSKbLayout
-{
-    return _usingUSKbLayout;
-}
-
--(void)dealloc 
+-(void)dealloc
 {
     delete _data;
     delete _history;

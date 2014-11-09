@@ -164,10 +164,9 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
 
 -(void)preferencesChanged:(NSNotification *)notification
 {
-    if ([[notification name] compare: @"NSUserDefaultsDidChangeNotification"])
-        return;
-    
-    [self loadPreferences];
+    if ([notification.name isEqualToString:@"NSUserDefaultsDidChangeNotification"]) {
+        [self loadPreferences];
+    }
 }
 
 //though we specified the showPrefPanel: in SunPinyinApplicationDelegate as the

@@ -230,8 +230,6 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
 
 -(void)dealloc
 {
-    delete _data;
-    delete _history;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

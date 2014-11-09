@@ -65,8 +65,6 @@ typedef enum {
     SwitchingPolicies           _switchingPolicy;
     CommitPolicies              _commitPolicy;
     bool                        _usingUSKbLayout;
-    CIMIData*                   _data;
-    CBigramHistory*             _history;
 }
 
 +(instancetype)fromApp;

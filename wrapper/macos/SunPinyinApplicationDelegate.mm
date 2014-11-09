@@ -100,7 +100,7 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
     //setting font
     NSString *ftname = [pref stringForKey:@"fontName"];
     float ftsize = [pref floatForKey:@"fontSize"];
-    NSFont *font = [NSFont fontWithName:ftname size:ftsize];
+    NSFont *font = [NSFont fontWithName:ftname size:ftsize] ?: [NSFont systemFontOfSize:16];
     NSString* text = [NSString stringWithFormat:@"%@ %.0f",ftname,ftsize];
     [_ftTxtField setFont:font];
     [_ftTxtField setStringValue:text];

@@ -82,7 +82,7 @@ SunPinyinLookupTable::update_candidates(const ICandidateList& cl)
 bool
 SunPinyinLookupTable::cursor_up()
 {
-    ibus_lookup_table_cursor_down(*this);
+    ibus_lookup_table_cursor_up(*this);
     return true;
 }
 

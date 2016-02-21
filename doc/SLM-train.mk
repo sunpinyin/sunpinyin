@@ -101,10 +101,10 @@ tmp_clean:
 	rm -f ${BIGRAM_STAT} ${SLM2_RAW_FILE}
 	rm -f ${TRIGRAM_STAT} ${SLM3_RAW_FILE}
 
-mmseg_bigram: mmseg_ids tslm2_info
-mmseg_trigram: mmseg_ids tslm3_info
-slm_bigram: slm2_ids tslm2_info
-slm_trigram: slm3_ids tslm3_info
+mmseg_bigram: mmseg_ids slm2_info
+mmseg_trigram: mmseg_ids slm3_info
+slm_bigram: slm2_ids slm2_info
+slm_trigram: slm3_ids slm3_info
 
 bootstrap2:
 	make mmseg_bigram

@@ -73,7 +73,7 @@ pydict_sc.bin: dict.utf8 lm_sc.t3g
 		-l pydict_sc.log -o $@
 
 install: lm_sc.t3g pydict_sc.bin
-	install -d -m644 ${DATA_DIR}
+	install -d ${DATA_DIR}
 	install -m644 $^ ${DATA_DIR}
 
 clean:

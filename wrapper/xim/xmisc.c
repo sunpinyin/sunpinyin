@@ -93,10 +93,15 @@ in_range(int x, int min, int max)
 void
 adjust_position(int* x, int* y, int width, int height)
 {
-    int screen_width, screen_height;
-    get_screen_size(&screen_width, &screen_height);
-    *x = in_range(*x, 0, screen_width - width);
-    *y = in_range(*y, 0, screen_height - height);
+    GdkScreen *screen; 
+    gint mon;
+    GdkRectangle srect;
+    screen = gdk_screen_get_default();
+    mon = gdk_screen_get_monitor_at_point(screen, *x, *y);
+    gdk_screen_get_monitor_geometry(screen, mon, &srect);
+    LOG("srect: %dx%d+%d+%d", srect.width, srect.height, srect.x, srect.y);
+    *x = in_range(*x, srect.x, srect.x + srect.width - width);
+    *y = in_range(*y, srect.y, srect.y + srect.height - height);
 }
 
 // -*- indent-tabs-mode: nil -*- vim:et:ts=4

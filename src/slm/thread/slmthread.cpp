@@ -49,12 +49,15 @@
 
 #include <vector>
 #include <map>
-#include <math.h>
+#include <cmath>
 
 #include "../sim_slm.h"
 #include "../slm.h"
 
 #include "ValueCompress.h"
+
+using std::log;
+using std::exp;
 
 class CSIMSlmWithIteration : public CSIMSlm {
 public:
@@ -250,10 +253,10 @@ main(int argc, char* argv[])
 
     bool usingLogPr = slm.isUseLogPr();
 
-    #define EffectivePr(a)  (float((usingLogPr) ? ((a) / log(2.0)) : (-log2((a)))))
-    #define OriginalPr(b)   (float((usingLogPr) ? ((b) * log(2.0)) : (exp2(-(b)))))
-    #define EffectiveBow(a) (float((usingLogPr) ? (exp(-(a))) : ((a))))
-    #define OriginalBow(b)  (float((usingLogPr) ? (-log((b))) : ((b))))
+    #define EffectivePr(a)  (usingLogPr ? ((a) / log(2.0)) : -log2f((a)))
+    #define OriginalPr(b)   (usingLogPr ? ((b) * log(2.0)) : exp2(-(b)))
+    #define EffectiveBow(a) (usingLogPr ? exp(-(a)) : (a))
+    #define OriginalBow(b)  (usingLogPr ? -log((b)) : (b))
 
     printf("\nfirst pass..."); fflush(stdout);
     for (int lvl = 0; lvl <= slm.getN(); ++lvl) {
@@ -291,7 +294,7 @@ main(int argc, char* argv[])
     };
 
     for (unsigned i = 0, sz = sizeof(msprs) / sizeof(float); i < sz; ++i) {
-        float real_pr = (usingLogPr) ? (-log(msprs[i])) : (msprs[i]);
+        float real_pr = usingLogPr ? -log(msprs[i]) : msprs[i];
         float eff_pr = EffectivePr(real_pr);
         if (pr_eff.find(eff_pr) == pr_eff.end()) {
             pr_eff[eff_pr] = real_pr;
@@ -309,7 +312,7 @@ main(int argc, char* argv[])
     };
 
     for (unsigned i = 0, sz = sizeof(msbows) / sizeof(float); i < sz; ++i) {
-        float real_bow = (usingLogPr) ? (-log(msbows[i])) : (msbows[i]);
+        float real_bow = usingLogPr ? -log(msbows[i]) : msbows[i];
         float eff_bow = EffectiveBow(real_bow);
         if (bow_eff.find(eff_bow) == bow_eff.end()) {
             bow_eff[eff_bow] = real_bow;
@@ -358,7 +361,7 @@ main(int argc, char* argv[])
 
             std::map<float, int>::iterator prit = pr_map.find(pn->pr);
             if (prit == pr_map.end()) { // This would be cause by precision error
-                double val = EffectivePr(pn->pr);
+                float val = EffectivePr(pn->pr);
                 val = OriginalPr(val);
                 prit = pr_map.find(val);
                 assert(prit != pr_map.end());
@@ -405,7 +408,7 @@ main(int argc, char* argv[])
 
         std::map<float, int>::iterator prit = pr_map.find(pn->pr);
         if (prit == pr_map.end()) { // This would be cause by precision error
-            double val = EffectivePr(pn->pr);
+            float val = EffectivePr(pn->pr);
             val = OriginalPr(val);
             prit = pr_map.find(val);
             assert(prit != pr_map.end());

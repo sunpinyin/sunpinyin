@@ -247,7 +247,7 @@ main(int argc, char* argv[])
         ++nItems;
     }
     fclose(fp);
-    delete ngram;
+    delete[] ngram;
     printf("%d ngrams.\n", nItems); fflush(stdout);
 
     builder.Build();

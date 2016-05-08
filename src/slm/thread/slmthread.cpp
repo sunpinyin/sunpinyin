@@ -248,7 +248,7 @@ main(int argc, char* argv[])
         ShowUsage();
 
     printf("Loading original slm..."); fflush(stdout);
-    if (slm.Load(argv[1]) == false)
+    if (!slm.Load(argv[1]))
         ShowUsage();
 
     bool usingLogPr = slm.isUseLogPr();

@@ -226,26 +226,6 @@ FILE* fp = NULL;
 CThreadSlm::TNode* levels[16];
 CThreadSlm::TLeaf* lastLevel;
 
-// be more tolerant when looking up a float in a map by applying an epsilon of
-// 1e-5, if key is not found.
-template<typename K, typename V>
-typename std::map<K, V>::const_iterator approx_find(const std::map<K, V>& m, K key)
-{
-  typename std::map<K, V>::const_iterator i = m.find(key);
-  if (i != m.end()) {
-    return i;
-  }
-  K tolerance = key / 1e5;
-  K lower_bound = key - tolerance;
-  K upper_bound = key + tolerance;
-  i = m.lower_bound(lower_bound);
-  if (i != m.end() && i->first < upper_bound) {
-    return i;
-  } else {
-    return m.end();
-  }
-}
-
 int
 main(int argc, char* argv[])
 {
@@ -376,11 +356,11 @@ main(int argc, char* argv[])
             CSIMSlm::TNode* pn = (CSIMSlm::TNode*)slm.getNodePtr(it);
             CThreadSlm::TNode& nn = levels[lvl][it.m_history.back()];
 
-            std::map<float, int>::const_iterator prit = approx_find(pr_map, pn->pr);
+            std::map<float, int>::iterator prit = pr_map.find(pn->pr);
             if (prit == pr_map.end()) { // This would be cause by precision error
-                float val = EffectivePr(pn->pr);
+                double val = EffectivePr(pn->pr);
                 val = OriginalPr(val);
-                prit = approx_find(pr_map, val);
+                prit = pr_map.find(val);
                 assert(prit != pr_map.end());
             }
             int idx_pr = prit->second;
@@ -390,11 +370,11 @@ main(int argc, char* argv[])
             nn.set_bon(bon);
             nn.set_bol(bol);
 
-            std::map<float, int>::const_iterator bowit = approx_find(bow_map, pn->bow);
+            std::map<float, int>::iterator bowit = bow_map.find(pn->bow);
             if (bowit == bow_map.end()) { // precision error
-                float val = EffectiveBow(pn->bow);
+                double val = EffectiveBow(pn->bow);
                 val = OriginalBow(val);
-                bowit = approx_find(bow_map, val);
+                bowit = bow_map.find(val);
                 assert(bowit != bow_map.end());
             }
             int idx_bow = bowit->second;
@@ -423,11 +403,11 @@ main(int argc, char* argv[])
 
         CThreadSlm::TLeaf& nn = lastLevel[it.m_history.back()];
 
-        std::map<float, int>::const_iterator prit = approx_find(pr_map, pn->pr);
+        std::map<float, int>::iterator prit = pr_map.find(pn->pr);
         if (prit == pr_map.end()) { // This would be cause by precision error
-            float val = EffectivePr(pn->pr);
+            double val = EffectivePr(pn->pr);
             val = OriginalPr(val);
-            prit = approx_find(pr_map, val);
+            prit = pr_map.find(val);
             assert(prit != pr_map.end());
         }
         int idx_pr = prit->second;

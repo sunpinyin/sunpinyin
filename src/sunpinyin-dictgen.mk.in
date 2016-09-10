@@ -36,14 +36,14 @@ W3M = @W3M@
 ENDIANNESS = @ENDIANNESS@
 DATA_DIR = @DATADIR@/sunpinyin
 
-DL_LIST = https://open-gram.googlecode.com/git/
+DL_LIST = https://sourceforge.net/projects/open-gram/files/
 DL_HOST = http://heanet.dl.sourceforge.net
 DL_ROOT = ${DL_HOST}/open-gram
 DICT_PAT = 'dict\.utf8-[0-9]\+.tar.bz2'
 SLM_PAT = 'lm_sc\.3gm\.arpa-[0-9]\+.tar.bz2'
 
-DICT_AR = $(shell ${W3M} ${DL_LIST} | grep -o ${DICT_PAT} | sort | tail -n 1)
-SLM_AR = $(shell ${W3M} ${DL_LIST} | grep -o ${SLM_PAT} | sort | tail -n 1)
+DICT_AR = $(shell ${W3M} ${DL_LIST} | grep -o ${DICT_PAT} | sort -u | tail -n 1)
+SLM_AR = $(shell ${W3M} ${DL_LIST} | grep -o ${SLM_PAT} | sort -u | tail -n 1)
 
 all: install
 

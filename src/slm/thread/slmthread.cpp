@@ -253,8 +253,8 @@ main(int argc, char* argv[])
 
     bool usingLogPr = slm.isUseLogPr();
 
-    #define EffectivePr(a)  (usingLogPr ? ((a) / log(2.0)) : -log2f((a)))
-    #define OriginalPr(b)   (usingLogPr ? ((b) * log(2.0)) : exp2(-(b)))
+    #define EffectivePr(a)  (usingLogPr ? ((a) / log(2.0f)) : -log2f((a)))
+    #define OriginalPr(b)   (usingLogPr ? ((b) * log(2.0f)) : exp2f(-(b)))
     #define EffectiveBow(a) (usingLogPr ? exp(-(a)) : (a))
     #define OriginalBow(b)  (usingLogPr ? -log((b)) : (b))
 

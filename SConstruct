@@ -429,7 +429,7 @@ env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
     '@VERSION@': version,
     '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
                        map(lambda x: '-I$${includedir}' + x[3:],
-                           allinc())),
+                           sorted(allinc()))),
 })
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),

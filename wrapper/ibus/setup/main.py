@@ -37,7 +37,12 @@
 import sys
 import os
 from os import path
-import gtk
+try:
+    import gtk
+except ImportError:
+    from gi import require_version as gi_require_version
+    gi_require_version('Gtk', '3.0')
+    from gi.repository import Gtk as gtk
 import ibus
 import gettext
 import locale

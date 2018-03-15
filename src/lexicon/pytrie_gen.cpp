@@ -99,6 +99,8 @@ getPureGBEncoding(const char* utf8str)
     static iconv_t ric_gb = iconv_open("UTF-8", "GB2312");
     static iconv_t ric_gbk = iconv_open("UTF-8", "GBK");
 
+    // FIXME
+    if (ic_gb == -1 || ic_gbk == -1 || ric_gb == -1 || ric_gbk == -1) return 3;
     unsigned ret = 0;
 
     if (!isCorrectConverted(utf8str, ic_gb, ric_gb)) {

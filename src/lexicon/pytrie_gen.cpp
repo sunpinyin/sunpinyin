@@ -94,15 +94,15 @@ isCorrectConverted(const char* utf8, iconv_t ic, iconv_t ric)
 unsigned
 getPureGBEncoding(const char* utf8str)
 {
-    static iconv_t ic_gb = iconv_open("GB2312", "UTF-8");
-    static iconv_t ic_gbk = iconv_open("GBK", "UTF-8");
-    static iconv_t ric_gb = iconv_open("UTF-8", "GB2312");
-    static iconv_t ric_gbk = iconv_open("UTF-8", "GBK");
-
+    static const iconv_t e = reinterpret_cast<iconv_t>(-1);
+    static const iconv_t ic_gb = iconv_open("GB2312", "UTF-8");
+    static const iconv_t ic_gbk = iconv_open("GBK", "UTF-8");
+    static const iconv_t ric_gb = iconv_open("UTF-8", "GB2312");
+    static const iconv_t ric_gbk = iconv_open("UTF-8", "GBK");
     // FIXME
-    if (ic_gb == -1 || ic_gbk == -1 || ric_gb == -1 || ric_gbk == -1) return 3;
-    unsigned ret = 0;
+    if (ic_gb == e || ic_gbk == e || ric_gb == e || ric_gbk == e) return 3;
 
+    unsigned ret = 0;
     if (!isCorrectConverted(utf8str, ic_gb, ric_gb)) {
         ret = 1; // at least it is contains some GBK char
         if (!isCorrectConverted(utf8str, ic_gbk, ric_gbk))

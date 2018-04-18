@@ -215,7 +215,7 @@ def CreateEnvironment():
         make = 'gmake'
         tar = 'gtar'
     libln_builder = Builder(action='cd ${TARGET.dir} && ln -s ${SOURCE.name} ${TARGET.name}')
-    env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS='',
+    env = Environment(ENV=os.environ, CFLAGS=cflags, CXXFLAGS='-std=c++11',
                       MAKE=make, WGET=wget, W3M=w3m, TAR=tar,
                       CPPPATH=['.'] + allinc(),
                       tools=['default', 'textfile'])

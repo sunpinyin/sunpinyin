@@ -333,6 +333,7 @@ def AppendEndianCheck(conf):
   || defined(_M_X64)    || defined(__bfin__) \
   || defined(__alpha__) || defined(__ARMEL__) \
   || defined(_MIPSEL)   || (defined(__sh__) && defined(__LITTLE_ENDIAN__)) \
+  || defined(__riscv) \
   || defined(__AARCH64EL__)
 # undef WORDS_BIGENDIAN
 

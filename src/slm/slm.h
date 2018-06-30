@@ -54,7 +54,7 @@
  *       level and use a table to map the index to a float value;
  *    -# Compact all float value of -log(pr) into 16384 (14 bits)
  *       level and use a table to map the index to a float value;
- *    -# threading infomation embed into binary model file. Threading include
+ *    -# threading information embed into binary model file. Threading include
  *         - bol(back-off-level) from current level
  *         - bon(back-off-node)'s index in the bol level array
  *         .
@@ -62,7 +62,7 @@
  *         - when leaf node are arrived, it could use (bol,bon) as history for
  *           history node.
  *         - when a word could not be found in current node (cl, cn)'s children,
- *           searching could be transfered to (bol, bon) directly and continue
+ *           searching could be transferred to (bol, bon) directly and continue
  *           searching the target word
  *    -# Add a basic type TState in Language model, a state is pair of\n
  *           (level, array_idx_of_the level)
@@ -79,7 +79,7 @@ public:
 
     /**
      * (level:idx) located a state in the language model very well
-     * Please note the psuedo unigram state, with level == 0, but idx > 0
+     * Please note the pseudo unigram state, with level == 0, but idx > 0
      * it's for used with bigram cache model
      */
     union TState {

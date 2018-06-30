@@ -74,7 +74,7 @@ CIMIData::loadResource(const char* lm_file_path, const char* pytrie_file_path)
     clear();
 
     #ifdef DEBUG
-    printf("\n    openning lm file %s, pytrie file %s...",
+    printf("\n    opening lm file %s, pytrie file %s...",
            lm_file_path,
            pytrie_file_path);
     #endif

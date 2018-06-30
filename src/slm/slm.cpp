@@ -173,7 +173,7 @@ find_id(NodeT* base, unsigned int h, unsigned int t, unsigned int id)
 /**
  * return value as the model suggested. The history state must be historified
  * or the history's level should be 0. when level == 0 but idx != 0, the
- * history is a psuedo unigram state used for this model to combine another
+ * history is a pseudo unigram state used for this model to combine another
  * bigram cache language model
  */
 double
@@ -192,7 +192,7 @@ CThreadSlm::rawTransfer(TState history, unsigned int wid, TState& result)
     }
 
     while (true) {
-        //for psuedo cache model unigram state
+        //for pseudo cache model unigram state
         TNode* pn = ((TNode*)m_Levels[lvl]) + ((lvl) ? pos : 0);
 
         unsigned int t = (pn + 1)->ch();
@@ -271,7 +271,7 @@ CThreadSlm::lastWordId(TState st)
                               st.getIdx();
             return pn->wid();
         }
-        return idx; // return the psuedo state word id
+        return idx; // return the pseudo state word id
     }
 }
 

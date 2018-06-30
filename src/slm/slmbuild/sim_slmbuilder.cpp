@@ -111,7 +111,7 @@ CSlmLinearDiscounter::discount(int freq)
 }
 
 // n=1 for unigram, n=2 for bigram;
-// level[0] is for psuedo 0 gram, ...
+// level[0] is for pseudo 0 gram, ...
 void
 CSlmBuilder::Create(int n)
 {
@@ -126,7 +126,7 @@ CSlmBuilder::Create(int n)
     level[n] = new std::vector<TLeaf>;
     ((TLeafLevel*)level[n])->reserve(1024);
 
-    //Add psuedo root node
+    //Add pseudo root node
     ((TNodeLevel*)level[0])->push_back(TNode(0, 0, 0));
 
     //Initialize the nr[n+1][SLM_MAX_R] 2-D array
@@ -277,7 +277,7 @@ CSlmBuilder::CutLeafLevel(TNodeIterator pfirst,
     int idxfirst, idxchk;
     TLeafIterator chchk = chfirst;
     for (idxfirst = idxchk = 0; chchk != chlast; ++chchk, ++idxchk) {
-        //do not cut item whoese 1. freq > thred; 2. psuedo tail
+        //do not cut item whoese 1. freq > thred; 2. pseudo tail
         if ((int) chchk->freq > thred || (chchk + 1) == chlast) {
             if (idxfirst < idxchk)
                 *chfirst = *chchk;
@@ -301,7 +301,7 @@ CSlmBuilder::CutNodeLevel(TNodeIterator pfirst,
     int idxfirst, idxchk;
     TNodeIterator chchk = chfirst;
     for (idxfirst = idxchk = 0; chchk != chlast; ++chchk, ++idxchk) {
-        //do not cut item whoese 1. freq > thred; 2. psuedo tail; 3. leading children
+        //do not cut item whoese 1. freq > thred; 2. pseudo tail; 3. leading children
         TNodeIterator chnext = chchk + 1;
         if ((int) chchk->freq > thred || chnext == chlast ||
             (chnext->child != chchk->child)) {
@@ -349,7 +349,7 @@ CSlmBuilder::Cut()
 void
 CSlmBuilder::AppendTails()
 {
-    printf("\nAppending psuedo tail node for each level..."); fflush(stdout);
+    printf("\nAppending pseudo tail node for each level..."); fflush(stdout);
     for (int lvl = 0; lvl < nlevel; ++lvl) {
         int child_size = 0;
         if (lvl == nlevel - 1) {
@@ -360,7 +360,7 @@ CSlmBuilder::AppendTails()
         TNodeLevel& v = *(TNodeLevel*)(level[lvl]);
         v.push_back(TNode(0x00FFFFFF, child_size, 1));
     }
-    //also make a psuedo tail node for the leaf level
+    //also make a pseudo tail node for the leaf level
     ((TLeafLevel*)(level[nlevel]))->push_back(TLeaf(0, 1));
     printf("\n"); fflush(stdout);
 }
@@ -374,7 +374,7 @@ DiscountOneLevel(CSlmBuilder::TNodeLevel& v,
 {
     CSlmBuilder::TNodeIterator it = v.begin();
     CSlmBuilder::TNodeIterator ite = v.begin() + (v.size() - 1);
-    for (; it != ite; ++it) { //do not calc the psuedo tail item
+    for (; it != ite; ++it) { //do not calc the pseudo tail item
         CSlmBuilder::TNodeIterator itnext = it + 1;
         double root_freq = it->freq;
         for (int h = it->child, t = itnext->child; h < t; ++h) {
@@ -411,8 +411,8 @@ CSlmBuilder::Discount()
             DiscountOneLevel(v, ch, discounter[lvl + 1], bUseLogPr);
         }
     }
-    printf("\n    Giving psuedo root level 0 a distribution...");
-    //make the psuedo 0-gram a equal distribution
+    printf("\n    Giving pseudo root level 0 a distribution...");
+    //make the pseudo 0-gram a equal distribution
     TNodeLevel& v0 = *(TNodeLevel*)(level[0]);
     if (bUseLogPr) {
         v0[0].pr = PR_TYPE(-log(double(1.0) / m_nWord));

@@ -138,7 +138,7 @@ MBSTOWCS(TWCHAR *pwcs, const char* s, size_t n)
 
     assert(ic != (iconv_t)-1);
 
-    // To eliminate the const char* and char* diffirence in differnt system
+    // To eliminate the const char* and char* difference in different system
     TIConvSrcPtr src = (TIConvSrcPtr)s;
     size_t srclen = std::strlen(s) + 1;
     char* dst = (char*)pwcs;

@@ -74,8 +74,8 @@ CBigramHistory::memorize(uint32_t* its_wid, uint32_t* ite_wid)
 {
     TBigram bigram(DCWID, DCWID);
 
-    // First , we insert an DC word id before the context history
-    // to seperated from previous stream.
+    // First, we insert a DC word id before the context history
+    // to separated from previous stream.
     if (m_memory.size() == contxt_memory_size) {
         TBigram hb;
         hb.first = m_memory.front();
@@ -347,14 +347,14 @@ void
 CBigramHistory::incUniFreq(TUnigram& ug)
 {
     ++m_unifreq[ug];
-    //printf("Remebering uniFreq[%d]-->%d\n", ug, m_unifreq[ug]);
+    //printf("Remembering uniFreq[%d]-->%d\n", ug, m_unifreq[ug]);
 }
 
 void
 CBigramHistory::incBiFreq(TBigram& bg)
 {
     ++m_bifreq[bg];
-    //printf("Remebering biFreq[%d,%d]-->%d\n", bg.first, bg.second, m_bifreq[bg]);
+    //printf("Remembering biFreq[%d,%d]-->%d\n", bg.first, bg.second, m_bifreq[bg]);
 }
 
 // so far, it's very expensive to erase a word from bigram pairs, need to design
@@ -416,7 +416,7 @@ CBigramHistory::initStopWords()
     m_stopWords.clear();
 
     m_stopWords.insert(0);     //unknown world
-    m_stopWords.insert(DCWID); //seperator word id used by history memory interanlly
+    m_stopWords.insert(DCWID); //separator word id used by history memory internally
 }
 
 // -*- indent-tabs-mode: nil -*- vim:et:ts=4

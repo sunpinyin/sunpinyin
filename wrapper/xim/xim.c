@@ -157,7 +157,7 @@ _xim_set_ic_values(XIMHandle* handle, IMChangeICStruct* proto)
     ic->offset_y = __preedit_y;
     IC* cur_ic = icmgr_get_current();
 
-    /* if we change the current ic position, we might wanna
+    /* if we change the current ic position, we might want to
      * move it along the way
      */
     if (cur_ic != NULL && ic->icid == cur_ic->icid) {

@@ -63,7 +63,7 @@ home page [1].)
 * Terms
 ** Language model
    The language model (LM) is used to describe the characteristic of a
-   given languge. SLM is the attempt to capture the regularities of
+   given language. SLM is the attempt to capture the regularities of
    natural language using statistical approaches.
 
    The LM shipped with SunPinyin is actually a data file named
@@ -118,7 +118,7 @@ home page [1].)
               ---> segment again using the result LM ---> ...
 
 *** Segment the raw corpus
-    In this step, all words in raw corpus are indentified and are
+    In this step, all words in raw corpus are identified and are
     translated to the corresponding IDs. The ${DICTFILE} is always
     `dict.utf8'.
 

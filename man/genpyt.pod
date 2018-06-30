@@ -27,7 +27,7 @@ A default dictionary file can be found at F</usr/share/sunpinyin/dict.utf8>.
 
 =item I<result-file>
 
-The output binary PINYIN lexicon file. This lexicon contains a trie presenting the key tree of PINYIN. And all of the candiate words are sorted using the unigram in I<slm-file>. This file can be used with sunpinyin input method engines.
+The output binary PINYIN lexicon file. This lexicon contains a trie presenting the key tree of PINYIN. And all of the candidate words are sorted using the unigram in I<slm-file>. This file can be used with sunpinyin input method engines.
 
 
 =item I<log-file>

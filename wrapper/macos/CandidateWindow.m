@@ -190,7 +190,7 @@ static void tuningFrameForScreen (NSRect *, NSSize, NSRect);
 
 static void tuningFrameForScreen (NSRect *winRect, NSSize strSize, NSRect cursorRect)
 {
-    /* caculate the initial window's size */
+    /* calculate the initial window's size */
     winRect->size.height = strSize.height+5;
     winRect->size.width = strSize.width+5;
     winRect->origin.x = cursorRect.origin.x + 2;

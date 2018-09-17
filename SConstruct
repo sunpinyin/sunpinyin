@@ -321,7 +321,8 @@ def AppendEndianCheck(conf):
   || defined(__ppc__)  || defined(__hpux) || defined(__hppa) \
   || defined(_MIPSEB)  || defined(_POWER) \
   || defined(__s390__) || (defined(__sh__) && defined(__BIG_ENDIAN__)) \
-  || defined(__AARCH64EB__)
+  || defined(__AARCH64EB__) \
+  || definied(__m68k__)
 # define WORDS_BIGENDIAN 1
 
 #elif defined(__i386__) || defined(__i386) \

@@ -230,6 +230,10 @@ PrintARPA(CIterateThreadSlm& itslm,
     if (lexicon_filename != NULL) {
         plexicon = new TReverseLexicon();
         FILE* f_lex = fopen(lexicon_filename, "r");
+        if (f_lex == NULL) {
+            fprintf(stderr, "Failed to open lexicon file %s: %s\n", lexicon_filename, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
         while (fgets(word, 10240, f_lex) != NULL) {
             if (strlen(word) > 0) {
                 char* p = word;

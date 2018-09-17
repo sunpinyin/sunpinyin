@@ -79,6 +79,10 @@ main(int argc, char *argv[])
     unsigned char buf[10240];
     for (int i = 1; i < argc; ++i) {
         FILE *fp = fopen(argv[i], "r");
+        if (fp == NULL) {
+            fprintf(stderr, "Failed to open %s: %s\n", argv[i], strerror(errno));
+            continue;
+        }
         while (fgets((char*)buf, sizeof(buf), fp) != NULL) {
             bool emptyline = processline(buf);
             if ((unsigned int)buf[0] == '#' || (unsigned int)buf[0] == '0')

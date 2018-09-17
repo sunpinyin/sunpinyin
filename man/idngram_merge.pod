@@ -25,7 +25,7 @@ Specify the N-gram of source data file.
 
 =item B<-o>, B<--out> I<output-file>
 
-Specifiy the final merged idngram file.
+Specify the final merged idngram file.
 
 =back
 

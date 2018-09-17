@@ -50,7 +50,7 @@
  */
 class CICHistory {
 public:
-    /** don't care word id, or seperator word id */
+    /** don't care word id, or separator word id */
     static const uint32_t DCWID;
 
     virtual ~CICHistory();

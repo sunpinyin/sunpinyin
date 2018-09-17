@@ -54,7 +54,7 @@ Implement one of the three ways to receive input from the client.
 Here are the three approaches:
                  
   1. Support keybinding.
-    In this approach the system takes each keydown and trys to map the keydown 
+    In this approach the system takes each keydown and tries to map the keydown 
     to an action method that the input method has implemented.  If an action 
     is found the system calls didCommandBySelector:client:.  If no action 
     method is found inputText:client: is called.  An input method choosing 

@@ -78,7 +78,7 @@ isCorrectConverted(const char* utf8, iconv_t ic, iconv_t ric)
     size_t res = iconv(ic, &src, &srclen, &dst, &dstlen);
 
     if (res != size_t(-1) && srclen == 0) {
-        // do revert convertion and compare them
+        // do revert conversion and compare them
         src = (TIConvSrcPtr)gbstr;
         srclen = strlen((char*)src) + 1;
         dst = (char*)utstr;

@@ -65,7 +65,7 @@ public:
     /**
      * onConfigChanged will be called whenever an option is changed
      * @param event presents the changed option
-     * @return true if the event is consumed, and not intented to be
+     * @return true if the event is consumed, and not intended to be
      *         sent to another event listener, false otherwise.
      */
     virtual bool onConfigChanged(const COptionEvent&) { return false; }

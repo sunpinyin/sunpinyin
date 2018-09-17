@@ -131,7 +131,7 @@ SunPinyinEngine::process_key_event (guint key_val,
 
     if (getenv("DISABLE_HARD_FORWARD") == NULL) {
         // Ctrl+<space> is pressed. let's just hard code these.
-        // it looks rediculous, but on what else do you need to do this hack?
+        // it looks ridiculous, but on what else do you need to do this hack?
         if (key.code == 0x20 && key.modifiers == IM_CTRL_MASK) {
             m_hard_forward = !m_hard_forward;
             return TRUE;

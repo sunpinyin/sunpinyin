@@ -161,7 +161,7 @@ CutLevel(CSIMSlm::TNode* pfirst,
     int idxfirst, idxchk;
     chIterator chchk = chfirst;
     for (idxfirst = idxchk = 0; chchk != chlast; ++chchk, ++idxchk) {
-        //cut item whoese pr == 1.0; and not psuedo tail
+        //cut item whoese pr == 1.0; and not pseudo tail
         if (chchk->pr != ((bUseLogPr) ? 0.0 : 1.0) || (chchk + 1) == chlast) {
             if (idxfirst < idxchk) *chfirst = *chchk;
             while (pfirst != plast && pfirst->child <= idxchk)
@@ -188,7 +188,7 @@ CSlmPruner::PruneLevel(int lvl)
     printf("\n  Level %d (%d items), allocating...", lvl, sz[lvl] - 1); fflush(
         stdout);
 
-    int n = sz[lvl] - 1; //do not count last psuedo tail
+    int n = sz[lvl] - 1; //do not count last pseudo tail
     if (cut[lvl] >= n) cut[lvl] = n - 1;
     TNodeInfo* pbuf = new TNodeInfo[n];
     TSIMWordId hw[16]; // it should be lvl+1, yet some compiler do not support it
@@ -446,7 +446,7 @@ ShowUsage(void)
       Note that we do not ensure that during pruning process,  exactly the\n\
   the given number of items are cut or reserved, because some items may \n\
   contains high level children, so could not be cut. \n\
-      Also it's your responsiblity to give right number of arguments based\n\
+      Also it's your responsibility to give right number of arguments based\n\
   on 'input_slm'.\n\
 \nSee Also:\n\
     To get information of the back-off language model, try 'slminfo'.\n\n");

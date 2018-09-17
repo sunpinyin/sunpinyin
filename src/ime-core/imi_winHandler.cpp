@@ -95,7 +95,7 @@ CIMIWinHandler::updateStatus(int key, int value)
     case STATUS_ID_FULLSYMBOL:
         printf("Full Simbol is "); break;
     default:
-        printf("Unknow Status id %d is ", key);
+        printf("Unknown Status id %d is ", key);
         break;
     }
 

@@ -122,7 +122,7 @@ public:
     const TWCHAR       *m_cwstr;
 
 public:
-    /** Give out the constructor for convinience */
+    /** Give out the constructor for convenience */
     CCandidate(unsigned start = 0,
                unsigned end = 0,
                TLexiconState* pLxst = NULL,
@@ -152,7 +152,7 @@ public:
         ASCII                   = 0x0201,      // english string
         PUNC                    = 0x0202,      // punctuation
         SYMBOL                  = 0x0204,      // other symbol
-        DIGITAL                 = 0x0208,      // not implemeted here
+        DIGITAL                 = 0x0208,      // not implemented here
     }; // TYPE
 
     enum BESTWORD_TYPE {

@@ -519,12 +519,12 @@ CIMIContext::_transferBetween(unsigned start, unsigned end,
         double ts = m_pModel->transfer(it->m_slmState, _wid, node.m_slmState);
         m_pModel->historify(node.m_slmState);
 
-        // backward to psuedo root, so wid is probably a user word,
+        // backward to pseudo root, so wid is probably a user word,
         // save the wid in idx field, so that later we could get it via
         // CThreadSlm::lastWordId, to calculate p_{cache} correctly.
         if (node.m_slmState.getLevel() == 0
             && m_pHistory && m_pHistory->seenBefore(wid))
-            node.m_slmState.setIdx(wid);  // an psuedo unigram node state
+            node.m_slmState.setIdx(wid);  // an pseudo unigram node state
 
         if (m_pHistory) {
             unsigned history[2] = { m_pModel->lastWordId(it->m_slmState), _wid };

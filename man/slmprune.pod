@@ -20,7 +20,7 @@ Note that we do not ensure that during pruning process,  exactly the
 the given number of items are cut or reserved, because some items may 
 contains high level children, so could not be cut. 
 
-Also it's your responsiblity to give right number of arguments based
+Also it's your responsibility to give right number of arguments based
 on 'input_slm'.
 
 

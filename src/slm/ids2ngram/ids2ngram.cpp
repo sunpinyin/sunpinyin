@@ -131,7 +131,7 @@ ShowUsage()
     printf("\t  -s swapfile        # intermedia temporary file\n");
     printf(
         "\t  -o outputfile      # result idngram file [id1, ... idN, freq]*\n");
-    printf("\t  -p para_size       # maxium ngram-items per para\n");
+    printf("\t  -p para_size       # maximum ngram-items per para\n");
     printf("\nExample:\n");
     printf(
         "   Following example will use three input idstream file idsfile[1,2,3] to generate the idngram file all.id3gram. Each para (internal map size or hash size) would be 1024000, using swap file for temp result. All temp para result would final be merged to got the final result.\n");

@@ -89,7 +89,7 @@ Options:\n\
   -w --wordcount N            # Lexicon size, number of different word\n\
   -b --brk       id[,id...]   # set the ids which should be treat as breaker\n\
   -e --exclude   id[,id...]   # set the ids which should not be put into LM\n\
-  -c --cut       c1[,c2...]   # k-gram whose freq <= c[k] are droped\n\
+  -c --cut       c1[,c2...]   # k-gram whose freq <= c[k] are dropped\n\
   -d --discount  method,param # the k-th -d parm specify the discount method \n\
       for k-gram. Possible values for method/param:\n\
           GT,R,dis  : GT discount for r <= R, r is the freq of a ngram.\n\

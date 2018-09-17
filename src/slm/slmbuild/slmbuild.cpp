@@ -239,7 +239,13 @@ main(int argc, char* argv[])
     CSlmBuilder::FREQ_TYPE freq;
 
     printf("Reading and Processing raw idngram..."); fflush(stdout);
-    FILE *fp = fopen(inputfilename, "rb");
+
+    FILE* fp = fopen(inputfilename, "rb");
+    if (fp == NULL) {
+        fprintf(stderr, "Failed to open raw idngram file %s: %s\n", inputfilename, strerror(errno));
+        return EXIT_FAILURE;
+    }
+
     int nItems = 0;
     while (fread(ngram, sizeof(TSIMWordId), N, fp) == (size_t) N
            && fread(&freq, sizeof(freq), 1, fp) == 1) {

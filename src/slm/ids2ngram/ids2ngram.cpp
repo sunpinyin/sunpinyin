@@ -178,9 +178,14 @@ main(int argc, char* argv[])
     FILE *swap = fopen(swapfile, "wb+");
     FILE *out = fopen(output, "wb+");
     if (optind >= argc) ShowUsage();
-    while (optind < argc) {
+    for (; optind < argc; ++optind) {
         printf("Processing %s:", argv[optind]); fflush(stdout);
         FILE *fp = fopen(argv[optind], "rb");
+        if (fp == NULL) {
+            fprintf(stderr, "Failed to open %s: %s\n", argv[optind], strerror(errno));
+            printf("\n");
+            continue;
+        }
         switch (N) {
         case 1:
             ProcessingRead<1>(fp, swap, para_offsets, paraMax);
@@ -193,8 +198,7 @@ main(int argc, char* argv[])
             break;
         }
         fclose(fp);
-        printf("\n"); fflush(stdout);
-        ++optind;
+        printf("\n");
     }
     printf("Merging..."); fflush(stdout);
     switch (N) {

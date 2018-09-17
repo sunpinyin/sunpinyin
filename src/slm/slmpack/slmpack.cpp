@@ -76,6 +76,10 @@ read_lexicon(const char* filename)
     printf("Loading lexicon..."); fflush(stdout);
     static char word[1024 * 10];
     FILE* f_lex = fopen(filename, "r");
+    if (f_lex == NULL) {
+        fprintf(stderr, "Failed to open lexicon file %s: %s\n", filename, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
     TLexicon lexicon;
     while (fgets(word, sizeof(word), f_lex)) {
         if (strlen(word) > 0) {

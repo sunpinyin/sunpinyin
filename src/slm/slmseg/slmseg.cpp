@@ -469,11 +469,10 @@ main(int argc, char *argv[])
                 fprintf(stderr, "@Offset %ld, %d words, %d ambiguious. Done!\n",
                         ftell(fp), nWords, nAmbis);
                 fflush(stderr);
+                fclose(fp);
             } else {
-                fprintf(stderr, "Can not Open!!!!!!!\n");
-                fflush(stderr);
+                fprintf(stderr, "Failed to open %s: %s\n", argv[i], strerror(errno));
             }
-            fclose(fp);
         }
     }
 

@@ -261,13 +261,12 @@ PrintSimple(FILE* fp)
 int
 main(int argc, char* argv[])
 {
-    FILE* fp = NULL;
-
     getParameters(argc, argv);
 
-    if ((fp = fopen(argv[argc - 1], "rb+")) == NULL) {
-        printf("Can not open back-off language model file %s\n", argv[argc - 1]);
-        return 99;
+    FILE* fp = fopen(argv[argc - 1], "rb+");
+    if (fp == NULL) {
+        fprintf(stderr, "Failed to open back-off language model file %s: %s\n", argv[argc - 1], strerror(errno));
+        return EXIT_FAILURE;
     }
 
     if (!verbose)

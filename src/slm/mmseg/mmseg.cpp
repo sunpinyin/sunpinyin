@@ -307,10 +307,10 @@ main(int argc, char *argv[])
                         ftell(fp),
                         nWords,
                         nAmbis); fflush(stderr);
+                fclose(fp);
             } else {
-                fprintf(stderr, "Can not Open!!!!!!!\n"); fflush(stderr);
+                fprintf(stderr, "Failed to open %s: %s\n", argv[i], strerror(errno));
             }
-            fclose(fp);
         }
     }
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright (c) 2009 Leo Zheng <zym361@gmail.com>, Kov Chai <tchaikov@gmail.com>
 # *
 # The contents of this file are subject to the terms of either the GNU Lesser
@@ -7,12 +7,12 @@
 # Distribution License ("CDDL")(collectively, the "License"). You may not use this
 # file except in compliance with the License. You can obtain a copy of the CDDL at
 # http://www.opensource.org/licenses/cddl1.php and a copy of the LGPLv2.1 at
-# http://www.opensource.org/licenses/lgpl-license.php. See the License for the 
+# http://www.opensource.org/licenses/lgpl-license.php. See the License for the
 # specific language governing permissions and limitations under the License. When
 # distributing the software, include this License Header Notice in each file and
 # include the full text of the License in the License file as well as the
 # following notice:
-# 
+#
 # NOTICE PURSUANT TO SECTION 9 OF THE COMMON DEVELOPMENT AND DISTRIBUTION LICENSE
 # (CDDL)
 # For Covered Software in this distribution, this License shall be governed by the
@@ -20,9 +20,9 @@
 # Any litigation relating to this License shall be subject to the jurisdiction of
 # the Federal Courts of the Northern District of California and the state courts
 # of the State of California, with venue lying in Santa Clara County, California.
-# 
+#
 # Contributor(s):
-# 
+#
 # If you wish your version of this file to be governed by only the CDDL or only
 # the LGPL Version 2.1, indicate your decision by adding "[Contributor]" elects to
 # include this software in this distribution under the [CDDL or LGPL Version 2.1]
@@ -31,7 +31,7 @@
 # Version 2.1, or to extend the choice of license to its licensees as provided
 # above. However, if you add LGPL Version 2.1 code and therefore, elected the LGPL
 # Version 2 license, then the option applies only if the new code is made subject
-# to such option by the copyright holder. 
+# to such option by the copyright holder.
 #
 
 import sys
@@ -39,10 +39,12 @@ import os
 from os import path
 try:
     import gtk
+    import glib
 except ImportError:
     from gi import require_version as gi_require_version
     gi_require_version('Gtk', '3.0')
     from gi.repository import Gtk as gtk
+    from gi.repository import GLib as glib
 try:
     import ibus
 except ImportError:
@@ -62,27 +64,43 @@ class Logger:
     @staticmethod
     def pr(message):
         print >> sys.stderr, message
-        
+
+
 class Option(object):
     """Option serves as an interface of ibus.config
 
     it is used to synchronize the configuration with setting on user interface
     """
     config = ibus.Bus().get_config()
-    
+    wrappers = {
+        type(True): glib.Variant.new_boolean,
+        type(1): glib.Variant.new_int32,
+        type('str'): glib.Variant.new_string,
+    }
+    unwrappers = {
+        type(True): glib.Variant.get_boolean,
+        type(1): glib.Variant.get_int32,
+        type('str'): glib.Variant.get_string,
+    }
+
     def __init__(self, name, default):
         self.name = name
         self.default = default
-    
+
     def read(self):
         section, key = self.__get_config_name()
         return self.config.get_value(section, key, self.default)
 
     def write(self, v):
         section, key = self.__get_config_name()
-        return self.config.set_value(section, key, type(self.default)(v))
+        return self.config.set_value(section, key, self.wrap(v))
 
-   
+    def wrap(self, v):
+        return self.wrappers[type(self.default)](v)
+
+    def unwrap(self, v):
+        return self.unwrappers[type(self.default)](v)
+
     def __get_config_name(self):
         keys = self.name.rsplit(SEPARATOR ,1)
         if len(keys) == 2:
@@ -106,7 +124,7 @@ class TrivalOption(Option):
 
     def init(self):
         pass
-    
+
     def read_config(self):
         """update user inferface with ibus.config
         """
@@ -116,13 +134,13 @@ class TrivalOption(Option):
     def write_config(self):
         v = self.save_ui_setting()
         self.write(v)
-        
+
     def save_ui_setting(self):
         """save user interface settings into self.v
         """
         self.v = self.__get_value()
         return self.v
-    
+
     def is_changed(self):
         return self.v != self.__get_value()
 
@@ -134,10 +152,10 @@ class TrivalOption(Option):
 
     def __set_value(self, v):
         try:
-            self.widget.set_value(v)
+            self.widget.set_value(self.unwrap(v))
         except:
-            self.widget.set_active(v)
-            
+            self.widget.set_active(self.unwrap(v))
+
 class CheckBoxOption(TrivalOption):
     def __init__(self, name, default, owner):
         super(CheckBoxOption, self).__init__(name, default, owner)
@@ -150,7 +168,7 @@ class ComboBoxOption(TrivalOption):
             default = options.index(default)
         super(ComboBoxOption, self).__init__(name, default, owner)
         self.options = options
-        
+
     def init(self):
         model = gtk.ListStore(str)
         for v in self.options:
@@ -166,17 +184,17 @@ class ComboBoxOption(TrivalOption):
         except ValueError:
             # otherwise save its index
             return active
-    
+
     def __set_value(self, v):
         try:
             # if the options are just numbers, we treat 'self.v' as the literal
             # of option
             dummy = int(self.options[0])
-            active = self.options.index(v)
+            active = self.options.index(self.unwrap(v))
         except ValueError:
             active = v
         self.widget.set_active(active)
-        
+
 class RadioOption(Option):
     """option represented using multiple Raidio buttons
     """
@@ -187,10 +205,10 @@ class RadioOption(Option):
 
     def init_ui(self):
         self.read_config()
-        
+
     def read_config(self):
         self.v = self.read()
-        name = SEPARATOR.join([self.name, self.v])
+        name = SEPARATOR.join([self.name, self.unwrap(self.v)])
         button = self.xml.get_object(name)
         assert button is not None, "button: %r not found" % name
         button.set_active(True)
@@ -210,7 +228,7 @@ class MappingInfo:
     def __init__(self, name, mapping):
         self.name = name
         self.mapping = mapping
-        
+
 class MappingOption(object):
     """an option which presents some sort of mapping, e.g. fuzzy pinyin mapping
 
@@ -221,7 +239,7 @@ class MappingOption(object):
         self.name = name
         self.widget = owner.get_object(name)
         self.mappings = mappings
-        
+
     def get_mappings(self):
         if self.widget.get_active():
             return [':'.join(self.mappings)]
@@ -233,18 +251,18 @@ class MappingOption(object):
 
     def get_active(self):
         return self.widget.get_active()
-    
+
     is_enabled = property(get_active, set_active)
 
     def key(self):
         return self.mappings[0]
-    
+
 class MultiMappingOption(Option):
     def __init__(self, name, options, default=[]):
         Option.__init__(self, name, default)
         self.options = options
         self.saved_pairs = default
-        
+
     def read_config(self):
         if not self.saved_pairs:
             self.saved_pairs = self.read()
@@ -252,24 +270,24 @@ class MultiMappingOption(Option):
         for opt in self.options:
             opt.is_enabled = (opt.key() in keys)
             # throw away unknown pair
-    
+
     def write_config(self):
         # ignore empty settings
         if self.saved_pairs:
             self.write(self.saved_pairs)
-        
+
     def save_ui_setting(self):
         self.saved_pairs = sum([opt.get_mappings() for opt in self.options
                                 if opt.is_enabled], [])
         return self.saved_pairs
-    
+
     def set_active_all(self, enabled):
         for opt in self.options:
             opt.is_enabled = enabled
-            
+
 class MultiCheckDialog (object):
     """ a modal dialog box with 'choose all' and 'choose none' button
-    
+
     TODO: another option is to use radio button
     """
     def __init__ (self, ui_name, config_name, mappings, option_klass=MappingOption):
@@ -279,12 +297,12 @@ class MultiCheckDialog (object):
         self.option_klass = option_klass
         self.saved_settings = []
         self.mapping_options = None
-        
+
     def get_setup_name(self):
         """assuming the name of dialog looks like 'dlg_fuzzy_setup'
         """
         return '_'.join(['dlg', self.ui_name, 'setup'])
-    
+
     def __init_ui(self):
         dlg_name = self.get_setup_name()
         self.__xml = gtk.Builder()
@@ -297,7 +315,7 @@ class MultiCheckDialog (object):
                     '_'.join(["on", self.ui_name, "cancel_clicked"]) : self.on_button_cancel_clicked}
         self.__xml.connect_signals(handlers)
 
-        options = [self.option_klass(m.name, m.mapping, self.__xml) 
+        options = [self.option_klass(m.name, m.mapping, self.__xml)
                    for m in self.mappings]
         self.mapping_options = MultiMappingOption(self.config_name, options, self.saved_settings)
 
@@ -308,15 +326,15 @@ class MultiCheckDialog (object):
         pass
 
     init_ui = read_config = dummy
-    
+
     def run(self):
         self.__init_ui()
         self.__read_config()
         self.__dlg.run()
-        
+
     def __read_config(self):
         self.mapping_options.read_config()
-        
+
     def __save_ui_settings(self):
         """save to in-memory storage, will flush to config if not canceled in main_window
         """
@@ -325,20 +343,20 @@ class MultiCheckDialog (object):
     def write_config(self):
         if self.mapping_options is not None:
             self.mapping_options.write_config()
-            
+
     def on_button_check_all_clicked(self, button):
         self.mapping_options.set_active_all(True)
-        
+
     def on_button_uncheck_all_clicked(self, button):
         self.mapping_options.set_active_all(False)
-    
+
     def on_button_ok_clicked(self, button):
         """update given options with settings in UI, these settings will be
         written to config if user push 'OK' or 'Apply' in the main window
         """
         self.__save_ui_settings()
         self.__dlg.destroy()
-        
+
     def on_button_cancel_clicked(self, button):
         self.__dlg.destroy()
 
@@ -363,7 +381,7 @@ class FuzzySetupDialog (MultiCheckDialog):
                                   ui_name = 'fuzzy',
                                   config_name = 'QuanPin/Fuzzy/Pinyins',
                                   mappings = mappings)
-        
+
 class CorrectionSetupDialog (MultiCheckDialog):
     def __init__(self):
         mappings = [MappingInfo('QuanPin/AutoCorrection/GnNg', ('gn','ng')),
@@ -384,7 +402,7 @@ class PunctMapping(MappingOption):
             self.init_keys_values(mappings)
         else:
             self.widget.set_sensitive(False)
-            
+
     def init_keys_values(self, mappings):
         self.keys = [m[0] for m in mappings]
         values_with_closing = [v or k for k, v in mappings]
@@ -422,7 +440,7 @@ class PunctMapping(MappingOption):
         self.widget.set_active(enabled)
 
     is_enabled = property(MappingOption.get_active, set_active)
-    
+
     def key(self):
         for k, v in self.mappings:
             if v is not None:
@@ -470,13 +488,13 @@ class MainWindow():
     def __init__ (self):
         self.__bus = ibus.Bus()
         self.__config = self.__bus.get_config()
-        
-        
+
+
     def run(self):
         self.__init_ui("main_window")
         self.__read_config()
         gtk.main()
-        
+
     def __init_ui(self, name):
         self.__init_gettext()
         xml_file = path.join(path.dirname(__file__), XML_FILE)
@@ -498,19 +516,19 @@ class MainWindow():
         self.__fuzzy_setup = FuzzySetupDialog()
         self.__correction_setup = CorrectionSetupDialog()
         self.__punctmapping_setup = PunctMappingSetupDialog()
-        
+
         self.__options = [
             TrivalOption("General/MemoryPower", 3, self.__xml),
             TrivalOption("General/PageSize", 10, self.__xml),
             TrivalOption("General/MaxBest", 1, self.__xml),
             TrivalOption("General/MaxTailCandidate", 0, self.__xml),
-            
+
             RadioOption("General/InitialStatus/Mode", 'Chinese', ['Chinese', 'English'], self.__xml),
             RadioOption("General/InitialStatus/Punct", 'Full', ['Full', 'Half'], self.__xml),
             RadioOption("General/InitialStatus/Letter", 'Half', ['Full', 'Half'], self.__xml),
             RadioOption("General/Charset", 'GBK', ['GB2312', 'GBK', 'GB18030'], self.__xml),
             CheckBoxOption("General/PunctMapping/Enabled", False, self.__xml),
-                                
+
             RadioOption("Keyboard/ModeSwitch", 'Shift', ['Shift', 'Control'], self.__xml),
             RadioOption("Keyboard/PunctSwitch", 'None', ['ControlComma',
                                                          'ControlPeriod',
@@ -520,7 +538,7 @@ class MainWindow():
             CheckBoxOption("Keyboard/Page/CommaPeriod", False, self.__xml),
             CheckBoxOption("Keyboard/CancelBackspace", True, self.__xml),
             CheckBoxOption("Keyboard/SmartPunct", True, self.__xml),
-            
+
             RadioOption("Pinyin/Scheme", 'QuanPin', ['QuanPin', 'ShuangPin'], self.__xml),
             ComboBoxOption("Pinyin/ShuangPinType", 'MS2003', ['MS2003',
                                                               'ABC',
@@ -532,7 +550,7 @@ class MainWindow():
             CheckBoxOption("QuanPin/AutoCorrection/Enabled", False, self.__xml),
             CheckBoxOption("QuanPin/FuzzySegs/Enabled", False, self.__xml),
             CheckBoxOption("QuanPin/InnerFuzzy/Enabled", False, self.__xml),
-            
+
             self.__fuzzy_setup,
             self.__correction_setup,
             self.__punctmapping_setup,
@@ -544,7 +562,7 @@ class MainWindow():
                 return opt
         else:
             return None
-        
+
     def __read_config(self):
         for opt in self.__options:
             opt.init_ui()
@@ -553,7 +571,7 @@ class MainWindow():
         self.on_chk_correction_enabled_toggled(None)
         self.on_chk_punctmapping_enabled_toggled(None)
         self.on_radio_shuangpin_toggled(None)
-        
+
     def __write_config(self):
         for opt in self.__options:
             opt.write_config()
@@ -573,14 +591,14 @@ class MainWindow():
         enabled = radio.get_active()
         combo = self.__xml.get_object("Pinyin/ShuangPinType")
         combo.set_sensitive(enabled)
-        
+
     def on_chk_fuzzy_enabled_toggled(self, button):
         self.__update_enabling_button("QuanPin/Fuzzy/Enabled",
                                       "button_fuzzy_setup")
-        
+
     def on_button_fuzzy_setup_clicked(self, button):
         self.__fuzzy_setup.run()
-        
+
     def on_chk_correction_enabled_toggled(self, button):
         self.__update_enabling_button("QuanPin/AutoCorrection/Enabled",
                                       "button_correction_setup")
@@ -591,18 +609,18 @@ class MainWindow():
 
     def on_button_correction_setup_clicked(self, button):
         self.__correction_setup.run()
-        
+
     def on_chk_punctmapping_enabled_toggled(self, button):
         self.__update_enabling_button("General/PunctMapping/Enabled",
                                       "button_punctmapping_setup")
-    
+
     def on_button_punctmapping_setup_clicked(self, button):
         self.__punctmapping_setup.run()
-    
+
     def on_main_ok_clicked(self, button):
         self.__write_config()
         self.__quit()
-        
+
     def on_main_apply_clicked(self, button):
         self.__write_config()
 
@@ -611,7 +629,7 @@ class MainWindow():
 
     def __quit(self):
         gtk.main_quit()
-    
+
 if __name__ == "__main__":
     MainWindow().run()
 

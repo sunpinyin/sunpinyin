@@ -72,34 +72,26 @@ class Option(object):
     it is used to synchronize the configuration with setting on user interface
     """
     config = ibus.Bus().get_config()
-    wrappers = {
+    __wrappers = {
         type(True): glib.Variant.new_boolean,
         type(1): glib.Variant.new_int32,
         type('str'): glib.Variant.new_string,
-    }
-    unwrappers = {
-        type(True): glib.Variant.get_boolean,
-        type(1): glib.Variant.get_int32,
-        type('str'): glib.Variant.get_string,
+        type([]): glib.Variant.new_strv,
     }
 
     def __init__(self, name, default):
         self.name = name
         self.default = default
+        self.__wrap = self.__wrappers[type(self.default)]
 
     def read(self):
         section, key = self.__get_config_name()
-        return self.config.get_value(section, key, self.default)
+        wrapped = self.config.get_value(section, key)
+        return self.default if wrapped is None else wrapped.unpack()
 
     def write(self, v):
         section, key = self.__get_config_name()
-        return self.config.set_value(section, key, self.wrap(v))
-
-    def wrap(self, v):
-        return self.wrappers[type(self.default)](v)
-
-    def unwrap(self, v):
-        return self.unwrappers[type(self.default)](v)
+        return self.config.set_value(section, key, self.__wrap(v))
 
     def __get_config_name(self):
         keys = self.name.rsplit(SEPARATOR ,1)
@@ -152,9 +144,9 @@ class TrivalOption(Option):
 
     def __set_value(self, v):
         try:
-            self.widget.set_value(self.unwrap(v))
+            self.widget.set_value(v)
         except:
-            self.widget.set_active(self.unwrap(v))
+            self.widget.set_active(v)
 
 class CheckBoxOption(TrivalOption):
     def __init__(self, name, default, owner):
@@ -190,7 +182,7 @@ class ComboBoxOption(TrivalOption):
             # if the options are just numbers, we treat 'self.v' as the literal
             # of option
             dummy = int(self.options[0])
-            active = self.options.index(self.unwrap(v))
+            active = self.options.index(v)
         except ValueError:
             active = v
         self.widget.set_active(active)
@@ -208,7 +200,7 @@ class RadioOption(Option):
 
     def read_config(self):
         self.v = self.read()
-        name = SEPARATOR.join([self.name, self.unwrap(self.v)])
+        name = SEPARATOR.join([self.name, self.v])
         button = self.xml.get_object(name)
         assert button is not None, "button: %r not found" % name
         button.set_active(True)

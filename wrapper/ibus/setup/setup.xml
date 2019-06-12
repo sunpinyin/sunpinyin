@@ -50,7 +50,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_correction_uncheck_all_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_correction_unselect_all_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

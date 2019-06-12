@@ -295,12 +295,13 @@ class MultiCheckDialog (object):
         """
         return '_'.join(['dlg', self.ui_name, 'setup'])
 
-    def __init_ui(self):
+    def __init_ui(self, parent_window):
         dlg_name = self.get_setup_name()
         self.__xml = gtk.Builder()
         self.__xml.add_objects_from_file(XML_FILE, [dlg_name])
         self.__dlg = self.__xml.get_object(dlg_name)
         assert self.__dlg is not None, "dialog %s not found in %s" % (dlg_name, XML_FILE)
+        self.__dlg.set_transient_for(parent_window)
         handlers = {'_'.join(["on", self.ui_name, "select_all_clicked"]) : self.on_button_check_all_clicked,
                     '_'.join(["on", self.ui_name, "unselect_all_clicked"]) : self.on_button_uncheck_all_clicked,
                     '_'.join(["on", self.ui_name, "ok_clicked"]) : self.on_button_ok_clicked,
@@ -319,8 +320,8 @@ class MultiCheckDialog (object):
 
     init_ui = read_config = dummy
 
-    def run(self):
-        self.__init_ui()
+    def run(self, parent_window):
+        self.__init_ui(parent_window)
         self.__read_config()
         self.__dlg.run()
 
@@ -589,7 +590,7 @@ class MainWindow():
                                       "button_fuzzy_setup")
 
     def on_button_fuzzy_setup_clicked(self, button):
-        self.__fuzzy_setup.run()
+        self.__fuzzy_setup.run(self.window)
 
     def on_chk_correction_enabled_toggled(self, button):
         self.__update_enabling_button("QuanPin/AutoCorrection/Enabled",
@@ -600,14 +601,14 @@ class MainWindow():
                                       "QuanPin/InnerFuzzy/Enabled")
 
     def on_button_correction_setup_clicked(self, button):
-        self.__correction_setup.run()
+        self.__correction_setup.run(self.window)
 
     def on_chk_punctmapping_enabled_toggled(self, button):
         self.__update_enabling_button("General/PunctMapping/Enabled",
                                       "button_punctmapping_setup")
 
     def on_button_punctmapping_setup_clicked(self, button):
-        self.__punctmapping_setup.run()
+        self.__punctmapping_setup.run(self.window)
 
     def on_main_ok_clicked(self, button):
         self.__write_config()

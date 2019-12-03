@@ -299,11 +299,11 @@ def CheckPKG(context, name):
 
 def CheckPython(context):
     context.Message('Checking for Python library...')
-    ret = context.TryAction('python-config --prefix')[0]
+    ret = context.TryAction('python3-config --prefix')[0]
     context.Result(ret)
     if ret:
-        context.env.MergeFlags(['!python-config --includes',
-                                '!python-config --libs'])
+        context.env.MergeFlags(['!python3-config --includes',
+                                '!python3-config --libs'])
     return ret
 
 

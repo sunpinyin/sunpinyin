@@ -1,4 +1,4 @@
-#!/usr/bin/python 
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -202,7 +202,7 @@ class MMArray:
         self.__realsize += 1
 
     def __iter__(self):
-        for i in xrange(0, self.__realsize):
+        for i in range(0, self.__realsize):
             yield self.__access(i)
 
     def truncate(self, tsize):

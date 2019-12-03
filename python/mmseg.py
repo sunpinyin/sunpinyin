@@ -75,7 +75,7 @@ options={'show-id':       False,
 def parse_options(args):
     try:
         opts, args = getopt.getopt(args, "hid:f:s:a:", ["help", "show-id", "dict=", "format=", "stok-id=", "ambi-id="])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         print(str(err))
         sys.exit(1)
 

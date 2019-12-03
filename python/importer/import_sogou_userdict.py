@@ -19,7 +19,7 @@ def load_sogou_user_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the Sogou PinYin exported user dict file!"
+        print("Please specify the Sogou PinYin exported user dict file!")
         exit (1)
 
     sogou_user_dict = load_sogou_user_dict(sys.argv[1])

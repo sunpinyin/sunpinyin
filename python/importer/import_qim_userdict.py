@@ -18,7 +18,7 @@ def load_qim_user_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the QIM exported user dict file!"
+        print("Please specify the QIM exported user dict file!")
         exit (1)
 
     qim_user_dict = load_qim_user_dict(sys.argv[1])

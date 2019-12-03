@@ -23,7 +23,7 @@ def load_google_user_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the Google Pinyin exported user dict file!"
+        print("Please specify the Google Pinyin exported user dict file!")
         exit (1)
 
     google_user_dict = load_google_user_dict(sys.argv[1])

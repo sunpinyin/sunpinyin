@@ -71,7 +71,7 @@ def get_word_from_sogou_cell_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the Sogou PinYin Cell dict file!"
+        print("Please specify the Sogou PinYin Cell dict file!")
         exit (1)
 
     generator = get_word_from_sogou_cell_dict (sys.argv[1])

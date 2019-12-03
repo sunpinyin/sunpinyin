@@ -72,15 +72,15 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
         try:
             syllables = [valid_syllables[s] for s in pystr.split("'")]
         except:
-            print "[%s] has un-recognized syllables, ignoring this record!" % pystr
+            print("[%s] has un-recognized syllables, ignoring this record!" % pystr)
             continue
 
         if len (syllables) < 2 or len (syllables) > 6:
-            print "[%s] is too long or too short for sunpinyin userdict" % utf8str
+            print("[%s] is too long or too short for sunpinyin userdict" % utf8str)
             continue
 
         if utf8str in sysdict:
-            #print "[%s] is already in sunpinyin's sysdict" % utf8str
+            #print("[%s] is already in sunpinyin's sysdict" % utf8str)
             continue
 
         record = [0]*14
@@ -102,7 +102,7 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
                     """
             try:
                 db.execute (sqlstring, record)
-                #print "[%s] is imported into sunpinyin's userdict" % utf8str
+                #print("[%s] is imported into sunpinyin's userdict" % utf8str)
 
                 batch_count += 1
                 if batch_count == 100:
@@ -110,7 +110,7 @@ def import_to_sunpinyin_user_dict (records, userdict_path=''):
                     batch_count = 0
 
             except:
-                #print "[%s] is already in sunpinyin's userdict" % utf8str
+                #print("[%s] is already in sunpinyin's userdict" % utf8str)
                 pass
 
     db.commit()
@@ -130,7 +130,7 @@ def export_sunpinyin_user_dict (userdict_path=''):
         f    = record[8:14]
         str  = record[-1]
         syls = [initials[i[x]] + finals[f[x]] for x in range(l)]
-        print str.encode ('UTF-8'), id, "'".join(syls) 
+        print(str.encode ('UTF-8'), id, "'".join(syls))
         
 if __name__ == "__main__":
     export_sunpinyin_user_dict ()

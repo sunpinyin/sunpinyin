@@ -21,7 +21,7 @@ def load_ziguang_user_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the ZiGuang PinYin exported user dict file!"
+        print("Please specify the ZiGuang PinYin exported user dict file!")
         exit (1)
 
     ziguang_user_dict = load_ziguang_user_dict(sys.argv[1])

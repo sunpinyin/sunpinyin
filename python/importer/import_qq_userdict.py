@@ -21,7 +21,7 @@ def load_qq_user_dict (fname):
 
 def main ():
     if len (sys.argv) != 2:
-        print "Please specify the QQ PinYin exported user dict file!"
+        print("Please specify the QQ PinYin exported user dict file!")
         exit (1)
 
     qq_user_dict = load_qq_user_dict(sys.argv[1])

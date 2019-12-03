@@ -227,7 +227,7 @@ def CreateEnvironment():
 def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
-            print 'Warning: you\'ve set %s in the environmental variable!' % x
+            print('Warning: you\'ve set %s in the environmental variable!' % x)
             env[y] = os.environ[x]
 
 env = CreateEnvironment()
@@ -429,9 +429,7 @@ env.Substfile('sunpinyin-2.0.pc.in', SUBST_DICT={
     '@PREFIX@': env['PREFIX'],
     '@LIBDIR@': env['LIBDIR'],
     '@VERSION@': version,
-    '@CFLAGS@': reduce(lambda a, b: a + ' ' + b,
-                       map(lambda x: '-I$${includedir}' + x[3:],
-                           sorted(allinc()))),
+    '@CFLAGS@': ' '.join(['-I$${includedir}' + x[3:] for x in sorted(allinc())]),
 })
 
 libname_default = '%ssunpinyin%s' % (env.subst('${SHLIBPREFIX}'),

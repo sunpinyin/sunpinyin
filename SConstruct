@@ -259,6 +259,7 @@ libdir = env['LIBDIR']
 # pass through environmental variables
 envvar = [('CC', 'CC'),
           ('CXX', 'CXX'),
+          ('CPPFLAGS', 'CPPFLAGS'),
           ('CFLAGS', 'CFLAGS'),
           ('CXXFLAGS', 'CXXFLAGS'),
           ('LDFLAGS', 'LINKFLAGS'),

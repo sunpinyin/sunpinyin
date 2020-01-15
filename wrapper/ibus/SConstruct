@@ -141,7 +141,7 @@ def DoInstall():
     libexec_target = env.Install(bin_dir, ['ibus-engine-sunpinyin', 
                                            'setup/ibus-setup-sunpinyin'])
     for exec_bin in libexec_target:
-        env.AddPostAction(exec_bin, Chmod(str(exec_bin), 0755))
+        env.AddPostAction(exec_bin, Chmod(str(exec_bin), 0o755))
         
     setup_target = env.Install(data_dir + '/setup',
                                ['setup/setup.xml',

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 # 

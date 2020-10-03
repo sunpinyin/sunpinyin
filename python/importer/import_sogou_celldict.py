@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # thanks for the reverse engineering efforts of following projects/peoples:
 # http://code.google.com/p/imewlconverter

@@ -418,10 +418,18 @@ if not GetOption('clean') and not GetOption('help'):
 # ==============================compile==============================
 #
 env.Object(slmsource)
-env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
-            'cd ${SOURCE.dir} && ./quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h')
-env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
-            'cd ${SOURCE.dir} && ./pinyin_info_gen.py > ../src/pinyin/pinyin_info.h')
+if GetOS() == 'Darwin':
+    # on Mac OS X, python3 intepreter is not at /usr/bin/python3,
+    # force to use python3 in system path on Mac OS X
+    env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
+                'cd ${SOURCE.dir} && python3 ./quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h')
+    env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
+                'cd ${SOURCE.dir} && python3 ./pinyin_info_gen.py > ../src/pinyin/pinyin_info.h')
+else:
+    env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
+                'cd ${SOURCE.dir} && ./quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h')
+    env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
+                'cd ${SOURCE.dir} && ./pinyin_info_gen.py > ../src/pinyin/pinyin_info.h')
 
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 

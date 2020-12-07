@@ -421,9 +421,9 @@ if not GetOption('clean') and not GetOption('help'):
 #
 env.Object(slmsource)
 env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
-            'cd ${SOURCE.dir} && ./quanpin_trie_gen.py > ../src/pinyin/quanpin_trie.h')
+            '$SOURCE > $TARGET')
 env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
-            'cd ${SOURCE.dir} && ./pinyin_info_gen.py > ../src/pinyin/pinyin_info.h')
+            '$SOURCE > $TARGET')
 
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 

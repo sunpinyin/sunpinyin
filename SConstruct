@@ -2,8 +2,10 @@
 
 import platform
 import os
+import shutil
 import sys
 
+import SCons.Errors
 
 version = "2.0.4"
 abi_major = 3
@@ -181,13 +183,22 @@ AddOption('--enable-plugins', dest='enable_plugins', action='store_true',
 AddOption('--disable-plugins', dest='enable_plugins', action='store_false',
           default=False, help='disable plugin mechanism at libsunpinyin layer')
 
+
+def PathIsExecutable(key, path, env):
+    if shutil.which(path) is None:
+        m = "path '{path}' for option '{key}' is not found or not in $PATH"
+        raise SCons.Errors.UserError(m.format(key=key, path=path))
+
 # save the options
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
 opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('DATADIR', default='/usr/local/share')
 opts.Add('ENABLE_PLUGINS', default=False)
-
+opts.Add(PathVariable('PYTHON',
+                      'python3 interpreter used to generate header files',
+                      '/usr/bin/python3',
+                      PathIsExecutable))
 
 #
 # ==============================environment==============================
@@ -422,9 +433,9 @@ if not GetOption('clean') and not GetOption('help'):
 #
 env.Object(slmsource)
 env.Command('src/pinyin/quanpin_trie.h', 'python/quanpin_trie_gen.py',
-            '$SOURCE > $TARGET')
+            '$PYTHON $SOURCE > $TARGET')
 env.Command('src/pinyin/pinyin_info.h', 'python/pinyin_info_gen.py',
-            '$SOURCE > $TARGET')
+            '$PYTHON $SOURCE > $TARGET')
 
 SConscript(['src/SConscript', 'man/SConscript', 'doc/SConscript'], exports='env')
 

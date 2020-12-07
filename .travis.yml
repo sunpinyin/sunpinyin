@@ -1,9 +1,10 @@
 language: cpp
 dist: focal
-before_install:
-  - travis_retry sudo apt-get update -qq
-install:
-  - travis_retry sudo apt-get install scons
+addons:
+  apt:
+    packages:
+      - scons
+      - python3
 script: scons
 branches:
   only:

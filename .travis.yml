@@ -1,4 +1,5 @@
 language: cpp
+dist: focal
 before_install:
   - travis_retry sudo apt-get update -qq
 install:

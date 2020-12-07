@@ -1,3 +1,5 @@
+# -*- mode:python -*-
+
 import platform
 import os
 import sys

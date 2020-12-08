@@ -542,6 +542,7 @@
 					"-lsqlite3",
 					"-liconv",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.opensolaris.inputmethod.SunPinyin;
 				PRODUCT_NAME = SunPinyin;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
@@ -576,6 +577,7 @@
 					"-lsqlite3",
 					"-liconv",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.opensolaris.inputmethod.SunPinyin;
 				PRODUCT_NAME = SunPinyin;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;

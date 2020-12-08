@@ -362,7 +362,6 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				A464E3780F65263000148227 /* Copy 3rd-party Frameworks */,
-				A45578A011469D9300592C6E /* Localize and Compile XIBs */,
 			);
 			buildRules = (
 			);
@@ -419,24 +418,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A45578A011469D9300592C6E /* Localize and Compile XIBs */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Localize and Compile XIBs";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ibtool3 --strings-file zh_CN.lproj/MainMenu.strings --write zh_CN.lproj/MainMenu.xib English.lproj/MainMenu.xib\nibtool3 --compile zh_CN.lproj/MainMenu.nib zh_CN.lproj/MainMenu.xib\ncp zh_CN.lproj/MainMenu.nib \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj/MainMenu.nib\"";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {

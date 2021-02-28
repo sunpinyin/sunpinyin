@@ -66,6 +66,8 @@ opts.Save('configure.conf', env)
 
 envvar = [('CC', 'CC'),
           ('CXX', 'CXX'),
+          ('AR', 'AR'),
+          ('RANLIB', 'RANLIB'),
           ('CFLAGS', 'CFLAGS'),
           ('CXXFLAGS', 'CXXFLAGS'),
           ('LDFLAGS', 'LINKFLAGS')]

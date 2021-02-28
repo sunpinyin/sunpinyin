@@ -38,7 +38,6 @@
 #include <stdbool.h>
 #include <langinfo.h>
 #include <locale.h>
-#include <iconv.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <stdbool.h>

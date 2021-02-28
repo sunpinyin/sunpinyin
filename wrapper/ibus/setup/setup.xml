@@ -2610,7 +2610,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHScale" id="General/PageSize">
+                              <object class="GtkScale" id="General/PageSize">
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="adjustment">candidate_adjustment</property>
@@ -2624,7 +2624,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHScale" id="General/MemoryPower">
+                              <object class="GtkScale" id="General/MemoryPower">
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="adjustment">memory_adjustment</property>
@@ -2664,7 +2664,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHScale" id="General/MaxBest">
+                              <object class="GtkScale" id="General/MaxBest">
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="adjustment">max_best_adjustment</property>
@@ -2681,7 +2681,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHScale" id="General/MaxTailCandidate">
+                              <object class="GtkScale" id="General/MaxTailCandidate">
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="adjustment">max_tail_candidate_adjustment</property>

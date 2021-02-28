@@ -1,3 +1,6 @@
+# -*- mode:python; indent-tabs-mode:nil -*-
+# vim:et:ts=4
+
 import os
 
 sources = ['ic.c',
@@ -145,7 +148,6 @@ def DoInstall():
     env.Alias('install-bin', bin_target)
     env.Alias('install-data', [icon_target, data_target])
 
+
 DoInstall()
 env.Alias('install', ['install-bin', 'install-data'])
-
-# -*- indent-tabs-mode: nil -*- vim:et:ts=4

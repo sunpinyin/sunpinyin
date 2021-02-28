@@ -47,11 +47,13 @@ AddOption('--rpath', dest='rpath', type='string', nargs=1, action='store',
 opts = Variables('configure.conf')
 opts.Add('PREFIX', default='/usr/local')
 
+
 def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
             print('Warning: you\'ve set %s in the environmental variable!' % x)
             env[y] = os.environ[x]
+
 
 env = Environment(ENV=os.environ,
                   CFLAGS=cflags, CXXFLAGS=cflags,
@@ -77,7 +79,7 @@ bin_dir = env['PREFIX'] + '/bin'
 data_dir = '%s/share/xsunpinyin/' % env['PREFIX']
 icon_dir = data_dir + 'icons/'
 
-extra_cflags =  ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
+extra_cflags = ' -DSUNPINYIN_XIM_ICON_DIR=\\"%s\\"' % icon_dir
 extra_cflags += ' -DSUNPINYIN_XIM_SETTING_DIR=\\"%s\\"' % data_dir
 
 env.Append(CFLAGS=extra_cflags)

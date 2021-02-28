@@ -2,7 +2,6 @@
 # vim:et:ts=4
 
 import os
-import SCons.Tool.textfile
 
 locales = []
 
@@ -26,14 +25,16 @@ opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('LIBEXECDIR', default='/usr/local/lib')
 opts.Add('DATADIR', default='/usr/local/share')
 
+
 def PassVariables(envvar, env):
     for (x, y) in envvar:
         if x in os.environ:
-            print 'Warning: you\'ve set %s in the environmental variable!' % x
+            print(f"Warning: you've set {x} in the environmental variable!")
             env[y] = os.environ[x]
 
+
 env = Environment(ENV=os.environ,
-                  CFLAGS=cflags, CXXFLAGS=cflags, 
+                  CFLAGS=cflags, CXXFLAGS=cflags,
                   CPPPATH=['.'], SUBSTFILESUFFIX='.in')
 opts.Update(env)
 
@@ -66,7 +67,7 @@ icons_dir = env['DATADIR'] + '/scim-sunpinyin/icons'
 bin_dir = env['LIBEXECDIR'] + '/scim-sunpinyin'
 gettext_package = 'scim-sunpinyin'
 
-extra_cflags  = ' -DSCIM_SUNPINYIN_LOCALEDIR=\'"%s"\'' % (env['DATADIR'] + '/locale')
+extra_cflags = ' -DSCIM_SUNPINYIN_LOCALEDIR=\'"%s"\'' % (env['DATADIR'] + '/locale')
 extra_cflags += ' -DSCIM_SUNPINYIN_ICON_DIR=\'"%s"\'' % icons_dir
 extra_cflags += ' -DLIBEXECDIR=\'"%s"\'' % bin_dir
 extra_cflags += ' -DGETTEXT_PACKAGE=\'"%s"\'' % gettext_package
@@ -79,14 +80,15 @@ env.Replace(SHLIBPREFIX = '')
 if GetOption('rpath') is not None:
     env.Append(LINKFLAGS=' -Wl,-R -Wl,%s' % GetOption('rpath'))
 
+
 #
-#==============================configure================================
-#
+# ==============================configure================================
 def CheckPKGConfig(context, version='0.12.0'):
     context.Message( 'Checking for pkg-config... ' )
     ret = context.TryAction('pkg-config --atleast-pkgconfig-version=%s' % version)[0]
     context.Result(ret)
     return ret
+
 
 def CheckPKG(context, name):
     context.Message( 'Checking for %s... ' % name )
@@ -94,8 +96,10 @@ def CheckPKG(context, name):
     context.Result(ret)
     return ret
 
-conf = Configure(env, custom_tests={'CheckPKGConfig' : CheckPKGConfig,
-                                    'CheckPKG' : CheckPKG })
+
+conf = Configure(env, custom_tests={'CheckPKGConfig': CheckPKGConfig,
+                                    'CheckPKG': CheckPKG})
+
 
 def DoConfigure():
     if GetOption('clean'):
@@ -112,39 +116,40 @@ def DoConfigure():
 
     if not conf.CheckPKG('scim-gtkutils'):
         Exit(1)
-    
+
     env = conf.Finish()
     env.ParseConfig('pkg-config scim sunpinyin-2.0 scim-gtkutils --libs --cflags')
+
 
 DoConfigure()
 
 scim_icondir = os.popen('pkg-config scim   --variable=icondir').readlines()[0].rstrip()
-scim_moduledir =os.popen('pkg-config scim   --variable=moduledir').readlines()[0].rstrip()
+scim_moduledir = os.popen('pkg-config scim   --variable=moduledir').readlines()[0].rstrip()
 
-lib_sunpinyin_imengine_setup_target  = "sunpinyin_imengine_setup"
+lib_sunpinyin_imengine_setup_target = "sunpinyin_imengine_setup"
 lib_sunpinyin_imengine_setup_sources = ["src/sunpinyin_imengine_setup.cpp"]
-env.SharedLibrary(target = lib_sunpinyin_imengine_setup_target, source = lib_sunpinyin_imengine_setup_sources)
+env.SharedLibrary(target=lib_sunpinyin_imengine_setup_target, source=lib_sunpinyin_imengine_setup_sources)
 
-lib_sunpinyin_imengine_target  = "sunpinyin_imengine"
+lib_sunpinyin_imengine_target = "sunpinyin_imengine"
 lib_sunpinyin_imengine_sources = ['src/imi_scimwin.cpp',
                                   'src/sunpinyin_imengine.cpp',
                                   'src/sunpinyin_lookup_table.cpp',
                                   'src/sunpinyin_utils.cpp']
-env.SharedLibrary(target = lib_sunpinyin_imengine_target, source = lib_sunpinyin_imengine_sources)
+env.SharedLibrary(target=lib_sunpinyin_imengine_target, source=lib_sunpinyin_imengine_sources)
 os.system('chmod 0644 ' + lib_sunpinyin_imengine_setup_target + '.so')
 os.system('chmod 0644 ' + lib_sunpinyin_imengine_target + '.so')
 for locale in locales:
     mo = 'po/%s.mo' % (locale,)
     env.Command(mo, [], 'msgfmt po/%s.po -o %s' % (locale, mo))
 
+
 #
-#==============================install================================
-#
+# ==============================install================================
 def DoInstall():
 
     os.system('chmod 0644 ' + lib_sunpinyin_imengine_setup_target + '.so')
     os.system('chmod 0644 ' + lib_sunpinyin_imengine_target + '.so')
-        
+
     icons_target = env.Install(scim_icondir,
                                ['data/sunpinyin_logo.png'])
 
@@ -163,6 +168,7 @@ def DoInstall():
     env.Alias('install-libexec', [imengine_target, imsetup_target])
     env.Alias('install-data', [icons_target])
     env.Alias('install-locale', locale_targets)
+
 
 DoInstall()
 env.Alias('install', ['install-libexec', 'install-data', 'install-locale'])

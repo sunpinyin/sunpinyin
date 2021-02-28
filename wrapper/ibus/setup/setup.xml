@@ -66,7 +66,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_correction_ok_clicked" swapped="no"/>
               </object>
               <packing>
@@ -82,7 +81,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_correction_cancel_clicked" swapped="no"/>
               </object>
               <packing>
@@ -254,7 +252,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_fuzzy_ok_clicked" swapped="no"/>
               </object>
               <packing>
@@ -270,7 +267,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_fuzzy_cancel_clicked" swapped="no"/>
               </object>
               <packing>
@@ -581,7 +577,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_punctmapping_ok_clicked" swapped="no"/>
               </object>
               <packing>
@@ -597,7 +592,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_punctmapping_cancel_clicked" swapped="no"/>
               </object>
               <packing>
@@ -2831,7 +2825,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_main_ok_clicked" swapped="no"/>
               </object>
               <packing>
@@ -2847,7 +2840,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_main_cancel_clicked" swapped="no"/>
               </object>
               <packing>
@@ -2863,7 +2855,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-stock">True</property>
                 <signal name="clicked" handler="on_main_apply_clicked" swapped="no"/>
               </object>
               <packing>

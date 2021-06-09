@@ -195,10 +195,12 @@ opts.Add('PREFIX', default='/usr/local')
 opts.Add('LIBDIR', default='/usr/local/lib')
 opts.Add('DATADIR', default='/usr/local/share')
 opts.Add('ENABLE_PLUGINS', default=False)
-opts.Add(PathVariable('PYTHON',
-                      'python3 interpreter used to generate header files',
-                      '/usr/bin/python3',
-                      PathIsExecutable))
+
+# NOTE: Disabled by Lee
+#opts.Add(PathVariable('PYTHON',
+#                      'python3 interpreter used to generate header files',
+#                      '/usr/bin/python3',
+#                      PathIsExecutable))
 
 #
 # ==============================environment==============================
@@ -207,10 +209,12 @@ opts.Add(PathVariable('PYTHON',
 def allinc():
     return [root for root, _, _ in os.walk('src')]
 
-
 def GetOS():
+    if os.getenv('PLATFORM') != '':
+        return os.getenv('PLATFORM')
+    if 'MINGW' in platform.uname():
+        return 'Win32'
     return platform.uname()[0]
-
 
 def CreateEnvironment():
     make = 'make'
@@ -234,6 +238,13 @@ def CreateEnvironment():
                       tools=['default', 'textfile'])
     env.Append(BUILDERS={'InstallAsSymlink': libln_builder})
     env['ENDIANNESS'] = "be" if sys.byteorder == "big" else "le"
+    if GetOS() == 'Win32':
+        env['PROGSUFFIX'] = '.exe'
+        env['SHLIBSUFFIX'] = '.dll'
+        env['CFLAGS'] += ' -mms-bitfields -mthreads'
+        # it's bad to use "-std=c++11" on MinGW32/MinGW64
+        env['CXXFLAGS'] = '-mms-bitfields -mthreads'
+        env.Append(LIBS='-luserenv')
     return env
 
 
@@ -453,17 +464,18 @@ libname_soname = '%s.%d' % (libname_link, abi_major)
 libname = '%s.%d' % (libname_soname, abi_minor)
 lib = None
 
-if GetOS() != 'Darwin':
+if GetOS() not in ('Darwin', 'Win32'):
     lib = env.SharedLibrary(libname, SHLIBSUFFIX='', source=imesource,
-                            parse_flags='-Wl,-soname=%s' % libname_soname)
+                            parse_flags='-Wl,-soname=%s %s' % (libname_soname, env['LINKFLAGS']))
 else:
     # TODO: add install_name on Darwin?
-    lib = env.SharedLibrary('sunpinyin', source=imesource)
+    lib = env.SharedLibrary('sunpinyin', source=imesource,
+                            parse_flags='%s' % env['LINKFLAGS'])
 
 
 def DoInstall():
     lib_target = None
-    if GetOS() == 'Darwin':
+    if GetOS() in ('Darwin', 'Win32'):
         lib_target = env.Install(libdir, lib)
     else:
         lib_target_bin = env.Install(libdir, lib)

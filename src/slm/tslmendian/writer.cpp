@@ -1,4 +1,6 @@
+#ifndef _WIN32
 #include <arpa/inet.h>
+#endif
 #include <cassert>
 #include <cstring>
 
@@ -7,7 +9,11 @@
 int
 get_host_endian()
 {
+#ifndef _WIN32
     return htons(0x0001) == 0x0100 ? LITTLE_ENDIAN : BIG_ENDIAN;
+#else
+    return LITTLE_ENDIAN;
+#endif
 }
 
 int

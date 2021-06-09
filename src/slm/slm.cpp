@@ -49,11 +49,14 @@
 #include <sys/mman.h>
 #elif defined(BEOS_OS)
 #include <be/kernel/OS.h>
+#elif defined(_WIN32)
+#include <windows.h>
 #endif
 
 bool
 CThreadSlm::load(const char* fname, bool MMap)
 {
+#ifndef _WIN32
     int fd = open(fname, O_RDONLY);
     if (fd == -1) {
         fprintf(stderr, "open %s: %s\n", fname, strerror(errno));
@@ -106,6 +109,58 @@ CThreadSlm::load(const char* fname, bool MMap)
         }
     }
     close(fd);
+#else // _WIN32
+    HANDLE fd = CreateFile(fname,
+                           GENERIC_READ,
+                           0,
+                           NULL,
+                           OPEN_EXISTING,
+                           FILE_ATTRIBUTE_NORMAL,
+                           NULL);
+    if(fd == INVALID_HANDLE_VALUE) return false;
+
+    LARGE_INTEGER li;
+    li.HighPart = 0;
+    li.LowPart = SetFilePointer(fd, 0, &li.HighPart, FILE_END);
+    m_bufSize = (DWORD)li.QuadPart;
+
+    m_bMMap = MMap;
+    if (m_bMMap) {
+        HANDLE handler = CreateFileMapping(fd,
+                                           NULL,
+                                           PAGE_READONLY,
+                                           li.HighPart, li.LowPart,
+                                           NULL);
+        if (handler == NULL) {
+            CloseHandle(fd);
+            return false;
+        }
+
+        void *p = MapViewOfFile(handler, FILE_MAP_READ, 0, li.HighPart, li.LowPart);
+        if (p == NULL) {
+            CloseHandle(handler);
+            CloseHandle(fd);
+            return false;
+        }
+        m_buf = (char*)p;
+        m_reserved[0] = (void*)handler;
+        m_reserved[1] = (void*)fd;
+    } else {
+        if ((m_buf = new char[m_bufSize]) == NULL) {
+            CloseHandle(fd);
+            return false;
+        }
+
+        DWORD n = m_bufSize;
+        if (ReadFile(fd, m_buf, n, &n, NULL) == FALSE || n != m_bufSize) {
+            perror("read lm");
+            delete [] m_buf; m_buf = NULL;
+            CloseHandle(fd);
+            return false;
+        }
+        CloseHandle(fd);
+    }
+#endif // !_WIN32
 
     m_N = *(unsigned*)m_buf;
     m_UseLogPr = *(((unsigned*)m_buf) + 1);
@@ -140,6 +195,10 @@ CThreadSlm::free()
             munmap(m_buf, m_bufSize);
 #elif defined(BEOS_OS)
             delete_area(area_for(m_buf));
+#elif defined(_WIN32)
+            UnmapViewOfFile((void*)m_buf);
+            CloseHandle(m_reserved[0]);
+            CloseHandle(m_reserved[1]);
 #else // Other OS
             #error "No implementation for munmap()"
 #endif // HAVE_SYS_MMAN_H

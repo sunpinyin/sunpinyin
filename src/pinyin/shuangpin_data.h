@@ -47,13 +47,21 @@
 
 enum EShuangpinType {
     MS2003,
+#ifndef _WIN32
+    // FXIME: maybe namespace ...
     ABC,
+#else
+    SP_ABC,
+#endif
     ZIRANMA,
     PINYINJIAJIA,
     ZIGUANG,
     XIAOHE,
     USERDEFINE,
 };
+#ifdef _WIN32
+#define ABC SP_ABC
+#endif
 
 typedef struct _TZeroinitial {
     const char  *syl;

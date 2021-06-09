@@ -40,9 +40,15 @@
 #endif
 
 #include <algorithm>
+#ifndef _WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#else // WIN32
+#include <direct.h>
+#include <windows.h>
+#include <userenv.h>
+#endif // !_WIN32
 #include <cassert>
 #include <errno.h>
 
@@ -50,6 +56,65 @@
 #include "imi_keys.h"
 #include "imi_options.h"
 #include "imi_view_classic.h"
+
+#ifdef _WIN32
+char* win32_get_data_dir()
+{
+    char buffer[_MAX_PATH + 1];
+    memset(buffer, 0, sizeof(buffer));
+
+    if (GetModuleFileName(NULL, buffer, _MAX_PATH) == 0) return NULL;
+    char *p = strrchr(buffer, '\\');
+    *p = '\0'; // locate the directory
+
+    bool unix_style = false;
+    if ((p = strrchr(buffer, '\\')) != NULL) {
+        if (strcmp(p, "\\lib") == 0 || strcmp(p, "\\bin") == 0) {
+            *p = '\0';
+            unix_style = true;
+        }
+    }
+
+    strncat(buffer,
+            (unix_style ? "\\share\\sunpinyin" : "\\data"),
+            _MAX_PATH - strlen(buffer));
+    return strdup(buffer);
+}
+
+char* win32_get_home_dir()
+{
+    char buffer[_MAX_PATH + 1];
+    memset(buffer, 0, sizeof(buffer));
+
+    HANDLE hToken = INVALID_HANDLE_VALUE;
+    OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken);
+    if (hToken != INVALID_HANDLE_VALUE) {
+        DWORD len = _MAX_PATH;
+        GetUserProfileDirectory(hToken, buffer, &len);
+        CloseHandle(hToken);
+    }
+
+    if (buffer[0] == '\0') {
+        if (GetModuleFileName(NULL, buffer, _MAX_PATH) == 0) return NULL;
+        char *p = strrchr(buffer, '\\');
+        *p = '\0'; // locate the directory
+
+        bool unix_style = false;
+        if ((p = strrchr(buffer, '\\')) != NULL) {
+            if (strcmp(p, "\\lib") == 0 || strcmp(p, "\\bin") == 0) {
+                *p = '\0';
+                unix_style = true;
+            }
+        }
+
+        strncat(buffer,
+                (unix_style ? "\\home" : "\\.config"),
+                _MAX_PATH - strlen(buffer));
+    }
+
+    return strdup(buffer);
+}
+#endif
 
 CSimplifiedChinesePolicy::CSimplifiedChinesePolicy()
     : m_bLoaded(false), m_bTried(false), m_csLevel(3),
@@ -64,32 +129,72 @@ CSimplifiedChinesePolicy::loadResources()
     if (m_bLoaded || m_bTried)
         return m_bLoaded;
 
+#ifndef _WIN32
+    const char *sep = "/";
+#else
+    const char *sep = "\\";
+#endif
+
     bool suc = true;
+#ifndef _WIN32
     std::string data_dir = m_data_dir.size() ? m_data_dir : SUNPINYIN_DATA_DIR;
-    std::string lm_path = data_dir + "/lm_sc.t3g";
-    std::string dict_path = data_dir + "/pydict_sc.bin";
+#else
+    std::string data_dir;
+    if (m_data_dir.size() > 0) {
+        data_dir = m_data_dir;
+    } else {
+        char *dir = win32_get_data_dir();
+        if (dir) {
+            data_dir = dir;
+            free(dir);
+        } else {
+            data_dir = ".\\data";
+        }
+    }
+#endif
+    std::string lm_path = data_dir + sep + "lm_sc.t3g";
+    std::string dict_path = data_dir + sep + "pydict_sc.bin";
 
     suc &= m_coreData.loadResource(lm_path.c_str(), dict_path.c_str());
 
     if (!m_user_data_dir.size()) {
+#ifndef _WIN32
         char path[256];
         const char *home = getenv("HOME");
         snprintf(path,
                  sizeof(path),
-                 "%s/%s",
+                 "%s%s%s",
                  home,
+                 sep,
                  SUNPINYIN_USERDATA_DIR_PREFIX);
         m_user_data_dir = path;
+#else
+        char *home = win32_get_home_dir();
+        char path[_MAX_PATH];
+        if (home) {
+            char path[_MAX_PATH];
+            snprintf(path,
+                     sizeof(path),
+                     "%s%s%s",
+                     home,
+                     sep,
+                     SUNPINYIN_USERDATA_DIR_PREFIX);
+            free(home);
+            m_user_data_dir = path;
+        } else {
+            m_user_data_dir = ".\\" SUNPINYIN_USERDATA_DIR_PREFIX;
+        }
+#endif
     }
 
     char * tmp = strdup(m_user_data_dir.c_str());
     createDirectory(tmp);
     free(tmp);
 
-    std::string history_path = m_user_data_dir + "/history";
+    std::string history_path = m_user_data_dir + sep + "history";
     suc &= m_historyCache.loadFromFile(history_path.c_str());
 
-    std::string user_dict_path = m_user_data_dir + "/userdict";
+    std::string user_dict_path = m_user_data_dir + sep + "userdict";
     suc &= m_userDict.load(user_dict_path.c_str());
 
     m_bTried = true;
@@ -186,6 +291,7 @@ CSimplifiedChinesePolicy::saveUserHistory()
 bool
 CSimplifiedChinesePolicy::createDirectory(char *path)
 {
+#ifndef _WIN32
     char *p = path;
     while ((p = strchr(p + 1, '/'))) {
         *p = 0;
@@ -196,6 +302,18 @@ CSimplifiedChinesePolicy::createDirectory(char *path)
         *p = '/';
     }
     return !(access(path, F_OK) != 0 && mkdir(path, S_IRWXU) != 0);
+#else
+    char *p = path;
+    while ((p = strchr(p + 1, '\\'))) {
+        *p = 0;
+        if ((GetFileAttributes(path) & FILE_ATTRIBUTE_DIRECTORY) == 0 && _mkdir(path) != 0) {
+            fprintf(stderr, "mkdir %s: %s\n", path, strerror(errno));
+            return false;
+        }
+        *p = '\\';
+    }
+    return (_mkdir(path) == 0);
+#endif
 }
 
 CShuangpinSchemePolicy::CShuangpinSchemePolicy()

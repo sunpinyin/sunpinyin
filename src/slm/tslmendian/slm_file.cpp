@@ -47,7 +47,9 @@
  * - leaf[N-1][] : CThreadSlm::TLeaf * slm.getLevelSize(N)
  */
 
+#ifndef _WIN32
 #include <arpa/inet.h>
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -318,7 +320,11 @@ CThreadSlmFile::getEndian() const
 int
 CThreadSlmFile::getHostEndian()
 {
+#ifndef _WIN32
     return htons(0x0001) == 0x0100 ? LITTLE_ENDIAN : BIG_ENDIAN;
+#else
+    return LITTLE_ENDIAN;
+#endif
 }
 
 // -*- indent-tabs-mode: nil -*- vim:et:ts=4

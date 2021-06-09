@@ -44,7 +44,9 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <cassert>
+#ifndef _WIN32
 #include <arpa/inet.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <algorithm>
@@ -142,7 +144,11 @@ CBigramHistory::pr(uint32_t* its_wid, uint32_t* ite_wid, uint32_t wid)
 inline uint32_t
 swap32(uint32_t x)
 {
+#ifndef _WIN32
     return htonl(x);
+#else
+    return ((x << 24) | ((x & 0x0000ff00) << 8) | ((x & 0x00ff0000) >> 8) | (x >> 24));
+#endif
 }
 
 bool

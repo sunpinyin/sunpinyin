@@ -300,7 +300,8 @@ private:
 public:
     CThreadSlm()
         : m_N(0), m_UseLogPr(0), m_Levels(NULL), m_LevelSizes(NULL),
-          m_bowTable(NULL), m_prTable(NULL), m_bMMap(false), m_buf(NULL) { }
+          m_bowTable(NULL), m_prTable(NULL), m_bMMap(false), m_buf(NULL)
+    { memset(m_reserved, 0, sizeof(m_reserved)); }
 
     ~CThreadSlm() { free(); }
 
@@ -345,7 +346,8 @@ protected:
 private:
     ssize_t m_bufSize;
     bool m_bMMap;
-    char     *m_buf;
+    char *m_buf;
+    void *m_reserved[4];
 };
 
 #endif

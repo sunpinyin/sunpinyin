@@ -369,6 +369,9 @@ def DoConfigure():
             Exit(1)
         if not conf.CheckLibWithHeader('iconv', 'iconv.h', 'C'):
             Exit(1)
+    elif GetOS() == 'Haiku':
+        if not conf.CheckLibWithHeader('iconv', 'iconv.h', 'C'):
+            Exit(1)
     else:
         if not conf.CheckPKGConfig():
             Exit(1)

@@ -432,25 +432,26 @@ SunPinyinEngine::update_cand_window_size()
 void
 SunPinyinEngine::update_mode_key()
 {
-    std::string mode_switch("Shift");
-    mode_switch = m_config.get(CONFIG_KEYBOARD_MODE_SWITCH, mode_switch);
+//    std::string mode_switch("Shift");
+//    mode_switch = m_config.get(CONFIG_KEYBOARD_MODE_SWITCH, mode_switch);
+//
+//    CKeyEvent shift_l  (IM_VK_SHIFT_L, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
+//    CKeyEvent shift_r  (IM_VK_SHIFT_R, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
+//    CKeyEvent control_l(IM_VK_CONTROL_L, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
+//    CKeyEvent control_r(IM_VK_CONTROL_R, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
+//
+//    if (mode_switch == "Shift") {
+//        m_hotkey_profile->removeModeSwitchKey(control_l);
+//        m_hotkey_profile->removeModeSwitchKey(control_r);
+//        m_hotkey_profile->addModeSwitchKey(shift_l);
+//        m_hotkey_profile->addModeSwitchKey(shift_r);
+//    } else if (mode_switch == "Control") {
+//        m_hotkey_profile->removeModeSwitchKey(shift_l);
+//        m_hotkey_profile->removeModeSwitchKey(shift_r);
+//        m_hotkey_profile->addModeSwitchKey(control_l);
+//        m_hotkey_profile->addModeSwitchKey(control_r);
+//    }
 
-    CKeyEvent shift_l  (IM_VK_SHIFT_L, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
-    CKeyEvent shift_r  (IM_VK_SHIFT_R, 0, IM_SHIFT_MASK|IM_RELEASE_MASK);
-    CKeyEvent control_l(IM_VK_CONTROL_L, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
-    CKeyEvent control_r(IM_VK_CONTROL_R, 0, IM_CTRL_MASK|IM_RELEASE_MASK);
-
-    if (mode_switch == "Shift") {
-        m_hotkey_profile->removeModeSwitchKey(control_l);
-        m_hotkey_profile->removeModeSwitchKey(control_r);
-        m_hotkey_profile->addModeSwitchKey(shift_l);
-        m_hotkey_profile->addModeSwitchKey(shift_r);
-    } else if (mode_switch == "Control") {
-        m_hotkey_profile->removeModeSwitchKey(shift_l);
-        m_hotkey_profile->removeModeSwitchKey(shift_r);
-        m_hotkey_profile->addModeSwitchKey(control_l);
-        m_hotkey_profile->addModeSwitchKey(control_r);
-    }
 }
 
 void

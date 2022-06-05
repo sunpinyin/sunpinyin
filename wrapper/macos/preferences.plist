@@ -15,7 +15,7 @@
 	<key>usingUSKbLayout</key>
 	<false/>
 	<key>alpha</key>
-	<integer>80</integer>
+	<integer>75</integer>
 	<key>radius</key>
 	<integer>5</integer>
 	<key>pagingByMinusAndEqual</key>
@@ -29,7 +29,7 @@
 	<key>candiNumbers</key>
 	<integer>9</integer>
 	<key>fontName</key>
-	<string>STHeiti</string>
+	<string>PingFangSC-Regular</string>
 	<key>fontSize</key>
 	<string>16</string>
 	<key>charset</key>

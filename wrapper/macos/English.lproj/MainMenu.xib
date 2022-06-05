@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1090" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -12,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="252" userLabel="SunPinyinApplicationDelegate" customClass="SunPinyinApplicationDelegate">
             <connections>
                 <outlet property="_candiWin" destination="273" id="275"/>
@@ -50,7 +50,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES" nonactivatingPanel="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="330" y="439" width="432" height="419"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" id="278">
                 <rect key="frame" x="0.0" y="0.0" width="432" height="419"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -216,7 +216,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="484" id="482">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="483">
                                                     <items>
                                                         <menuItem title="None" state="on" id="484"/>
@@ -234,7 +234,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="Commit Pinyin String" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="680" id="676">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="677">
                                                     <items>
                                                         <menuItem title="Commit Pinyin String" state="on" id="680"/>
@@ -254,7 +254,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="MS2003" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="558" id="556">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="557">
                                                     <items>
                                                         <menuItem title="MS2003" state="on" id="558"/>
@@ -268,8 +268,8 @@
                                                     </items>
                                                 </menu>
                                                 <connections>
-                                                    <binding destination="331" name="enabled" keyPath="values.pinyinMode" id="672"/>
                                                     <binding destination="331" name="selectedIndex" keyPath="values.Shuangpin.Scheme" id="616"/>
+                                                    <binding destination="331" name="enabled" keyPath="values.pinyinMode" id="672"/>
                                                 </connections>
                                             </popUpButtonCell>
                                         </popUpButton>
@@ -279,7 +279,7 @@
                             <tabViewItem label="Pinyin" identifier="Item 2" id="494">
                                 <view key="view" id="495">
                                     <rect key="frame" x="10" y="33" width="386" height="357"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="501">
                                             <rect key="frame" x="35" y="226" width="63" height="18"/>
@@ -300,8 +300,8 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                                 <connections>
-                                                    <binding destination="331" name="enabled" keyPath="values.Quanpin.Fuzzy.Enabled" id="668"/>
                                                     <binding destination="331" name="value" keyPath="values.Quanpin.Fuzzy.ChiCi" id="597"/>
+                                                    <binding destination="331" name="enabled" keyPath="values.Quanpin.Fuzzy.Enabled" id="668"/>
                                                 </connections>
                                             </buttonCell>
                                         </button>
@@ -324,8 +324,8 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                                 <connections>
-                                                    <binding destination="331" name="enabled" keyPath="values.Quanpin.Fuzzy.Enabled" id="644"/>
                                                     <binding destination="331" name="value" keyPath="values.Quanpin.Fuzzy.AnAng" id="599"/>
+                                                    <binding destination="331" name="enabled" keyPath="values.Quanpin.Fuzzy.Enabled" id="644"/>
                                                 </connections>
                                             </buttonCell>
                                         </button>
@@ -348,8 +348,8 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                                 <connections>
-                                                    <binding destination="331" name="enabled" keyPath="values.Quanpin.Fuzzy.Enabled" id="646"/>
                                                     <binding destination="331" name="value" keyPath="values.Quanpin.Fuzzy.EnEng" id="601"/>
+                                                    <binding destination="331" name="enabled" keyPath="values.Quanpin.Fuzzy.Enabled" id="646"/>
                                                 </connections>
                                             </buttonCell>
                                         </button>
@@ -743,25 +743,24 @@
                             <tabViewItem label="Punctations" identifier="Item 3" id="694">
                                 <view key="view" id="695">
                                     <rect key="frame" x="10" y="33" width="386" height="357"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="696">
                                             <rect key="frame" x="17" y="-3" width="352" height="353"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <clipView key="contentView" ambiguous="YES" id="2nh-P1-iZn">
-                                                <rect key="frame" x="1" y="25" width="350" height="327"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                            <clipView key="contentView" id="2nh-P1-iZn">
+                                                <rect key="frame" x="1" y="1" width="350" height="351"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="700" id="699">
-                                                        <rect key="frame" x="0.0" y="0.0" width="350" height="327"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="350" height="326"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
                                                             <tableColumn identifier="column1" width="55" minWidth="40" maxWidth="1000" id="701">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                                    <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </tableHeaderCell>
@@ -776,7 +775,6 @@
                                                             </tableColumn>
                                                             <tableColumn identifier="column2" editable="NO" width="123" minWidth="40" maxWidth="1000" id="702">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="ASCII Character">
-                                                                    <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </tableHeaderCell>
@@ -794,9 +792,8 @@
                                                                     </binding>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn identifier="column3" width="163" minWidth="10" maxWidth="3.4028234663852886e+38" id="705">
+                                                            <tableColumn identifier="column3" width="154" minWidth="10" maxWidth="3.4028234663852886e+38" id="705">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Mapped String">
-                                                                    <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
@@ -822,7 +819,7 @@
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <tableHeaderView key="headerView" id="700">
+                                            <tableHeaderView key="headerView" wantsLayer="YES" id="700">
                                                 <rect key="frame" x="0.0" y="0.0" width="350" height="25"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>

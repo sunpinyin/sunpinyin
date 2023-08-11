@@ -350,7 +350,8 @@ def AppendEndianCheck(conf):
   || defined(__alpha__) || defined(__ARMEL__) \
   || defined(_MIPSEL)   || (defined(__sh__) && defined(__LITTLE_ENDIAN__)) \
   || defined(__riscv) \
-  || defined(__AARCH64EL__)
+  || defined(__AARCH64EL__) \
+  || defined(__loongarch64) || defined(__loongarch64__)
 # undef WORDS_BIGENDIAN
 
 #else

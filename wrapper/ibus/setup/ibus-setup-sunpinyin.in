@@ -4,4 +4,4 @@ prefix=@INSTALL_PREFIX@
 exec_prefix=${prefix}
 export IBUS_PREFIX=${prefix}
 export IBUS_LOCALEDIR=${prefix}/share/locale
-exec python @DATA_DIR@/setup/main.py $@
+exec python3 @DATA_DIR@/setup/main.py $@

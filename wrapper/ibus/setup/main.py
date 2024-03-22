@@ -503,7 +503,10 @@ class MainWindow():
         locale.setlocale(locale.LC_ALL, "")
         localedir = os.getenv("IBUS_LOCALEDIR")
         gettext.bindtextdomain(GETTEXT_PACKAGE, localedir)
-        gettext.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
+        try:
+            gettext.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
+        except AttributeError:
+            pass
 
     def __init_options(self):
         self.__fuzzy_setup = FuzzySetupDialog()

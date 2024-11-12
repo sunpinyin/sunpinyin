@@ -35,11 +35,7 @@
  * to such option by the copyright holder.
  */
 
-#ifdef MACOSX
-#include <Python/Python.h>
-#else
 #include <Python.h>
-#endif
 
 #include <signal.h>
 #include <sstream>
@@ -104,14 +100,14 @@ CIMIPythonPlugin::CIMIPythonPlugin(std::string filename)
     author = PyDict_GetItemString(dict, "__AUTHOR__");
     description = PyDict_GetItemString(dict, "__DESCRIPTION__");
 
-    if (name != NULL && PyString_Check(name)) {
-        m_name = PyString_AsString(name);
+    if (name != NULL && PyUnicode_Check(name)) {
+        m_name = PyUnicode_AsUTF8(name);
     }
-    if (author != NULL && PyString_Check(author)) {
-        m_author = PyString_AsString(author);
+    if (author != NULL && PyUnicode_Check(author)) {
+        m_author = PyUnicode_AsUTF8(author);
     }
-    if (description != NULL && PyString_Check(description)) {
-        m_description = PyString_AsString(description);
+    if (description != NULL && PyUnicode_Check(description)) {
+        m_description = PyUnicode_AsUTF8(description);
     }
     return;
 error:
@@ -136,23 +132,24 @@ Py_Call1(PyObject* method, PyObject* obj)
     return ret;
 }
 
-static const size_t TWCharBufferSize = 2048;
+static wstring PyUnicode_AsWString(PyObject* obj) {
+    assert(obj);
+    assert(PyUnicode_Check(obj));
 
-static wstring
-PyUnicode_AsWString(PyObject* obj)
-{
-    TWCHAR* wide_str_buf = new TWCHAR[TWCharBufferSize];
-    wstring res;
-    memset(wide_str_buf, 0, sizeof(TWCHAR) * TWCharBufferSize);
-
-    Py_ssize_t size = PyUnicode_AsWideChar((PyUnicodeObject*) obj,
-                                           (wchar_t*) wide_str_buf,
-                                           TWCharBufferSize);
-    if (size > 0) {
-        res = wstring(wide_str_buf);
+    Py_ssize_t unicode_length = PyUnicode_GetLength(obj);
+    if (unicode_length == 0) {
+        return wstring();
     }
-    delete [] wide_str_buf;
-    return res;
+
+    auto wide_str_buf = std::unique_ptr<wchar_t[]>(new wchar_t[unicode_length + 1]);
+    Py_ssize_t size = PyUnicode_AsWideChar(obj, wide_str_buf.get(), unicode_length);
+    wstring result;
+    if (size != -1) {
+        // Null-terminate the string
+        wide_str_buf[size] = L'\0';
+        result.assign(wide_str_buf.get(), size);
+    }
+    return result;
 }
 
 static void
@@ -166,12 +163,12 @@ ExtractSequence(TPluginCandidates& result, PyObject* py_seq)
         }
         PyObject* rank_obj = PyTuple_GetItem(tuple_item_obj, 0);
         PyObject* candi_obj = PyTuple_GetItem(tuple_item_obj, 1);
-        if (rank_obj == NULL || !PyInt_Check(rank_obj) || candi_obj == NULL
+        if (rank_obj == NULL || !PyLong_Check(rank_obj) || candi_obj == NULL
             || !PyUnicode_Check(candi_obj)) {
             continue;
         }
 
-        result.push_back(TPluginCandidateItem((int) PyInt_AsLong(rank_obj),
+        result.push_back(TPluginCandidateItem((int) PyLong_AsLong(rank_obj),
                                               PyUnicode_AsWString(candi_obj)));
     }
 }
@@ -194,13 +191,13 @@ CIMIPythonPlugin::provide_candidates(const TPluginPreedit& str,
 
     if (ret_obj == NULL) {
         *waitTime = -1;
-    } else if (PyInt_Check(ret_obj)) {
-        *waitTime = (int) PyInt_AsLong(ret_obj);
+    } else if (PyLong_Check(ret_obj)) {
+        *waitTime = (int) PyLong_AsLong(ret_obj);
     } else if (PyTuple_Check(ret_obj) && PyTuple_Size(ret_obj) == 2) {
         PyObject* time_obj = PyTuple_GetItem(ret_obj, 0);
         PyObject* seq_obj = PyTuple_GetItem(ret_obj, 1);
-        if (PyInt_Check(time_obj) && PyList_Check(seq_obj)) {
-            *waitTime = (int) PyInt_AsLong(time_obj);
+        if (PyLong_Check(time_obj) && PyList_Check(seq_obj)) {
+            *waitTime = (int) PyLong_AsLong(time_obj);
             ExtractSequence(res, seq_obj);
         }
     } else if (PyList_Check(ret_obj)) {
@@ -229,8 +226,8 @@ CIMIPythonPlugin::translate_candidate(const TPluginCandidate& candi,
     PyObject* ret_obj = Py_Call1(m_trans_method, str_obj);
     if (ret_obj == NULL) {
         *waitTime = -1;
-    } else if (PyInt_Check(ret_obj)) {
-        *waitTime = (int) PyInt_AsLong(ret_obj);
+    } else if (PyLong_Check(ret_obj)) {
+        *waitTime = (int) PyLong_AsLong(ret_obj);
     } else if (PyUnicode_Check(ret_obj)) {
         res = TPluginCandidate(PyUnicode_AsWString(ret_obj));
     }

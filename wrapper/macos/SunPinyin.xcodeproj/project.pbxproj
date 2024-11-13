@@ -8,18 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0752CBF20F9C723600C7096E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0752CBF10F9C723600C7096E /* dsa_pub.pem */; };
-		0752CBF40F9C745200C7096E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
 		0752CC1A0F9C77EB00C7096E /* Sparkle.framework in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F32A46D1275172C007FFD4D /* hunpin_seg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F32A46B1275172C007FFD4D /* hunpin_seg.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		9444C8A019FB628700764DB5 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9444C89F19FB628700764DB5 /* Python.framework */; };
 		A412C8580F7942DC006B10AD /* SunPinyin.icns in Resources */ = {isa = PBXBuildFile; fileRef = A412C8570F7942DB006B10AD /* SunPinyin.icns */; };
 		A422A7D10DCD694400B41288 /* CandidateWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A422A7D00DCD694400B41288 /* CandidateWindow.m */; };
 		A44C703E13D9BB010026694E /* imi_plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A44C703C13D9BB010026694E /* imi_plugin.cpp */; };
 		A45578F51146A75200592C6E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45578F41146A75200592C6E /* MainMenu.xib */; };
-		A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; };
 		A464E3740F65261800148227 /* Growl.framework in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = A464E2BD0F65211A00148227 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A47C487E105E86B5006D528B /* ic_history.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4865105E86B5006D528B /* ic_history.cpp */; };
 		A47C487F105E86B5006D528B /* imi_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A47C4867105E86B5006D528B /* imi_context.cpp */; };
@@ -40,14 +36,16 @@
 		A4829AE711060C69004F71A7 /* imi_session_wrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4829AE611060C69004F71A7 /* imi_session_wrapper.mm */; };
 		A4ADD1E40DBF0D1D00671528 /* imi_imkitwin.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4ADD1E30DBF0D1D00671528 /* imi_imkitwin.mm */; };
 		A4B66501106D051D009BA1DB /* imi_option_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4B664FE106D051D009BA1DB /* imi_option_event.cpp */; };
-		A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B8E1B20F645B870094E08B /* Carbon.framework */; };
 		A4DA4E730DBDD9D600472176 /* pytrie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E620DBDD9D600472176 /* pytrie.cpp */; };
 		A4DA4E740DBDD9D600472176 /* portability.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E640DBDD9D600472176 /* portability.cpp */; };
 		A4DA4E750DBDD9D600472176 /* slm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4DA4E670DBDD9D600472176 /* slm.cpp */; };
 		A4DA4ED20DBDFA0800472176 /* lm_sc.t3g in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED00DBDFA0800472176 /* lm_sc.t3g */; };
 		A4DA4ED30DBDFA0800472176 /* pydict_sc.bin in Resources */ = {isa = PBXBuildFile; fileRef = A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */; };
 		A4FC48CB0F6530EF0069BE81 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4FC48C90F6530EF0069BE81 /* Localizable.strings */; };
-		E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93074B60A5C264700470842 /* InputMethodKit.framework */; };
+		C1564D4B2CE340C800E95494 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0752CBF30F9C745200C7096E /* Sparkle.framework */; };
+		C1791FD32CE334B300B39ADE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1791FD22CE334B300B39ADE /* Cocoa.framework */; };
+		C1791FD52CE334BF00B39ADE /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1791FD42CE334BF00B39ADE /* InputMethodKit.framework */; };
+		C1791FD72CE334C900B39ADE /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1791FD62CE334C900B39ADE /* Carbon.framework */; };
 		E93074E20A5C2F1200470842 /* SunPinyinInputController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */; };
 		E99A79200BFAA07E00935A00 /* preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = E99A791F0BFAA07E00935A00 /* preferences.plist */; };
 		E9FB8BCB0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9FB8BCA0BF0D79B00305C76 /* SunPinyinApplicationDelegate.mm */; };
@@ -147,6 +145,270 @@
 		A4DA4ED10DBDFA0800472176 /* pydict_sc.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = pydict_sc.bin; path = ../../data/pydict_sc.bin; sourceTree = "<group>"; };
 		A4FC48CA0F6530EF0069BE81 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A4FC48CC0F6531110069BE81 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C159A5512CE0A885005B5EDC /* h5strings_en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = h5strings_en.json; sourceTree = "<group>"; };
+		C159A5532CE0A885005B5EDC /* h5strings_en.asset */ = {isa = PBXFileReference; lastKnownFileType = text; path = h5strings_en.asset; sourceTree = "<group>"; };
+		C159A5572CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5592CE0A885005B5EDC /* normalizer */ = {isa = PBXFileReference; lastKnownFileType = text; path = normalizer; sourceTree = "<group>"; };
+		C159A55A2CE0A885005B5EDC /* serverlesscli */ = {isa = PBXFileReference; lastKnownFileType = text; path = serverlesscli; sourceTree = "<group>"; };
+		C159A55C2CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A55D2CE0A885005B5EDC /* core.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "core.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A55F2CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5602CE0A885005B5EDC /* __main__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __main__.py; sourceTree = "<group>"; };
+		C159A5612CE0A885005B5EDC /* cacert.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
+		C159A5622CE0A885005B5EDC /* core.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = core.py; sourceTree = "<group>"; };
+		C159A5632CE0A885005B5EDC /* py.typed */ = {isa = PBXFileReference; lastKnownFileType = text; path = py.typed; sourceTree = "<group>"; };
+		C159A5652CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A5662CE0A885005B5EDC /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C159A5672CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A5682CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A5692CE0A885005B5EDC /* top_level.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = top_level.txt; sourceTree = "<group>"; };
+		C159A56A2CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A56C2CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A56D2CE0A885005B5EDC /* api.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "api.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A56E2CE0A885005B5EDC /* cd.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cd.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A56F2CE0A885005B5EDC /* constant.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "constant.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5702CE0A885005B5EDC /* legacy.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "legacy.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5712CE0A885005B5EDC /* models.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "models.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5722CE0A885005B5EDC /* utils.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utils.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5732CE0A885005B5EDC /* version.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "version.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5752CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5762CE0A885005B5EDC /* __main__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __main__.py; sourceTree = "<group>"; };
+		C159A5782CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5792CE0A885005B5EDC /* __main__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __main__.py; sourceTree = "<group>"; };
+		C159A57A2CE0A885005B5EDC /* api.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = api.py; sourceTree = "<group>"; };
+		C159A57B2CE0A885005B5EDC /* cd.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = cd.py; sourceTree = "<group>"; };
+		C159A57C2CE0A885005B5EDC /* constant.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = constant.py; sourceTree = "<group>"; };
+		C159A57D2CE0A885005B5EDC /* legacy.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = legacy.py; sourceTree = "<group>"; };
+		C159A57E2CE0A885005B5EDC /* md.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = md.py; sourceTree = "<group>"; };
+		C159A57F2CE0A885005B5EDC /* md__mypyc.cpython-310-darwin.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "md__mypyc.cpython-310-darwin.so"; sourceTree = "<group>"; };
+		C159A5802CE0A885005B5EDC /* md.cpython-310-darwin.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "md.cpython-310-darwin.so"; sourceTree = "<group>"; };
+		C159A5812CE0A885005B5EDC /* models.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = models.py; sourceTree = "<group>"; };
+		C159A5822CE0A885005B5EDC /* py.typed */ = {isa = PBXFileReference; lastKnownFileType = text; path = py.typed; sourceTree = "<group>"; };
+		C159A5832CE0A885005B5EDC /* utils.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
+		C159A5842CE0A885005B5EDC /* version.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = version.py; sourceTree = "<group>"; };
+		C159A5862CE0A885005B5EDC /* entry_points.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = entry_points.txt; sourceTree = "<group>"; };
+		C159A5872CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A5882CE0A885005B5EDC /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C159A5892CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A58A2CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A58B2CE0A885005B5EDC /* top_level.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = top_level.txt; sourceTree = "<group>"; };
+		C159A58C2CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A58E2CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A58F2CE0A885005B5EDC /* core.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "core.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5902CE0A885005B5EDC /* idnadata.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "idnadata.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5912CE0A885005B5EDC /* intranges.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "intranges.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5922CE0A885005B5EDC /* package_data.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "package_data.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5942CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5952CE0A885005B5EDC /* codec.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = codec.py; sourceTree = "<group>"; };
+		C159A5962CE0A885005B5EDC /* compat.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = compat.py; sourceTree = "<group>"; };
+		C159A5972CE0A885005B5EDC /* core.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = core.py; sourceTree = "<group>"; };
+		C159A5982CE0A885005B5EDC /* idnadata.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = idnadata.py; sourceTree = "<group>"; };
+		C159A5992CE0A885005B5EDC /* intranges.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = intranges.py; sourceTree = "<group>"; };
+		C159A59A2CE0A885005B5EDC /* package_data.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = package_data.py; sourceTree = "<group>"; };
+		C159A59B2CE0A885005B5EDC /* py.typed */ = {isa = PBXFileReference; lastKnownFileType = text; path = py.typed; sourceTree = "<group>"; };
+		C159A59C2CE0A885005B5EDC /* uts46data.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = uts46data.py; sourceTree = "<group>"; };
+		C159A59E2CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A59F2CE0A885005B5EDC /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		C159A5A02CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A5A12CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A5A22CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A5A42CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A5A52CE0A885005B5EDC /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C159A5A62CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A5A72CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A5A82CE0A885005B5EDC /* REQUESTED */ = {isa = PBXFileReference; lastKnownFileType = text; path = REQUESTED; sourceTree = "<group>"; };
+		C159A5A92CE0A885005B5EDC /* top_level.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = top_level.txt; sourceTree = "<group>"; };
+		C159A5AA2CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A5AC2CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5AD2CE0A885005B5EDC /* __version__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__version__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5AE2CE0A885005B5EDC /* _internal_utils.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "_internal_utils.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5AF2CE0A885005B5EDC /* adapters.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "adapters.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B02CE0A885005B5EDC /* api.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "api.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B12CE0A885005B5EDC /* auth.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "auth.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B22CE0A885005B5EDC /* certs.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "certs.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B32CE0A885005B5EDC /* compat.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "compat.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B42CE0A885005B5EDC /* cookies.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cookies.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B52CE0A885005B5EDC /* exceptions.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "exceptions.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B62CE0A885005B5EDC /* hooks.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "hooks.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B72CE0A885005B5EDC /* models.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "models.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B82CE0A885005B5EDC /* packages.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "packages.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5B92CE0A885005B5EDC /* sessions.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sessions.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5BA2CE0A885005B5EDC /* status_codes.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "status_codes.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5BB2CE0A885005B5EDC /* structures.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "structures.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5BC2CE0A885005B5EDC /* utils.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utils.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5BE2CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5BF2CE0A885005B5EDC /* __version__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __version__.py; sourceTree = "<group>"; };
+		C159A5C02CE0A885005B5EDC /* _internal_utils.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = _internal_utils.py; sourceTree = "<group>"; };
+		C159A5C12CE0A885005B5EDC /* adapters.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = adapters.py; sourceTree = "<group>"; };
+		C159A5C22CE0A885005B5EDC /* api.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = api.py; sourceTree = "<group>"; };
+		C159A5C32CE0A885005B5EDC /* auth.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = auth.py; sourceTree = "<group>"; };
+		C159A5C42CE0A885005B5EDC /* certs.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = certs.py; sourceTree = "<group>"; };
+		C159A5C52CE0A885005B5EDC /* compat.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = compat.py; sourceTree = "<group>"; };
+		C159A5C62CE0A885005B5EDC /* cookies.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = cookies.py; sourceTree = "<group>"; };
+		C159A5C72CE0A885005B5EDC /* exceptions.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = exceptions.py; sourceTree = "<group>"; };
+		C159A5C82CE0A885005B5EDC /* help.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = help.py; sourceTree = "<group>"; };
+		C159A5C92CE0A885005B5EDC /* hooks.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = hooks.py; sourceTree = "<group>"; };
+		C159A5CA2CE0A885005B5EDC /* models.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = models.py; sourceTree = "<group>"; };
+		C159A5CB2CE0A885005B5EDC /* packages.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = packages.py; sourceTree = "<group>"; };
+		C159A5CC2CE0A885005B5EDC /* sessions.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = sessions.py; sourceTree = "<group>"; };
+		C159A5CD2CE0A885005B5EDC /* status_codes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = status_codes.py; sourceTree = "<group>"; };
+		C159A5CE2CE0A885005B5EDC /* structures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = structures.py; sourceTree = "<group>"; };
+		C159A5CF2CE0A885005B5EDC /* utils.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
+		C159A5D12CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A5D22CE0A885005B5EDC /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C159A5D32CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A5D42CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A5D52CE0A885005B5EDC /* REQUESTED */ = {isa = PBXFileReference; lastKnownFileType = text; path = REQUESTED; sourceTree = "<group>"; };
+		C159A5D62CE0A885005B5EDC /* top_level.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = top_level.txt; sourceTree = "<group>"; };
+		C159A5D72CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A5D92CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5DA2CE0A885005B5EDC /* authutil.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "authutil.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5DB2CE0A885005B5EDC /* contexts.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "contexts.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5DC2CE0A885005B5EDC /* main.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "main.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5DD2CE0A885005B5EDC /* runtime.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "runtime.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5DE2CE0A885005B5EDC /* runtimeenv.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "runtimeenv.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5DF2CE0A885005B5EDC /* util.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "util.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5E02CE0A885005B5EDC /* workerlog.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "workerlog.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A5E22CE0A885005B5EDC /* ALFActions.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ALFActions.py; sourceTree = "<group>"; };
+		C159A5E32CE0A885005B5EDC /* ALFCore.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ALFCore.py; sourceTree = "<group>"; };
+		C159A5E42CE0A885005B5EDC /* ALFMain.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ALFMain.py; sourceTree = "<group>"; };
+		C159A5E52CE0A885005B5EDC /* CustomActions.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = CustomActions.py; sourceTree = "<group>"; };
+		C159A5E62CE0A885005B5EDC /* Utilities.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Utilities.py; sourceTree = "<group>"; };
+		C159A5E82CE0A885005B5EDC /* application.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = application.ini; sourceTree = "<group>"; };
+		C159A5E92CE0A885005B5EDC /* runtime.ini */ = {isa = PBXFileReference; lastKnownFileType = text; path = runtime.ini; sourceTree = "<group>"; };
+		C159A5EB2CE0A885005B5EDC /* make */ = {isa = PBXFileReference; lastKnownFileType = file; path = make; sourceTree = "<group>"; };
+		C159A5EC2CE0A885005B5EDC /* scp */ = {isa = PBXFileReference; lastKnownFileType = file; path = scp; sourceTree = "<group>"; };
+		C159A5ED2CE0A885005B5EDC /* sftp */ = {isa = PBXFileReference; lastKnownFileType = file; path = sftp; sourceTree = "<group>"; };
+		C159A5EE2CE0A885005B5EDC /* slogin */ = {isa = PBXFileReference; lastKnownFileType = file; path = slogin; sourceTree = "<group>"; };
+		C159A5EF2CE0A885005B5EDC /* ssh */ = {isa = PBXFileReference; lastKnownFileType = file; path = ssh; sourceTree = "<group>"; };
+		C159A5F02CE0A885005B5EDC /* ssh-add */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssh-add"; sourceTree = "<group>"; };
+		C159A5F12CE0A885005B5EDC /* ssh-agent */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssh-agent"; sourceTree = "<group>"; };
+		C159A5F22CE0A885005B5EDC /* ssh-keygen */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssh-keygen"; sourceTree = "<group>"; };
+		C159A5F32CE0A885005B5EDC /* ssh-keyscan */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssh-keyscan"; sourceTree = "<group>"; };
+		C159A5F52CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A5F62CE0A885005B5EDC /* __main__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __main__.py; sourceTree = "<group>"; };
+		C159A5F72CE0A885005B5EDC /* authutil.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = authutil.py; sourceTree = "<group>"; };
+		C159A5F82CE0A885005B5EDC /* contexts.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = contexts.py; sourceTree = "<group>"; };
+		C159A5F92CE0A885005B5EDC /* main.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
+		C159A5FA2CE0A885005B5EDC /* runtime.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = runtime.py; sourceTree = "<group>"; };
+		C159A5FB2CE0A885005B5EDC /* runtimeenv.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = runtimeenv.py; sourceTree = "<group>"; };
+		C159A5FC2CE0A885005B5EDC /* util.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = util.py; sourceTree = "<group>"; };
+		C159A5FD2CE0A885005B5EDC /* workerlog.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = workerlog.py; sourceTree = "<group>"; };
+		C159A5FF2CE0A885005B5EDC /* direct_url.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = direct_url.json; sourceTree = "<group>"; };
+		C159A6002CE0A885005B5EDC /* entry_points.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = entry_points.txt; sourceTree = "<group>"; };
+		C159A6012CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A6022CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A6032CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A6042CE0A885005B5EDC /* REQUESTED */ = {isa = PBXFileReference; lastKnownFileType = text; path = REQUESTED; sourceTree = "<group>"; };
+		C159A6052CE0A885005B5EDC /* top_level.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = top_level.txt; sourceTree = "<group>"; };
+		C159A6062CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A6082CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6092CE0A885005B5EDC /* _base_connection.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "_base_connection.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A60A2CE0A885005B5EDC /* _collections.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "_collections.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A60B2CE0A885005B5EDC /* _request_methods.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "_request_methods.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A60C2CE0A885005B5EDC /* _version.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "_version.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A60D2CE0A885005B5EDC /* connection.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "connection.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A60E2CE0A885005B5EDC /* connectionpool.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "connectionpool.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A60F2CE0A885005B5EDC /* exceptions.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "exceptions.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6102CE0A885005B5EDC /* fields.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fields.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6112CE0A885005B5EDC /* filepost.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "filepost.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6122CE0A885005B5EDC /* poolmanager.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "poolmanager.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6132CE0A885005B5EDC /* response.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "response.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6152CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6162CE0A885005B5EDC /* socks.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "socks.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6182CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A6192CE0A885005B5EDC /* connection.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = connection.py; sourceTree = "<group>"; };
+		C159A61A2CE0A885005B5EDC /* emscripten_fetch_worker.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = emscripten_fetch_worker.js; sourceTree = "<group>"; };
+		C159A61B2CE0A885005B5EDC /* fetch.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = fetch.py; sourceTree = "<group>"; };
+		C159A61C2CE0A885005B5EDC /* request.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = request.py; sourceTree = "<group>"; };
+		C159A61D2CE0A885005B5EDC /* response.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = response.py; sourceTree = "<group>"; };
+		C159A61F2CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A6202CE0A885005B5EDC /* pyopenssl.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = pyopenssl.py; sourceTree = "<group>"; };
+		C159A6212CE0A885005B5EDC /* socks.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = socks.py; sourceTree = "<group>"; };
+		C159A6232CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6242CE0A885005B5EDC /* connection.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "connection.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6252CE0A885005B5EDC /* proxy.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "proxy.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6262CE0A885005B5EDC /* request.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "request.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6272CE0A885005B5EDC /* response.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "response.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6282CE0A885005B5EDC /* retry.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "retry.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6292CE0A885005B5EDC /* ssl_.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssl_.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A62A2CE0A885005B5EDC /* ssl_match_hostname.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssl_match_hostname.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A62B2CE0A885005B5EDC /* ssltransport.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ssltransport.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A62C2CE0A885005B5EDC /* timeout.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "timeout.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A62D2CE0A885005B5EDC /* url.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "url.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A62E2CE0A885005B5EDC /* util.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "util.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A62F2CE0A885005B5EDC /* wait.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wait.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6312CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A6322CE0A885005B5EDC /* connection.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = connection.py; sourceTree = "<group>"; };
+		C159A6332CE0A885005B5EDC /* proxy.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = proxy.py; sourceTree = "<group>"; };
+		C159A6342CE0A885005B5EDC /* request.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = request.py; sourceTree = "<group>"; };
+		C159A6352CE0A885005B5EDC /* response.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = response.py; sourceTree = "<group>"; };
+		C159A6362CE0A885005B5EDC /* retry.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = retry.py; sourceTree = "<group>"; };
+		C159A6372CE0A885005B5EDC /* ssl_.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ssl_.py; sourceTree = "<group>"; };
+		C159A6382CE0A885005B5EDC /* ssl_match_hostname.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ssl_match_hostname.py; sourceTree = "<group>"; };
+		C159A6392CE0A885005B5EDC /* ssltransport.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = ssltransport.py; sourceTree = "<group>"; };
+		C159A63A2CE0A885005B5EDC /* timeout.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = timeout.py; sourceTree = "<group>"; };
+		C159A63B2CE0A885005B5EDC /* url.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = url.py; sourceTree = "<group>"; };
+		C159A63C2CE0A885005B5EDC /* util.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = util.py; sourceTree = "<group>"; };
+		C159A63D2CE0A885005B5EDC /* wait.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = wait.py; sourceTree = "<group>"; };
+		C159A63F2CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A6402CE0A885005B5EDC /* _base_connection.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = _base_connection.py; sourceTree = "<group>"; };
+		C159A6412CE0A885005B5EDC /* _collections.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = _collections.py; sourceTree = "<group>"; };
+		C159A6422CE0A885005B5EDC /* _request_methods.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = _request_methods.py; sourceTree = "<group>"; };
+		C159A6432CE0A885005B5EDC /* _version.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = _version.py; sourceTree = "<group>"; };
+		C159A6442CE0A885005B5EDC /* connection.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = connection.py; sourceTree = "<group>"; };
+		C159A6452CE0A885005B5EDC /* connectionpool.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = connectionpool.py; sourceTree = "<group>"; };
+		C159A6462CE0A885005B5EDC /* exceptions.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = exceptions.py; sourceTree = "<group>"; };
+		C159A6472CE0A885005B5EDC /* fields.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = fields.py; sourceTree = "<group>"; };
+		C159A6482CE0A885005B5EDC /* filepost.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = filepost.py; sourceTree = "<group>"; };
+		C159A6492CE0A885005B5EDC /* http2.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = http2.py; sourceTree = "<group>"; };
+		C159A64A2CE0A885005B5EDC /* poolmanager.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = poolmanager.py; sourceTree = "<group>"; };
+		C159A64B2CE0A885005B5EDC /* py.typed */ = {isa = PBXFileReference; lastKnownFileType = text; path = py.typed; sourceTree = "<group>"; };
+		C159A64C2CE0A885005B5EDC /* response.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = response.py; sourceTree = "<group>"; };
+		C159A64E2CE0A885005B5EDC /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		C159A6502CE0A885005B5EDC /* INSTALLER */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALLER; sourceTree = "<group>"; };
+		C159A6512CE0A885005B5EDC /* METADATA */ = {isa = PBXFileReference; lastKnownFileType = text; path = METADATA; sourceTree = "<group>"; };
+		C159A6522CE0A885005B5EDC /* RECORD */ = {isa = PBXFileReference; lastKnownFileType = text; path = RECORD; sourceTree = "<group>"; };
+		C159A6532CE0A885005B5EDC /* WHEEL */ = {isa = PBXFileReference; lastKnownFileType = text; path = WHEEL; sourceTree = "<group>"; };
+		C159A6552CE0A885005B5EDC /* __init__.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "__init__.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6562CE0A885005B5EDC /* composer.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "composer.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6572CE0A885005B5EDC /* constructor.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "constructor.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6582CE0A885005B5EDC /* cyaml.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cyaml.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6592CE0A885005B5EDC /* dumper.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dumper.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A65A2CE0A885005B5EDC /* emitter.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "emitter.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A65B2CE0A885005B5EDC /* error.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "error.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A65C2CE0A885005B5EDC /* events.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "events.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A65D2CE0A885005B5EDC /* loader.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "loader.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A65E2CE0A885005B5EDC /* nodes.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "nodes.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A65F2CE0A885005B5EDC /* parser.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "parser.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6602CE0A885005B5EDC /* reader.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "reader.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6612CE0A885005B5EDC /* representer.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "representer.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6622CE0A885005B5EDC /* resolver.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "resolver.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6632CE0A885005B5EDC /* scanner.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "scanner.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6642CE0A885005B5EDC /* serializer.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "serializer.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6652CE0A885005B5EDC /* tokens.cpython-310.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "tokens.cpython-310.pyc"; sourceTree = "<group>"; };
+		C159A6672CE0A885005B5EDC /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		C159A6682CE0A885005B5EDC /* _yaml.cpython-310-darwin.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "_yaml.cpython-310-darwin.so"; sourceTree = "<group>"; };
+		C159A6692CE0A885005B5EDC /* composer.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = composer.py; sourceTree = "<group>"; };
+		C159A66A2CE0A885005B5EDC /* constructor.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = constructor.py; sourceTree = "<group>"; };
+		C159A66B2CE0A885005B5EDC /* cyaml.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = cyaml.py; sourceTree = "<group>"; };
+		C159A66C2CE0A885005B5EDC /* dumper.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = dumper.py; sourceTree = "<group>"; };
+		C159A66D2CE0A885005B5EDC /* emitter.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = emitter.py; sourceTree = "<group>"; };
+		C159A66E2CE0A885005B5EDC /* error.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = error.py; sourceTree = "<group>"; };
+		C159A66F2CE0A885005B5EDC /* events.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = events.py; sourceTree = "<group>"; };
+		C159A6702CE0A885005B5EDC /* loader.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = loader.py; sourceTree = "<group>"; };
+		C159A6712CE0A885005B5EDC /* nodes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = nodes.py; sourceTree = "<group>"; };
+		C159A6722CE0A885005B5EDC /* parser.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = parser.py; sourceTree = "<group>"; };
+		C159A6732CE0A885005B5EDC /* reader.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = reader.py; sourceTree = "<group>"; };
+		C159A6742CE0A885005B5EDC /* representer.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = representer.py; sourceTree = "<group>"; };
+		C159A6752CE0A885005B5EDC /* resolver.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = resolver.py; sourceTree = "<group>"; };
+		C159A6762CE0A885005B5EDC /* scanner.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = scanner.py; sourceTree = "<group>"; };
+		C159A6772CE0A885005B5EDC /* serializer.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = serializer.py; sourceTree = "<group>"; };
+		C159A6782CE0A885005B5EDC /* tokens.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = tokens.py; sourceTree = "<group>"; };
+		C159A67C2CE0A885005B5EDC /* .shivPackage_aa86d49e99ed01ae278917cce5ee60445a6ac68ce4952636027c751f4c8931d5_lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = .shivPackage_aa86d49e99ed01ae278917cce5ee60445a6ac68ce4952636027c751f4c8931d5_lock; sourceTree = "<group>"; };
+		C1791FD22CE334B300B39ADE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		C1791FD42CE334BF00B39ADE /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = System/Library/Frameworks/InputMethodKit.framework; sourceTree = SDKROOT; };
+		C1791FD62CE334C900B39ADE /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		E93074B60A5C264700470842 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = /System/Library/Frameworks/InputMethodKit.framework; sourceTree = "<absolute>"; };
 		E93074E00A5C2F1200470842 /* SunPinyinInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunPinyinInputController.h; sourceTree = "<group>"; };
 		E93074E10A5C2F1200470842 /* SunPinyinInputController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SunPinyinInputController.mm; sourceTree = "<group>"; };
@@ -156,16 +418,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8D11072E0486CEB800E47090 /* Frameworks */ = {
+		C1791FD12CE334A100B39ADE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9444C8A019FB628700764DB5 /* Python.framework in Frameworks */,
-				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */,
-				A4B8E1B30F645B870094E08B /* Carbon.framework in Frameworks */,
-				A464E2BE0F65211A00148227 /* Growl.framework in Frameworks */,
-				0752CBF40F9C745200C7096E /* Sparkle.framework in Frameworks */,
+				C1564D4B2CE340C800E95494 /* Sparkle.framework in Frameworks */,
+				C1791FD72CE334C900B39ADE /* Carbon.framework in Frameworks */,
+				C1791FD52CE334BF00B39ADE /* InputMethodKit.framework in Frameworks */,
+				C1791FD32CE334B300B39ADE /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +515,10 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C1791FD62CE334C900B39ADE /* Carbon.framework */,
+				C1791FD42CE334BF00B39ADE /* InputMethodKit.framework */,
+				C1791FD22CE334B300B39ADE /* Cocoa.framework */,
+				C159A67F2CE0A885005B5EDC /* workspace */,
 				9444C89F19FB628700764DB5 /* Python.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
@@ -351,6 +615,603 @@
 			path = slm;
 			sourceTree = "<group>";
 		};
+		C159A5522CE0A885005B5EDC /* jl10n */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5512CE0A885005B5EDC /* h5strings_en.json */,
+			);
+			path = jl10n;
+			sourceTree = "<group>";
+		};
+		C159A5542CE0A885005B5EDC /* unity_yaml */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5532CE0A885005B5EDC /* h5strings_en.asset */,
+			);
+			path = unity_yaml;
+			sourceTree = "<group>";
+		};
+		C159A5552CE0A885005B5EDC /* en_us */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5522CE0A885005B5EDC /* jl10n */,
+				C159A5542CE0A885005B5EDC /* unity_yaml */,
+			);
+			path = en_us;
+			sourceTree = "<group>";
+		};
+		C159A5562CE0A885005B5EDC /* serverless */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5552CE0A885005B5EDC /* en_us */,
+			);
+			path = serverless;
+			sourceTree = "<group>";
+		};
+		C159A5582CE0A885005B5EDC /* _yaml */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5572CE0A885005B5EDC /* __init__.py */,
+			);
+			path = _yaml;
+			sourceTree = "<group>";
+		};
+		C159A55B2CE0A885005B5EDC /* bin */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5592CE0A885005B5EDC /* normalizer */,
+				C159A55A2CE0A885005B5EDC /* serverlesscli */,
+			);
+			path = bin;
+			sourceTree = "<group>";
+		};
+		C159A55E2CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A55C2CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A55D2CE0A885005B5EDC /* core.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A5642CE0A885005B5EDC /* certifi */ = {
+			isa = PBXGroup;
+			children = (
+				C159A55E2CE0A885005B5EDC /* __pycache__ */,
+				C159A55F2CE0A885005B5EDC /* __init__.py */,
+				C159A5602CE0A885005B5EDC /* __main__.py */,
+				C159A5612CE0A885005B5EDC /* cacert.pem */,
+				C159A5622CE0A885005B5EDC /* core.py */,
+				C159A5632CE0A885005B5EDC /* py.typed */,
+			);
+			path = certifi;
+			sourceTree = "<group>";
+		};
+		C159A56B2CE0A885005B5EDC /* certifi-2024.2.2.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5652CE0A885005B5EDC /* INSTALLER */,
+				C159A5662CE0A885005B5EDC /* LICENSE */,
+				C159A5672CE0A885005B5EDC /* METADATA */,
+				C159A5682CE0A885005B5EDC /* RECORD */,
+				C159A5692CE0A885005B5EDC /* top_level.txt */,
+				C159A56A2CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "certifi-2024.2.2.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A5742CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A56C2CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A56D2CE0A885005B5EDC /* api.cpython-310.pyc */,
+				C159A56E2CE0A885005B5EDC /* cd.cpython-310.pyc */,
+				C159A56F2CE0A885005B5EDC /* constant.cpython-310.pyc */,
+				C159A5702CE0A885005B5EDC /* legacy.cpython-310.pyc */,
+				C159A5712CE0A885005B5EDC /* models.cpython-310.pyc */,
+				C159A5722CE0A885005B5EDC /* utils.cpython-310.pyc */,
+				C159A5732CE0A885005B5EDC /* version.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A5772CE0A885005B5EDC /* cli */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5752CE0A885005B5EDC /* __init__.py */,
+				C159A5762CE0A885005B5EDC /* __main__.py */,
+			);
+			path = cli;
+			sourceTree = "<group>";
+		};
+		C159A5852CE0A885005B5EDC /* charset_normalizer */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5742CE0A885005B5EDC /* __pycache__ */,
+				C159A5772CE0A885005B5EDC /* cli */,
+				C159A5782CE0A885005B5EDC /* __init__.py */,
+				C159A5792CE0A885005B5EDC /* __main__.py */,
+				C159A57A2CE0A885005B5EDC /* api.py */,
+				C159A57B2CE0A885005B5EDC /* cd.py */,
+				C159A57C2CE0A885005B5EDC /* constant.py */,
+				C159A57D2CE0A885005B5EDC /* legacy.py */,
+				C159A57E2CE0A885005B5EDC /* md.py */,
+				C159A57F2CE0A885005B5EDC /* md__mypyc.cpython-310-darwin.so */,
+				C159A5802CE0A885005B5EDC /* md.cpython-310-darwin.so */,
+				C159A5812CE0A885005B5EDC /* models.py */,
+				C159A5822CE0A885005B5EDC /* py.typed */,
+				C159A5832CE0A885005B5EDC /* utils.py */,
+				C159A5842CE0A885005B5EDC /* version.py */,
+			);
+			path = charset_normalizer;
+			sourceTree = "<group>";
+		};
+		C159A58D2CE0A885005B5EDC /* charset_normalizer-3.3.2.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5862CE0A885005B5EDC /* entry_points.txt */,
+				C159A5872CE0A885005B5EDC /* INSTALLER */,
+				C159A5882CE0A885005B5EDC /* LICENSE */,
+				C159A5892CE0A885005B5EDC /* METADATA */,
+				C159A58A2CE0A885005B5EDC /* RECORD */,
+				C159A58B2CE0A885005B5EDC /* top_level.txt */,
+				C159A58C2CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "charset_normalizer-3.3.2.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A5932CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A58E2CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A58F2CE0A885005B5EDC /* core.cpython-310.pyc */,
+				C159A5902CE0A885005B5EDC /* idnadata.cpython-310.pyc */,
+				C159A5912CE0A885005B5EDC /* intranges.cpython-310.pyc */,
+				C159A5922CE0A885005B5EDC /* package_data.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A59D2CE0A885005B5EDC /* idna */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5932CE0A885005B5EDC /* __pycache__ */,
+				C159A5942CE0A885005B5EDC /* __init__.py */,
+				C159A5952CE0A885005B5EDC /* codec.py */,
+				C159A5962CE0A885005B5EDC /* compat.py */,
+				C159A5972CE0A885005B5EDC /* core.py */,
+				C159A5982CE0A885005B5EDC /* idnadata.py */,
+				C159A5992CE0A885005B5EDC /* intranges.py */,
+				C159A59A2CE0A885005B5EDC /* package_data.py */,
+				C159A59B2CE0A885005B5EDC /* py.typed */,
+				C159A59C2CE0A885005B5EDC /* uts46data.py */,
+			);
+			path = idna;
+			sourceTree = "<group>";
+		};
+		C159A5A32CE0A885005B5EDC /* idna-3.6.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A59E2CE0A885005B5EDC /* INSTALLER */,
+				C159A59F2CE0A885005B5EDC /* LICENSE.md */,
+				C159A5A02CE0A885005B5EDC /* METADATA */,
+				C159A5A12CE0A885005B5EDC /* RECORD */,
+				C159A5A22CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "idna-3.6.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A5AB2CE0A885005B5EDC /* PyYAML-6.0.1.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5A42CE0A885005B5EDC /* INSTALLER */,
+				C159A5A52CE0A885005B5EDC /* LICENSE */,
+				C159A5A62CE0A885005B5EDC /* METADATA */,
+				C159A5A72CE0A885005B5EDC /* RECORD */,
+				C159A5A82CE0A885005B5EDC /* REQUESTED */,
+				C159A5A92CE0A885005B5EDC /* top_level.txt */,
+				C159A5AA2CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "PyYAML-6.0.1.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A5BD2CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5AC2CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A5AD2CE0A885005B5EDC /* __version__.cpython-310.pyc */,
+				C159A5AE2CE0A885005B5EDC /* _internal_utils.cpython-310.pyc */,
+				C159A5AF2CE0A885005B5EDC /* adapters.cpython-310.pyc */,
+				C159A5B02CE0A885005B5EDC /* api.cpython-310.pyc */,
+				C159A5B12CE0A885005B5EDC /* auth.cpython-310.pyc */,
+				C159A5B22CE0A885005B5EDC /* certs.cpython-310.pyc */,
+				C159A5B32CE0A885005B5EDC /* compat.cpython-310.pyc */,
+				C159A5B42CE0A885005B5EDC /* cookies.cpython-310.pyc */,
+				C159A5B52CE0A885005B5EDC /* exceptions.cpython-310.pyc */,
+				C159A5B62CE0A885005B5EDC /* hooks.cpython-310.pyc */,
+				C159A5B72CE0A885005B5EDC /* models.cpython-310.pyc */,
+				C159A5B82CE0A885005B5EDC /* packages.cpython-310.pyc */,
+				C159A5B92CE0A885005B5EDC /* sessions.cpython-310.pyc */,
+				C159A5BA2CE0A885005B5EDC /* status_codes.cpython-310.pyc */,
+				C159A5BB2CE0A885005B5EDC /* structures.cpython-310.pyc */,
+				C159A5BC2CE0A885005B5EDC /* utils.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A5D02CE0A885005B5EDC /* requests */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5BD2CE0A885005B5EDC /* __pycache__ */,
+				C159A5BE2CE0A885005B5EDC /* __init__.py */,
+				C159A5BF2CE0A885005B5EDC /* __version__.py */,
+				C159A5C02CE0A885005B5EDC /* _internal_utils.py */,
+				C159A5C12CE0A885005B5EDC /* adapters.py */,
+				C159A5C22CE0A885005B5EDC /* api.py */,
+				C159A5C32CE0A885005B5EDC /* auth.py */,
+				C159A5C42CE0A885005B5EDC /* certs.py */,
+				C159A5C52CE0A885005B5EDC /* compat.py */,
+				C159A5C62CE0A885005B5EDC /* cookies.py */,
+				C159A5C72CE0A885005B5EDC /* exceptions.py */,
+				C159A5C82CE0A885005B5EDC /* help.py */,
+				C159A5C92CE0A885005B5EDC /* hooks.py */,
+				C159A5CA2CE0A885005B5EDC /* models.py */,
+				C159A5CB2CE0A885005B5EDC /* packages.py */,
+				C159A5CC2CE0A885005B5EDC /* sessions.py */,
+				C159A5CD2CE0A885005B5EDC /* status_codes.py */,
+				C159A5CE2CE0A885005B5EDC /* structures.py */,
+				C159A5CF2CE0A885005B5EDC /* utils.py */,
+			);
+			path = requests;
+			sourceTree = "<group>";
+		};
+		C159A5D82CE0A885005B5EDC /* requests-2.31.0.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5D12CE0A885005B5EDC /* INSTALLER */,
+				C159A5D22CE0A885005B5EDC /* LICENSE */,
+				C159A5D32CE0A885005B5EDC /* METADATA */,
+				C159A5D42CE0A885005B5EDC /* RECORD */,
+				C159A5D52CE0A885005B5EDC /* REQUESTED */,
+				C159A5D62CE0A885005B5EDC /* top_level.txt */,
+				C159A5D72CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "requests-2.31.0.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A5E12CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5D92CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A5DA2CE0A885005B5EDC /* authutil.cpython-310.pyc */,
+				C159A5DB2CE0A885005B5EDC /* contexts.cpython-310.pyc */,
+				C159A5DC2CE0A885005B5EDC /* main.cpython-310.pyc */,
+				C159A5DD2CE0A885005B5EDC /* runtime.cpython-310.pyc */,
+				C159A5DE2CE0A885005B5EDC /* runtimeenv.cpython-310.pyc */,
+				C159A5DF2CE0A885005B5EDC /* util.cpython-310.pyc */,
+				C159A5E02CE0A885005B5EDC /* workerlog.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A5E72CE0A885005B5EDC /* actions */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5E22CE0A885005B5EDC /* ALFActions.py */,
+				C159A5E32CE0A885005B5EDC /* ALFCore.py */,
+				C159A5E42CE0A885005B5EDC /* ALFMain.py */,
+				C159A5E52CE0A885005B5EDC /* CustomActions.py */,
+				C159A5E62CE0A885005B5EDC /* Utilities.py */,
+			);
+			path = actions;
+			sourceTree = "<group>";
+		};
+		C159A5EA2CE0A885005B5EDC /* config */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5E82CE0A885005B5EDC /* application.ini */,
+				C159A5E92CE0A885005B5EDC /* runtime.ini */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		C159A5F42CE0A885005B5EDC /* deps */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5EB2CE0A885005B5EDC /* make */,
+				C159A5EC2CE0A885005B5EDC /* scp */,
+				C159A5ED2CE0A885005B5EDC /* sftp */,
+				C159A5EE2CE0A885005B5EDC /* slogin */,
+				C159A5EF2CE0A885005B5EDC /* ssh */,
+				C159A5F02CE0A885005B5EDC /* ssh-add */,
+				C159A5F12CE0A885005B5EDC /* ssh-agent */,
+				C159A5F22CE0A885005B5EDC /* ssh-keygen */,
+				C159A5F32CE0A885005B5EDC /* ssh-keyscan */,
+			);
+			path = deps;
+			sourceTree = "<group>";
+		};
+		C159A5FE2CE0A885005B5EDC /* serverless */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5E12CE0A885005B5EDC /* __pycache__ */,
+				C159A5E72CE0A885005B5EDC /* actions */,
+				C159A5EA2CE0A885005B5EDC /* config */,
+				C159A5F42CE0A885005B5EDC /* deps */,
+				C159A5F52CE0A885005B5EDC /* __init__.py */,
+				C159A5F62CE0A885005B5EDC /* __main__.py */,
+				C159A5F72CE0A885005B5EDC /* authutil.py */,
+				C159A5F82CE0A885005B5EDC /* contexts.py */,
+				C159A5F92CE0A885005B5EDC /* main.py */,
+				C159A5FA2CE0A885005B5EDC /* runtime.py */,
+				C159A5FB2CE0A885005B5EDC /* runtimeenv.py */,
+				C159A5FC2CE0A885005B5EDC /* util.py */,
+				C159A5FD2CE0A885005B5EDC /* workerlog.py */,
+			);
+			path = serverless;
+			sourceTree = "<group>";
+		};
+		C159A6072CE0A885005B5EDC /* serverless_fxn-1.0.2.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5FF2CE0A885005B5EDC /* direct_url.json */,
+				C159A6002CE0A885005B5EDC /* entry_points.txt */,
+				C159A6012CE0A885005B5EDC /* INSTALLER */,
+				C159A6022CE0A885005B5EDC /* METADATA */,
+				C159A6032CE0A885005B5EDC /* RECORD */,
+				C159A6042CE0A885005B5EDC /* REQUESTED */,
+				C159A6052CE0A885005B5EDC /* top_level.txt */,
+				C159A6062CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "serverless_fxn-1.0.2.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A6142CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6082CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A6092CE0A885005B5EDC /* _base_connection.cpython-310.pyc */,
+				C159A60A2CE0A885005B5EDC /* _collections.cpython-310.pyc */,
+				C159A60B2CE0A885005B5EDC /* _request_methods.cpython-310.pyc */,
+				C159A60C2CE0A885005B5EDC /* _version.cpython-310.pyc */,
+				C159A60D2CE0A885005B5EDC /* connection.cpython-310.pyc */,
+				C159A60E2CE0A885005B5EDC /* connectionpool.cpython-310.pyc */,
+				C159A60F2CE0A885005B5EDC /* exceptions.cpython-310.pyc */,
+				C159A6102CE0A885005B5EDC /* fields.cpython-310.pyc */,
+				C159A6112CE0A885005B5EDC /* filepost.cpython-310.pyc */,
+				C159A6122CE0A885005B5EDC /* poolmanager.cpython-310.pyc */,
+				C159A6132CE0A885005B5EDC /* response.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A6172CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6152CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A6162CE0A885005B5EDC /* socks.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A61E2CE0A885005B5EDC /* emscripten */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6182CE0A885005B5EDC /* __init__.py */,
+				C159A6192CE0A885005B5EDC /* connection.py */,
+				C159A61A2CE0A885005B5EDC /* emscripten_fetch_worker.js */,
+				C159A61B2CE0A885005B5EDC /* fetch.py */,
+				C159A61C2CE0A885005B5EDC /* request.py */,
+				C159A61D2CE0A885005B5EDC /* response.py */,
+			);
+			path = emscripten;
+			sourceTree = "<group>";
+		};
+		C159A6222CE0A885005B5EDC /* contrib */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6172CE0A885005B5EDC /* __pycache__ */,
+				C159A61E2CE0A885005B5EDC /* emscripten */,
+				C159A61F2CE0A885005B5EDC /* __init__.py */,
+				C159A6202CE0A885005B5EDC /* pyopenssl.py */,
+				C159A6212CE0A885005B5EDC /* socks.py */,
+			);
+			path = contrib;
+			sourceTree = "<group>";
+		};
+		C159A6302CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6232CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A6242CE0A885005B5EDC /* connection.cpython-310.pyc */,
+				C159A6252CE0A885005B5EDC /* proxy.cpython-310.pyc */,
+				C159A6262CE0A885005B5EDC /* request.cpython-310.pyc */,
+				C159A6272CE0A885005B5EDC /* response.cpython-310.pyc */,
+				C159A6282CE0A885005B5EDC /* retry.cpython-310.pyc */,
+				C159A6292CE0A885005B5EDC /* ssl_.cpython-310.pyc */,
+				C159A62A2CE0A885005B5EDC /* ssl_match_hostname.cpython-310.pyc */,
+				C159A62B2CE0A885005B5EDC /* ssltransport.cpython-310.pyc */,
+				C159A62C2CE0A885005B5EDC /* timeout.cpython-310.pyc */,
+				C159A62D2CE0A885005B5EDC /* url.cpython-310.pyc */,
+				C159A62E2CE0A885005B5EDC /* util.cpython-310.pyc */,
+				C159A62F2CE0A885005B5EDC /* wait.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A63E2CE0A885005B5EDC /* util */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6302CE0A885005B5EDC /* __pycache__ */,
+				C159A6312CE0A885005B5EDC /* __init__.py */,
+				C159A6322CE0A885005B5EDC /* connection.py */,
+				C159A6332CE0A885005B5EDC /* proxy.py */,
+				C159A6342CE0A885005B5EDC /* request.py */,
+				C159A6352CE0A885005B5EDC /* response.py */,
+				C159A6362CE0A885005B5EDC /* retry.py */,
+				C159A6372CE0A885005B5EDC /* ssl_.py */,
+				C159A6382CE0A885005B5EDC /* ssl_match_hostname.py */,
+				C159A6392CE0A885005B5EDC /* ssltransport.py */,
+				C159A63A2CE0A885005B5EDC /* timeout.py */,
+				C159A63B2CE0A885005B5EDC /* url.py */,
+				C159A63C2CE0A885005B5EDC /* util.py */,
+				C159A63D2CE0A885005B5EDC /* wait.py */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		C159A64D2CE0A885005B5EDC /* urllib3 */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6142CE0A885005B5EDC /* __pycache__ */,
+				C159A6222CE0A885005B5EDC /* contrib */,
+				C159A63E2CE0A885005B5EDC /* util */,
+				C159A63F2CE0A885005B5EDC /* __init__.py */,
+				C159A6402CE0A885005B5EDC /* _base_connection.py */,
+				C159A6412CE0A885005B5EDC /* _collections.py */,
+				C159A6422CE0A885005B5EDC /* _request_methods.py */,
+				C159A6432CE0A885005B5EDC /* _version.py */,
+				C159A6442CE0A885005B5EDC /* connection.py */,
+				C159A6452CE0A885005B5EDC /* connectionpool.py */,
+				C159A6462CE0A885005B5EDC /* exceptions.py */,
+				C159A6472CE0A885005B5EDC /* fields.py */,
+				C159A6482CE0A885005B5EDC /* filepost.py */,
+				C159A6492CE0A885005B5EDC /* http2.py */,
+				C159A64A2CE0A885005B5EDC /* poolmanager.py */,
+				C159A64B2CE0A885005B5EDC /* py.typed */,
+				C159A64C2CE0A885005B5EDC /* response.py */,
+			);
+			path = urllib3;
+			sourceTree = "<group>";
+		};
+		C159A64F2CE0A885005B5EDC /* licenses */ = {
+			isa = PBXGroup;
+			children = (
+				C159A64E2CE0A885005B5EDC /* LICENSE.txt */,
+			);
+			path = licenses;
+			sourceTree = "<group>";
+		};
+		C159A6542CE0A885005B5EDC /* urllib3-2.2.0.dist-info */ = {
+			isa = PBXGroup;
+			children = (
+				C159A64F2CE0A885005B5EDC /* licenses */,
+				C159A6502CE0A885005B5EDC /* INSTALLER */,
+				C159A6512CE0A885005B5EDC /* METADATA */,
+				C159A6522CE0A885005B5EDC /* RECORD */,
+				C159A6532CE0A885005B5EDC /* WHEEL */,
+			);
+			path = "urllib3-2.2.0.dist-info";
+			sourceTree = "<group>";
+		};
+		C159A6662CE0A885005B5EDC /* __pycache__ */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6552CE0A885005B5EDC /* __init__.cpython-310.pyc */,
+				C159A6562CE0A885005B5EDC /* composer.cpython-310.pyc */,
+				C159A6572CE0A885005B5EDC /* constructor.cpython-310.pyc */,
+				C159A6582CE0A885005B5EDC /* cyaml.cpython-310.pyc */,
+				C159A6592CE0A885005B5EDC /* dumper.cpython-310.pyc */,
+				C159A65A2CE0A885005B5EDC /* emitter.cpython-310.pyc */,
+				C159A65B2CE0A885005B5EDC /* error.cpython-310.pyc */,
+				C159A65C2CE0A885005B5EDC /* events.cpython-310.pyc */,
+				C159A65D2CE0A885005B5EDC /* loader.cpython-310.pyc */,
+				C159A65E2CE0A885005B5EDC /* nodes.cpython-310.pyc */,
+				C159A65F2CE0A885005B5EDC /* parser.cpython-310.pyc */,
+				C159A6602CE0A885005B5EDC /* reader.cpython-310.pyc */,
+				C159A6612CE0A885005B5EDC /* representer.cpython-310.pyc */,
+				C159A6622CE0A885005B5EDC /* resolver.cpython-310.pyc */,
+				C159A6632CE0A885005B5EDC /* scanner.cpython-310.pyc */,
+				C159A6642CE0A885005B5EDC /* serializer.cpython-310.pyc */,
+				C159A6652CE0A885005B5EDC /* tokens.cpython-310.pyc */,
+			);
+			path = __pycache__;
+			sourceTree = "<group>";
+		};
+		C159A6792CE0A885005B5EDC /* yaml */ = {
+			isa = PBXGroup;
+			children = (
+				C159A6662CE0A885005B5EDC /* __pycache__ */,
+				C159A6672CE0A885005B5EDC /* __init__.py */,
+				C159A6682CE0A885005B5EDC /* _yaml.cpython-310-darwin.so */,
+				C159A6692CE0A885005B5EDC /* composer.py */,
+				C159A66A2CE0A885005B5EDC /* constructor.py */,
+				C159A66B2CE0A885005B5EDC /* cyaml.py */,
+				C159A66C2CE0A885005B5EDC /* dumper.py */,
+				C159A66D2CE0A885005B5EDC /* emitter.py */,
+				C159A66E2CE0A885005B5EDC /* error.py */,
+				C159A66F2CE0A885005B5EDC /* events.py */,
+				C159A6702CE0A885005B5EDC /* loader.py */,
+				C159A6712CE0A885005B5EDC /* nodes.py */,
+				C159A6722CE0A885005B5EDC /* parser.py */,
+				C159A6732CE0A885005B5EDC /* reader.py */,
+				C159A6742CE0A885005B5EDC /* representer.py */,
+				C159A6752CE0A885005B5EDC /* resolver.py */,
+				C159A6762CE0A885005B5EDC /* scanner.py */,
+				C159A6772CE0A885005B5EDC /* serializer.py */,
+				C159A6782CE0A885005B5EDC /* tokens.py */,
+			);
+			path = yaml;
+			sourceTree = "<group>";
+		};
+		C159A67A2CE0A885005B5EDC /* site-packages */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5582CE0A885005B5EDC /* _yaml */,
+				C159A55B2CE0A885005B5EDC /* bin */,
+				C159A5642CE0A885005B5EDC /* certifi */,
+				C159A56B2CE0A885005B5EDC /* certifi-2024.2.2.dist-info */,
+				C159A5852CE0A885005B5EDC /* charset_normalizer */,
+				C159A58D2CE0A885005B5EDC /* charset_normalizer-3.3.2.dist-info */,
+				C159A59D2CE0A885005B5EDC /* idna */,
+				C159A5A32CE0A885005B5EDC /* idna-3.6.dist-info */,
+				C159A5AB2CE0A885005B5EDC /* PyYAML-6.0.1.dist-info */,
+				C159A5D02CE0A885005B5EDC /* requests */,
+				C159A5D82CE0A885005B5EDC /* requests-2.31.0.dist-info */,
+				C159A5FE2CE0A885005B5EDC /* serverless */,
+				C159A6072CE0A885005B5EDC /* serverless_fxn-1.0.2.dist-info */,
+				C159A64D2CE0A885005B5EDC /* urllib3 */,
+				C159A6542CE0A885005B5EDC /* urllib3-2.2.0.dist-info */,
+				C159A6792CE0A885005B5EDC /* yaml */,
+			);
+			path = "site-packages";
+			sourceTree = "<group>";
+		};
+		C159A67B2CE0A885005B5EDC /* shivPackage_aa86d49e99ed01ae278917cce5ee60445a6ac68ce4952636027c751f4c8931d5 */ = {
+			isa = PBXGroup;
+			children = (
+				C159A67A2CE0A885005B5EDC /* site-packages */,
+			);
+			path = shivPackage_aa86d49e99ed01ae278917cce5ee60445a6ac68ce4952636027c751f4c8931d5;
+			sourceTree = "<group>";
+		};
+		C159A67D2CE0A885005B5EDC /* shiv */ = {
+			isa = PBXGroup;
+			children = (
+				C159A67B2CE0A885005B5EDC /* shivPackage_aa86d49e99ed01ae278917cce5ee60445a6ac68ce4952636027c751f4c8931d5 */,
+				C159A67C2CE0A885005B5EDC /* .shivPackage_aa86d49e99ed01ae278917cce5ee60445a6ac68ce4952636027c751f4c8931d5_lock */,
+			);
+			path = shiv;
+			sourceTree = "<group>";
+		};
+		C159A67E2CE0A885005B5EDC /* tmp */ = {
+			isa = PBXGroup;
+			children = (
+				C159A5562CE0A885005B5EDC /* serverless */,
+				C159A67D2CE0A885005B5EDC /* shiv */,
+			);
+			path = tmp;
+			sourceTree = "<group>";
+		};
+		C159A67F2CE0A885005B5EDC /* workspace */ = {
+			isa = PBXGroup;
+			children = (
+				C159A67E2CE0A885005B5EDC /* tmp */,
+			);
+			name = workspace;
+			path = ../../../../../../workspace;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -360,8 +1221,8 @@
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
-				8D11072E0486CEB800E47090 /* Frameworks */,
 				A464E3780F65263000148227 /* Copy 3rd-party Frameworks */,
+				C1791FD12CE334A100B39ADE /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -503,14 +1364,24 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					../../cmakebuild,
+					../..,
+					../../src,
+					/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Headers,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "\"$(LOCAL_LIBRARY_DIR)/Input Methods/\"";
+				LD_RUNPATH_SEARCH_PATHS = "$(LD_RUNPATH_SEARCH_PATHS_$(IS_MACCATALYST)) @executable_path/../Frameworks /Library/Developer/CommandLineTools/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/Current/lib;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DMACOSX",
@@ -522,10 +1393,12 @@
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",
+					/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/Current/lib/libpython3.9.dylib,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.opensolaris.inputmethod.SunPinyin;
 				PRODUCT_NAME = SunPinyin;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -539,13 +1412,23 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					../../cmakebuild,
+					../..,
+					../../src,
+					/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Headers,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "\"$(LOCAL_LIBRARY_DIR)/Input Methods/\"";
+				LD_RUNPATH_SEARCH_PATHS = "$(LD_RUNPATH_SEARCH_PATHS_$(IS_MACCATALYST)) @executable_path/../Frameworks /Library/Developer/CommandLineTools/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/Current/lib/**";
+				"LIBRARY_SEARCH_PATHS[arch=*]" = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DMACOSX",
@@ -557,10 +1440,12 @@
 				OTHER_LDFLAGS = (
 					"-lsqlite3",
 					"-liconv",
+					/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/Current/lib/libpython3.9.dylib,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.opensolaris.inputmethod.SunPinyin;
 				PRODUCT_NAME = SunPinyin;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -568,6 +1453,8 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -600,15 +1487,20 @@
 					../../cmakebuild,
 					../..,
 					../../src,
+					"$(HEADER_SEARCH_PATHS)/**",
 				);
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)/**";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)/**";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -641,9 +1533,12 @@
 					../../cmakebuild,
 					../..,
 					../../src,
+					"$(HEADER_SEARCH_PATHS)/**",
 				);
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)/**";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)/**";
 			};
 			name = Release;
 		};

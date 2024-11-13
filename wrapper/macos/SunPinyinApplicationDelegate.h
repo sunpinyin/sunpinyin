@@ -53,7 +53,7 @@ typedef enum {
 } SwitchingPolicies;
 
 // Note: the SunPinyinApplicationDelegate is instantiated automatically as an outlet of NSApp's instance
-@interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate, GrowlApplicationBridgeDelegate>
+@interface SunPinyinApplicationDelegate : NSObject <NSWindowDelegate>
 {
     IBOutlet NSMenu*            _menu;
     IBOutlet CandidateWindow*   _candiWin;

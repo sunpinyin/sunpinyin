@@ -52,7 +52,13 @@ int main(int argc, char *argv[])
 
     // load the bundle explicitly because in this case the input method is a
     // background only application
-    [NSBundle loadNibNamed: @"MainMenu" owner: [NSApplication sharedApplication]];
+    // before macos 10.8   [NSBundle loadNibNamed: @"MainMenu" owner: [NSApplication sharedApplication]];
+    NSNib *nib = [[NSNib alloc] initWithNibNamed:@"MainMenu" bundle:nil];
+    if (![nib instantiateWithOwner:[NSApplication sharedApplication] topLevelObjects:nil]) {
+        NSLog(@"Error: Could not load MainMenu.xib");
+        return 1; // return non-zero to indicate an error
+    }
+    
     [[NSColorPanel sharedColorPanel] setHidesOnDeactivate: NO];
     [[NSFontPanel sharedFontPanel] setHidesOnDeactivate: NO];
 

@@ -65,6 +65,9 @@ CThreadSlm::load(const char* fname, bool MMap)
 
     m_bMMap = MMap;
     if (m_bMMap) {
+#ifdef __APPLE__
+        #include <sys/mman.h>
+#endif
 #ifdef HAVE_SYS_MMAN_H
         void* p = mmap(NULL, m_bufSize, PROT_READ, MAP_SHARED, fd, 0);
         if (p == MAP_FAILED) {
@@ -90,6 +93,7 @@ CThreadSlm::load(const char* fname, bool MMap)
             p += n;
             len -= n;
         }
+
 #else // Other OS
         #error "No implementation for mmap()"
 #endif // HAVE_SYS_MMAN_H

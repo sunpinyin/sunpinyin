@@ -141,7 +141,7 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
             name:NSUserDefaultsDidChangeNotification
             object:nil];
 
-    [GrowlApplicationBridge setGrowlDelegate: self];
+//    [GrowlApplicationBridge setGrowlDelegate: self]; //remove Growl
     
     string res_path = [[[NSBundle mainBundle] resourcePath] UTF8String];
     AOptionEventBus::instance().publishEvent(COptionEvent(SYSTEM_DATA_DIR, res_path));
@@ -245,15 +245,31 @@ void updateKeyProfileSettings(NSUserDefaults* pref);
     return (dict);
 }
 
--(void)messageNotify:(NSString*)msg
-{
-    [GrowlApplicationBridge notifyWithTitle: @"SunPinyin"
-                            description: msg
-                            notificationName: @"SunPinyin"
-                            iconData: [NSData dataWithData:[[NSImage imageNamed:@"SunPinyin"] TIFFRepresentation]]
-                            priority: 0
-                            isSticky: NO
-                            clickContext: nil];
+//-(void)messageNotify:(NSString*)msg
+//{
+//    [GrowlApplicationBridge notifyWithTitle: @"SunPinyin"
+//                            description: msg
+//                            notificationName: @"SunPinyin"
+//                            iconData: [NSData dataWithData:[[NSImage imageNamed:@"SunPinyin"] TIFFRepresentation]]
+//                            priority: 0
+//                            isSticky: NO
+//                            clickContext: nil];
+//}
+
+- (void)messageNotify:(NSString *)msg {
+    // 创建一个通知对象
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.title = @"SunPinyin";
+    notification.informativeText = msg;
+    
+    // 设置通知的图标
+    NSImage *iconImage = [NSImage imageNamed:@"SunPinyin"];
+    if (iconImage) {
+        notification.contentImage = iconImage;
+    }
+    
+    // 将通知发送到通知中心
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 
 @end //SunPinyinApplicationDelegate
